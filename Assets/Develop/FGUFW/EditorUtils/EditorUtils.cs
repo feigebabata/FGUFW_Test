@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using System.IO;
+using FGUFW.Platform;
+using FGUFW;
 
-namespace FGUFW
+namespace FGUFW.EditorUtils
 {
-    public static class EditorFileHelper
+    public static class EditorUtils
     {
         public const string META = ".meta";
         public static string[] GetAllAssetPath(string dirPath)
@@ -30,5 +32,19 @@ namespace FGUFW
             }
             return paths;
         }
+
+        
+        [MenuItem("Assets/PrintAssetPath")]
+        static private void printAssetPath()
+        {
+            Debug.Log(AssetDatabase.GetAssetPath(Selection.activeObject));
+        }
+
+        [MenuItem("文件夹/程序持续存储文件夹")]
+        static void openDir()
+        {
+            WinPlatform.OpenExplorer(Application.persistentDataPath);
+        }
+
     }
 }
