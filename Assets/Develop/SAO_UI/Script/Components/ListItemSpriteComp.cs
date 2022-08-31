@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using UnityEngine.EventSystems;
 
 namespace SAO_UI
 {
-    public class ListItemSpriteComp : MonoBehaviour
+    public class ListItemSpriteComp : MonoBehaviour,IPointerClickHandler
     {
-        public TexUnit NormalTex;
-        public TexUnit SelectTex;
-        public TexUnit UnselectTex;
-        
-        [Serializable]
-        public class TexUnit
+        public Image Img;
+        public Sprite Unselect,Select;
+        public int ItemIndex = -1;
+        public MainLoopList List;
+
+        public void OnPointerClick(PointerEventData eventData)
         {
-            public Sprite Tex;
-            public Material Mat;
+            List.OnClickItem(ItemIndex);
         }
     }
 
