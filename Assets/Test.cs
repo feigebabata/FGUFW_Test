@@ -5,11 +5,13 @@ using SAO_UI;
 
 public class Test : MonoBehaviour
 {
+    public Sprite[] SelectSprites,UnselectSprites;
     // Start is called before the first frame update
     void Start()
     {
+        
         var list = GetComponent<MainLoopList>();
-        list.OnItemCreate += onItemCreate;
+        list.OnItemShow += OnItemShow;
         list.Init(5);
     }
 
@@ -19,8 +21,10 @@ public class Test : MonoBehaviour
         
     }
 
-    void onItemCreate(int itemIndex,ListItemSpriteComp comp)
+    void OnItemShow(int itemIndex,ListItemSpriteComp comp)
     {
         comp.gameObject.SetActive(true);
+        comp.Select = SelectSprites[itemIndex];
+        comp.Unselect = UnselectSprites[itemIndex];
     }
 }

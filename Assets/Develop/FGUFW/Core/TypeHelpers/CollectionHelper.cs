@@ -35,12 +35,13 @@ namespace FGUFW
             return -1;
         }
 
-        static public int IndexOf<T>(this Array self,Predicate<T> match,int startIndex=0)
+        static public int IndexOf<T>(this Array self,Predicate<T> match,int startIndex=0,int length=0)
         {
             if(self!=null)
             {
-                int length = self.Length;
-                for (int i = 0; i < length; i++)
+                if(length==0)length = self.Length;
+                
+                for (int i = startIndex; i < length; i++)
                 {
                     var t_obj = (T)self.GetValue(i);
                     if(match(t_obj))return i;

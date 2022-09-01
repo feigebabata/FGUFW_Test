@@ -531,6 +531,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8838fb6c725d927438c8ac60b7865c10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SelectSprites:
+  - {fileID: -7584233376254572687, guid: 052d1ae6e3654dc498456a80fb6ed68a, type: 3}
+  - {fileID: 4686426366204564647, guid: 052d1ae6e3654dc498456a80fb6ed68a, type: 3}
+  - {fileID: 4929332729614417249, guid: 052d1ae6e3654dc498456a80fb6ed68a, type: 3}
+  - {fileID: -6117443540930060515, guid: 052d1ae6e3654dc498456a80fb6ed68a, type: 3}
+  - {fileID: 6468217790325736874, guid: 052d1ae6e3654dc498456a80fb6ed68a, type: 3}
+  UnselectSprites:
+  - {fileID: 5616975925440691335, guid: 052d1ae6e3654dc498456a80fb6ed68a, type: 3}
+  - {fileID: 6698223511322099586, guid: 052d1ae6e3654dc498456a80fb6ed68a, type: 3}
+  - {fileID: 6145532627752429454, guid: 052d1ae6e3654dc498456a80fb6ed68a, type: 3}
+  - {fileID: 1035798800255490508, guid: 052d1ae6e3654dc498456a80fb6ed68a, type: 3}
+  - {fileID: -890946561591360986, guid: 052d1ae6e3654dc498456a80fb6ed68a, type: 3}
 --- !u!1 &867134047
 GameObject:
   m_ObjectHideFlags: 0

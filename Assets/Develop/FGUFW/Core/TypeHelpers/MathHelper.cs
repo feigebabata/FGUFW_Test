@@ -54,5 +54,47 @@ namespace FGUFW
         {
             return (int)self;
         }
+
+        /// <summary>
+        /// 向上取整 <-1 && >0 = 0
+        /// </summary>
+        /// <param name="self"></param>
+        /// <returns></returns>
+        static public int Ceil_Z(this float self)
+        {
+            if(self<0)
+            {
+                int idx = (int)self;
+                if(self%1!=0)idx--;
+                return idx;
+            }
+            else
+            {
+                return Mathf.CeilToInt(self);
+            }
+        }
+
+        /// <summary>
+        /// 取余_循环
+        /// </summary>
+        /// <param name="self"></param>
+        /// <returns></returns>
+        static public int RoundIndex(this int self,int length)
+        {
+            int idx = (self%length+length)%length;
+            return idx;
+        }
+        
+        public static float Distance(float v1,float v2)
+        {
+            if(v1>v2)
+            {
+                return v1-v2;
+            }
+            else
+            {
+                return v2-v1;
+            }
+        }
     }
 }

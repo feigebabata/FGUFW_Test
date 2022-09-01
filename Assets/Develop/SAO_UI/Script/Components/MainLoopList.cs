@@ -20,10 +20,12 @@ namespace SAO_UI
         private RectTransform _viewRect;
         private float _viewSize;
 
-        private float _velocity;//衰减: _velocity = Mathf.Pow(DecelerationRate, deltaTime); 
+        private float _velocity;//衰减: _velocity *= Mathf.Pow(DecelerationRate, deltaTime); 
         private float _offset;
         private IListBehaviour _listBehaviour;
-        private List<ListItemSpriteComp> _itemList = new List<ListItemSpriteComp>();
+        // private List<ListItemSpriteComp> _itemList = new List<ListItemSpriteComp>();
+
+        private ListItemSpriteComp[] _itemComps;
 
         public int Length{get;private set;}
 
@@ -61,8 +63,9 @@ namespace SAO_UI
             } 
         }
 
-        public Action<int,ListItemSpriteComp> OnItemSelect,OnItemUnselect,OnItemCreate;
-        private List<int> _viewItemIndexs;
+        public Action<int,ListItemSpriteComp> OnItemSelect,OnItemUnselect,OnItemShow,OnItemHide;
+        private List<int> _viewItemIndexs = new List<int>();
+        private int _cacheIndex;
 
 
 
@@ -110,14 +113,14 @@ namespace SAO_UI
         protected virtual void LateUpdate()
         {
             _listBehaviour.LateUpdate();
-            if(_itemList.Count>0)updateItemRender();
+            if(Length>0)updateItemRender();
         }
 
         public int GetOffsetIndex()
         {
             int index = 0;
             int size = (int)(_itemSize+Spacing);
-            int offset = (int)Offset;
+            int offset = (int)Offset+(int)_itemSize/2;
             index = offset/size;
             return index;
         }
@@ -134,14 +137,13 @@ namespace SAO_UI
         {
             _viewItemIndexs.Clear();
             float itemSize = _itemSize+Spacing;
-            float itemsSize = itemSize*Length;
-            float offset = Offset;
-            int fristIndex = Mathf.CeilToInt(offset/itemSize)%Length;
-            offset %= itemsSize;
             
-            for (int i = fristIndex; i < Length; i++)
+            float offset = Offset;
+            int fristIndex = (offset/itemSize).Ceil()-1;
+            
+            for (int i = fristIndex;; i++)
             {
-                float y = offset - i*itemSize;
+                float y = - i*itemSize + offset ;
                 if(y<-_viewSize)break;
                 _viewItemIndexs.Add(i);
             }
@@ -153,8 +155,9 @@ namespace SAO_UI
             float deltaTime = Time.fixedDeltaTime;
             if(ListState==State.Select)
             {
-                foreach (var item in _itemList)
-                {
+                for (int i = 0; i < _cacheIndex; i++)
+                {   
+                    var item = _itemComps[i];
     
                     if(item.ItemIndex==_currentIndex)
                     {
@@ -162,14 +165,14 @@ namespace SAO_UI
                         {
                             var color = item.Img.color;
                             if(color.a==Select_Alpha)continue;
-                            float speed = (1-Select_Alpha)/0.5f;
+                            float speed = (1-Select_Alpha)/0.25f;
                             color.a = Mathf.MoveTowards(color.a,Select_Alpha,speed*deltaTime);
                             item.Img.color = color;
                         }
                         else
                         {
                             var color = item.Img.color;
-                            float speed = (1-Unselect_Alpha)/0.5f;
+                            float speed = (1-Unselect_Alpha)/0.25f;
                             color.a = Mathf.MoveTowards(color.a,1,speed*deltaTime);
                             item.Img.color = color;
                             if(color.a==1)item.Img.sprite = item.Select;
@@ -181,14 +184,14 @@ namespace SAO_UI
                         {
                             var color = item.Img.color;
                             if(color.a==Unselect_Alpha)continue;
-                            float speed = (1-Unselect_Alpha)/0.5f;
+                            float speed = (1-Unselect_Alpha)/0.25f;
                             color.a = Mathf.MoveTowards(color.a,Unselect_Alpha,speed*deltaTime);
                             item.Img.color = color;
                         }
                         else
                         {
                             var color = item.Img.color;
-                            float speed = (1-Select_Alpha)/0.5f;
+                            float speed = (1-Select_Alpha)/0.25f;
                             color.a = Mathf.MoveTowards(color.a,1,speed*deltaTime);
                             item.Img.color = color;
                             if(color.a==1)item.Img.sprite = item.Unselect;
@@ -198,12 +201,13 @@ namespace SAO_UI
             }
             else if(ListState==State.Opening || ListState==State.Scrolling || ListState==State.MoveToItem)
             {
-                foreach (var item in _itemList)
-                {
+                for (int i = 0; i < _cacheIndex; i++)
+                {   
+                    var item = _itemComps[i];
                     var color = item.Img.color;
                     if(item.Img.sprite != item.Unselect)item.Img.sprite = item.Unselect;
                     if(color.a==1)continue;
-                    float speed = (1-Select_Alpha)/0.5f;
+                    float speed = (1-Select_Alpha)/0.25f;
                     color.a = Mathf.MoveTowards(color.a,Select_Alpha,speed*deltaTime);
                     item.Img.color = color;
                 }
@@ -217,9 +221,11 @@ namespace SAO_UI
 
         public void ResetAllItemPosition()
         {
+            OnMoveCheckList();
             float offset = Offset;//%_viewSize;
-            foreach (var item in _itemList)
+            for (int i = 0; i < _cacheIndex; i++)
             {
+                var item = _itemComps[i];
                 int itemIndex = item.ItemIndex;
                 RectTransform item_RT = item.transform.AsRT();
 
@@ -227,47 +233,94 @@ namespace SAO_UI
             }
         }
 
-        internal void OnClickItem(int itemIndex)
+        public void OnMoveCheckList()
         {
-            Debug.Log(itemIndex);
-            if(itemIndex==-1)return;
-            _currentIndex = itemIndex;
-            foreach (var item in _itemList)
+            var viewList = getViewItemIndexs();
+            // _cacheIndex = Length;
+            for (int i = _cacheIndex-1; i >= 0; i--)
             {
-                if(item.ItemIndex==itemIndex)
+                var item = _itemComps[i];
+                if(!viewList.Exists(idx=>idx==item.ItemIndex))
                 {
-                    if(OnItemSelect!=null)
+                    _cacheIndex--;
+                    var temp = _itemComps[_cacheIndex];
+                    _itemComps[_cacheIndex]=item;
+                    _itemComps[i] = temp;
+                    item.gameObject.SetActive(false);
+                    
+                    if(OnItemHide!=null)
                     {
-                        OnItemSelect(itemIndex,item);
-                    }
-                }
-                else
-                {
-                    if(OnItemUnselect!=null)
-                    {
-                        OnItemUnselect(itemIndex,item);
+                        OnItemHide(item.ItemIndex.RoundIndex(Length),item);
                     }
                 }
             }
+            foreach (var item_index in viewList)
+            {
+                if(_itemComps.IndexOf<ListItemSpriteComp>(item=>item.ItemIndex==item_index,0,_cacheIndex)==-1)
+                {
+                    var newItem = _itemComps[_cacheIndex];
+                    _cacheIndex++;
+                    newItem.ItemIndex = item_index;
+                    newItem.gameObject.SetActive(true);
+
+                    if(OnItemShow!=null)
+                    {
+                        OnItemShow(newItem.ItemIndex.RoundIndex(Length),newItem);
+                    }
+                }
+            }
+        }
+
+        internal void OnClickItem(int itemIndex)
+        {
+            IndexChanged(itemIndex);
             this.ListState = State.MoveToItem;
+        }
+
+        public void IndexChanged(int itemIndex)
+        {
+            int prevIndex = _currentIndex;
+            _currentIndex = itemIndex;
+            for (int i = 0; i < _cacheIndex; i++)
+            {
+                var item = _itemComps[i];
+                var index = item.ItemIndex%Length;
+                if(index==itemIndex)
+                {
+                    if(OnItemSelect!=null)
+                    {
+                        OnItemSelect(itemIndex.RoundIndex(Length),item);
+                    }
+                }
+                if(index==prevIndex)
+                {
+                    if(OnItemUnselect!=null)
+                    {
+                        OnItemUnselect(itemIndex.RoundIndex(Length),item);
+                    }
+                }
+            }
         }
 
         public void Init(int length)
         {
             Length = length;
+            _itemComps = new ListItemSpriteComp[Length+1];
             var itemTemp = transform.GetChild(0);
             for (int i = 0; i < length; i++)
             {
                 var item = itemTemp.gameObject.Copy(transform).transform.AsRT();
                 var comp = item.GetComponent<ListItemSpriteComp>();
-                _itemList.Add(comp);
+                _itemComps[i]=comp;
                 comp.ItemIndex = i;
                 comp.List = this;
-                if(OnItemCreate!=null)
+                if(OnItemShow!=null)
                 {
-                    OnItemCreate(i,comp);
+                    OnItemShow(i.RoundIndex(Length),comp);
                 }
             }
+            _itemComps[Length]=itemTemp.GetComponent<ListItemSpriteComp>();
+            _cacheIndex = Length;
             ListState = State.Opening;
         }
 
@@ -285,8 +338,9 @@ namespace SAO_UI
             {
                 _list = list;
 
-                foreach (var item in list._itemList)
-                {
+                for (int i = 0; i < _list.Length; i++)
+                {   
+                    var item = _list._itemComps[i];
                     item.transform.AsRT().anchoredPosition = new Vector2(0,_list._viewSize/*(_list._itemSize+_list.Spacing)*4*/);
                 }
             }
@@ -297,8 +351,9 @@ namespace SAO_UI
                 // _list.Offset = Mathf.MoveTowards(_list.Offset,0,speed*deltaTime);
                 // _list.ResetAllItemPosition();
                 bool moveEnd = true;
-                foreach (var item in _list._itemList)
-                {
+                for (int i = 0; i < _list.Length; i++)
+                {   
+                    var item = _list._itemComps[i];
                     var item_RT = item.transform.AsRT();
                     var y = -(_list._itemSize+_list.Spacing)*item.ItemIndex;
                     if(item_RT.anchoredPosition.y==y)continue;
@@ -378,7 +433,7 @@ namespace SAO_UI
             public void Init(MainLoopList list)
             {
                 _list = list;
-                _list._currentIndex =-1;
+                _list.IndexChanged(-1);
             }
 
             public void LateUpdate()
@@ -396,7 +451,7 @@ namespace SAO_UI
                     _list._velocity *= Mathf.Pow(_list.DecelerationRate, deltaTime); 
                     if(Mathf.Abs(_list._velocity)<1)
                     {
-                        _list._currentIndex = _list.GetOffsetIndex();
+                        _list.IndexChanged(_list.GetOffsetIndex());
                         _list.ListState = State.MoveToItem;
                     }
                     _list.Offset += offset;
@@ -430,20 +485,25 @@ namespace SAO_UI
         public class MoveToItemBehaviour : IListBehaviour
         {
             MainLoopList _list;
+            private float _targetOffset;
+            private float _speed;
 
             public void Init(MainLoopList list)
             {
                 _list = list;
+                _targetOffset = _list._currentIndex * (_list._itemSize+_list.Spacing);
+                var space = MathHelper.Distance(_targetOffset,_list.Offset);
+                float time = Mathf.Lerp(0.5f,1f,space/_list._viewSize);
+                _speed = space/time;
+                // Debug.Log($"{time}  {_targetOffset}");
             }
 
             public void LateUpdate()
             {
-                var targetOffset = _list._currentIndex * (_list._itemSize+_list.Spacing);
-                float speed = _list._viewSize/1.5f;
                 float deltaTime = Time.fixedDeltaTime;
-                _list.Offset = Mathf.MoveTowards(_list.Offset,targetOffset,speed*deltaTime);
+                _list.Offset = Mathf.MoveTowards(_list.Offset,_targetOffset,_speed*deltaTime);
                 _list.ResetAllItemPosition();
-                if(_list.Offset==targetOffset)
+                if(_list.Offset==_targetOffset)
                 {
                     _list.ListState = State.Select;
                 }
