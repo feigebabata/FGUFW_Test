@@ -32,14 +32,14 @@ namespace SAO_UI
             _viewSize = _rectTransform.sizeDelta.y;
             var itemRT = _rectTransform.GetChild(0).AsRT();
             _itemSize = itemRT.sizeDelta.y;
-            var p = new Vector2(0.5f, 1);
-            _rectTransform.pivot = p;
-            _rectTransform.anchorMin = p;
-            _rectTransform.anchorMax = p;
+            //var p = new Vector2(0.5f, 1);
+            //_rectTransform.pivot = p;
+            //_rectTransform.anchorMin = p;
+            //_rectTransform.anchorMax = p;
 
-            itemRT.pivot = p;
-            itemRT.anchorMin = p;
-            itemRT.anchorMax = p;
+            //itemRT.pivot = p;
+            //itemRT.anchorMin = p;
+            //itemRT.anchorMax = p;
             base.Awake();
         }
 
