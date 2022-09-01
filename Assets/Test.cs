@@ -10,7 +10,7 @@ public class Test : MonoBehaviour
     void Start()
     {
         
-        var list = GetComponent<MainLoopListComp>();
+        var list = GetComponent<MainMenuListComp>();
         list.OnItemShow += OnItemShow;
         list.Init(7);
     }
@@ -21,8 +21,9 @@ public class Test : MonoBehaviour
         
     }
 
-    void OnItemShow(int itemIndex,MainLoopListItemSpriteComp comp)
+    void OnItemShow(int itemIndex,LoopListItemBaseComp item)
     {
+        var comp = (MainMenuListItemComp)item;
         comp.gameObject.SetActive(true);
         comp.Select = SelectSprites[itemIndex];
         comp.Unselect = UnselectSprites[itemIndex];

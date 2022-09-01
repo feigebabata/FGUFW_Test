@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 
 namespace SAO_UI
 {
-    public abstract class LoopListItemBaseComp : MonoBehaviour,IPointerClickHandler
+    public class LoopListItemBaseComp : MonoBehaviour,IPointerClickHandler
     {
         public int ItemIndex = -1;
         public LoopListBaseComp List;
@@ -17,9 +17,9 @@ namespace SAO_UI
             List.OnClickItem(ItemIndex);
         }
 
-        public abstract void OnSelect();
+        public virtual void OnSelect() { }
 
-        public abstract void OnUnselect();
+        public virtual void OnUnselect() { }
     }
 
 }
