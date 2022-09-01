@@ -70,7 +70,7 @@ namespace FGUFW
             }
             else
             {
-                return Mathf.CeilToInt(self);
+                return (int)self;
             }
         }
 

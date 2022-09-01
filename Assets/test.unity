@@ -402,7 +402,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 403275173}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7d55f430bf3ec54f8dbbde893f57090, type: 3}
+  m_Script: {fileID: 11500000, guid: c8118dc54d5d2af43af9aa277ca032f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Img: {fileID: 403275175}
@@ -422,8 +422,8 @@ GameObject:
   - component: {fileID: 430700553}
   - component: {fileID: 430700550}
   - component: {fileID: 430700551}
-  - component: {fileID: 430700552}
   - component: {fileID: 430700554}
+  - component: {fileID: 430700552}
   m_Layer: 5
   m_Name: list
   m_TagString: Untagged
@@ -504,7 +504,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 430700548}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf13f33f04a176c4fb14b04024ddbd61, type: 3}
+  m_Script: {fileID: 11500000, guid: 143c73cbe3a54b942bbdb104800a5d8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   DecelerationRate: 0.135
@@ -537,12 +537,16 @@ MonoBehaviour:
   - {fileID: 4929332729614417249, guid: 052d1ae6e3654dc498456a80fb6ed68a, type: 3}
   - {fileID: -6117443540930060515, guid: 052d1ae6e3654dc498456a80fb6ed68a, type: 3}
   - {fileID: 6468217790325736874, guid: 052d1ae6e3654dc498456a80fb6ed68a, type: 3}
+  - {fileID: -1893524914629135076, guid: 052d1ae6e3654dc498456a80fb6ed68a, type: 3}
+  - {fileID: 4219636859430614712, guid: 052d1ae6e3654dc498456a80fb6ed68a, type: 3}
   UnselectSprites:
   - {fileID: 5616975925440691335, guid: 052d1ae6e3654dc498456a80fb6ed68a, type: 3}
   - {fileID: 6698223511322099586, guid: 052d1ae6e3654dc498456a80fb6ed68a, type: 3}
   - {fileID: 6145532627752429454, guid: 052d1ae6e3654dc498456a80fb6ed68a, type: 3}
   - {fileID: 1035798800255490508, guid: 052d1ae6e3654dc498456a80fb6ed68a, type: 3}
   - {fileID: -890946561591360986, guid: 052d1ae6e3654dc498456a80fb6ed68a, type: 3}
+  - {fileID: -2338303244373549801, guid: 052d1ae6e3654dc498456a80fb6ed68a, type: 3}
+  - {fileID: 7355562162210340586, guid: 052d1ae6e3654dc498456a80fb6ed68a, type: 3}
 --- !u!1 &867134047
 GameObject:
   m_ObjectHideFlags: 0

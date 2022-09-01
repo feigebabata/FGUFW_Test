@@ -10,9 +10,9 @@ public class Test : MonoBehaviour
     void Start()
     {
         
-        var list = GetComponent<MainLoopList>();
+        var list = GetComponent<MainLoopListComp>();
         list.OnItemShow += OnItemShow;
-        list.Init(5);
+        list.Init(7);
     }
 
     // Update is called once per frame
@@ -21,7 +21,7 @@ public class Test : MonoBehaviour
         
     }
 
-    void OnItemShow(int itemIndex,ListItemSpriteComp comp)
+    void OnItemShow(int itemIndex,MainLoopListItemSpriteComp comp)
     {
         comp.gameObject.SetActive(true);
         comp.Select = SelectSprites[itemIndex];

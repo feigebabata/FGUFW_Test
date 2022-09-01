@@ -9,7 +9,7 @@ using System;
 namespace SAO_UI
 {
     //循环列表 
-    public class MainLoopList : UIBehaviour, IInitializePotentialDragHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
+    public class MainLoopListComp : UIBehaviour, IInitializePotentialDragHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
     {
         public float DecelerationRate = 0.135f;
         public float Spacing = 20f;
@@ -23,9 +23,9 @@ namespace SAO_UI
         private float _velocity;//衰减: _velocity *= Mathf.Pow(DecelerationRate, deltaTime); 
         private float _offset;
         private IListBehaviour _listBehaviour;
-        // private List<ListItemSpriteComp> _itemList = new List<ListItemSpriteComp>();
+        // private List<MainLoopListItemSpriteComp> _itemList = new List<MainLoopListItemSpriteComp>();
 
-        private ListItemSpriteComp[] _itemComps;
+        private MainLoopListItemSpriteComp[] _itemComps;
 
         public int Length{get;private set;}
 
@@ -63,7 +63,7 @@ namespace SAO_UI
             } 
         }
 
-        public Action<int,ListItemSpriteComp> OnItemSelect,OnItemUnselect,OnItemShow,OnItemHide;
+        public Action<int,MainLoopListItemSpriteComp> OnItemSelect,OnItemUnselect,OnItemShow,OnItemHide;
         private List<int> _viewItemIndexs = new List<int>();
         private int _cacheIndex;
 
@@ -119,9 +119,9 @@ namespace SAO_UI
         public int GetOffsetIndex()
         {
             int index = 0;
-            int size = (int)(_itemSize+Spacing);
-            int offset = (int)Offset+(int)_itemSize/2;
-            index = offset/size;
+            var size = _itemSize+Spacing;
+            var offset = Offset+_itemSize/2;
+            index = (offset/size).Ceil_Z();
             return index;
         }
 
@@ -139,7 +139,7 @@ namespace SAO_UI
             float itemSize = _itemSize+Spacing;
             
             float offset = Offset;
-            int fristIndex = (offset/itemSize).Ceil()-1;
+            int fristIndex = (offset/itemSize).Ceil_Z();
             
             for (int i = fristIndex;; i++)
             {
@@ -256,7 +256,7 @@ namespace SAO_UI
             }
             foreach (var item_index in viewList)
             {
-                if(_itemComps.IndexOf<ListItemSpriteComp>(item=>item.ItemIndex==item_index,0,_cacheIndex)==-1)
+                if(_itemComps.IndexOf<MainLoopListItemSpriteComp>(item=>item.ItemIndex==item_index,0,_cacheIndex)==-1)
                 {
                     var newItem = _itemComps[_cacheIndex];
                     _cacheIndex++;
@@ -305,12 +305,20 @@ namespace SAO_UI
         public void Init(int length)
         {
             Length = length;
-            _itemComps = new ListItemSpriteComp[Length+1];
+            var itemsSize = (_itemSize+Spacing)*Length;
+            if(itemsSize<_viewSize)
+            {
+                var sizeDelta = _viewRect.sizeDelta;
+                sizeDelta.y = itemsSize;
+                _viewRect.sizeDelta = sizeDelta;
+                _viewSize = itemsSize;
+            }
+            _itemComps = new MainLoopListItemSpriteComp[Length+1];
             var itemTemp = transform.GetChild(0);
             for (int i = 0; i < length; i++)
             {
                 var item = itemTemp.gameObject.Copy(transform).transform.AsRT();
-                var comp = item.GetComponent<ListItemSpriteComp>();
+                var comp = item.GetComponent<MainLoopListItemSpriteComp>();
                 _itemComps[i]=comp;
                 comp.ItemIndex = i;
                 comp.List = this;
@@ -319,7 +327,7 @@ namespace SAO_UI
                     OnItemShow(i.RoundIndex(Length),comp);
                 }
             }
-            _itemComps[Length]=itemTemp.GetComponent<ListItemSpriteComp>();
+            _itemComps[Length]=itemTemp.GetComponent<MainLoopListItemSpriteComp>();
             _cacheIndex = Length;
             ListState = State.Opening;
         }
@@ -327,14 +335,14 @@ namespace SAO_UI
         public interface IListBehaviour : IInitializePotentialDragHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
         {
             void LateUpdate();
-            void Init(MainLoopList list);
+            void Init(MainLoopListComp list);
         }
 
         public class OpeningBehaviour : IListBehaviour
         {
-            MainLoopList _list;
+            MainLoopListComp _list;
 
-            public void Init(MainLoopList list)
+            public void Init(MainLoopListComp list)
             {
                 _list = list;
 
@@ -391,9 +399,9 @@ namespace SAO_UI
 
         public class SelectBehaviour : IListBehaviour
         {
-            MainLoopList _list;
+            MainLoopListComp _list;
 
-            public void Init(MainLoopList list)
+            public void Init(MainLoopListComp list)
             {
                 _list = list;
             }
@@ -426,11 +434,11 @@ namespace SAO_UI
 
         public class ScrollingBehaviour : IListBehaviour
         {
-            MainLoopList _list;
+            MainLoopListComp _list;
             bool _isDraging = true;
             private float _prevPosition;
 
-            public void Init(MainLoopList list)
+            public void Init(MainLoopListComp list)
             {
                 _list = list;
                 _list.IndexChanged(-1);
@@ -484,11 +492,11 @@ namespace SAO_UI
 
         public class MoveToItemBehaviour : IListBehaviour
         {
-            MainLoopList _list;
+            MainLoopListComp _list;
             private float _targetOffset;
             private float _speed;
 
-            public void Init(MainLoopList list)
+            public void Init(MainLoopListComp list)
             {
                 _list = list;
                 _targetOffset = _list._currentIndex * (_list._itemSize+_list.Spacing);
@@ -505,6 +513,7 @@ namespace SAO_UI
                 _list.ResetAllItemPosition();
                 if(_list.Offset==_targetOffset)
                 {
+                    _list.OnResetOffsetAndSelectIndex();
                     _list.ListState = State.Select;
                 }
             }
@@ -527,6 +536,19 @@ namespace SAO_UI
             public void OnInitializePotentialDrag(PointerEventData eventData)
             {
                 
+            }
+        }
+
+        private void OnResetOffsetAndSelectIndex()
+        {
+            if(Offset==0)return;
+            var itemsSize = (_itemSize+Spacing)*Length;
+            int round = (int)(Offset/itemsSize);
+            _currentIndex-=round*Length;
+            Offset-=itemsSize*round;
+            for (int i = 0; i < _cacheIndex; i++)
+            {
+                _itemComps[i].ItemIndex-=round*Length;
             }
         }
 

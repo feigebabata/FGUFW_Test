@@ -7,12 +7,12 @@ using UnityEngine.EventSystems;
 
 namespace SAO_UI
 {
-    public class ListItemSpriteComp : MonoBehaviour,IPointerClickHandler
+    public class MainLoopListItemSpriteComp : MonoBehaviour,IPointerClickHandler
     {
         public Image Img;
         public Sprite Unselect,Select;
         public int ItemIndex = -1;
-        public MainLoopList List;
+        public MainLoopListComp List;
 
         public void OnPointerClick(PointerEventData eventData)
         {
