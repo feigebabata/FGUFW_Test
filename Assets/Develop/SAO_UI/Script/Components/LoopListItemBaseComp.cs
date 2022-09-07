@@ -11,15 +11,31 @@ namespace SAO_UI
     {
         public int ItemIndex = -1;
         public LoopListBaseComp List;
+        protected LoopListItemState _prevState = LoopListItemState.None;
 
         public void OnPointerClick(PointerEventData eventData)
         {
             List.OnClickItem(ItemIndex);
         }
 
-        public virtual void OnSelect() { }
+        public virtual void SwitchState(LoopListItemState state)
+        {
+            _prevState = state;
+        }
 
-        public virtual void OnUnselect() { }
+        public virtual void SetItemIndex(int itemIndex)
+        {
+            ItemIndex = itemIndex;
+            this.name = itemIndex.ToString();
+        }
+
+        public enum LoopListItemState
+        {
+            None,
+            Moving,
+            Selecting,
+            Unselecting
+        }
     }
 
 }

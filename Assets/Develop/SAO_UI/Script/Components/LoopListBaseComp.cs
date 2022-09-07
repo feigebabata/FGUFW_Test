@@ -12,13 +12,16 @@ namespace SAO_UI
     //循环列表 
     public class LoopListBaseComp : UIBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
     {
+        private const int UNSELECT_INDEX = int.MaxValue;
         public float DecelerationRate = 0.135f;
         public float Spacing = 20f;
+        public bool AutoSelect=false;
+        public float MoveToItemPivot = 0;
         public Action<int, LoopListItemBaseComp> OnItemShow, OnItemHide, OnItemSelect, OnItemUnselect;
         protected RectTransform _rectTransform;
         protected float _viewSize, _itemSize, _offset, _velocity, _prevOffset;
         protected float _itemSpacing => _itemSize + Spacing;
-        protected int _cacheIndex, _length, _currentIndex = -1;
+        protected int _cacheIndex,_length, _currentIndex = UNSELECT_INDEX,_moveToItemIndex;
         protected LoopListState _listState = LoopListState.None;
         protected LoopListItemBaseComp[] _itemComps;
 
@@ -46,20 +49,49 @@ namespace SAO_UI
                 _rectTransform.sizeDelta = sizeDelta;
                 _viewSize = itemsSize;
             }
-            _itemComps = new LoopListItemBaseComp[_length + 1];
+            
             var itemTemp = transform.GetChild(0);
-            for (int i = 0; i < length; i++)
+            if(_itemComps==null)
             {
-                var item = itemTemp.gameObject.Copy(transform).transform.AsRT();
-                var comp = item.GetComponent<LoopListItemBaseComp>();
-                _itemComps[i] = comp;
-                comp.ItemIndex = i;
-                comp.List = this;
-                onItemShow(i.RoundIndex(_length), comp);
+                _itemComps = new LoopListItemBaseComp[_length + 1];
+                _itemComps[0] = itemTemp.GetComponent<LoopListItemBaseComp>();
             }
-            _itemComps[_length] = itemTemp.GetComponent<LoopListItemBaseComp>();
+            else if(_itemComps.Length<_length+1)
+            {
+                var newItemComps = new LoopListItemBaseComp[_length+1];
+                Array.Copy(_itemComps,newItemComps,newItemComps.Length-_itemComps.Length);
+                _itemComps = newItemComps;
+            }
+            
             _cacheIndex = _length;
+
+            for (int i = 0; i < _itemComps.Length; i++)
+            {
+                LoopListItemBaseComp comp = _itemComps[i];
+                if(comp==null)
+                {
+                    comp = itemTemp.gameObject.Copy(transform).GetComponent<LoopListItemBaseComp>();
+                    _itemComps[i] = comp;
+                }
+                setItemIndex(comp,i);
+                comp.List = this;
+                if(i<_cacheIndex)
+                {
+                    onItemShow(i.RoundIndex(_length), comp);
+                }
+                else
+                {
+                    comp.gameObject.SetActive(false);
+                }
+            }
+
             setListState(LoopListState.Opening);
+        }
+
+        public virtual void Close()
+        {
+            setListState(LoopListState.Closing);
+            selectIndexChanged(UNSELECT_INDEX);
         }
 
         public virtual void OnBeginDrag(PointerEventData eventData)
@@ -107,9 +139,18 @@ namespace SAO_UI
                             resetItemsPosition();
                             if (Mathf.Abs(_velocity) < 1)
                             {
-                                selectIndexChanged(getIndexByOffset());
+                                _velocity = 0;
+                                if(AutoSelect)
+                                {
+                                    _moveToItemIndex = getIndexByOffset();
 
-                                setListState(LoopListState.MoveToItem);
+                                    setListState(LoopListState.MoveToItem);
+                                }
+                                else
+                                {
+                                    onResetOffsetAndSelectIndex();
+                                    // setListState(LoopListState.Select);
+                                }
                             }
                         }
                     }
@@ -121,6 +162,7 @@ namespace SAO_UI
                         resetItemsPosition();
                         if (_offset == targetOffset)
                         {
+                            selectIndexChanged(_moveToItemIndex);
                             onResetOffsetAndSelectIndex();
                             setListState(LoopListState.Select);
                         }
@@ -129,11 +171,6 @@ namespace SAO_UI
                 default:
                     break;
             }
-        }
-
-        protected virtual float getTargetOffsetByMoveToItem()
-        {
-            return _currentIndex * _itemSpacing;
         }
 
         /// <summary>
@@ -159,12 +196,17 @@ namespace SAO_UI
             switch (_listState)
             {
                 case LoopListState.Opening:
+                    {
+                        allItemMoveState();
+                    }
                     break;
                 case LoopListState.Select:
                     break;
+                case LoopListState.Closing:
                 case LoopListState.Scrolling:
                     {
-                        selectIndexChanged(-1);
+                        selectIndexChanged(UNSELECT_INDEX);
+                        allItemMoveState();
                     }
                     break;
                 case LoopListState.MoveToItem:
@@ -173,6 +215,8 @@ namespace SAO_UI
                         var space = MathHelper.Distance(targetOffset, _offset);
                         float time = Mathf.Lerp(0.5f, 1f, space / _viewSize);
                         _velocity = space / time;
+                        
+                        allItemMoveState();
                     }
                     break;
                 default:
@@ -180,18 +224,35 @@ namespace SAO_UI
             }
         }
 
+        private void allItemMoveState()
+        {
+            int length = _cacheIndex;
+            for (int i = 0; i < length; i++)
+            {
+                var item = _itemComps[i];
+                item.SwitchState(LoopListItemBaseComp.LoopListItemState.Moving);
+            }
+        }
+
         protected virtual int getIndexByOffset()
         {
             int index = 0;
             var size = _itemSpacing;
-            var offset = _offset + _itemSize / 2;
-            index = (offset / size).Ceil_Z();
+            var pivot = Mathf.Clamp01(MoveToItemPivot);
+            var offset = _offset + _itemSize / 2 + (_viewSize*pivot) - (_itemSpacing*pivot);
+            index = Mathf.FloorToInt((offset / size));
             return index;
+        }
+
+        protected virtual float getTargetOffsetByMoveToItem()
+        {
+            var pivot = Mathf.Clamp01(MoveToItemPivot);
+            return _moveToItemIndex * _itemSpacing - (pivot*_viewSize)+(_itemSpacing*pivot);
         }
 
         public virtual void OnClickItem(int itemIndex)
         {
-            selectIndexChanged(itemIndex);
+            _moveToItemIndex = itemIndex;
 
             setListState(LoopListState.MoveToItem);
         }
@@ -235,13 +296,14 @@ namespace SAO_UI
                     onItemHide(item.ItemIndex.RoundIndex(_length), item);
                 }
             }
+            // Debug.Log(_cacheIndex);
             foreach (var item_index in viewList)
             {
                 if (_itemComps.IndexOf<LoopListItemBaseComp>(item => item.ItemIndex == item_index, 0, _cacheIndex) == -1)
                 {
                     var newItem = _itemComps[_cacheIndex];
                     _cacheIndex++;
-                    newItem.ItemIndex = item_index;
+                    setItemIndex(newItem,item_index);
                     newItem.gameObject.SetActive(true);
 
                     onItemShow(newItem.ItemIndex.RoundIndex(_length), newItem);
@@ -251,22 +313,27 @@ namespace SAO_UI
 
         protected virtual void onItemShow(int itemIndex, LoopListItemBaseComp comp)
         {
+            comp.name = itemIndex.ToString();
             if(OnItemShow!=null)OnItemShow(itemIndex, comp);
         }
 
         protected virtual void onItemHide(int itemIndex, LoopListItemBaseComp comp)
         {
+            comp.name = "cache";
             if (OnItemHide != null) OnItemHide(itemIndex, comp);
         }
 
         protected virtual void onItemSelect(int itemIndex, LoopListItemBaseComp comp)
         {
             if (OnItemSelect != null) OnItemSelect(itemIndex, comp);
+            comp.SwitchState(LoopListItemBaseComp.LoopListItemState.Selecting);
+
         }
 
         protected virtual void onItemUnselect(int itemIndex, LoopListItemBaseComp comp)
         {
             if (OnItemUnselect != null) OnItemUnselect(itemIndex, comp);
+            comp.SwitchState(LoopListItemBaseComp.LoopListItemState.Unselecting);
         }
 
         private List<int> getViewItemIndexs()
@@ -274,7 +341,7 @@ namespace SAO_UI
             _viewItemIndexs.Clear();
             float itemSize = _itemSpacing;
 
-            int fristIndex = (_offset / itemSize).Ceil_Z();
+            int fristIndex = Mathf.FloorToInt(_offset / itemSize);
 
             for (int i = fristIndex; ; i++)
             {
@@ -287,20 +354,30 @@ namespace SAO_UI
 
         private void selectIndexChanged(int itemIndex)
         {
-            var prevIndex = itemIndex;
+            // var prevIndex = _currentIndex;
             for (int i = 0; i < _cacheIndex; i++)
             {
                 var itemComp = _itemComps[i];
-                if (itemComp.ItemIndex == prevIndex)
-                {
-                    onItemUnselect(itemComp.ItemIndex.RoundIndex(_length), itemComp);
-                }
+                // if (itemComp.ItemIndex == prevIndex)
+                // {
+                //     onItemUnselect(itemComp.ItemIndex.RoundIndex(_length), itemComp);
+                // }
                 if (itemComp.ItemIndex == itemIndex)
                 {
                     onItemSelect(itemComp.ItemIndex.RoundIndex(_length), itemComp);
                 }
+                else
+                {
+                    onItemUnselect(itemComp.ItemIndex.RoundIndex(_length), itemComp);
+                }
             }
             _currentIndex = itemIndex;
+        }
+
+        private void setItemIndex(LoopListItemBaseComp comp,int itemIndex)
+        {
+            comp.ItemIndex = itemIndex;
+            comp.name = itemIndex.ToString();
         }
 
 
@@ -313,7 +390,7 @@ namespace SAO_UI
             Scrolling,
             MoveToItem,
             None,
-            Exiting
+            Closing
         }
     }
 }

@@ -177,6 +177,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DecelerationRate: 0.135
   Spacing: 10
+  AutoSelect: 0
+  MoveToItemPivot: 0.5
   Img_Line: {fileID: 213783121}
   Img_Arrow: {fileID: 1980856103}
 --- !u!114 &9367924
@@ -192,7 +194,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding: {x: 0, y: 0, z: 0, w: 0}
-  m_Softness: {x: 0, y: 100}
+  m_Softness: {x: 0, y: 0}
 --- !u!114 &9367925
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1421,6 +1423,10 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2449998296874119521, guid: cee30572ce6fba6408430aad103e2902, type: 3}
+      propertyPath: AutoSelect
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2449998296874119523, guid: cee30572ce6fba6408430aad103e2902, type: 3}
       propertyPath: SecondaryListComp
       value: 
@@ -1456,7 +1462,7 @@ PrefabInstance:
     - target: {fileID: 2449998296874119523, guid: cee30572ce6fba6408430aad103e2902, type: 3}
       propertyPath: SelectIcons.Array.data[1]
       value: 
-      objectReference: {fileID: -4674755495996715468, guid: 052d1ae6e3654dc498456a80fb6ed68a, type: 3}
+      objectReference: {fileID: -9207865306028879598, guid: 052d1ae6e3654dc498456a80fb6ed68a, type: 3}
     - target: {fileID: 2449998296874119523, guid: cee30572ce6fba6408430aad103e2902, type: 3}
       propertyPath: SelectIcons.Array.data[2]
       value: 
@@ -1468,7 +1474,7 @@ PrefabInstance:
     - target: {fileID: 2449998296874119523, guid: cee30572ce6fba6408430aad103e2902, type: 3}
       propertyPath: UnselectIcons.Array.data[1]
       value: 
-      objectReference: {fileID: 6372829387220354260, guid: 052d1ae6e3654dc498456a80fb6ed68a, type: 3}
+      objectReference: {fileID: 7128904788250700058, guid: 052d1ae6e3654dc498456a80fb6ed68a, type: 3}
     - target: {fileID: 2449998296874119523, guid: cee30572ce6fba6408430aad103e2902, type: 3}
       propertyPath: UnselectIcons.Array.data[2]
       value: 

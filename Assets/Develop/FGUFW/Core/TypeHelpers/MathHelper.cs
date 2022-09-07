@@ -56,25 +56,6 @@ namespace FGUFW
         }
 
         /// <summary>
-        /// 向上取整 <-1 && >0 = 0
-        /// </summary>
-        /// <param name="self"></param>
-        /// <returns></returns>
-        static public int Ceil_Z(this float self)
-        {
-            if(self<0)
-            {
-                int idx = (int)self;
-                if(self%1!=0)idx--;
-                return idx;
-            }
-            else
-            {
-                return (int)self;
-            }
-        }
-
-        /// <summary>
         /// 取余_循环
         /// </summary>
         /// <param name="self"></param>
