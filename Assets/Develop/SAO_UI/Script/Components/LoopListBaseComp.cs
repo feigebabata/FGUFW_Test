@@ -16,14 +16,13 @@ namespace SAO_UI
         public float Spacing = 20f;
         public Action<int, LoopListItemBaseComp> OnItemShow, OnItemHide, OnItemSelect, OnItemUnselect;
         protected RectTransform _rectTransform;
-        protected float _viewSize, _itemSize, _offset;
+        protected float _viewSize, _itemSize, _offset, _velocity, _prevOffset;
         protected float _itemSpacing => _itemSize + Spacing;
         protected int _cacheIndex, _length, _currentIndex = -1;
-        protected LoopListState _listState;
+        protected LoopListState _listState = LoopListState.None;
         protected LoopListItemBaseComp[] _itemComps;
 
-        private float _velocity, _prevOffset;
-        private bool _isDraging;
+        protected bool _isDraging;
         private List<int> _viewItemIndexs = new List<int>();
 
         protected override void Awake()
@@ -32,21 +31,14 @@ namespace SAO_UI
             _viewSize = _rectTransform.sizeDelta.y;
             var itemRT = _rectTransform.GetChild(0).AsRT();
             _itemSize = itemRT.sizeDelta.y;
-            //var p = new Vector2(0.5f, 1);
-            //_rectTransform.pivot = p;
-            //_rectTransform.anchorMin = p;
-            //_rectTransform.anchorMax = p;
 
-            //itemRT.pivot = p;
-            //itemRT.anchorMin = p;
-            //itemRT.anchorMax = p;
             base.Awake();
         }
 
         public virtual void Init(int length)
         {
             _length = length;
-            var itemsSize = (_itemSize + Spacing) * _length;
+            var itemsSize = _itemSpacing * _length;
             if (itemsSize < _viewSize)
             {
                 var sizeDelta = _rectTransform.sizeDelta;
@@ -124,7 +116,7 @@ namespace SAO_UI
                     break;
                 case LoopListState.MoveToItem:
                     {
-                        var targetOffset = _currentIndex * _itemSpacing;
+                        var targetOffset = getTargetOffsetByMoveToItem();
                         _offset = Mathf.MoveTowards(_offset, targetOffset, _velocity * deltaTime);
                         resetItemsPosition();
                         if (_offset == targetOffset)
@@ -139,13 +131,18 @@ namespace SAO_UI
             }
         }
 
+        protected virtual float getTargetOffsetByMoveToItem()
+        {
+            return _currentIndex * _itemSpacing;
+        }
+
         /// <summary>
         /// 重置offset和selectIndex 避免一直累加
         /// </summary>
-        private void onResetOffsetAndSelectIndex()
+        protected void onResetOffsetAndSelectIndex()
         {
             if (_offset == 0) return;
-            var itemsSize = (_itemSize + Spacing) * _length;
+            var itemsSize = _itemSpacing * _length;
             int round = (int)(_offset / itemsSize);
             _currentIndex -= round * _length;
             _offset -= itemsSize * round;
@@ -172,7 +169,7 @@ namespace SAO_UI
                     break;
                 case LoopListState.MoveToItem:
                     {
-                        var targetOffset = _currentIndex * _itemSpacing;
+                        var targetOffset = getTargetOffsetByMoveToItem();
                         var space = MathHelper.Distance(targetOffset, _offset);
                         float time = Mathf.Lerp(0.5f, 1f, space / _viewSize);
                         _velocity = space / time;
@@ -186,7 +183,7 @@ namespace SAO_UI
         protected virtual int getIndexByOffset()
         {
             int index = 0;
-            var size = _itemSize + Spacing;
+            var size = _itemSpacing;
             var offset = _offset + _itemSize / 2;
             index = (offset / size).Ceil_Z();
             return index;
@@ -199,7 +196,7 @@ namespace SAO_UI
             setListState(LoopListState.MoveToItem);
         }
 
-        private void resetItemsPosition()
+        protected void resetItemsPosition()
         {
             onMoveCheckList();
             for (int i = 0; i < _cacheIndex; i++)
@@ -215,7 +212,7 @@ namespace SAO_UI
         protected Vector2 getIndexPosition(int itemIndex)
         {
             var pos = Vector2.zero;
-            float size = _itemSize + Spacing;
+            float size = _itemSpacing;
             pos.y = _offset - size * itemIndex;
             return pos;
         }
@@ -275,7 +272,7 @@ namespace SAO_UI
         private List<int> getViewItemIndexs()
         {
             _viewItemIndexs.Clear();
-            float itemSize = _itemSize + Spacing;
+            float itemSize = _itemSpacing;
 
             int fristIndex = (_offset / itemSize).Ceil_Z();
 
@@ -315,6 +312,8 @@ namespace SAO_UI
             Select,
             Scrolling,
             MoveToItem,
+            None,
+            Exiting
         }
     }
 }

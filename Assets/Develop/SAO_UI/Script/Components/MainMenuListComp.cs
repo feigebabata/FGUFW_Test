@@ -7,7 +7,7 @@ namespace SAO_UI
     public class MainMenuListComp : LoopListBaseComp
     {
 
-        public float Select_Alpha = 0.9f, Unselect_Alpha = 0.5f;
+        public const float Select_Alpha = 0.9f, Unselect_Alpha = 0.5f;
 
         protected override void setListState(LoopListState state)
         {
