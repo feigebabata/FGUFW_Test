@@ -7,12 +7,17 @@ using System;
 namespace FGUFW.ECS
 {
     /// <summary>
-    /// 在构造函数中给成员复制 在Reset中重置成员 在析构中释放成员
+    /// 在构造函数中给成员复制 在Reset中重置成员 在Dispose中释放成员
     /// </summary>
-    public class Component:IReset
+    public class Component:IReset,IDisposable
     {
-        public int EntityUId;
+        public int EntityUId = -1;
         public int CompType;
+
+        public virtual void Dispose()
+        {
+            EntityUId = -1;
+        }
 
         public virtual void Reset(int entityId)
         {
@@ -30,16 +35,14 @@ namespace FGUFW.ECS
 
     public class TestComponent : Component
     {
-        public TestComponent()
-        {
-            CompType = 2;
-        }
+        public const int COMP_TYPE = 2;
+        public TestComponent(){CompType = COMP_TYPE;}
     }
 
     public class test
     {
         [UnityEditor.MenuItem("Test/Log")]
-        static void test1()
+        static void test1<T>()
         {
             var comp = new TestComponent();
             comp.Reset(2);

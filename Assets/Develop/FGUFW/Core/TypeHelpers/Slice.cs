@@ -96,10 +96,30 @@ namespace FGUFW
             _count++;
         }
 
+        public T GetNextCache()
+        {
+            if(_count>=_capacity)ensureCapacity();
+            T tObj = _items[_count];
+            _count++;
+
+            return tObj;
+        }
+
+        public void SetLast(T tObj)
+        {
+            _items[_count-1] = tObj;
+        }
+
         public bool Remove(T tObj)
         {
             int index = IndexOf(tObj);
             return true;
+        }
+
+        public void Remove(Predicate<T> match)
+        {
+            var index = FindIndex(match);
+            RemoveAt(index);
         }
 
         public void RemoveAt(int index)
@@ -118,6 +138,13 @@ namespace FGUFW
         public int FindIndex(Predicate<T> match)
         {
             return Array.FindIndex<T>(_items,0,_count,match);
+        }
+
+        public T Find(Predicate<T> match)
+        {
+            int index = FindIndex(match);
+            if(index==-1)return default(T);
+            return _items[index];
         }
 
         public void Clear()
@@ -177,13 +204,13 @@ namespace FGUFW
         {
             private Slice<T> list;
             private int index;
-            private int version;
+            // private int version;
             private T current;
  
             internal Enumerator(Slice<T> list) {
                 this.list = list;
                 index = 0;
-                version = 0;//list._version;
+                // version = 0;//list._version;
                 current = default(T);
             }
  
