@@ -6,8 +6,6 @@ namespace FGUFW.ECS
 {
     public partial class World
     {
-        
-
         public void Filter<T0>(Action<T0> callback)
         where T0:Component
         {

@@ -1,6 +1,7 @@
 using FGUFW;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace FGUFW.ECS
 {
@@ -22,6 +23,21 @@ namespace FGUFW.ECS
         private int _createEntityIndex=0;
 
         private Dictionary<int,Slice<Component>> _compDict = new Dictionary<int, Slice<Component>>();
+
+        
+        public World()
+        {
+            _worldCreateTime = Time.unscaledTime;
+            PlayerLoopHelper.AddToLoop<UnityEngine.PlayerLoop.Update,World>(update);
+        }
+
+        public void Dispose()
+        {
+            PlayerLoopHelper.RemoveToLoop<UnityEngine.PlayerLoop.Update>(update);
+            
+            disposeSys();
+            disposeComps();
+        }
 
         public T GetComponent<T>(int entityUId) where T:Component
         {
@@ -84,6 +100,20 @@ namespace FGUFW.ECS
             _createEntityIndex++;
             return _createEntityIndex;
         }
+
+        private void disposeComps()
+        {
+            foreach (var kv in _compDict)
+            {
+                foreach (var item in kv.Value)
+                {
+                    item.Dispose();
+                }
+                kv.Value.Clear();
+            }
+            _compDict.Clear();
+        }
+
         
     }
 }
