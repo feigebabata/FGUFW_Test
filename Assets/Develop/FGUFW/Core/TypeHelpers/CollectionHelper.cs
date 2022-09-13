@@ -92,14 +92,14 @@ namespace FGUFW
             return default(T);
         }
 
-        static public T[] Copy<T>(this Array self)
+        static public T[] Copy<T>(this Array self,int length)
         {
             if(self==null || self.Length==0)
             {
                 return null;
             }
-            T[] newArray = new T[self.Length];
-            Array.Copy(self,newArray,self.Length);
+            T[] newArray = new T[length];
+            Array.Copy(self,newArray,length);
             return newArray;
         }
 
