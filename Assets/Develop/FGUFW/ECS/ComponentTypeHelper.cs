@@ -14,7 +14,7 @@ namespace FGUFW.ECS
             var type = typeof(T);
             if(!compTypeDict.ContainsKey(type))
             {
-                using (var t_obj = (Component)Activator.CreateInstance(type))
+                using (var t_obj = (IComponent)Activator.CreateInstance(type))
                 {
                     compTypeDict.Add(type,t_obj.CompType);
                 }

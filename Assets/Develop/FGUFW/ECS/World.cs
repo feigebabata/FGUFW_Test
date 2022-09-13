@@ -1,5 +1,6 @@
 using FGUFW;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,7 +23,7 @@ namespace FGUFW.ECS
         /// </summary>
         private int _createEntityIndex=0;
 
-        private Dictionary<int,Slice<Component>> _compDict = new Dictionary<int, Slice<Component>>();
+        private Dictionary<int, IDictionary> _compDict = new Dictionary<int, IDictionary>();
 
         
         public World()
@@ -39,31 +40,32 @@ namespace FGUFW.ECS
             disposeComps();
         }
 
-        public T GetComponent<T>(int entityUId) where T:Component
+        public bool GetComponent<T>(int entityUId,out T comp) where T: struct,IComponent
         {
             var key = ComponentTypeHelper.GetTypeValue<T>();
-            if(!_compDict.ContainsKey(key) || _compDict[key].Count==0)return null;
-            foreach (var comp in _compDict[key])
+            if(!_compDict.ContainsKey(key) || _compDict[key].Count==0 || !_compDict[key].Contains(entityUId))
             {
-                if(comp.EntityUId==entityUId)return (T)comp;
+                comp = default(T);
+                return false;
             }
-            return null;
+            comp = (T)_compDict[key][entityUId];
+            return true;
         }
 
-        public void AddOrSetComponent(int entityUId,Component comp)
+        public void AddOrSetComponent<T>(int entityUId,T comp) where T : struct, IComponent
         {
             comp.EntityUId = entityUId;
             int key = comp.CompType;
-            if(!_compDict.ContainsKey(key))_compDict.Add(key,new Slice<Component>());
+            if(!_compDict.ContainsKey(key))_compDict.Add(key,new Dictionary<int,T>());
             var comps = _compDict[key];
-            int index = comps.FindIndex(c=>c.EntityUId==entityUId);
-            if(index == -1)
+            
+            if(comps.Contains(entityUId))
             {
-                comps.Add(comp);
+                comps.Add(entityUId,comp);
             }
             else
             {
-                comps[index]=comp;
+                comps[entityUId] =comp;
             }
         }
 
@@ -78,16 +80,21 @@ namespace FGUFW.ECS
             var key = compTypeVal;
             if(!_compDict.ContainsKey(key) || _compDict[key].Count==0)return;
             var comps = _compDict[key];
-            comps.Remove(c=>c.EntityUId==entityUId);
+            if(comps.Contains(entityUId))
+            {
+                var comp = (IComponent)comps[entityUId];
+                comp.Dispose();
+                comps.Remove(entityUId);
+            }
         }
 
         public void DestroyEntity(int entityUId)
         {
             if(entityUId<1)return;//无效id
-            var compTypes = _compDict.Keys;
-            foreach (var compType in compTypes)
+
+            foreach (var kv in _compDict)
             {
-                RemoveComponent(entityUId,compType);
+                var dict = kv.Value;
             }
         }
 
@@ -105,15 +112,20 @@ namespace FGUFW.ECS
         {
             foreach (var kv in _compDict)
             {
-                foreach (var item in kv.Value)
+                foreach (var item in kv.Value.Values)
                 {
-                    item.Dispose();
+                    var comp = (IComponent)item;
+                    comp.Dispose();
                 }
                 kv.Value.Clear();
             }
             _compDict.Clear();
         }
 
+        private static void setComp<T>(Dictionary<int,T> dict,int entityUId,T comp)
+        {
+            dict[entityUId] = comp;
+        }
         
     }
 }

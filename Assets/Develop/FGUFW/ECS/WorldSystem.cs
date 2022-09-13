@@ -18,10 +18,6 @@ namespace FGUFW.ECS
         private List<ISystem> _systems = new List<ISystem>();
         private float _worldCreateTime;
 
-        /// <summary>
-        /// 缩放造成的误差时间
-        /// </summary>
-        private float _scaleTimeDistance=0;
 
         private void update()
         {

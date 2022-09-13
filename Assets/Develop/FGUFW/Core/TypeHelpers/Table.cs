@@ -7,7 +7,7 @@ namespace FGUFW
     /// <summary>
     /// 整型表
     /// </summary>
-    public sealed class TableInt<V>:IEnumerable
+    public sealed class TableInt<V>
     {
         public struct Entry
         {
@@ -191,9 +191,5 @@ namespace FGUFW
             }
         }
 
-        public IEnumerator GetEnumerator()
-        {
-            return null;
-        }
     }
 }
