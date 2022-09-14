@@ -1,9 +1,8 @@
-
-
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
+using FGUFW;
 
 namespace FGUFW.ECS
 {
@@ -30,25 +29,51 @@ namespace FGUFW.ECS
 
         static public void CheckCompType()
         {
-            Assembly assembly = Assembly.GetExecutingAssembly();
-            var types = assembly.GetTypes();
+            Debug.Log(typeof(Temp).IsAssignableFrom(typeof(System.Collections.IList)));
+            return;
+            AssemblyHelper.Filter<IComponent>(t=>Debug.Log(t));
+            return;
+            var ecsAssemblyName = Assembly.GetExecutingAssembly().GetName();
+            var assemblys = AppDomain.CurrentDomain.GetAssemblies();
             var compTypeName = typeof(IComponent).FullName;
-            Dictionary<int,Type> record = new Dictionary<int, Type>();
-            foreach (var type in types)
+            foreach (var assembly in assemblys)
             {
-                Debug.Log(type);
-                if(type.IsValueType && type.GetInterface(compTypeName)!=null)
+                if(!Array.Exists<AssemblyName>(assembly.GetReferencedAssemblies(), an=>an.FullName==ecsAssemblyName.FullName)) continue;
+
+                var types = assembly.GetTypes();
+                Dictionary<int, Type> record = new Dictionary<int, Type>();
+                foreach (var type in types)
                 {
-                    var val = (IComponent)Activator.CreateInstance(type);
-                    var compType = val.CompType;
-                    if(record.ContainsKey(compType))
+                    if (type.IsValueType && type.GetInterface(compTypeName) != null)
                     {
-                        var old_type = record[compType];
-                        Debug.LogError($"组件类型冲突 {compType} {type.FullName} : {old_type.FullName}");
+                        Debug.Log(type);
+                        var val = (IComponent)Activator.CreateInstance(type);
+                        var compType = val.CompType;
+                        if (record.ContainsKey(compType))
+                        {
+                            var old_type = record[compType];
+                            Debug.LogError($"组件类型冲突 {compType} {type.FullName} : {old_type.FullName}");
+                        }
                     }
                 }
+                record.Clear();
             }
-            record.Clear();
         }
+
+        public struct Temp : IComponent
+        {
+            public int CompType => throw new NotImplementedException();
+
+            public int EntityUId { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+            public int Dirty { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+            public bool IsCreated => throw new NotImplementedException();
+
+            public void Dispose()
+            {
+                throw new NotImplementedException();
+            }
+        }
+
     }
 }
