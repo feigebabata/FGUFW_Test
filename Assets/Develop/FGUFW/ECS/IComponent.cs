@@ -9,8 +9,8 @@ namespace FGUFW.ECS
 {
     public interface IComponent:IStruct,IDisposable
     {
+        int CompType { get;}
         int EntityUId { get; set; }
-        int CompType { get; set; }
         int Dirty {get;set;}
     }
 

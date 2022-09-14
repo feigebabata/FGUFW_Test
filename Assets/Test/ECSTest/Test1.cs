@@ -8,7 +8,7 @@ namespace ECSTest
     public struct Test1 : IComponent
     {
         #region 不可修改
-        public int CompType { get; set; }
+        public int CompType => 1;
         public int EntityUId { get; set; }
         public int Dirty { get; set; }
         public bool IsCreated { get; private set; }
@@ -19,7 +19,6 @@ namespace ECSTest
         public Test1(int entityUId)
         {
             #region 不可修改
-            CompType = 3;
             EntityUId = entityUId;
             Dirty = 0;
             IsCreated = true;

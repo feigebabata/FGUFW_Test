@@ -90,7 +90,7 @@ namespace #NAMESPACE#
     public struct #NAME# : IComponent
     {
         #region 不可修改
-        public int CompType { get; set; }
+        public int CompType => #COMPTYPE#;
         public int EntityUId { get; set; }
         public int Dirty { get; set; }
         public bool IsCreated { get; private set; }
@@ -101,7 +101,6 @@ namespace #NAMESPACE#
         public #NAME#(int entityUId)
         {
             #region 不可修改
-            CompType = #COMPTYPE#;
             EntityUId = entityUId;
             Dirty = 0;
             IsCreated = true;
