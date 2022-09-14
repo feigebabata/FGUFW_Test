@@ -64,12 +64,14 @@ namespace FGUFW.ECS
             _systems.Remove(system);
         }
 
-        public void SetSystemEnable(int systemType,bool enable)
+        public void SetSystemEnable<T>(bool enable) where T:ISystem
         {
-            var sys = _systems.Find(sys=>sys.Type==systemType);
-            if(sys != null)
+            foreach (var sys in _systems)
             {
-                sys.Enabled = enable;
+                if(sys is T)
+                {
+                    sys.Enabled = enable;
+                }
             }
         }
 

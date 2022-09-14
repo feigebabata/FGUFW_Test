@@ -1,0 +1,19 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <ui:Label text="路径:Asset/Develop/ECS/Editor" display-tooltip-when-elided="true" name="path" style="-unity-text-align: upper-center;" />
+    <ui:VisualElement style="flex-direction: row;">
+        <ui:Button text="筛选" display-tooltip-when-elided="true" name="filterPanelBtn" style="position: relative; width: 33%;" />
+        <ui:Button text="组件" display-tooltip-when-elided="true" name="compPanelBtn" style="width: 30%;" />
+        <ui:Button text="系统" display-tooltip-when-elided="true" name="sysPanelBtn" style="width: 30%; background-color: rgb(88, 88, 88);" />
+    </ui:VisualElement>
+    <ui:VisualElement name="compPanel" style="margin-top: 20px; display: flex; height: auto; max-height: none; top: auto; overflow: visible; visibility: visible; width: auto;">
+        <uie:IntegerField label="组件类型下标:" value="-1" name="compTypeInput" />
+        <ui:SliderInt picking-mode="Ignore" label="组件个数" value="1" high-value="32" name="compCount" low-value="1" show-input-field="true" />
+        <ui:TextField picking-mode="Ignore" label="命名空间" name="compNamespaceInput" />
+        <ui:Button text="创建组件" display-tooltip-when-elided="true" name="CreateComp" />
+        <ui:ListView focusable="true" name="compNameList" style="justify-content: flex-start; max-height: none; min-height: auto; height: 300px;" />
+    </ui:VisualElement>
+    <ui:VisualElement name="filterPanel" style="height: auto; flex-direction: row; display: flex; margin-top: 20px; visibility: hidden;">
+        <ui:SliderInt picking-mode="Ignore" label="筛选函数数量:" value="8" high-value="16" low-value="1" show-input-field="true" name="FilterInput" style="width: 80%;" />
+        <ui:Button text="创建" display-tooltip-when-elided="true" name="CreateFilter" style="width: 15%;" />
+    </ui:VisualElement>
+</ui:UXML>

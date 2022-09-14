@@ -2,6 +2,7 @@ using FGUFW;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections;
 using UnityEngine;
 
 namespace FGUFW.ECS
@@ -43,12 +44,13 @@ namespace FGUFW.ECS
         public bool GetComponent<T>(int entityUId,out T comp) where T: struct,IComponent
         {
             var key = ComponentTypeHelper.GetTypeValue<T>();
-            if(!_compDict.ContainsKey(key) || _compDict[key].Count==0 || !_compDict[key].Contains(entityUId))
+            var comps = getComps<T>();
+            if(comps==null || !comps.ContainsKey(entityUId))
             {
                 comp = default(T);
                 return false;
             }
-            comp = (T)_compDict[key][entityUId];
+            comp = comps[entityUId];
             return true;
         }
 
@@ -56,25 +58,40 @@ namespace FGUFW.ECS
         {
             comp.EntityUId = entityUId;
             int key = comp.CompType;
-            if(!_compDict.ContainsKey(key))_compDict.Add(key,new Dictionary<int,T>());
-            var comps = _compDict[key];
             
-            if(comps.Contains(entityUId))
+            if(!_compDict.ContainsKey(key))
             {
+                var comps = new Dictionary<int,T>();
+                _compDict.Add(key,comps);
                 comps.Add(entityUId,comp);
             }
             else
             {
-                comps[entityUId] =comp;
+                var comps = _compDict[key] as Dictionary<int,T>;
+                if(!comps.ContainsKey(entityUId))
+                {
+                    comps.Add(entityUId,comp);
+                }
+                else
+                {
+                    comps[entityUId] =comp;
+                }
             }
         }
 
-        public void RemoveComponent<T>(int entityUId)
+        public void RemoveComponent<T>(int entityUId) where T:IComponent
         {
-            var key = ComponentTypeHelper.GetTypeValue<T>();
-            RemoveComponent(entityUId,key);
+            var comps = getComps<T>();
+            if(comps==null || !comps.ContainsKey(entityUId))return;
+            comps[entityUId].Dispose();
+            comps.Remove(entityUId);
         }
 
+        /// <summary>
+        /// 泛型的性能更好
+        /// </summary>
+        /// <param name="entityUId"></param>
+        /// <param name="compTypeVal"></param>
         public void RemoveComponent(int entityUId,int compTypeVal)
         {
             var key = compTypeVal;
@@ -86,6 +103,7 @@ namespace FGUFW.ECS
                 comp.Dispose();
                 comps.Remove(entityUId);
             }
+
         }
 
         public void DestroyEntity(int entityUId)
@@ -94,7 +112,13 @@ namespace FGUFW.ECS
 
             foreach (var kv in _compDict)
             {
-                var dict = kv.Value;
+                var comps = kv.Value;
+                if(comps.Contains(entityUId))
+                {
+                    var comp = (IComponent)comps[entityUId];
+                    comp.Dispose();
+                    comps.Remove(entityUId);
+                }
             }
         }
 
@@ -122,10 +146,21 @@ namespace FGUFW.ECS
             _compDict.Clear();
         }
 
+        private Dictionary<int,T> getComps<T>()
+        {
+            var key = ComponentTypeHelper.GetTypeValue<T>();
+            if(!_compDict.ContainsKey(key))
+            {
+                return null;
+            }
+            return _compDict[key] as Dictionary<int,T>;
+        }
+        
         private static void setComp<T>(Dictionary<int,T> dict,int entityUId,T comp)
         {
             dict[entityUId] = comp;
         }
+
         
     }
 }

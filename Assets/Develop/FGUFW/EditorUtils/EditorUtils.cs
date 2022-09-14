@@ -33,11 +33,26 @@ namespace FGUFW.EditorUtils
             return paths;
         }
 
+        public static string GetSeleceFolderPath()
+        {
+            string path = AssetDatabase.GetAssetPath(Selection.activeObject);
+            if(string.IsNullOrEmpty(path))
+            {
+                return null;
+            }
+            if(!AssetDatabase.IsValidFolder(path))
+            {
+                path = Path.GetDirectoryName(path).Replace("\\","/");
+            }
+            return path;
+        }
+
         
         [MenuItem("Assets/PrintAssetPath")]
         static private void printAssetPath()
         {
-            Debug.Log(AssetDatabase.GetAssetPath(Selection.activeObject));
+            string path = AssetDatabase.GetAssetPath(Selection.activeObject);
+            Debug.Log(path);
         }
 
         [MenuItem("文件夹/程序持续存储文件夹")]

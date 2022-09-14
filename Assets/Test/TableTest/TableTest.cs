@@ -12,26 +12,39 @@ public static class TableTest
     [MenuItem("Test/TableTest")]
     static void tableTest()
     {
-        var ls = new List<int>();
-        ls.Add(0);
-        ls.Add(0);
-        var ns = new NativeArray<int>(3, Allocator.Temp);
-        var s1 = new StructTest
+        int length = 1024*1024*24;
+        
+        long start = 0;
+        
+        
+        start = DateTime.UtcNow.Ticks;
+        for (int i = 0; i < length; i++)
         {
-            List = ls,
-            NS = ns
-        };
+            Vector4 val = Vector4.zero;
+            fun1( ref val);
+        }
+        Debug.Log(DateTime.UtcNow.Ticks-start);
 
-        var s2 = s1;
-        object[] s_arr = { s1, s2 };
+        //-*-
 
-        var s3 = (IDisposable)s_arr[0];
-        s3.Dispose();
-        //((IDisposable)s_arr[1]).Dispose();
+        start = DateTime.UtcNow.Ticks;
+        for (int i = 0; i < length; i++)
+        {
+            Vector4 val = Vector4.zero;
+            val = fun2(val);
+        }
+        Debug.Log(DateTime.UtcNow.Ticks-start);
+    }
 
-        Debug.Log(s_arr[0]);
-        Debug.Log(s_arr[1]);
+    static void fun1(ref Vector4 val)
+    {
+        val = Vector4.one;
+    }
 
+    static Vector4 fun2(Vector4 val)
+    {
+        val = Vector4.one;
+        return val;
     }
 
     public struct StructTest:IDisposable
