@@ -140,8 +140,9 @@ namespace FGUFW.ECS
                 var popup = _listInput.itemsSource[i] as PopupField<string>;
                 var text = _sysCompTypeList[popup.index];
                 if(string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text))continue;
-                typeNames.Add(text);
+                if(!typeNames.Contains(text)) typeNames.Add(text);
             }
+            CompAndSysScriptCreator.CreateSysScript(_pathTitle.text, _namespaceInput.text,_sysNameInput.value, _compTypeOrSysOrderInput.value, typeNames);
         }
 
         private void onCreateComp()
@@ -161,7 +162,7 @@ namespace FGUFW.ECS
                 var textField = _listInput.itemsSource[i] as TextField;
                 var text = textField.text;
                 if(string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text))continue;
-                compNames.Add(text);
+                if(!compNames.Contains(text)) compNames.Add(text);
             }
             CompAndSysScriptCreator.CreateCompScript(_pathTitle.text,_namespaceInput.text,compNames,_compTypeOrSysOrderInput.value);
         }

@@ -12,11 +12,14 @@ namespace FGUFW.ECS
         public static void CreateScript(int count)
         {
             File.WriteAllText(Application.dataPath.Replace("Assets",scriptPath),generate(count));
+            AssetDatabase.ImportAsset(scriptPath);
+            AssetDatabase.Refresh();
         }
 
         private static string generate(int count)
         {
-            string functions = "";
+            string filter_fun = "";
+            string createFun = "";
             string delegates = "";
             for (int length = 1; length <= count; length++)
             {
@@ -30,6 +33,9 @@ namespace FGUFW.ECS
                 string types_comp = "";
                 string callback = "";
                 string setComps = "";
+                string instance = "";
+                string addComps = "";
+                string create = "";
 
                 string ref_types = "";
 
@@ -47,6 +53,8 @@ namespace FGUFW.ECS
                         types_comp += $"T{i} t{i}_comp;if(!t{i}_dict.TryGetValue(entityUId,out t{i}_comp)) continue;";
                         callback += $"ref t{i}_comp";
                         setComps += $"if(t{i}_comp.Dirty>0)t{i}_dict[entityUId]=t{i}_comp;";
+                        instance += $"var t{i}_comp = (T{i})Activator.CreateInstance(typeof(T{i}),entityUId);";
+                        addComps += $"AddOrSetComponent(entityUId,t{i}_comp);";
                     }
                     else
                     {
@@ -60,10 +68,12 @@ namespace FGUFW.ECS
                         types_comp += $"\n                T{i} t{i}_comp;if(!t{i}_dict.TryGetValue(entityUId,out t{i}_comp)) continue;";
                         callback += $",ref t{i}_comp";
                         setComps += $"\n                if(t{i}_comp.Dirty>0)t{i}_dict[entityUId]=t{i}_comp;";
+                        instance += $"\n            var t{i}_comp = (T{i})Activator.CreateInstance(typeof(T{i}),entityUId);";
+                        addComps += $"\n            AddOrSetComponent(entityUId,t{i}_comp);";
                     }
                 }
 
-                func = function.Replace("#TYPES#",types);
+                func = filter_fun_Script.Replace("#TYPES#", types);
                 func = func.Replace("#COUNT#",length.ToString());
                 func = func.Replace("#TYPES_WHERE#",types_where);
                 func = func.Replace("#TYPES_VAL#",types_val);
@@ -74,14 +84,39 @@ namespace FGUFW.ECS
                 func = func.Replace("#CALLBACK#",callback);
                 func = func.Replace("#SET_COMPS#",setComps);
 
-                functions +=$"\n{func}";
+                create = create_fun_Script.Replace("#TYPES#", types);
+                create = create.Replace("#TYPES_WHERE#", types_where);
+                create = create.Replace("#INSTANCE#", instance);
+                create = create.Replace("#ADD_COMP#", addComps);
+                create = create.Replace("#COUNT#", length.ToString());
+                create = create.Replace("#CALLBACK#", callback);
+
+                filter_fun +=$"\n{func}";
+                createFun += $"\n{create}";
                 delegates +=$"\n    public delegate void WorldFilterDelegate_R{length}<{types}>({ref_types});";
             }
             var scriptText = script.Replace("#DELEGATES#",delegates);
-            return scriptText.Replace("#FUNCTIONS#",functions);
+            scriptText = scriptText.Replace("#CREATE_FUN#", createFun);
+            return scriptText.Replace("#FILTER_FUN#", filter_fun);
         }
 
-        const string function = @"
+        const string create_fun_Script = @"
+        public int CreateEntity<#TYPES#>(WorldFilterDelegate_R#COUNT#<#TYPES#> callback = null)
+        #TYPES_WHERE#
+        {
+            int entityUId = CreateEntity();
+
+            #INSTANCE#
+
+            if(callback!=null)callback(#CALLBACK#);
+
+            #ADD_COMP#
+
+            return entityUId;
+        }
+";
+
+        const string filter_fun_Script = @"
         public void Filter<#TYPES#>(WorldFilterDelegate_R#COUNT#<#TYPES#> callback)
         #TYPES_WHERE#
         {
@@ -115,6 +150,7 @@ namespace FGUFW.ECS
 ";
 
         const string script = @"
+using System;
 using System.Collections.Generic;
 
 namespace FGUFW.ECS
@@ -123,7 +159,9 @@ namespace FGUFW.ECS
 
     public partial class World
     {
-        #FUNCTIONS#
+        #FILTER_FUN#
+        
+        #CREATE_FUN#
     }
 }
 ";

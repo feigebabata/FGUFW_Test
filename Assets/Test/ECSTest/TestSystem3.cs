@@ -8,9 +8,9 @@ using Unity.Collections;
 
 namespace ECSTest
 {
-    public class TestSystem : ISystem
+    public class TestSystem3 : ISystem
     {
-        public int Order => 9;
+        public int Order => 2;
 
         private World _world;
 
@@ -22,7 +22,11 @@ namespace ECSTest
         public void OnUpdate()
         {
             //IComponent.Dirty > 0 才会修改源数据
-            Debug.Log("---");
+            _world.Filter((ref Test3 test3)=>
+            {
+                Debug.Log(test3.EntityUId);
+            });
+
         }
 
         public void Dispose()

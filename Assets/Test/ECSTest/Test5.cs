@@ -5,10 +5,10 @@ using Unity.Collections;
 
 namespace ECSTest
 {
-    public struct Test4 : IComponent
+    public struct Test5 : IComponent
     {
         #region 不可修改
-        public int CompType => 4;
+        public int CompType => 5;
         public int EntityUId { get; set; }
         public int Dirty { get; set; }
         public bool IsCreated { get; private set; }
@@ -16,7 +16,7 @@ namespace ECSTest
         //code
 
 
-        public Test4(int entityUId=0)
+        public Test5(int entityUId=0)
         {
             #region 不可修改
             EntityUId = entityUId;

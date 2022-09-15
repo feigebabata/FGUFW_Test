@@ -8,7 +8,7 @@ using Unity.Collections;
 
 namespace ECSTest
 {
-    public class 阿斯顿 : ISystem
+    public class TestSystem1 : ISystem
     {
         public int Order => 0;
 
@@ -21,7 +21,13 @@ namespace ECSTest
 
         public void OnUpdate()
         {
-            Debug.Log("阿斯顿");
+            //IComponent.Dirty > 0 才会修改源数据
+            _world.Filter((ref Test1 test1)=>
+            {
+                
+                
+            });
+
         }
 
         public void Dispose()

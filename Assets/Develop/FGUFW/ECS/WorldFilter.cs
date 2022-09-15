@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections.Generic;
 
 namespace FGUFW.ECS
@@ -467,6 +468,212 @@ namespace FGUFW.ECS
                 if(t7_comp.Dirty>0)t7_dict[entityUId]=t7_comp;
             }
         }     
+
+        
+        
+
+        public int CreateEntity<T0>(WorldFilterDelegate_R1<T0> callback = null)
+        where T0:struct,IComponent
+        {
+            int entityUId = CreateEntity();
+
+            var t0_comp = (T0)Activator.CreateInstance(typeof(T0),entityUId);
+
+            if(callback!=null)callback(ref t0_comp);
+
+            AddOrSetComponent(entityUId,t0_comp);
+
+            return entityUId;
+        }
+
+
+        public int CreateEntity<T0,T1>(WorldFilterDelegate_R2<T0,T1> callback = null)
+        where T0:struct,IComponent
+        where T1:struct,IComponent
+        {
+            int entityUId = CreateEntity();
+
+            var t0_comp = (T0)Activator.CreateInstance(typeof(T0),entityUId);
+            var t1_comp = (T1)Activator.CreateInstance(typeof(T1),entityUId);
+
+            if(callback!=null)callback(ref t0_comp,ref t1_comp);
+
+            AddOrSetComponent(entityUId,t0_comp);
+            AddOrSetComponent(entityUId,t1_comp);
+
+            return entityUId;
+        }
+
+
+        public int CreateEntity<T0,T1,T2>(WorldFilterDelegate_R3<T0,T1,T2> callback = null)
+        where T0:struct,IComponent
+        where T1:struct,IComponent
+        where T2:struct,IComponent
+        {
+            int entityUId = CreateEntity();
+
+            var t0_comp = (T0)Activator.CreateInstance(typeof(T0),entityUId);
+            var t1_comp = (T1)Activator.CreateInstance(typeof(T1),entityUId);
+            var t2_comp = (T2)Activator.CreateInstance(typeof(T2),entityUId);
+
+            if(callback!=null)callback(ref t0_comp,ref t1_comp,ref t2_comp);
+
+            AddOrSetComponent(entityUId,t0_comp);
+            AddOrSetComponent(entityUId,t1_comp);
+            AddOrSetComponent(entityUId,t2_comp);
+
+            return entityUId;
+        }
+
+
+        public int CreateEntity<T0,T1,T2,T3>(WorldFilterDelegate_R4<T0,T1,T2,T3> callback = null)
+        where T0:struct,IComponent
+        where T1:struct,IComponent
+        where T2:struct,IComponent
+        where T3:struct,IComponent
+        {
+            int entityUId = CreateEntity();
+
+            var t0_comp = (T0)Activator.CreateInstance(typeof(T0),entityUId);
+            var t1_comp = (T1)Activator.CreateInstance(typeof(T1),entityUId);
+            var t2_comp = (T2)Activator.CreateInstance(typeof(T2),entityUId);
+            var t3_comp = (T3)Activator.CreateInstance(typeof(T3),entityUId);
+
+            if(callback!=null)callback(ref t0_comp,ref t1_comp,ref t2_comp,ref t3_comp);
+
+            AddOrSetComponent(entityUId,t0_comp);
+            AddOrSetComponent(entityUId,t1_comp);
+            AddOrSetComponent(entityUId,t2_comp);
+            AddOrSetComponent(entityUId,t3_comp);
+
+            return entityUId;
+        }
+
+
+        public int CreateEntity<T0,T1,T2,T3,T4>(WorldFilterDelegate_R5<T0,T1,T2,T3,T4> callback = null)
+        where T0:struct,IComponent
+        where T1:struct,IComponent
+        where T2:struct,IComponent
+        where T3:struct,IComponent
+        where T4:struct,IComponent
+        {
+            int entityUId = CreateEntity();
+
+            var t0_comp = (T0)Activator.CreateInstance(typeof(T0),entityUId);
+            var t1_comp = (T1)Activator.CreateInstance(typeof(T1),entityUId);
+            var t2_comp = (T2)Activator.CreateInstance(typeof(T2),entityUId);
+            var t3_comp = (T3)Activator.CreateInstance(typeof(T3),entityUId);
+            var t4_comp = (T4)Activator.CreateInstance(typeof(T4),entityUId);
+
+            if(callback!=null)callback(ref t0_comp,ref t1_comp,ref t2_comp,ref t3_comp,ref t4_comp);
+
+            AddOrSetComponent(entityUId,t0_comp);
+            AddOrSetComponent(entityUId,t1_comp);
+            AddOrSetComponent(entityUId,t2_comp);
+            AddOrSetComponent(entityUId,t3_comp);
+            AddOrSetComponent(entityUId,t4_comp);
+
+            return entityUId;
+        }
+
+
+        public int CreateEntity<T0,T1,T2,T3,T4,T5>(WorldFilterDelegate_R6<T0,T1,T2,T3,T4,T5> callback = null)
+        where T0:struct,IComponent
+        where T1:struct,IComponent
+        where T2:struct,IComponent
+        where T3:struct,IComponent
+        where T4:struct,IComponent
+        where T5:struct,IComponent
+        {
+            int entityUId = CreateEntity();
+
+            var t0_comp = (T0)Activator.CreateInstance(typeof(T0),entityUId);
+            var t1_comp = (T1)Activator.CreateInstance(typeof(T1),entityUId);
+            var t2_comp = (T2)Activator.CreateInstance(typeof(T2),entityUId);
+            var t3_comp = (T3)Activator.CreateInstance(typeof(T3),entityUId);
+            var t4_comp = (T4)Activator.CreateInstance(typeof(T4),entityUId);
+            var t5_comp = (T5)Activator.CreateInstance(typeof(T5),entityUId);
+
+            if(callback!=null)callback(ref t0_comp,ref t1_comp,ref t2_comp,ref t3_comp,ref t4_comp,ref t5_comp);
+
+            AddOrSetComponent(entityUId,t0_comp);
+            AddOrSetComponent(entityUId,t1_comp);
+            AddOrSetComponent(entityUId,t2_comp);
+            AddOrSetComponent(entityUId,t3_comp);
+            AddOrSetComponent(entityUId,t4_comp);
+            AddOrSetComponent(entityUId,t5_comp);
+
+            return entityUId;
+        }
+
+
+        public int CreateEntity<T0,T1,T2,T3,T4,T5,T6>(WorldFilterDelegate_R7<T0,T1,T2,T3,T4,T5,T6> callback = null)
+        where T0:struct,IComponent
+        where T1:struct,IComponent
+        where T2:struct,IComponent
+        where T3:struct,IComponent
+        where T4:struct,IComponent
+        where T5:struct,IComponent
+        where T6:struct,IComponent
+        {
+            int entityUId = CreateEntity();
+
+            var t0_comp = (T0)Activator.CreateInstance(typeof(T0),entityUId);
+            var t1_comp = (T1)Activator.CreateInstance(typeof(T1),entityUId);
+            var t2_comp = (T2)Activator.CreateInstance(typeof(T2),entityUId);
+            var t3_comp = (T3)Activator.CreateInstance(typeof(T3),entityUId);
+            var t4_comp = (T4)Activator.CreateInstance(typeof(T4),entityUId);
+            var t5_comp = (T5)Activator.CreateInstance(typeof(T5),entityUId);
+            var t6_comp = (T6)Activator.CreateInstance(typeof(T6),entityUId);
+
+            if(callback!=null)callback(ref t0_comp,ref t1_comp,ref t2_comp,ref t3_comp,ref t4_comp,ref t5_comp,ref t6_comp);
+
+            AddOrSetComponent(entityUId,t0_comp);
+            AddOrSetComponent(entityUId,t1_comp);
+            AddOrSetComponent(entityUId,t2_comp);
+            AddOrSetComponent(entityUId,t3_comp);
+            AddOrSetComponent(entityUId,t4_comp);
+            AddOrSetComponent(entityUId,t5_comp);
+            AddOrSetComponent(entityUId,t6_comp);
+
+            return entityUId;
+        }
+
+
+        public int CreateEntity<T0,T1,T2,T3,T4,T5,T6,T7>(WorldFilterDelegate_R8<T0,T1,T2,T3,T4,T5,T6,T7> callback = null)
+        where T0:struct,IComponent
+        where T1:struct,IComponent
+        where T2:struct,IComponent
+        where T3:struct,IComponent
+        where T4:struct,IComponent
+        where T5:struct,IComponent
+        where T6:struct,IComponent
+        where T7:struct,IComponent
+        {
+            int entityUId = CreateEntity();
+
+            var t0_comp = (T0)Activator.CreateInstance(typeof(T0),entityUId);
+            var t1_comp = (T1)Activator.CreateInstance(typeof(T1),entityUId);
+            var t2_comp = (T2)Activator.CreateInstance(typeof(T2),entityUId);
+            var t3_comp = (T3)Activator.CreateInstance(typeof(T3),entityUId);
+            var t4_comp = (T4)Activator.CreateInstance(typeof(T4),entityUId);
+            var t5_comp = (T5)Activator.CreateInstance(typeof(T5),entityUId);
+            var t6_comp = (T6)Activator.CreateInstance(typeof(T6),entityUId);
+            var t7_comp = (T7)Activator.CreateInstance(typeof(T7),entityUId);
+
+            if(callback!=null)callback(ref t0_comp,ref t1_comp,ref t2_comp,ref t3_comp,ref t4_comp,ref t5_comp,ref t6_comp,ref t7_comp);
+
+            AddOrSetComponent(entityUId,t0_comp);
+            AddOrSetComponent(entityUId,t1_comp);
+            AddOrSetComponent(entityUId,t2_comp);
+            AddOrSetComponent(entityUId,t3_comp);
+            AddOrSetComponent(entityUId,t4_comp);
+            AddOrSetComponent(entityUId,t5_comp);
+            AddOrSetComponent(entityUId,t6_comp);
+            AddOrSetComponent(entityUId,t7_comp);
+
+            return entityUId;
+        }
 
     }
 }

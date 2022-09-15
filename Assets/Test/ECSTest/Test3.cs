@@ -16,7 +16,7 @@ namespace ECSTest
         //code
 
 
-        public Test3(int entityUId)
+        public Test3(int entityUId=0)
         {
             #region 不可修改
             EntityUId = entityUId;

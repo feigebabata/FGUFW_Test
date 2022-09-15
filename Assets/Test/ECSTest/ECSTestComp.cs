@@ -3,23 +3,31 @@ using System.Collections.Generic;
 using FGUFW.ECS;
 using UnityEngine;
 
-public class ECSTestComp : MonoBehaviour
+namespace ECSTest
 {
-    World _world;
-
-    // Start is called before the first frame update
-    void Start()
+    public class ECSTestComp : MonoBehaviour
     {
-        _world = new World();
-    }
+        World _world;
 
-    /// <summary>
-    /// This function is called when the MonoBehaviour will be destroyed.
-    /// </summary>
-    void OnDestroy()
-    {
-        _world.Dispose();
-    }
+        // Start is called before the first frame update
+        void Start()
+        {
+            _world = new World();
+            _world.CreateEntity<Test1>();
+            _world.CreateEntity<Test1,Test2>();
+            _world.CreateEntity<Test1,Test2,Test3>();
 
+        }
+
+        /// <summary>
+        /// This function is called when the MonoBehaviour will be destroyed.
+        /// </summary>
+        void OnDestroy()
+        {
+            _world.Dispose();
+        }
+
+
+    }
 
 }

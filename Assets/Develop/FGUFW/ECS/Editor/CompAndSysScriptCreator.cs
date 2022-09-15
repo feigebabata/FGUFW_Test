@@ -14,7 +14,6 @@ namespace FGUFW.ECS
         public class Config
         {
             public int CompTypeIndex = 1;
-            public int SysTypeIndex = 1;
             public string PrevNamespace = "TempNameSpace";
             public int PrevPanel = 1;
         }
@@ -57,6 +56,7 @@ namespace FGUFW.ECS
             var config = GetConfig();
             config.CompTypeIndex = compTypeIndex;
             config.PrevNamespace = nameSpace;
+            config.PrevPanel = 1;
             SaveConfig();
             AssetDatabase.Refresh();
         }
@@ -86,14 +86,35 @@ namespace FGUFW.ECS
             text = text.Replace("#NAME#",name);
             text = text.Replace("#ORDER#",order.ToString());
 
+            string filter = "";
+            if (typeNames.Count>0)
+            {
+                for (int i = 0; i < typeNames.Count; i++)
+                {
+                    typeNames[i] = $"ref {typeNames[i]} {typeNames[i].ToLower()}";
+                }
+                filter = filterScript.Replace("#TYPES#", string.Join(",", typeNames));
+            }
+            text = text.Replace("#FILTER#", filter);
+
             string path = $"{Application.dataPath.Replace("Assets",folderPath)}/{name}.cs";
             File.WriteAllText(path,text);
             Debug.Log($"生成系统 {order} {path}");
-            
+
+            var config = GetConfig();
+            config.PrevNamespace = nameSpace;
+            config.PrevPanel = 2;
             SaveConfig();
             AssetDatabase.ImportAsset($"{folderPath}/{name}.cs");
             AssetDatabase.Refresh();
         }
+
+        const string filterScript = @"
+            _world.Filter((#TYPES#)=>
+            {
+                
+            });
+";
 
         const string sysScript = @"
 using System.Collections;
@@ -118,8 +139,8 @@ namespace #NAMESPACE#
 
         public void OnUpdate()
         {
-            //IComponent.Dirty > 0 才会修改源数据
-            #Filter#
+            //IComponent.Dirty > 0 才会修改源数据#FILTER#
+
         }
 
         public void Dispose()
@@ -150,7 +171,7 @@ namespace #NAMESPACE#
         //code
 
 
-        public #NAME#(int entityUId)
+        public #NAME#(int entityUId=0)
         {
             #region 不可修改
             EntityUId = entityUId;
