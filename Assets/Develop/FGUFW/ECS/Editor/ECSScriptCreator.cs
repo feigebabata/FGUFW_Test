@@ -10,12 +10,12 @@ namespace FGUFW.ECS
 {
     public class ECSScriptCreator : EditorWindow
     {
-        VisualElement _filterPanel,_compPanel;
-        Button _filterPanelBtn,_compPanelBtn,_sysPanelBtn,sysPanelBtn,_filterPanelCreateBtn,_compPanelCreateBtn;
+        VisualElement _filterPanel,_compPanel,_sysPanel;
+        Button _filterPanelBtn,_compPanelBtn,_sysPanelBtn,sysPanelBtn,_filterPanelCreateBtn,_compPanelCreateBtn,_sysCreateBtn;
         Label _pathTitle;
         SliderInt _filterCountInput,_compCountInput;
-        TextField _compNamespaceInput;
-        IntegerField _compTypeValue;
+        TextField _compNamespaceInput,_sysNameSpaceInput,_sysNameInput;
+        IntegerField _compTypeValue,_sysOrderInput;
         ListView _compNameList;
 
         [MenuItem("Assets/Create/ECSScriptCreator")]
@@ -58,8 +58,13 @@ namespace FGUFW.ECS
             _compNamespaceInput = root.Q<TextField>("compNamespaceInput");
             _compTypeValue = root.Q<IntegerField>("compTypeInput");
             _compNameList = root.Q<ListView>("compNameList");
-
+            
+            _sysPanel = root.Q<VisualElement>("sysPanel");
             _sysPanelBtn = root.Q<Button>("sysPanelBtn");
+            _sysCreateBtn = root.Q<Button>("sysCreateBtn");
+            _sysNameSpaceInput = root.Q<TextField>("sysNameSpaceInput");
+            _sysNameInput = root.Q<TextField>("sysNameInput");
+            _sysOrderInput = root.Q<IntegerField>("sysOrderInput");
         }
 
         private void addListener()
@@ -72,6 +77,21 @@ namespace FGUFW.ECS
             _compNameList.makeItem += onCompListMakeItem;
             _compNameList.bindItem += onCompListBindItem;
             _compPanelCreateBtn.clicked += onClickCompPanelCreate;
+
+            _sysPanelBtn.clicked += onClickSysPanel;
+            _sysCreateBtn.clicked += onClickSysCreateBtn;
+        }
+
+        private void onClickSysCreateBtn()
+        {
+            CompAndSysScriptCreator.CreateSysScript(_pathTitle.text,_sysNameSpaceInput.value,_sysNameInput.value,_sysOrderInput.value);
+        }
+
+        private void onClickSysPanel()
+        {
+            onSwitchPanelBtn(_sysPanelBtn);
+            var config = CompAndSysScriptCreator.GetConfig();
+            _sysNameSpaceInput.value = config.PrevNamespace;
         }
 
         private void onClickFilterCreate()
@@ -123,9 +143,12 @@ namespace FGUFW.ECS
             Color32 off = new Color32(88,88,88,255);
             _filterPanelBtn.style.backgroundColor = new StyleColor(_filterPanelBtn==panelBtn?on:off);
             _compPanelBtn.style.backgroundColor = new StyleColor(_compPanelBtn==panelBtn?on:off);
+            _sysPanelBtn.style.backgroundColor = new StyleColor(_sysPanelBtn==panelBtn?on:off);
 
             _filterPanel.visible = _filterPanelBtn==panelBtn;
             _compPanel.visible = _compPanelBtn==panelBtn;
+            _sysPanel.visible = _sysPanelBtn==panelBtn;
+
 
             if(_filterPanelBtn==panelBtn)
             {
@@ -134,6 +157,10 @@ namespace FGUFW.ECS
             else if(_compPanelBtn==panelBtn)
             {
                 rootVisualElement.Insert(2,_compPanel);
+            }
+            else if(_sysPanelBtn==panelBtn)
+            {
+                rootVisualElement.Insert(2,_sysPanel);
             }
         }
 

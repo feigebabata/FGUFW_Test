@@ -45,8 +45,8 @@ namespace FGUFW.ECS
                 record.Add(comp.CompType,t);
             });
             
+            Debug.Log($"类型检测结束! count={record.Count}");
             record.Clear();
-            Debug.Log("类型检测结束!");
         }
 
     }

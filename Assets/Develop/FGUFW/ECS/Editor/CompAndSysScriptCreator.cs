@@ -79,6 +79,55 @@ namespace FGUFW.ECS
             ComponentTypeHelper.CheckCompType();
         }
 
+        public static void CreateSysScript(string folderPath,string nameSpace,string name,int order)
+        {
+            var text = sysScript.Replace("#NAMESPACE#",nameSpace);
+            text = text.Replace("#NAME#",name);
+            text = text.Replace("#ORDER#",order.ToString());
+
+            string path = $"{Application.dataPath.Replace("Assets",folderPath)}/{name}.cs";
+            File.WriteAllText(path,text);
+            Debug.Log($"生成系统 {order} {path}");
+            
+            AssetDatabase.ImportAsset($"{folderPath}/{name}.cs");
+            AssetDatabase.Refresh();
+        }
+
+        const string sysScript = @"
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using FGUFW.ECS;
+using Unity.Mathematics;
+using Unity.Collections;
+
+namespace #NAMESPACE#
+{
+    public class #NAME# : ISystem
+    {
+        public int Order => #ORDER#;
+
+        private World _world;
+
+        public void OnInit(World world)
+        {
+            _world = world;
+        }
+
+        public void OnUpdate()
+        {
+            
+        }
+
+        public void Dispose()
+        {
+            _world = null;
+        }
+
+    }
+}
+";
+
 
         const string compScript = @"
 using FGUFW.ECS;
