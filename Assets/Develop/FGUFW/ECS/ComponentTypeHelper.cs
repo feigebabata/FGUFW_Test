@@ -29,50 +29,24 @@ namespace FGUFW.ECS
 
         static public void CheckCompType()
         {
-            Debug.Log(typeof(Temp).IsAssignableFrom(typeof(System.Collections.IList)));
-            return;
-            AssemblyHelper.Filter<IComponent>(t=>Debug.Log(t));
-            return;
-            var ecsAssemblyName = Assembly.GetExecutingAssembly().GetName();
-            var assemblys = AppDomain.CurrentDomain.GetAssemblies();
-            var compTypeName = typeof(IComponent).FullName;
-            foreach (var assembly in assemblys)
+            // AssemblyHelper.FilterClassAndStruct<IComponent>(t=>Debug.Log(t));
+            Dictionary<int, Type> record = new Dictionary<int, Type>();
+            AssemblyHelper.FilterClassAndStruct<IComponent>(t=>
             {
-                if(!Array.Exists<AssemblyName>(assembly.GetReferencedAssemblies(), an=>an.FullName==ecsAssemblyName.FullName)) continue;
-
-                var types = assembly.GetTypes();
-                Dictionary<int, Type> record = new Dictionary<int, Type>();
-                foreach (var type in types)
+                var comp = (IComponent)Activator.CreateInstance(t);
+                if(record.ContainsValue(t))
                 {
-                    if (type.IsValueType && type.GetInterface(compTypeName) != null)
-                    {
-                        Debug.Log(type);
-                        var val = (IComponent)Activator.CreateInstance(type);
-                        var compType = val.CompType;
-                        if (record.ContainsKey(compType))
-                        {
-                            var old_type = record[compType];
-                            Debug.LogError($"组件类型冲突 {compType} {type.FullName} : {old_type.FullName}");
-                        }
-                    }
+                    throw new Exception($"组件类型重复 val={comp.CompType}\n{t}");
                 }
-                record.Clear();
-            }
-        }
-
-        public struct Temp : IComponent
-        {
-            public int CompType => throw new NotImplementedException();
-
-            public int EntityUId { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-            public int Dirty { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-            public bool IsCreated => throw new NotImplementedException();
-
-            public void Dispose()
-            {
-                throw new NotImplementedException();
-            }
+                if(record.ContainsKey(comp.CompType))
+                {
+                    throw new Exception($"组件类型重复 val={comp.CompType}\n{t}\n{record[comp.CompType]}");
+                }
+                record.Add(comp.CompType,t);
+            });
+            
+            record.Clear();
+            Debug.Log("类型检测结束!");
         }
 
     }

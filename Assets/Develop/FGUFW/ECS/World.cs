@@ -29,7 +29,8 @@ namespace FGUFW.ECS
         
         public World()
         {
-            _worldCreateTime = Time.unscaledTime;
+            _worldCreateTime = UnityEngine.Time.unscaledTime;
+            initSystem();
             PlayerLoopHelper.AddToLoop<UnityEngine.PlayerLoop.Update,World>(update);
         }
 

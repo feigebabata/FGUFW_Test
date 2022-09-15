@@ -11,9 +11,11 @@ namespace FGUFW.ECS
         private readonly float frameDelay = 1f/(float)FRAME_COUNT;
 
         public float TimeScale=1;
-        public int FrameIndex{get;private set;}=-1;
-        private int _frameIndex;
         public float DeltaTime=> frameDelay*TimeScale;
+        public float Time {get;private set;}
+        
+        public int FrameIndex{get;private set;}
+        
 
         private List<ISystem> _systems = new List<ISystem>();
         private float _worldCreateTime;
@@ -21,7 +23,7 @@ namespace FGUFW.ECS
 
         private void update()
         {
-            while (getFrameTime(FrameIndex+1)>=Time.unscaledTime)
+            while (UnityEngine.Time.unscaledTime >= getFrameTime(FrameIndex))
             {
                 worldUpdate();
             }
@@ -29,10 +31,9 @@ namespace FGUFW.ECS
 
         private void worldUpdate()
         {
-            FrameIndex++;
-
             updateSys();
-            
+            FrameIndex++;
+            this.Time += DeltaTime;
         }
 
         private void updateSys()
@@ -52,31 +53,14 @@ namespace FGUFW.ECS
             _systems.Clear();
         }
 
-        public void AddSystem(ISystem system)
+        private void initSystem()
         {
-            if(_systems.Contains(system))return;
-            _systems.Add(system);
-            _systems.Sort((l,r)=>r.Order-l.Order);
-        }
-
-        public void RemoveSystem(ISystem system)
-        {
-            _systems.Remove(system);
-        }
-
-        public void SetSystemEnable<T>(bool enable) where T:ISystem
-        {
-            foreach (var sys in _systems)
+            AssemblyHelper.FilterClassAndStruct<ISystem>(t=>
             {
-                if(sys is T)
-                {
-                    sys.Enabled = enable;
-                }
-            }
-        }
-
-        public void InitSystem()
-        {
+                var sys = (ISystem)Activator.CreateInstance(t);
+                _systems.Add(sys);
+            });
+            _systems.Sort((l,r)=>r.Order-l.Order);
             foreach (var sys in _systems)
             {
                 sys.OnInit(this);

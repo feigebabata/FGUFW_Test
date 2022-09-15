@@ -8,7 +8,7 @@ namespace FGUFW
 {
     public static class AssemblyHelper
     {
-        public static void Filter<T>(Action<Type> callback)
+        public static void FilterClassAndStruct<T>(Action<Type> callback)
         {
             if (callback==null) return;
 
@@ -18,12 +18,13 @@ namespace FGUFW
             var assemblys = AppDomain.CurrentDomain.GetAssemblies();
             foreach (var assembly in assemblys)
             {
-                if (!Array.Exists(assembly.GetReferencedAssemblies(), a => a.FullName == assemblyName)) continue;
+                if (assembly.FullName!=assemblyName && !Array.Exists(assembly.GetReferencedAssemblies(), a => a.FullName == assemblyName)) continue;
                 foreach (var type in assembly.GetTypes())
                 {
                     if (!(type.IsClass || type.IsValueType)) continue;
                     
-                    if(type.IsAssignableFrom(t_type))
+                    //被继承/实现
+                    if(t_type.IsAssignableFrom(type))
                     {
                         callback(type);
                     }

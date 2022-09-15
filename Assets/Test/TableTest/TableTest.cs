@@ -12,28 +12,16 @@ public static class TableTest
     [MenuItem("Test/TableTest")]
     static void tableTest()
     {
-        int length = 1024*1024*24;
-        
-        long start = 0;
-        
-        
-        start = DateTime.UtcNow.Ticks;
-        for (int i = 0; i < length; i++)
+        List<int> ls = new List<int>();
+        ls.Add(5);
+        ls.Add(4);
+        ls.Add(7);
+        ls.Add(1);
+        ls.Sort((l,r)=>{return r-l;});
+        foreach (var item in ls)
         {
-            Vector4 val = Vector4.zero;
-            fun1( ref val);
+            Debug.Log(item);
         }
-        Debug.Log(DateTime.UtcNow.Ticks-start);
-
-        //-*-
-
-        start = DateTime.UtcNow.Ticks;
-        for (int i = 0; i < length; i++)
-        {
-            Vector4 val = Vector4.zero;
-            val = fun2(val);
-        }
-        Debug.Log(DateTime.UtcNow.Ticks-start);
     }
 
     static void fun1(ref Vector4 val)
