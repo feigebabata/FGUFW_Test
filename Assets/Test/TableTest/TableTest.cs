@@ -12,16 +12,7 @@ public static class TableTest
     [MenuItem("Test/TableTest")]
     static void tableTest()
     {
-        List<int> ls = new List<int>();
-        ls.Add(5);
-        ls.Add(4);
-        ls.Add(7);
-        ls.Add(1);
-        ls.Sort((l,r)=>{return r-l;});
-        foreach (var item in ls)
-        {
-            Debug.Log(item);
-        }
+        Debug.Log(0xd & 2);
     }
 
     static void fun1(ref Vector4 val)

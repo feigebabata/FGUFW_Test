@@ -16,6 +16,7 @@ namespace FGUFW.ECS
             public int CompTypeIndex = 1;
             public int SysTypeIndex = 1;
             public string PrevNamespace = "TempNameSpace";
+            public int PrevPanel = 1;
         }
 
         public static void SaveConfig()
@@ -79,7 +80,7 @@ namespace FGUFW.ECS
             ComponentTypeHelper.CheckCompType();
         }
 
-        public static void CreateSysScript(string folderPath,string nameSpace,string name,int order)
+        public static void CreateSysScript(string folderPath,string nameSpace,string name,int order,List<string> typeNames)
         {
             var text = sysScript.Replace("#NAMESPACE#",nameSpace);
             text = text.Replace("#NAME#",name);
@@ -89,6 +90,7 @@ namespace FGUFW.ECS
             File.WriteAllText(path,text);
             Debug.Log($"生成系统 {order} {path}");
             
+            SaveConfig();
             AssetDatabase.ImportAsset($"{folderPath}/{name}.cs");
             AssetDatabase.Refresh();
         }
@@ -116,7 +118,8 @@ namespace #NAMESPACE#
 
         public void OnUpdate()
         {
-            
+            //IComponent.Dirty > 0 才会修改源数据
+            #Filter#
         }
 
         public void Dispose()

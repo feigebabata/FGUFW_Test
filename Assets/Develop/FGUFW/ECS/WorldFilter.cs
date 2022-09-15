@@ -34,8 +34,12 @@ namespace FGUFW.ECS
 
             if(t0_dict.Count<minCount){minCount = t0_dict.Count;minCountEntityUIds = t0_dict.Keys;}
 
-            foreach (var entityUId in minCountEntityUIds)
+            setFilterKeyCache(minCountEntityUIds);
+
+            for(int i=0 ; i<_filterKeyCacheLength ; i++)
             {
+                var entityUId = _filterKeyCache[i];
+                
                 T0 t0_comp;if(!t0_dict.TryGetValue(entityUId,out t0_comp)) continue;
 
                 callback(ref t0_comp);
@@ -67,8 +71,12 @@ namespace FGUFW.ECS
             if(t0_dict.Count<minCount){minCount = t0_dict.Count;minCountEntityUIds = t0_dict.Keys;}
             if(t1_dict.Count<minCount){minCount = t1_dict.Count;minCountEntityUIds = t1_dict.Keys;}
 
-            foreach (var entityUId in minCountEntityUIds)
+            setFilterKeyCache(minCountEntityUIds);
+
+            for(int i=0 ; i<_filterKeyCacheLength ; i++)
             {
+                var entityUId = _filterKeyCache[i];
+                
                 T0 t0_comp;if(!t0_dict.TryGetValue(entityUId,out t0_comp)) continue;
                 T1 t1_comp;if(!t1_dict.TryGetValue(entityUId,out t1_comp)) continue;
 
@@ -107,8 +115,12 @@ namespace FGUFW.ECS
             if(t1_dict.Count<minCount){minCount = t1_dict.Count;minCountEntityUIds = t1_dict.Keys;}
             if(t2_dict.Count<minCount){minCount = t2_dict.Count;minCountEntityUIds = t2_dict.Keys;}
 
-            foreach (var entityUId in minCountEntityUIds)
+            setFilterKeyCache(minCountEntityUIds);
+
+            for(int i=0 ; i<_filterKeyCacheLength ; i++)
             {
+                var entityUId = _filterKeyCache[i];
+                
                 T0 t0_comp;if(!t0_dict.TryGetValue(entityUId,out t0_comp)) continue;
                 T1 t1_comp;if(!t1_dict.TryGetValue(entityUId,out t1_comp)) continue;
                 T2 t2_comp;if(!t2_dict.TryGetValue(entityUId,out t2_comp)) continue;
@@ -154,8 +166,12 @@ namespace FGUFW.ECS
             if(t2_dict.Count<minCount){minCount = t2_dict.Count;minCountEntityUIds = t2_dict.Keys;}
             if(t3_dict.Count<minCount){minCount = t3_dict.Count;minCountEntityUIds = t3_dict.Keys;}
 
-            foreach (var entityUId in minCountEntityUIds)
+            setFilterKeyCache(minCountEntityUIds);
+
+            for(int i=0 ; i<_filterKeyCacheLength ; i++)
             {
+                var entityUId = _filterKeyCache[i];
+                
                 T0 t0_comp;if(!t0_dict.TryGetValue(entityUId,out t0_comp)) continue;
                 T1 t1_comp;if(!t1_dict.TryGetValue(entityUId,out t1_comp)) continue;
                 T2 t2_comp;if(!t2_dict.TryGetValue(entityUId,out t2_comp)) continue;
@@ -208,8 +224,12 @@ namespace FGUFW.ECS
             if(t3_dict.Count<minCount){minCount = t3_dict.Count;minCountEntityUIds = t3_dict.Keys;}
             if(t4_dict.Count<minCount){minCount = t4_dict.Count;minCountEntityUIds = t4_dict.Keys;}
 
-            foreach (var entityUId in minCountEntityUIds)
+            setFilterKeyCache(minCountEntityUIds);
+
+            for(int i=0 ; i<_filterKeyCacheLength ; i++)
             {
+                var entityUId = _filterKeyCache[i];
+                
                 T0 t0_comp;if(!t0_dict.TryGetValue(entityUId,out t0_comp)) continue;
                 T1 t1_comp;if(!t1_dict.TryGetValue(entityUId,out t1_comp)) continue;
                 T2 t2_comp;if(!t2_dict.TryGetValue(entityUId,out t2_comp)) continue;
@@ -269,8 +289,12 @@ namespace FGUFW.ECS
             if(t4_dict.Count<minCount){minCount = t4_dict.Count;minCountEntityUIds = t4_dict.Keys;}
             if(t5_dict.Count<minCount){minCount = t5_dict.Count;minCountEntityUIds = t5_dict.Keys;}
 
-            foreach (var entityUId in minCountEntityUIds)
+            setFilterKeyCache(minCountEntityUIds);
+
+            for(int i=0 ; i<_filterKeyCacheLength ; i++)
             {
+                var entityUId = _filterKeyCache[i];
+                
                 T0 t0_comp;if(!t0_dict.TryGetValue(entityUId,out t0_comp)) continue;
                 T1 t1_comp;if(!t1_dict.TryGetValue(entityUId,out t1_comp)) continue;
                 T2 t2_comp;if(!t2_dict.TryGetValue(entityUId,out t2_comp)) continue;
@@ -337,8 +361,12 @@ namespace FGUFW.ECS
             if(t5_dict.Count<minCount){minCount = t5_dict.Count;minCountEntityUIds = t5_dict.Keys;}
             if(t6_dict.Count<minCount){minCount = t6_dict.Count;minCountEntityUIds = t6_dict.Keys;}
 
-            foreach (var entityUId in minCountEntityUIds)
+            setFilterKeyCache(minCountEntityUIds);
+
+            for(int i=0 ; i<_filterKeyCacheLength ; i++)
             {
+                var entityUId = _filterKeyCache[i];
+                
                 T0 t0_comp;if(!t0_dict.TryGetValue(entityUId,out t0_comp)) continue;
                 T1 t1_comp;if(!t1_dict.TryGetValue(entityUId,out t1_comp)) continue;
                 T2 t2_comp;if(!t2_dict.TryGetValue(entityUId,out t2_comp)) continue;
@@ -412,8 +440,12 @@ namespace FGUFW.ECS
             if(t6_dict.Count<minCount){minCount = t6_dict.Count;minCountEntityUIds = t6_dict.Keys;}
             if(t7_dict.Count<minCount){minCount = t7_dict.Count;minCountEntityUIds = t7_dict.Keys;}
 
-            foreach (var entityUId in minCountEntityUIds)
+            setFilterKeyCache(minCountEntityUIds);
+
+            for(int i=0 ; i<_filterKeyCacheLength ; i++)
             {
+                var entityUId = _filterKeyCache[i];
+                
                 T0 t0_comp;if(!t0_dict.TryGetValue(entityUId,out t0_comp)) continue;
                 T1 t1_comp;if(!t1_dict.TryGetValue(entityUId,out t1_comp)) continue;
                 T2 t2_comp;if(!t2_dict.TryGetValue(entityUId,out t2_comp)) continue;

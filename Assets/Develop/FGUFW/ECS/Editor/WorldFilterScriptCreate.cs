@@ -99,8 +99,12 @@ namespace FGUFW.ECS
 
             #TYPES_MIN#
 
-            foreach (var entityUId in minCountEntityUIds)
+            setFilterKeyCache(minCountEntityUIds);
+
+            for(int i=0 ; i<_filterKeyCacheLength ; i++)
             {
+                var entityUId = _filterKeyCache[i];
+                
                 #TYPES_COMP#
 
                 callback(#CALLBACK#);

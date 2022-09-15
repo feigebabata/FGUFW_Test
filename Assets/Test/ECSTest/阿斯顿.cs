@@ -21,7 +21,7 @@ namespace ECSTest
 
         public void OnUpdate()
         {
-            
+            Debug.Log("阿斯顿");
         }
 
         public void Dispose()

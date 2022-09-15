@@ -20,7 +20,11 @@ namespace ECSTest
 
         public void OnUpdate()
         {
-            Debug.Log($"{_world.FrameIndex}  {_world.Time}");
+            //IComponent.Dirty > 0 才会修改源数据
+            _world.Filter((ref Test1 t1,ref Test1 t2)=>
+            {
+                
+            });
         }
 
         public void Dispose()

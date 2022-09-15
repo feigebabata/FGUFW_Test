@@ -10,13 +10,18 @@ namespace FGUFW.ECS
 {
     public class ECSScriptCreator : EditorWindow
     {
-        VisualElement _filterPanel,_compPanel,_sysPanel;
-        Button _filterPanelBtn,_compPanelBtn,_sysPanelBtn,sysPanelBtn,_filterPanelCreateBtn,_compPanelCreateBtn,_sysCreateBtn;
         Label _pathTitle;
-        SliderInt _filterCountInput,_compCountInput;
-        TextField _compNamespaceInput,_sysNameSpaceInput,_sysNameInput;
-        IntegerField _compTypeValue,_sysOrderInput;
-        ListView _compNameList;
+        Button _filterCreateBtn,_switchCompBtn,_switchSysBtn,_createCompOrSysBtn;
+        SliderInt _filterCountInput,_countInput;
+        TextField _namespaceInput,_sysNameInput;
+        IntegerField _compTypeOrSysOrderInput;
+        ListView _listInput;
+        List<string> _sysCompTypeList;
+
+        /// <summary>
+        /// 1:组件 2:系统
+        /// </summary>
+        int _panelType=0;
 
         [MenuItem("Assets/Create/ECSScriptCreator")]
         public static void ShowExample()
@@ -34,64 +39,66 @@ namespace FGUFW.ECS
             var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Develop/FGUFW/ECS/Editor/ECSScriptCreator.uxml");
             visualTree.CloneTree(root);
             
+            _sysCompTypeList = getCompNames();
+
             findUIComp(root);
             addListener();
 
+            var config = CompAndSysScriptCreator.GetConfig();
             _pathTitle.text = FGUFW.EditorUtils.EditorUtils.GetSeleceFolderPath();
-
-            onClickCompPanel();
+            _namespaceInput.value = config.PrevNamespace;
+            onSwitchPanelBtn(config.PrevPanel);
         }
 
         private void findUIComp(VisualElement root)
         {
             _pathTitle = root.Q<Label>("path");
 
-            _filterPanel = root.Q<VisualElement>("filterPanel");
-            _filterPanelBtn = root.Q<Button>("filterPanelBtn");
-            _filterPanelCreateBtn = root.Q<Button>("CreateFilter");
-            _filterCountInput = root.Q<SliderInt>("FilterInput");
+            _filterCreateBtn = root.Q<Button>("filterCreateBtn");
+            _switchCompBtn = root.Q<Button>("switchCompBtn");
+            _switchSysBtn = root.Q<Button>("switchSysBtn");
+            _createCompOrSysBtn = root.Q<Button>("createCompOrSysBtn");
 
-            _compPanel = root.Q<VisualElement>("compPanel");
-            _compPanelBtn = root.Q<Button>("compPanelBtn");
-            _compPanelCreateBtn = root.Q<Button>("CreateComp");
-            _compCountInput = root.Q<SliderInt>("compCount");
-            _compNamespaceInput = root.Q<TextField>("compNamespaceInput");
-            _compTypeValue = root.Q<IntegerField>("compTypeInput");
-            _compNameList = root.Q<ListView>("compNameList");
+            _filterCountInput = root.Q<SliderInt>("filterCountInput");
+            _countInput = root.Q<SliderInt>("countInput");
             
-            _sysPanel = root.Q<VisualElement>("sysPanel");
-            _sysPanelBtn = root.Q<Button>("sysPanelBtn");
-            _sysCreateBtn = root.Q<Button>("sysCreateBtn");
-            _sysNameSpaceInput = root.Q<TextField>("sysNameSpaceInput");
+            _namespaceInput = root.Q<TextField>("namespaceInput");
             _sysNameInput = root.Q<TextField>("sysNameInput");
-            _sysOrderInput = root.Q<IntegerField>("sysOrderInput");
+            _compTypeOrSysOrderInput = root.Q<IntegerField>("compTypeOrSysOrderInput");
+            _listInput = root.Q<ListView>("listInput");
+        }
+
+        private List<string> getCompNames()
+        {
+            List<string> compNames = new List<string>();
+            AssemblyHelper.FilterClassAndStruct<IComponent>(t=>compNames.Add(t.Name));
+            return compNames;
         }
 
         private void addListener()
         {
-            _filterPanelBtn.clicked += onClickFilterPanel;
-            _filterPanelCreateBtn.clicked += onClickFilterCreate;
+            _filterCreateBtn.clicked += onClickFilterCreate;
 
-            _compPanelBtn.clicked += onClickCompPanel;
-            _compCountInput.RegisterValueChangedCallback(onCompCountValueChanged);
-            _compNameList.makeItem += onCompListMakeItem;
-            _compNameList.bindItem += onCompListBindItem;
-            _compPanelCreateBtn.clicked += onClickCompPanelCreate;
+            _switchCompBtn.clicked += onClickCompPanel;
+            _switchSysBtn.clicked += onClickSysPanel;
 
-            _sysPanelBtn.clicked += onClickSysPanel;
-            _sysCreateBtn.clicked += onClickSysCreateBtn;
-        }
+            _countInput.RegisterValueChangedCallback(onListCountValueChanged);
 
-        private void onClickSysCreateBtn()
-        {
-            CompAndSysScriptCreator.CreateSysScript(_pathTitle.text,_sysNameSpaceInput.value,_sysNameInput.value,_sysOrderInput.value);
+            _listInput.makeItem += onCompListMakeItem;
+            _listInput.bindItem += onCompListBindItem;
+
+            _createCompOrSysBtn.clicked += onClickCompOrSysCreate;
+
         }
 
         private void onClickSysPanel()
         {
-            onSwitchPanelBtn(_sysPanelBtn);
-            var config = CompAndSysScriptCreator.GetConfig();
-            _sysNameSpaceInput.value = config.PrevNamespace;
+            onSwitchPanelBtn(2);
+        }
+
+        private void onClickCompPanel()
+        {
+            onSwitchPanelBtn(1);
         }
 
         private void onClickFilterCreate()
@@ -99,83 +106,119 @@ namespace FGUFW.ECS
             WorldFilterScriptCreate.CreateScript(_filterCountInput.value);
         }
 
-        private void onClickCompPanelCreate()
+        private void onClickCompOrSysCreate()
         {
-            int length = _compNameList.itemsSource.Count;
+            if(_panelType==1)
+            {
+                onCreateComp();
+            }
+            else
+            {
+                onCreateSys();
+            }
+        }
+
+        private void onCreateSys()
+        {
+            if(string.IsNullOrEmpty(_namespaceInput.text) || string.IsNullOrWhiteSpace(_namespaceInput.text) )
+            {
+                Debug.LogError("命名空间无效");
+                return;
+            }
+            if(string.IsNullOrEmpty(_sysNameInput.text) || string.IsNullOrWhiteSpace(_sysNameInput.text) )
+            {
+                Debug.LogError("系统名无效");
+                return;
+            }
+
+            int length = _listInput.itemsSource.Count;
+
+            List<string> typeNames = new List<string>();
+            for (int i = 0; i < length; i++)
+            {
+                if(_listInput.itemsSource[i]==null)continue;
+                var popup = _listInput.itemsSource[i] as PopupField<string>;
+                var text = _sysCompTypeList[popup.index];
+                if(string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text))continue;
+                typeNames.Add(text);
+            }
+        }
+
+        private void onCreateComp()
+        {
+            if(string.IsNullOrEmpty(_namespaceInput.text) || string.IsNullOrWhiteSpace(_namespaceInput.text) )
+            {
+                Debug.LogError("命名空间无效");
+                return;
+            }
+
+            int length = _listInput.itemsSource.Count;
 
             List<string> compNames = new List<string>();
             for (int i = 0; i < length; i++)
             {
-                if(_compNameList.itemsSource[i]==null)continue;
-                var textField = _compNameList.itemsSource[i] as TextField;
+                if(_listInput.itemsSource[i]==null)continue;
+                var textField = _listInput.itemsSource[i] as TextField;
                 var text = textField.text;
                 if(string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text))continue;
                 compNames.Add(text);
             }
-            CompAndSysScriptCreator.CreateCompScript(_pathTitle.text,_compNamespaceInput.text,compNames,_compTypeValue.value);
+            CompAndSysScriptCreator.CreateCompScript(_pathTitle.text,_namespaceInput.text,compNames,_compTypeOrSysOrderInput.value);
         }
 
         private void onCompListBindItem(VisualElement arg1, int arg2)
         {
-            _compNameList.itemsSource[arg2] = arg1;
+            _listInput.itemsSource[arg2] = arg1;
         }
 
         private VisualElement onCompListMakeItem()
         {
-            var textField = new TextField();
-
-            return textField;
+            if(_panelType==1)
+            {
+                var textField = new TextField();
+                return textField;
+            }
+            else
+            {
+                var popup = new PopupField<string>(getCompNames(),0);
+                return popup;
+            }
         }
 
-        private void onCompCountValueChanged(ChangeEvent<int> evt)
+        private void onListCountValueChanged(ChangeEvent<int> evt)
         {
-            setCompList(evt.newValue);
+            setListCount(evt.newValue);
         }
 
-        private void setCompList(int length)
+        private void setListCount(int length)
         {
-            _compNameList.itemsSource = new List<VisualElement>(new VisualElement[length]);
+            _listInput.itemsSource = new List<VisualElement>(new VisualElement[length]);
         }
 
-        private void onSwitchPanelBtn(Button panelBtn)
+        private void onSwitchPanelBtn(int panelType)
         {
+            _panelType = panelType;
             Color32 on = new Color32(128,128,128,255);
             Color32 off = new Color32(88,88,88,255);
-            _filterPanelBtn.style.backgroundColor = new StyleColor(_filterPanelBtn==panelBtn?on:off);
-            _compPanelBtn.style.backgroundColor = new StyleColor(_compPanelBtn==panelBtn?on:off);
-            _sysPanelBtn.style.backgroundColor = new StyleColor(_sysPanelBtn==panelBtn?on:off);
 
-            _filterPanel.visible = _filterPanelBtn==panelBtn;
-            _compPanel.visible = _compPanelBtn==panelBtn;
-            _sysPanel.visible = _sysPanelBtn==panelBtn;
-
-
-            if(_filterPanelBtn==panelBtn)
-            {
-                rootVisualElement.Insert(2,_filterPanel);
-            }
-            else if(_compPanelBtn==panelBtn)
-            {
-                rootVisualElement.Insert(2,_compPanel);
-            }
-            else if(_sysPanelBtn==panelBtn)
-            {
-                rootVisualElement.Insert(2,_sysPanel);
-            }
-        }
-
-        private void onClickCompPanel()
-        {
-            onSwitchPanelBtn(_compPanelBtn);
-            setCompList(_compCountInput.value);
+            _switchCompBtn.style.backgroundColor = new StyleColor(_panelType==1?on:off);
+            _switchSysBtn.style.backgroundColor = new StyleColor(_panelType==2?on:off);
+            
             var config = CompAndSysScriptCreator.GetConfig();
-            _compNamespaceInput.value = config.PrevNamespace;
-            _compTypeValue.value = config.CompTypeIndex;
+            _compTypeOrSysOrderInput.label = _panelType==1 ? "组件类型索引:":"系统优先级";
+            _compTypeOrSysOrderInput.value = _panelType==1 ? config.CompTypeIndex : 0;
+
+            _countInput.label = _panelType==1 ? "组件类型索引:":"系统优先级";
+            _countInput.lowValue = _panelType==1 ? 1:0;
+            _countInput.highValue = _panelType==1 ? 32:8;
+            _countInput.value = _panelType==1 ? 1:0;
+
+            _sysNameInput.visible = _panelType==2;
+
+            _createCompOrSysBtn.text = _panelType==1 ? "创建组件":"创建系统";
+
+            setListCount(_countInput.value);
         }
 
-        private void onClickFilterPanel()
-        {
-            onSwitchPanelBtn(_filterPanelBtn);
-        }
     }
 }

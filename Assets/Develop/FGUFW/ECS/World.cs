@@ -25,6 +25,8 @@ namespace FGUFW.ECS
         private int _createEntityIndex=0;
 
         private Dictionary<int, IDictionary> _compDict = new Dictionary<int, IDictionary>();
+        private int[] _filterKeyCache;
+        private int _filterKeyCacheLength;
 
         
         public World()
@@ -160,6 +162,23 @@ namespace FGUFW.ECS
         private static void setComp<T>(Dictionary<int,T> dict,int entityUId,T comp)
         {
             dict[entityUId] = comp;
+        }
+
+        private void setFilterKeyCache(ICollection<int> keys)
+        {
+            int length = keys.Count;
+            if(_filterKeyCacheLength<length)
+            {
+                _filterKeyCache = new int[length];
+            }
+
+            int index = 0;
+            foreach (var key in keys)
+            {
+                _filterKeyCache[index++] = key;
+            }
+            
+            _filterKeyCacheLength = length;
         }
 
         
