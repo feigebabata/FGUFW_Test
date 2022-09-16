@@ -4,7 +4,9 @@
     <ui:Button text="创建组件过滤函数" display-tooltip-when-elided="true" name="filterCreateBtn" />
     <ui:Button text="切换到组件创建" display-tooltip-when-elided="true" name="switchCompBtn" style="margin-top: 20px;" />
     <ui:Button text="切换到系统创建" display-tooltip-when-elided="true" name="switchSysBtn" style="margin-bottom: 20px;" />
-    <ui:TextField picking-mode="Ignore" label="系统名:" name="sysNameInput" />
+    <ui:TextField picking-mode="Ignore" label="系统名:" name="sysNameInput" style="width: auto;">
+        <ui:Toggle label="使用Job" name="useJob" style="width: 165px; flex-shrink: 1; -unity-text-align: upper-right; -unity-font-style: normal; white-space: normal; margin-left: -81px;" />
+    </ui:TextField>
     <ui:TextField picking-mode="Ignore" label="命名空间:" name="namespaceInput" style="padding-top: 0;" />
     <uie:IntegerField label="组件类型/系统优先级:" value="42" name="compTypeOrSysOrderInput" />
     <ui:SliderInt picking-mode="Ignore" label="组件或参数个数:" value="1" high-value="100" show-input-field="true" name="countInput" />

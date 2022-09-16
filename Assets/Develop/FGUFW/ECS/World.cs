@@ -172,11 +172,7 @@ namespace FGUFW.ECS
                 _filterKeyCache = new int[length];
             }
 
-            int index = 0;
-            foreach (var key in keys)
-            {
-                _filterKeyCache[index++] = key;
-            }
+            keys.CopyTo(_filterKeyCache,0);
             
             _filterKeyCacheLength = length;
         }

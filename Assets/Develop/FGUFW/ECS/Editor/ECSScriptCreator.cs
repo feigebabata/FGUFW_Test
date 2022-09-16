@@ -16,6 +16,7 @@ namespace FGUFW.ECS
         TextField _namespaceInput,_sysNameInput;
         IntegerField _compTypeOrSysOrderInput;
         ListView _listInput;
+        Toggle _useJob;
         List<string> _sysCompTypeList;
 
         /// <summary>
@@ -64,8 +65,10 @@ namespace FGUFW.ECS
             
             _namespaceInput = root.Q<TextField>("namespaceInput");
             _sysNameInput = root.Q<TextField>("sysNameInput");
+            _useJob = root.Q<Toggle>("useJob");
             _compTypeOrSysOrderInput = root.Q<IntegerField>("compTypeOrSysOrderInput");
             _listInput = root.Q<ListView>("listInput");
+
         }
 
         private List<string> getCompNames()
@@ -142,7 +145,7 @@ namespace FGUFW.ECS
                 if(string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text))continue;
                 if(!typeNames.Contains(text)) typeNames.Add(text);
             }
-            CompAndSysScriptCreator.CreateSysScript(_pathTitle.text, _namespaceInput.text,_sysNameInput.value, _compTypeOrSysOrderInput.value, typeNames);
+            CompAndSysScriptCreator.CreateSysScript(_pathTitle.text, _namespaceInput.text,_sysNameInput.value, _compTypeOrSysOrderInput.value, typeNames,_useJob.value);
         }
 
         private void onCreateComp()

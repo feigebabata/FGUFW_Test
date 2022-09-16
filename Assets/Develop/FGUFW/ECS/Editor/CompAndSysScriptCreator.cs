@@ -80,22 +80,53 @@ namespace FGUFW.ECS
             ComponentTypeHelper.CheckCompType();
         }
 
-        public static void CreateSysScript(string folderPath,string nameSpace,string name,int order,List<string> typeNames)
+        public static void CreateSysScript(string folderPath,string nameSpace,string name,int order,List<string> typeNames,bool useJob)
         {
             var text = sysScript.Replace("#NAMESPACE#",nameSpace);
             text = text.Replace("#NAME#",name);
             text = text.Replace("#ORDER#",order.ToString());
 
             string filter = "";
+            string jobStruct = "";
             if (typeNames.Count>0)
             {
-                for (int i = 0; i < typeNames.Count; i++)
+                if(useJob)
                 {
-                    typeNames[i] = $"ref {typeNames[i]} {typeNames[i].ToLower()}";
+                    string firstComp = null;
+                    var setJob = new string[typeNames.Count];
+
+                    var jobComps = new string[typeNames.Count];
+                    var compGets = new string[typeNames.Count];
+
+                    for (int i = 0; i < typeNames.Count; i++)
+                    {
+                        var typeName = typeNames[i];
+                        if(i==0)firstComp = $"{typeName.ToLower()}s";
+                        typeNames[i] = $"ref NativeArray<{typeName}> {typeName.ToLower()}s";
+                        setJob[i] = $"{typeName}s = {typeName.ToLower()}s";
+
+                        jobComps[i] = $"public NativeArray<{typeName}> {typeName}s;";
+                        compGets[i] = $"var {typeName.ToLower()} = {typeName}s[index];";
+                    }
+                    filter = filterJobScript.Replace("#TYPES_JOB#", string.Join(",", typeNames));
+                    filter = filter.Replace("#SET_JOB#", string.Join(",\n                    ", setJob));
+                    filter = filter.Replace("#FIRST_COMPS#", firstComp);
+
+                    jobStruct = jobStructScript.Replace("#JOB_COMPS#", string.Join("\n            ", jobComps));
+                    jobStruct = jobStruct.Replace("#COMP_GET#", string.Join("\n                ", compGets));
+
                 }
-                filter = filterScript.Replace("#TYPES#", string.Join(",", typeNames));
+                else
+                {
+                    for (int i = 0; i < typeNames.Count; i++)
+                    {
+                        typeNames[i] = $"ref {typeNames[i]} {typeNames[i].ToLower()}";
+                    }
+                    filter = filterScript.Replace("#TYPES#", string.Join(",", typeNames));
+                }
             }
             text = text.Replace("#FILTER#", filter);
+            text = text.Replace("#JOB_STURCT#", jobStruct);
 
             string path = $"{Application.dataPath.Replace("Assets",folderPath)}/{name}.cs";
             File.WriteAllText(path,text);
@@ -108,6 +139,35 @@ namespace FGUFW.ECS
             AssetDatabase.ImportAsset($"{folderPath}/{name}.cs");
             AssetDatabase.Refresh();
         }
+
+        const string jobStructScript = @"
+        public struct Job : IJobParallelFor
+        {
+            #JOB_COMPS#
+
+            public void Execute(int index)
+            {
+                #COMP_GET#
+                //code
+                
+            }
+
+        }
+";
+
+        const string filterJobScript = @"
+            _world.FilterJob((#TYPES_JOB#)=>
+            {
+                int length = #FIRST_COMPS#.Length;
+                var job = new Job
+                {
+                    #SET_JOB#
+                };
+                job.Run(length);
+                //code
+
+            });
+";
 
         const string filterScript = @"
             _world.Filter((#TYPES#)=>
@@ -123,6 +183,8 @@ using UnityEngine;
 using FGUFW.ECS;
 using Unity.Mathematics;
 using Unity.Collections;
+using UnityEngine.Jobs;
+using Unity.Jobs;
 
 namespace #NAMESPACE#
 {
@@ -147,6 +209,8 @@ namespace #NAMESPACE#
         {
             _world = null;
         }
+
+        #JOB_STURCT#
 
     }
 }

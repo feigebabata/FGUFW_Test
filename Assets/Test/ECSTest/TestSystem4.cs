@@ -10,7 +10,7 @@ using Unity.Jobs;
 
 namespace ECSTest
 {
-    public class TestSystem1 : ISystem
+    public class TestSystem4 : ISystem
     {
         public int Order => 0;
 
@@ -24,18 +24,20 @@ namespace ECSTest
         public void OnUpdate()
         {
             //IComponent.Dirty > 0 才会修改源数据
-            _world.FilterJob((ref NativeArray<Test1> test1s,ref NativeArray<Test2> test2s)=>
+            _world.FilterJob((ref NativeArray<Test3> test3s,ref NativeArray<Test1> test1s,ref NativeArray<Test4> test4s)=>
             {
-                int length = test1s.Length;
+                int length = test3s.Length;
                 var job = new Job
                 {
+                    Test3s = test3s,
                     Test1s = test1s,
-                    Test2s = test2s
+                    Test4s = test4s
                 };
                 job.Run(length);
                 //code
 
             });
+
 
         }
 
@@ -44,20 +46,24 @@ namespace ECSTest
             _world = null;
         }
 
+        
         public struct Job : IJobParallelFor
         {
+            public NativeArray<Test3> Test3s;
             public NativeArray<Test1> Test1s;
-            public NativeArray<Test2> Test2s;
+            public NativeArray<Test4> Test4s;
 
             public void Execute(int index)
             {
+                var test3 = Test3s[index];
                 var test1 = Test1s[index];
-                var test2 = Test2s[index];
+                var test4 = Test4s[index];
                 //code
                 
             }
 
         }
+
 
     }
 }

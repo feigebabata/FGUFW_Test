@@ -12,35 +12,19 @@ public static class TableTest
     [MenuItem("Test/TableTest")]
     static void tableTest()
     {
-        Debug.Log(0xd & 2);
+        NativeArray<int> nas = new NativeArray<int>(1,Allocator.Temp);
+        nas[0] = 1;
+        setValue(ref nas);
+        Debug.Log(nas[0]);
+        Debug.Log(nas.IsCreated);
+        // nas.Dispose();
     }
 
-    static void fun1(ref Vector4 val)
+    static void setValue(ref NativeArray<int> nas)
     {
-        val = Vector4.one;
+        nas[0] = 233;
+        // nas.Dispose();
+        Debug.Log(nas.IsCreated);
     }
 
-    static Vector4 fun2(Vector4 val)
-    {
-        val = Vector4.one;
-        return val;
-    }
-
-    public struct StructTest:IDisposable
-    {
-        public List<int> List;
-        public NativeArray<int> NS;
-
-        public void Dispose()
-        {
-            List?.Clear();
-            List = null;
-            NS.Dispose();
-        }
-
-        public override string ToString()
-        {
-            return $"{List?.Count} {NS.IsCreated}";
-        }
-    }
 }
