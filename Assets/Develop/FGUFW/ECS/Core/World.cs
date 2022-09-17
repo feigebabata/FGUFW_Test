@@ -19,6 +19,8 @@ namespace FGUFW.ECS
         /// </summary>
         public const int ENTITY_SINGLE = -1;
 
+        public static World Current;
+
         /// <summary>
         /// 实体索引 依次加一
         /// </summary>
@@ -34,6 +36,7 @@ namespace FGUFW.ECS
             _worldCreateTime = UnityEngine.Time.unscaledTime;
             initSystem();
             PlayerLoopHelper.AddToLoop<UnityEngine.PlayerLoop.Update,World>(update);
+            Current = this;
         }
 
         public void Dispose()
@@ -42,6 +45,7 @@ namespace FGUFW.ECS
             
             disposeSys();
             disposeComps();
+            Current = null;
         }
 
         public bool GetComponent<T>(int entityUId,out T comp) where T: struct,IComponent

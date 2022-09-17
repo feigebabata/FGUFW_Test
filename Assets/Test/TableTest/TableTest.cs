@@ -5,6 +5,8 @@ using UnityEditor;
 using FGUFW;
 using System;
 using Unity.Collections;
+using ECSTest;
+using System.Reflection;
 
 public static class TableTest
 {
@@ -12,19 +14,19 @@ public static class TableTest
     [MenuItem("Test/TableTest")]
     static void tableTest()
     {
-        NativeArray<int> nas = new NativeArray<int>(1,Allocator.Temp);
-        nas[0] = 1;
-        setValue(ref nas);
-        Debug.Log(nas[0]);
-        Debug.Log(nas.IsCreated);
-        // nas.Dispose();
+        var t = typeof(Action<int,MonoBehaviour,Action<int,object>>);
+        Debug.Log(t.GetFiledTypeName());
+
     }
 
-    static void setValue(ref NativeArray<int> nas)
+
+
+    private static Type getAuthoringType(Type t)
     {
-        nas[0] = 233;
-        // nas.Dispose();
-        Debug.Log(nas.IsCreated);
+        var fullName = $"{t.FullName}Authoring";
+        return Type.GetType(fullName);
     }
+
+
 
 }

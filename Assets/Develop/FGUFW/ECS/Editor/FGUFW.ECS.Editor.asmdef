@@ -1,0 +1,18 @@
+{
+    "name": "FGUFW.ECS.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:c919ba6bb899f094fb25c490bd927d5e",
+        "GUID:559fbe227f95568448fca764eab257dd",
+        "GUID:2763510ebba59ca40ba7c37e3587ae57"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

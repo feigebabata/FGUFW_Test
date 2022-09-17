@@ -5,8 +5,9 @@ using UnityEditor.UIElements;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using FGUFW.ECS;
 
-namespace FGUFW.ECS
+namespace FGUFW.ECS.Editor
 {
     public class ECSScriptCreator : EditorWindow
     {

@@ -19,6 +19,7 @@ namespace ECSTest
         public void OnInit(World world)
         {
             _world = world;
+
         }
 
         public void OnUpdate()

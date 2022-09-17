@@ -5,6 +5,7 @@ using Unity.Collections;
 
 namespace ECSTest
 {
+    //[GenerateAuthoringComponent]
     public struct Test4 : IComponent
     {
         #region 不可修改
@@ -37,5 +38,6 @@ namespace ECSTest
             //code
             
         }
+
     }
 }

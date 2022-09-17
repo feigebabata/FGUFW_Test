@@ -2,8 +2,9 @@ using System.Text;
 using UnityEditor;
 using UnityEngine;
 using System.IO;
+using FGUFW.ECS;
 
-namespace FGUFW.ECS
+namespace FGUFW.ECS.Editor
 {
     public static class WorldFilterScriptCreate
     {

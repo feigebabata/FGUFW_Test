@@ -2,6 +2,7 @@
 using FGUFW.ECS;
 using Unity.Mathematics;
 using Unity.Collections;
+using UnityEngine;
 
 namespace ECSTest
 {
@@ -15,6 +16,7 @@ namespace ECSTest
         #endregion
         //code
 
+        public int ZiDuan2;
 
         public Test1(int entityUId=0)
         {
@@ -24,7 +26,8 @@ namespace ECSTest
             IsCreated = true;
             #endregion
             //code
-            
+
+            ZiDuan2 = 1;
         }
 
         public void Dispose()
@@ -38,4 +41,5 @@ namespace ECSTest
             
         }
     }
+
 }
