@@ -48,11 +48,11 @@ namespace FGUFW.ECS.Editor
             }
         }
 
-        public static void CreateCompScript(string folderPath,string nameSpace,List<string> names,int compTypeIndex)
+        public static void CreateCompScript(string folderPath,string nameSpace,List<string> names,int compTypeIndex,bool useMonoComp)
         {
             foreach (var item in names)
             {
-                createCompScript(folderPath,nameSpace,item,compTypeIndex++);
+                createCompScript(folderPath,nameSpace,item,compTypeIndex++, useMonoComp);
             }
             var config = GetConfig();
             config.CompTypeIndex = compTypeIndex;
@@ -62,11 +62,12 @@ namespace FGUFW.ECS.Editor
             AssetDatabase.Refresh();
         }
 
-        private static void createCompScript(string folderPath,string nameSpace,string name,int compTypeIndex)
+        private static void createCompScript(string folderPath,string nameSpace,string name,int compTypeIndex, bool useMonoComp)
         {
             var text = compScript.Replace("#NAMESPACE#",nameSpace);
             text = text.Replace("#NAME#",name);
             text = text.Replace("#COMPTYPE#",compTypeIndex.ToString());
+            text = text.Replace("#ATTRIBUTE#", useMonoComp? "[GenerateAuthoringComponent]":"");
 
             string path = $"{Application.dataPath.Replace("Assets",folderPath)}/{name}.cs";
             File.WriteAllText(path,text);
@@ -225,6 +226,7 @@ using Unity.Collections;
 
 namespace #NAMESPACE#
 {
+    #ATTRIBUTE#
     public struct #NAME# : IComponent
     {
         #region 不可修改

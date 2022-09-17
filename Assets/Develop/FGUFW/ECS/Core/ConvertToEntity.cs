@@ -19,6 +19,7 @@ namespace FGUFW.ECS
             {
                 item.Convert(World.Current,entityUId);
             }
+            Destroy(this);
         }
     }
 

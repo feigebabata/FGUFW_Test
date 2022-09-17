@@ -17,7 +17,7 @@ namespace FGUFW.ECS.Editor
         TextField _namespaceInput,_sysNameInput;
         IntegerField _compTypeOrSysOrderInput;
         ListView _listInput;
-        Toggle _useJob;
+        Toggle _useJobOrMonoComp;
         List<string> _sysCompTypeList;
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace FGUFW.ECS.Editor
             
             _namespaceInput = root.Q<TextField>("namespaceInput");
             _sysNameInput = root.Q<TextField>("sysNameInput");
-            _useJob = root.Q<Toggle>("useJob");
+            _useJobOrMonoComp = root.Q<Toggle>("useJobOrMonoComp");
             _compTypeOrSysOrderInput = root.Q<IntegerField>("compTypeOrSysOrderInput");
             _listInput = root.Q<ListView>("listInput");
 
@@ -146,7 +146,7 @@ namespace FGUFW.ECS.Editor
                 if(string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text))continue;
                 if(!typeNames.Contains(text)) typeNames.Add(text);
             }
-            CompAndSysScriptCreator.CreateSysScript(_pathTitle.text, _namespaceInput.text,_sysNameInput.value, _compTypeOrSysOrderInput.value, typeNames,_useJob.value);
+            CompAndSysScriptCreator.CreateSysScript(_pathTitle.text, _namespaceInput.text,_sysNameInput.value, _compTypeOrSysOrderInput.value, typeNames, _useJobOrMonoComp.value);
         }
 
         private void onCreateComp()
@@ -168,7 +168,7 @@ namespace FGUFW.ECS.Editor
                 if(string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text))continue;
                 if(!compNames.Contains(text)) compNames.Add(text);
             }
-            CompAndSysScriptCreator.CreateCompScript(_pathTitle.text,_namespaceInput.text,compNames,_compTypeOrSysOrderInput.value);
+            CompAndSysScriptCreator.CreateCompScript(_pathTitle.text,_namespaceInput.text,compNames,_compTypeOrSysOrderInput.value, _useJobOrMonoComp.value);
         }
 
         private void onCompListBindItem(VisualElement arg1, int arg2)
@@ -221,6 +221,8 @@ namespace FGUFW.ECS.Editor
             _sysNameInput.visible = _panelType==2;
 
             _createCompOrSysBtn.text = _panelType==1 ? "创建组件":"创建系统";
+
+            _useJobOrMonoComp.text = _panelType == 1 ? "Mono脚本特性:" : "使用Job:";
 
             setListCount(_countInput.value);
         }
