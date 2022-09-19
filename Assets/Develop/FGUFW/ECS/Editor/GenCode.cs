@@ -34,6 +34,7 @@ namespace FGUFW.ECS.Editor
                 checkType(t);
             });
 
+
         }
 
         private static void deleteType(Type t)

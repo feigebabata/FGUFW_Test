@@ -15,7 +15,7 @@ namespace ECSTest
         public bool IsCreated { get; private set; }
         #endregion
         //code
-        public NativeArray<int> Pos;
+        // public NativeArray<int> Pos;
         public float DeltaTime;
         public int Index;
 
@@ -27,7 +27,7 @@ namespace ECSTest
             IsCreated = true;
             #endregion
             //code
-            Pos = default(NativeArray<int>);
+            // Pos = default(NativeArray<int>);
             DeltaTime = 0;
             Index = 0;
         }

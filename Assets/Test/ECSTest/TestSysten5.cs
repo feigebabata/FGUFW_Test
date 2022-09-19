@@ -7,6 +7,7 @@ using Unity.Mathematics;
 using Unity.Collections;
 using UnityEngine.Jobs;
 using Unity.Jobs;
+using System;
 
 namespace ECSTest
 {

@@ -505,7 +505,7 @@ namespace FGUFW.ECS
 
             if(entityCount==0)return;
 
-            NativeArray<T0> t0s = new NativeArray<T0>(entityCount,Allocator.Temp);
+            NativeArray<T0> t0s = new NativeArray<T0>(entityCount,Allocator.TempJob);
 
             for (int i = 0; i < entityCount; i++)
             {
@@ -565,8 +565,8 @@ namespace FGUFW.ECS
 
             if(entityCount==0)return;
 
-            NativeArray<T0> t0s = new NativeArray<T0>(entityCount,Allocator.Temp);
-            NativeArray<T1> t1s = new NativeArray<T1>(entityCount,Allocator.Temp);
+            NativeArray<T0> t0s = new NativeArray<T0>(entityCount,Allocator.TempJob);
+            NativeArray<T1> t1s = new NativeArray<T1>(entityCount,Allocator.TempJob);
 
             for (int i = 0; i < entityCount; i++)
             {
@@ -635,9 +635,9 @@ namespace FGUFW.ECS
 
             if(entityCount==0)return;
 
-            NativeArray<T0> t0s = new NativeArray<T0>(entityCount,Allocator.Temp);
-            NativeArray<T1> t1s = new NativeArray<T1>(entityCount,Allocator.Temp);
-            NativeArray<T2> t2s = new NativeArray<T2>(entityCount,Allocator.Temp);
+            NativeArray<T0> t0s = new NativeArray<T0>(entityCount,Allocator.TempJob);
+            NativeArray<T1> t1s = new NativeArray<T1>(entityCount,Allocator.TempJob);
+            NativeArray<T2> t2s = new NativeArray<T2>(entityCount,Allocator.TempJob);
 
             for (int i = 0; i < entityCount; i++)
             {
@@ -715,10 +715,10 @@ namespace FGUFW.ECS
 
             if(entityCount==0)return;
 
-            NativeArray<T0> t0s = new NativeArray<T0>(entityCount,Allocator.Temp);
-            NativeArray<T1> t1s = new NativeArray<T1>(entityCount,Allocator.Temp);
-            NativeArray<T2> t2s = new NativeArray<T2>(entityCount,Allocator.Temp);
-            NativeArray<T3> t3s = new NativeArray<T3>(entityCount,Allocator.Temp);
+            NativeArray<T0> t0s = new NativeArray<T0>(entityCount,Allocator.TempJob);
+            NativeArray<T1> t1s = new NativeArray<T1>(entityCount,Allocator.TempJob);
+            NativeArray<T2> t2s = new NativeArray<T2>(entityCount,Allocator.TempJob);
+            NativeArray<T3> t3s = new NativeArray<T3>(entityCount,Allocator.TempJob);
 
             for (int i = 0; i < entityCount; i++)
             {
@@ -805,11 +805,11 @@ namespace FGUFW.ECS
 
             if(entityCount==0)return;
 
-            NativeArray<T0> t0s = new NativeArray<T0>(entityCount,Allocator.Temp);
-            NativeArray<T1> t1s = new NativeArray<T1>(entityCount,Allocator.Temp);
-            NativeArray<T2> t2s = new NativeArray<T2>(entityCount,Allocator.Temp);
-            NativeArray<T3> t3s = new NativeArray<T3>(entityCount,Allocator.Temp);
-            NativeArray<T4> t4s = new NativeArray<T4>(entityCount,Allocator.Temp);
+            NativeArray<T0> t0s = new NativeArray<T0>(entityCount,Allocator.TempJob);
+            NativeArray<T1> t1s = new NativeArray<T1>(entityCount,Allocator.TempJob);
+            NativeArray<T2> t2s = new NativeArray<T2>(entityCount,Allocator.TempJob);
+            NativeArray<T3> t3s = new NativeArray<T3>(entityCount,Allocator.TempJob);
+            NativeArray<T4> t4s = new NativeArray<T4>(entityCount,Allocator.TempJob);
 
             for (int i = 0; i < entityCount; i++)
             {
@@ -905,12 +905,12 @@ namespace FGUFW.ECS
 
             if(entityCount==0)return;
 
-            NativeArray<T0> t0s = new NativeArray<T0>(entityCount,Allocator.Temp);
-            NativeArray<T1> t1s = new NativeArray<T1>(entityCount,Allocator.Temp);
-            NativeArray<T2> t2s = new NativeArray<T2>(entityCount,Allocator.Temp);
-            NativeArray<T3> t3s = new NativeArray<T3>(entityCount,Allocator.Temp);
-            NativeArray<T4> t4s = new NativeArray<T4>(entityCount,Allocator.Temp);
-            NativeArray<T5> t5s = new NativeArray<T5>(entityCount,Allocator.Temp);
+            NativeArray<T0> t0s = new NativeArray<T0>(entityCount,Allocator.TempJob);
+            NativeArray<T1> t1s = new NativeArray<T1>(entityCount,Allocator.TempJob);
+            NativeArray<T2> t2s = new NativeArray<T2>(entityCount,Allocator.TempJob);
+            NativeArray<T3> t3s = new NativeArray<T3>(entityCount,Allocator.TempJob);
+            NativeArray<T4> t4s = new NativeArray<T4>(entityCount,Allocator.TempJob);
+            NativeArray<T5> t5s = new NativeArray<T5>(entityCount,Allocator.TempJob);
 
             for (int i = 0; i < entityCount; i++)
             {
@@ -1015,13 +1015,13 @@ namespace FGUFW.ECS
 
             if(entityCount==0)return;
 
-            NativeArray<T0> t0s = new NativeArray<T0>(entityCount,Allocator.Temp);
-            NativeArray<T1> t1s = new NativeArray<T1>(entityCount,Allocator.Temp);
-            NativeArray<T2> t2s = new NativeArray<T2>(entityCount,Allocator.Temp);
-            NativeArray<T3> t3s = new NativeArray<T3>(entityCount,Allocator.Temp);
-            NativeArray<T4> t4s = new NativeArray<T4>(entityCount,Allocator.Temp);
-            NativeArray<T5> t5s = new NativeArray<T5>(entityCount,Allocator.Temp);
-            NativeArray<T6> t6s = new NativeArray<T6>(entityCount,Allocator.Temp);
+            NativeArray<T0> t0s = new NativeArray<T0>(entityCount,Allocator.TempJob);
+            NativeArray<T1> t1s = new NativeArray<T1>(entityCount,Allocator.TempJob);
+            NativeArray<T2> t2s = new NativeArray<T2>(entityCount,Allocator.TempJob);
+            NativeArray<T3> t3s = new NativeArray<T3>(entityCount,Allocator.TempJob);
+            NativeArray<T4> t4s = new NativeArray<T4>(entityCount,Allocator.TempJob);
+            NativeArray<T5> t5s = new NativeArray<T5>(entityCount,Allocator.TempJob);
+            NativeArray<T6> t6s = new NativeArray<T6>(entityCount,Allocator.TempJob);
 
             for (int i = 0; i < entityCount; i++)
             {
@@ -1135,14 +1135,14 @@ namespace FGUFW.ECS
 
             if(entityCount==0)return;
 
-            NativeArray<T0> t0s = new NativeArray<T0>(entityCount,Allocator.Temp);
-            NativeArray<T1> t1s = new NativeArray<T1>(entityCount,Allocator.Temp);
-            NativeArray<T2> t2s = new NativeArray<T2>(entityCount,Allocator.Temp);
-            NativeArray<T3> t3s = new NativeArray<T3>(entityCount,Allocator.Temp);
-            NativeArray<T4> t4s = new NativeArray<T4>(entityCount,Allocator.Temp);
-            NativeArray<T5> t5s = new NativeArray<T5>(entityCount,Allocator.Temp);
-            NativeArray<T6> t6s = new NativeArray<T6>(entityCount,Allocator.Temp);
-            NativeArray<T7> t7s = new NativeArray<T7>(entityCount,Allocator.Temp);
+            NativeArray<T0> t0s = new NativeArray<T0>(entityCount,Allocator.TempJob);
+            NativeArray<T1> t1s = new NativeArray<T1>(entityCount,Allocator.TempJob);
+            NativeArray<T2> t2s = new NativeArray<T2>(entityCount,Allocator.TempJob);
+            NativeArray<T3> t3s = new NativeArray<T3>(entityCount,Allocator.TempJob);
+            NativeArray<T4> t4s = new NativeArray<T4>(entityCount,Allocator.TempJob);
+            NativeArray<T5> t5s = new NativeArray<T5>(entityCount,Allocator.TempJob);
+            NativeArray<T6> t6s = new NativeArray<T6>(entityCount,Allocator.TempJob);
+            NativeArray<T7> t7s = new NativeArray<T7>(entityCount,Allocator.TempJob);
 
             for (int i = 0; i < entityCount; i++)
             {

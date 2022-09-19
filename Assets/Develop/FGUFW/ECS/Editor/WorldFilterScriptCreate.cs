@@ -8,7 +8,7 @@ namespace FGUFW.ECS.Editor
 {
     public static class WorldFilterScriptCreate
     {
-        const string scriptPath = "Assets/Develop/FGUFW/ECS/WorldFilter.cs";
+        const string scriptPath = "Assets/Develop/FGUFW/ECS/Core/WorldFilter.cs";
         
         public static void CreateScript(int count)
         {
@@ -66,7 +66,7 @@ namespace FGUFW.ECS.Editor
                     addComps[i] = $"AddOrSetComponent(entityUId,t{i}_comp);";
 
                     types_job[i] = $"NativeArray<T{i}>";
-                    types_comp_job[i] = $"NativeArray<T{i}> t{i}s = new NativeArray<T{i}>(entityCount,Allocator.Temp);";
+                    types_comp_job[i] = $"NativeArray<T{i}> t{i}s = new NativeArray<T{i}>(entityCount,Allocator.TempJob);";
                     callback_job[i] = $"ref t{i}s";
                     setComp_job[i] = $"if(t{i}s[i].Dirty>0)t{i}_dict[entityUId]=t{i}s[i];";
                     comp_job_dispose[i] = $"t{i}s.Dispose();";
