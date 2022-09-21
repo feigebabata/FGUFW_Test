@@ -7,24 +7,13 @@ namespace ECSTest
 {
     public class ECSTestComp : MonoBehaviour
     {
-        World _world;
-
-        // Start is called before the first frame update
-        void Start()
-        {
-            _world = new World();
-            _world.CreateEntity<Test1>();
-            _world.CreateEntity<Test1,Test2>();
-            _world.CreateEntity<Test1,Test2,Test3>();
-
-        }
-
+        public Vector3 RotateTo;
         /// <summary>
-        /// This function is called when the MonoBehaviour will be destroyed.
+        /// Update is called every frame, if the MonoBehaviour is enabled.
         /// </summary>
-        void OnDestroy()
+        void Update()
         {
-            _world.Dispose();
+            
         }
 
 

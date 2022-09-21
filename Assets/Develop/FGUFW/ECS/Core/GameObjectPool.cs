@@ -7,10 +7,10 @@ namespace FGUFW.ECS
 {
     public static class GameObjectPool
     {
-        private static Dictionary<Type,Pool<GameObject>> poolDict = new Dictionary<Type, Pool<GameObject>>();
+        private static Dictionary<int,Pool<GameObject>> poolDict = new Dictionary<int, Pool<GameObject>>();
         private static Transform poolParent;
 
-        public static void InitPool<T>(GameObject template,int capacity) where T:MonoBehaviour
+        public static void InitPool(int type,GameObject template,int capacity)
         {
             if(poolParent==null)
             {
@@ -19,19 +19,19 @@ namespace FGUFW.ECS
                 poolParent.transform.position = Vector3.one * 10000;
             }
             var pool = new Pool<GameObject>(template,capacity,true,onCopyT,onReCycle);
-            poolDict.Add(typeof(T),pool);
+            poolDict.Add(type,pool);
         }
 
-        public static void ReCycle<T>(T obj) where T:MonoBehaviour
+        public static void ReCycle(int type,GameObject obj)
         {
-            var pool = poolDict[typeof(T)];
+            var pool = poolDict[type];
             pool.ReCycle(obj.gameObject);
         }
 
-        public static void Get<T>() where T:MonoBehaviour
+        public static GameObject Get(int type)
         {
-            var pool = poolDict[typeof(T)];
-            pool.Get().GetComponent<T>();
+            var pool = poolDict[type];
+            return pool.Get();
         }
 
         

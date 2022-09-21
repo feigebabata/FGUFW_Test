@@ -3,10 +3,10 @@ using FGUFW.ECS;
 using Unity.Mathematics;
 using Unity.Collections;
 
-namespace ECSTest
+namespace GUNNAC
 {
-    [GenerateAuthoringComponent]
-    public struct Test6 : IComponent
+    
+    public struct PlayerMoveMsgComp : IComponent
     {
         #region 不可修改
         public int CompType => 8;
@@ -15,9 +15,9 @@ namespace ECSTest
         public bool IsCreated { get; private set; }
         #endregion
         //code
+        public float4 MoveDelta;
 
-
-        public Test6(int entityUId=0)
+        public PlayerMoveMsgComp(int entityUId=0)
         {
             #region 不可修改
             EntityUId = entityUId;
@@ -25,7 +25,7 @@ namespace ECSTest
             IsCreated = true;
             #endregion
             //code
-            
+            MoveDelta = float4.zero;
         }
 
         public void Dispose()
