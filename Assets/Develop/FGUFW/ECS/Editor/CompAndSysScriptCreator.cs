@@ -103,12 +103,13 @@ namespace FGUFW.ECS.Editor
                     for (int i = 0; i < typeNames.Count; i++)
                     {
                         var typeName = typeNames[i];
-                        if(i==0)firstComp = $"{typeName.ToLower()}s";
-                        typeNames[i] = $"ref NativeArray<{typeName}> {typeName.ToLower()}s";
-                        setJob[i] = $"{typeName}s = {typeName.ToLower()}s";
+                        var minTypeName = $"{typeName.Substring(0,1).ToLower()}{typeName.Substring(1)}";
+                        if(i==0)firstComp = $"{minTypeName}s";
+                        typeNames[i] = $"ref NativeArray<{typeName}> {minTypeName}s";
+                        setJob[i] = $"{typeName}s = {minTypeName}s";
 
                         jobComps[i] = $"public NativeArray<{typeName}> {typeName}s;";
-                        compGets[i] = $"var {typeName.ToLower()} = {typeName}s[index];";
+                        compGets[i] = $"var {minTypeName} = {typeName}s[index];";
                     }
                     filter = filterJobScript.Replace("#TYPES_JOB#", string.Join(",", typeNames));
                     filter = filter.Replace("#SET_JOB#", string.Join(",\n                    ", setJob));
@@ -122,7 +123,10 @@ namespace FGUFW.ECS.Editor
                 {
                     for (int i = 0; i < typeNames.Count; i++)
                     {
-                        typeNames[i] = $"ref {typeNames[i]} {typeNames[i].ToLower()}";
+                        var typeName = typeNames[i];
+                        var minTypeName = $"{typeName.Substring(0, 1).ToLower()}{typeName.Substring(1)}";
+
+                        typeNames[i] = $"ref {typeName} {minTypeName}";
                     }
                     filter = filterScript.Replace("#TYPES#", string.Join(",", typeNames));
                 }
