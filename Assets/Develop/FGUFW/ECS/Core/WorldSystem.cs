@@ -23,7 +23,7 @@ namespace FGUFW.ECS
 
         private void update()
         {
-            while (UnityEngine.Time.unscaledTime >= getFrameTime(FrameIndex))
+            if (UnityEngine.Time.unscaledTime >= getFrameTime(FrameIndex))
             {
                 worldUpdate();
             }

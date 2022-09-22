@@ -30,11 +30,13 @@ namespace GUNNAC
                 var job = new Job
                 {
                     PositionComps = positioncomps,
-                    LineMoveComps = linemovecomps
+                    LineMoveComps = linemovecomps,
+                    DeltaTime = _world.DeltaTime
                 };
                 job.Run(length);
                 //code
-                
+                var distance = math.distance(positioncomps[0].Pos,positioncomps[0].PrevPos);
+                // Debug.Log($"{_world.DeltaTime} : {distance}");
             });
 
 
@@ -50,6 +52,7 @@ namespace GUNNAC
         {
             public NativeArray<PositionComp> PositionComps;
             public NativeArray<LineMoveComp> LineMoveComps;
+            public float DeltaTime;
 
             public void Execute(int index)
             {
@@ -58,7 +61,7 @@ namespace GUNNAC
                 //code
                 float3 dir = linemovecomp.DirAndVelocity.xyz;
                 float v = linemovecomp.DirAndVelocity.w;
-                float3 pos = positioncomp.Pos.xyz + (dir*v);
+                float3 pos = positioncomp.Pos.xyz + dir*v*DeltaTime;
                 float3 prevPos = positioncomp.Pos.xyz;
                 if(!math.all(positioncomp.Pos.xyz==pos) || !math.all(positioncomp.PrevPos.xyz==pos))
                 {
@@ -66,6 +69,9 @@ namespace GUNNAC
                     positioncomp.PrevPos.xyz = prevPos;
                     positioncomp.Dirty++;
                 }
+
+                PositionComps[index] = positioncomp;
+                LineMoveComps[index] = linemovecomp;
             }
 
         }
@@ -73,3 +79,10 @@ namespace GUNNAC
 
     }
 }
+
+/*
+2550
+2550
+2550
+5358-2550 = 2808-365 = 2443-850 = 1593-840 = 753
+*/

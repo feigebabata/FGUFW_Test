@@ -3,37 +3,88 @@ using System.Collections.Generic;
 using FGUFW.ECS;
 using Unity.Mathematics;
 using UnityEngine;
+using GUNNAC;
+using System;
 
 namespace ECSTest
 {
     public class ECSTestComp : MonoBehaviour
     {
-        public Vector3 RotateTo;
-        public float RotateSpeed = 45;
+        public Transform Player,Target;
+        private int _playerEUId,_targetEUId;
+        private World _world;
+        bool _isRun = false;
+
+        /// <summary>
+        /// Awake is called when the script instance is being loaded.
+        /// </summary>
+        IEnumerator Start()
+        {
+            yield return new WaitForSeconds(1);
+            _isRun = true;
+            // Application.targetFrameRate = 30;
+            _world = new World();
+
+            _targetEUId = _world.CreateEntity((ref PositionComp positionComp)=>
+            {
+                positionComp.Pos.xyz = Target.position;
+            });
+
+            _playerEUId = _world.CreateEntity((ref PositionComp positionComp,ref TargetMoveComp targetMoveComp,ref DirectionComp directionComp)=>
+            {
+                positionComp.Pos = new float4(Player.position,1);
+                targetMoveComp.TargetEUId = _targetEUId;
+                targetMoveComp.MoveVelocity = 20;
+                targetMoveComp.RotateVelocity = 360*3.5f;
+                directionComp.Forward.xyz = Player.forward;
+            });
+        }
+
+        /// <summary>
+        /// This function is called when the MonoBehaviour will be destroyed.
+        /// </summary>
+        void OnDestroy()
+        {
+            _world.Dispose();
+        }
 
         /// <summary>
         /// Update is called every frame, if the MonoBehaviour is enabled.
         /// </summary>
-        void LateUpdate()
+        void Update()
         {
-            var dir = transform.forward;
-            var angle = math.acos(math.dot( RotateTo.normalized, dir)) / math.PI * 180;
-            if(angle<0.5f)
+            if(!_isRun)return;
+
+            PositionComp playerPosComp;
+            if(_world.GetComponent(_playerEUId,out playerPosComp))
             {
-                transform.up = RotateTo;
-                return;
+                // if(playerPosComp.Dirty>0)
+                {
+                    // Debug.Log(_world.FrameIndex);
+                    Player.position = Vector3.Lerp(Player.position,playerPosComp.Pos.xyz,0.25f);
+                }
             }
-            var rotateDelta = math.min(RotateSpeed * Time.fixedDeltaTime,angle);
+            DirectionComp directionComp;
+            if(_world.GetComponent(_playerEUId,out directionComp))
+            {
+                // if(playerPosComp.Dirty>0)
+                {
+                    // Debug.Log(_world.FrameIndex);
+                    Player.forward = directionComp.Forward.xyz;
+                }
+            }
 
-            float4 axis = new float4(math.cross(RotateTo, dir),1);
-            var matrix = float4x4.AxisAngle(axis.xyz, math.radians(rotateDelta));
+            createUpdate();
 
-            var newDir = math.mul(new float4(dir,1), matrix);
-
-            transform.up = newDir.xyz;
         }
 
-
+        private void createUpdate()
+        {
+            if(Input.GetMouseButtonDown(0))
+            {
+                Debug.Log(Input.mousePosition);
+            }
+        }
     }
 
 }

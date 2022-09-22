@@ -7,6 +7,8 @@ using Unity.Mathematics;
 using Unity.Collections;
 using UnityEngine.Jobs;
 using Unity.Jobs;
+using System;
+using FGUFW;
 
 namespace GUNNAC
 {
@@ -27,19 +29,46 @@ namespace GUNNAC
             _world.Filter((ref TargetMoveComp targetmovecomp,ref PositionComp positioncomp,ref DirectionComp directioncomp) =>
             {
                 var targetEUId = targetmovecomp.TargetEUId;
+                PositionComp targetPosComp;
 
-                if(targetEUId!=0)
+                if(targetEUId!=World.ENTITY_SINGLE)
                 {
-
-                    PositionComp targetPosComp;
                     if (!_world.GetComponent<PositionComp>(targetEUId, out targetPosComp))
                     {
-                        targetEUId = 0;
+                        targetEUId = findEnemy();
                     }
+                }
+
+                float4 dir = directioncomp.Forward;
+                if (_world.GetComponent<PositionComp>(targetEUId, out targetPosComp))
+                {
+                    float4 targetDir = math.normalize(targetPosComp.Pos-positioncomp.Pos);
+                    dir = MathHelper.VectorRotateTo(dir,targetDir,targetmovecomp.RotateVelocity*_world.DeltaTime);
+                }
+                
+                float4 pos = positioncomp.Pos + _world.DeltaTime*targetmovecomp.MoveVelocity*dir;
+                float4 prevPos = positioncomp.PrevPos;
+
+                if(!math.all(positioncomp.Pos==pos) || !math.all(positioncomp.PrevPos==pos))
+                {
+                    positioncomp.Pos = pos;
+                    positioncomp.PrevPos = prevPos;
+                    positioncomp.Dirty++;
+                }
+
+                if(!math.all(directioncomp.Forward==dir) )
+                {
+                    directioncomp.Forward = dir;
+                    directioncomp.Dirty++;
                 }
             });
 
 
+        }
+
+        private int findEnemy()
+        {
+            return 0;
         }
 
         public void Dispose()

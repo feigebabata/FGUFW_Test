@@ -9,13 +9,17 @@ namespace GUNNAC
     public struct BattleViewRectComp : IComponent
     {
         #region 不可修改
-        public int CompType => 1;
+        public int CompType => 14;
         public int EntityUId { get; set; }
         public int Dirty { get; set; }
         public bool IsCreated { get; private set; }
         #endregion
         //code
+        /// <summary>
+        /// x:Right,y:Top,z:Left,w:Bottom
+        /// </summary>
         public float4 Rect;
+
 
         public BattleViewRectComp(int entityUId=0)
         {
@@ -26,6 +30,7 @@ namespace GUNNAC
             #endregion
             //code
             Rect = float4.zero;
+            
         }
 
         public void Dispose()

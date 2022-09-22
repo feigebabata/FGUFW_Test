@@ -9,13 +9,13 @@ namespace GUNNAC
     public struct PlayerMoveMsgComp : IComponent
     {
         #region 不可修改
-        public int CompType => 8;
+        public int CompType => 13;
         public int EntityUId { get; set; }
         public int Dirty { get; set; }
         public bool IsCreated { get; private set; }
         #endregion
         //code
-        public float4 MoveDelta;
+
 
         public PlayerMoveMsgComp(int entityUId=0)
         {
@@ -25,7 +25,7 @@ namespace GUNNAC
             IsCreated = true;
             #endregion
             //code
-            MoveDelta = float4.zero;
+            
         }
 
         public void Dispose()

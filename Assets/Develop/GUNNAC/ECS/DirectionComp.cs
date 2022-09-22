@@ -16,6 +16,7 @@ namespace GUNNAC
         #endregion
         //code
         public float4 Forward;
+        public float4 Right;
 
         public DirectionComp(int entityUId=0)
         {
@@ -26,6 +27,7 @@ namespace GUNNAC
             #endregion
             //code
             Forward = float4.zero;
+            Right = float4.zero;
         }
 
         public void Dispose()

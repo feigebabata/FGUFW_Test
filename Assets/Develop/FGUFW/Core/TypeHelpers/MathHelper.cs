@@ -1,3 +1,4 @@
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace FGUFW
@@ -77,5 +78,17 @@ namespace FGUFW
                 return v2-v1;
             }
         }
+
+        public static float4 VectorRotateTo(float4 dir,float4 targetDir,float maxEulerAngle)
+        {
+            float angle = math.acos(math.dot(dir,targetDir));
+            float maxAngle = math.radians(maxEulerAngle);
+            float rotateDelta = math.min(angle,maxAngle);
+            float3 axis = math.cross(targetDir.xyz,dir.xyz);
+            float4x4 rotateMatrix = float4x4.AxisAngle(axis,rotateDelta);
+            dir = math.mul(dir,rotateMatrix);
+            return math.normalize(dir);
+        }
+
     }
 }

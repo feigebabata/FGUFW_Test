@@ -95,10 +95,11 @@ namespace FGUFW.ECS.Editor
                 if(useJob)
                 {
                     string firstComp = null;
-                    var setJob = new string[typeNames.Count];
+                    var setJob = new string[typeNames.Count+1];
 
-                    var jobComps = new string[typeNames.Count];
+                    var jobComps = new string[typeNames.Count+1];
                     var compGets = new string[typeNames.Count];
+                    var compSets = new string[typeNames.Count];
 
                     for (int i = 0; i < typeNames.Count; i++)
                     {
@@ -110,13 +111,18 @@ namespace FGUFW.ECS.Editor
 
                         jobComps[i] = $"public NativeArray<{typeName}> {typeName}s;";
                         compGets[i] = $"var {minTypeName} = {typeName}s[index];";
+                        compSets[i] = $"{typeName}s[index] = {minTypeName};";
                     }
+                    jobComps[jobComps.Length-1] = "public float DeltaTime;";
+                    setJob[setJob.Length-1] = "DeltaTime = _world.DeltaTime";
+
                     filter = filterJobScript.Replace("#TYPES_JOB#", string.Join(",", typeNames));
                     filter = filter.Replace("#SET_JOB#", string.Join(",\n                    ", setJob));
                     filter = filter.Replace("#FIRST_COMPS#", firstComp);
 
                     jobStruct = jobStructScript.Replace("#JOB_COMPS#", string.Join("\n            ", jobComps));
                     jobStruct = jobStruct.Replace("#COMP_GET#", string.Join("\n                ", compGets));
+                    jobStruct = jobStruct.Replace("#COMP_SET#", string.Join("\n                ", compSets));
 
                 }
                 else
@@ -156,6 +162,8 @@ namespace FGUFW.ECS.Editor
                 #COMP_GET#
                 //code
                 
+                
+                #COMP_SET#
             }
 
         }
