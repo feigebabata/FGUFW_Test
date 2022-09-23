@@ -16,7 +16,7 @@ namespace GUNNAC
             {
                 var pos = renderComp.GObj.transform.position;
                 var newPos = positionComp.Pos.xyz;
-                pos = Vector3.Lerp(pos,newPos,0.035f);
+                pos = Vector3.Lerp(pos,newPos,0.05f);
                 renderComp.GObj.transform.position = pos;
                 renderComp.Dirty=0;
             });

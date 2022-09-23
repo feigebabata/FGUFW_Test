@@ -10,7 +10,7 @@ namespace GUNNAC
     {
         public PlayerMoveInputComp PlayerMoveInputComp;
         public PlayerShootInputComp PlayerShootInputComp;
-        public GameObject PlayerRender,PlayerCollider,PlayerBullet1;
+        public GameObject PlayerRender, PlayerCollider, PlayerBullet1,PlayerBulledCollider1;
         public World _world;
 
         /// <summary>
@@ -65,6 +65,7 @@ namespace GUNNAC
 
                 playerRenderComp.TailFlameMat = renderComp.GObj.transform.Find("EngineTrails/EngineTrails").GetComponent<MeshRenderer>().material;
                 playerRenderComp.PropertyID = Shader.PropertyToID("_TintColor");
+                playerRenderComp.ShootPoint = new float4(0, 0, 5, 0);
             });
             this.PlayerMoveInputComp.PlayerEUId = playerEUId;
             this.PlayerShootInputComp.PlayerEUId = playerEUId;
@@ -82,6 +83,7 @@ namespace GUNNAC
         private void initGObjPool()
         {
             GameObjectPool.InitPool((int)GameObjectType.PlayerBullet_1,PlayerBullet1,20);
+            GameObjectPool.InitPool((int)GameObjectType.PlayerBulletCollider_1, PlayerBulledCollider1, 20);
         }
 
     }

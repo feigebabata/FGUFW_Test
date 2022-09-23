@@ -26,7 +26,7 @@ namespace FGUFW.ECS
         public static void ReCycle(int type,GameObject obj)
         {
             var pool = poolDict[type];
-            pool.ReCycle(obj.gameObject);
+            pool.ReCycle(obj);
         }
 
         public static GameObject Get(int type)

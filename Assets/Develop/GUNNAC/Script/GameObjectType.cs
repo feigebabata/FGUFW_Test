@@ -6,5 +6,6 @@ namespace GUNNAC
         Render,
         Collider_Player,
         PlayerBullet_1,
+        PlayerBulletCollider_1,
     }
 }

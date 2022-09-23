@@ -17,6 +17,7 @@ namespace GUNNAC
         //code
         public Material TailFlameMat;
         public int PropertyID;
+        public float4 ShootPoint;
 
         public PlayerRenderComp(int entityUId=0)
         {
@@ -28,6 +29,7 @@ namespace GUNNAC
             //code
             TailFlameMat = null;
             PropertyID = 0;
+            ShootPoint = float4.zero;
         }
 
         public void Dispose()

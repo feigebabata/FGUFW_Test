@@ -54,7 +54,7 @@ namespace FGUFW
             }
             else
             {
-                if(_limited)
+                if(_limited && _cache.Count==Capacity)
                 {
                     return _copyT(_template);
                 }

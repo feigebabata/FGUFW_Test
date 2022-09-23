@@ -423,6 +423,7 @@ MonoBehaviour:
   PlayerRender: {fileID: 8944141253733066458, guid: 28b9c8829f5753a4a98025bc08d9b3fb, type: 3}
   PlayerCollider: {fileID: 2835356503214202467, guid: 6439a9fa38b62504e9be2d3eeee44b53, type: 3}
   PlayerBullet1: {fileID: 3368863032739428519, guid: 1469ad5b98fc21d48af5065e365433d4, type: 3}
+  PlayerBulledCollider1: {fileID: 6097113385006256282, guid: d2f270a921ff6214f8d8e42444d48bb0, type: 3}
 --- !u!4 &1909391724
 Transform:
   m_ObjectHideFlags: 0
