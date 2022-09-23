@@ -50,6 +50,13 @@ namespace FGUFW.ECS
 
         public bool GetComponent<T>(int entityUId,out T comp) where T: struct,IComponent
         {
+            if(entityUId==ENTITY_NONE)
+            {
+                holdNoneEntityUId();
+                comp = default(T);
+                return false;
+            }
+
             var key = ComponentTypeHelper.GetTypeValue<T>();
             var comps = getComps<T>();
             if(comps==null || !comps.ContainsKey(entityUId))
@@ -63,6 +70,12 @@ namespace FGUFW.ECS
 
         public void AddOrSetComponent<T>(int entityUId,T comp) where T : struct, IComponent
         {
+            if(entityUId==ENTITY_NONE)
+            {
+                holdNoneEntityUId();
+                return;
+            }
+
             comp.EntityUId = entityUId;
             int key = comp.CompType;
             
@@ -88,6 +101,11 @@ namespace FGUFW.ECS
 
         public void RemoveComponent<T>(int entityUId) where T:IComponent
         {
+            if(entityUId==ENTITY_NONE)
+            {
+                holdNoneEntityUId();
+                return;
+            }
             var comps = getComps<T>();
             if(comps==null || !comps.ContainsKey(entityUId))return;
             comps[entityUId].Dispose();
@@ -101,6 +119,11 @@ namespace FGUFW.ECS
         /// <param name="compTypeVal"></param>
         public void RemoveComponent(int entityUId,int compTypeVal)
         {
+            if(entityUId==ENTITY_NONE)
+            {
+                holdNoneEntityUId();
+                return;
+            }
             var key = compTypeVal;
             if(!_compDict.ContainsKey(key) || _compDict[key].Count==0)return;
             var comps = _compDict[key];
@@ -115,7 +138,11 @@ namespace FGUFW.ECS
 
         public void DestroyEntity(int entityUId)
         {
-            if(entityUId<1)return;//无效id
+            if(entityUId==ENTITY_NONE)
+            {
+                holdNoneEntityUId();
+                return;
+            }
 
             foreach (var kv in _compDict)
             {
@@ -162,10 +189,10 @@ namespace FGUFW.ECS
             }
             return _compDict[key] as Dictionary<int,T>;
         }
-        
-        private static void setComp<T>(Dictionary<int,T> dict,int entityUId,T comp)
+
+        private void holdNoneEntityUId()
         {
-            dict[entityUId] = comp;
+            
         }
 
         private void setFilterKeyCache(ICollection<int> keys)

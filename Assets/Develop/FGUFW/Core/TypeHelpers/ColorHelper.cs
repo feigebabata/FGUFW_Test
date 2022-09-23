@@ -47,5 +47,17 @@ namespace FGUFW
             return color;
         }
 
+        public static Color Lerp3(Color s,Color e,float t)
+        {
+            Vector3 v3 = Vector3.Lerp(new Vector3(s.r,s.g,s.b),new Vector3(e.r,e.g,e.b),t);
+            return new Color(v3.x,v3.y,v3.z,s.a);
+        }
+
+        public static Color Lerp(Color s,Color e,float t)
+        {
+            Vector4 v4 = Vector4.Lerp(new Vector4(s.r,s.g,s.b,s.a),new Vector4(e.r,e.g,e.b,e.a),t);
+            return new Color(v4.x,v4.y,v4.z,v4.w);
+        }
+
     }
 }
