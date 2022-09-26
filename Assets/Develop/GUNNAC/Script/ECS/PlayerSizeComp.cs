@@ -11,7 +11,7 @@ namespace GUNNAC
         #region 不可修改
         public int CompType => 15;
         public int EntityUId { get; set; }
-        public int Dirty { get; set; }
+
         public bool IsCreated { get; private set; }
         #endregion
         //code
@@ -25,7 +25,7 @@ namespace GUNNAC
         {
             #region 不可修改
             EntityUId = entityUId;
-            Dirty = 0;
+            
             IsCreated = true;
             #endregion
             //code
@@ -38,7 +38,7 @@ namespace GUNNAC
             #region 不可修改
             IsCreated = false;
             EntityUId = 0;
-            Dirty = 0;
+            
             #endregion
             //code
             

@@ -90,5 +90,48 @@ namespace FGUFW
             return math.normalize(dir);
         }
 
+        /// <summary>
+        /// 取插值 在cycle轮后能取到end_Min,end_Max之间的固定插值
+        /// </summary>
+        /// <param name="cycle"></param>
+        /// <param name="end_Min"></param>
+        /// <param name="end_Max"></param>
+        /// <returns></returns>
+        public static float LerpByCycle(int cycle,float end_Min=0.75f,float end_Max=0.85f)
+        {
+            if (cycle <= 0) return 0;
+            if (end_Max - end_Min < 0.0001f) return 0;
+
+            float length = 0;
+            float t = 0.5f;
+
+            float min = 0;
+            float max = 1;
+
+            do
+            {
+                t = Mathf.Lerp(min, max, 0.5f);
+                length = 1;
+                for (int i = 0; i < cycle; i++)
+                {
+                    length -= t * length;
+                }
+                length = 1 - length;
+                if (length >= end_Min && length <= end_Max)
+                {
+                    return t;
+                }
+                if (length < end_Min)
+                {
+                    min = t;
+                }
+                else
+                {
+                    max = t;
+                }
+            }
+            while (true);
+        }
+
     }
 }

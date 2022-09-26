@@ -16,12 +16,13 @@ public static class TableTest
     [MenuItem("Test/TableTest")]
     static void tableTest()
     {
-        test1(0.5f,2);
+        Debug.Log(MathHelper.LerpByCycle(17,0.85f,0.9f));
     }
 
     [MenuItem("Test/TableTest2")]
     static void tableTest2()
     {
+        test1(0.125f, 17);
     }
 
     static void test1(float t,int n)
@@ -34,42 +35,6 @@ public static class TableTest
 
         Debug.Log(1-length);
 
-    }
-
-    static float unLerp(int n)
-    {
-        int count = 0;
-        float length = 0;
-        float t = 0.5f;
-        
-        float min = 0;
-        float max = 1;
-        const float side = 0.9f;
-        do
-        {
-            t = Mathf.Lerp(min,max,0.5f);
-            length = 1;  
-            for (int i = 0; i < n; i++)
-            {
-                length -= t*length;
-            } 
-            length = 1-length;
-            if(length<side)
-            {
-                return t;
-            }
-            // if()
-            // {
-
-            // }
-            // else
-            // {
-
-            // }
-            count++;
-        } 
-        while (count>100000000);
-        return 0;
     }
 
 

@@ -61,14 +61,14 @@ namespace FGUFW.ECS.Editor
                     types_min[i] = $"if(t{i}_dict.Count<minCount){{minCount = t{i}_dict.Count;minCountEntityUIds = t{i}_dict.Keys;}}";
                     types_comp[i] = $"T{i} t{i}_comp;if(!t{i}_dict.TryGetValue(entityUId,out t{i}_comp)) continue;";
                     callback[i] = $"ref t{i}_comp";
-                    setComps[i] = $"if(t{i}_comp.Dirty>0 && t{i}_dict.ContainsKey(entityUId))t{i}_dict[entityUId]=t{i}_comp;";
+                    setComps[i] = $"if(t{i}_dict.ContainsKey(entityUId))t{i}_dict[entityUId]=t{i}_comp;";
                     instance[i] = $"var t{i}_comp = (T{i})Activator.CreateInstance(typeof(T{i}),entityUId);";
                     addComps[i] = $"AddOrSetComponent(entityUId,t{i}_comp);";
 
                     types_job[i] = $"NativeArray<T{i}>";
                     types_comp_job[i] = $"NativeArray<T{i}> t{i}s = new NativeArray<T{i}>(entityCount,Allocator.TempJob);";
                     callback_job[i] = $"ref t{i}s";
-                    setComp_job[i] = $"if(t{i}s[i].Dirty>0)t{i}_dict[entityUId]=t{i}s[i];";
+                    setComp_job[i] = $"t{i}_dict[entityUId]=t{i}s[i];";
                     comp_job_dispose[i] = $"t{i}s.Dispose();";
                     comp_job_set[i] = $"t{i}s[i] = t{i}_dict[entityUId];";
                 }

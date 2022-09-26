@@ -25,7 +25,6 @@ namespace GUNNAC
 
         public void OnUpdate()
         {
-            //IComponent.Dirty > 0 才会修改源数据
             _world.Filter((ref TargetMoveComp targetmovecomp,ref PositionComp positioncomp,ref DirectionComp directioncomp) =>
             {
                 var targetEUId = targetmovecomp.TargetEUId;
@@ -53,13 +52,11 @@ namespace GUNNAC
                 {
                     positioncomp.Pos = pos;
                     positioncomp.PrevPos = prevPos;
-                    positioncomp.Dirty++;
                 }
 
                 if(!math.all(directioncomp.Forward==dir) )
                 {
                     directioncomp.Forward = dir;
-                    directioncomp.Dirty++;
                 }
             });
 

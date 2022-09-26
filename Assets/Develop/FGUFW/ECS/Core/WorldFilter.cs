@@ -46,7 +46,7 @@ namespace FGUFW.ECS
 
                 callback(ref t0_comp);
 
-                if(t0_comp.Dirty>0 && t0_dict.ContainsKey(entityUId))t0_dict[entityUId]=t0_comp;
+                if(t0_dict.ContainsKey(entityUId))t0_dict[entityUId]=t0_comp;
             }
         }     
 
@@ -84,8 +84,8 @@ namespace FGUFW.ECS
 
                 callback(ref t0_comp,ref t1_comp);
 
-                if(t0_comp.Dirty>0 && t0_dict.ContainsKey(entityUId))t0_dict[entityUId]=t0_comp;
-                if(t1_comp.Dirty>0 && t1_dict.ContainsKey(entityUId))t1_dict[entityUId]=t1_comp;
+                if(t0_dict.ContainsKey(entityUId))t0_dict[entityUId]=t0_comp;
+                if(t1_dict.ContainsKey(entityUId))t1_dict[entityUId]=t1_comp;
             }
         }     
 
@@ -129,9 +129,9 @@ namespace FGUFW.ECS
 
                 callback(ref t0_comp,ref t1_comp,ref t2_comp);
 
-                if(t0_comp.Dirty>0 && t0_dict.ContainsKey(entityUId))t0_dict[entityUId]=t0_comp;
-                if(t1_comp.Dirty>0 && t1_dict.ContainsKey(entityUId))t1_dict[entityUId]=t1_comp;
-                if(t2_comp.Dirty>0 && t2_dict.ContainsKey(entityUId))t2_dict[entityUId]=t2_comp;
+                if(t0_dict.ContainsKey(entityUId))t0_dict[entityUId]=t0_comp;
+                if(t1_dict.ContainsKey(entityUId))t1_dict[entityUId]=t1_comp;
+                if(t2_dict.ContainsKey(entityUId))t2_dict[entityUId]=t2_comp;
             }
         }     
 
@@ -181,10 +181,10 @@ namespace FGUFW.ECS
 
                 callback(ref t0_comp,ref t1_comp,ref t2_comp,ref t3_comp);
 
-                if(t0_comp.Dirty>0 && t0_dict.ContainsKey(entityUId))t0_dict[entityUId]=t0_comp;
-                if(t1_comp.Dirty>0 && t1_dict.ContainsKey(entityUId))t1_dict[entityUId]=t1_comp;
-                if(t2_comp.Dirty>0 && t2_dict.ContainsKey(entityUId))t2_dict[entityUId]=t2_comp;
-                if(t3_comp.Dirty>0 && t3_dict.ContainsKey(entityUId))t3_dict[entityUId]=t3_comp;
+                if(t0_dict.ContainsKey(entityUId))t0_dict[entityUId]=t0_comp;
+                if(t1_dict.ContainsKey(entityUId))t1_dict[entityUId]=t1_comp;
+                if(t2_dict.ContainsKey(entityUId))t2_dict[entityUId]=t2_comp;
+                if(t3_dict.ContainsKey(entityUId))t3_dict[entityUId]=t3_comp;
             }
         }     
 
@@ -240,11 +240,11 @@ namespace FGUFW.ECS
 
                 callback(ref t0_comp,ref t1_comp,ref t2_comp,ref t3_comp,ref t4_comp);
 
-                if(t0_comp.Dirty>0 && t0_dict.ContainsKey(entityUId))t0_dict[entityUId]=t0_comp;
-                if(t1_comp.Dirty>0 && t1_dict.ContainsKey(entityUId))t1_dict[entityUId]=t1_comp;
-                if(t2_comp.Dirty>0 && t2_dict.ContainsKey(entityUId))t2_dict[entityUId]=t2_comp;
-                if(t3_comp.Dirty>0 && t3_dict.ContainsKey(entityUId))t3_dict[entityUId]=t3_comp;
-                if(t4_comp.Dirty>0 && t4_dict.ContainsKey(entityUId))t4_dict[entityUId]=t4_comp;
+                if(t0_dict.ContainsKey(entityUId))t0_dict[entityUId]=t0_comp;
+                if(t1_dict.ContainsKey(entityUId))t1_dict[entityUId]=t1_comp;
+                if(t2_dict.ContainsKey(entityUId))t2_dict[entityUId]=t2_comp;
+                if(t3_dict.ContainsKey(entityUId))t3_dict[entityUId]=t3_comp;
+                if(t4_dict.ContainsKey(entityUId))t4_dict[entityUId]=t4_comp;
             }
         }     
 
@@ -306,12 +306,12 @@ namespace FGUFW.ECS
 
                 callback(ref t0_comp,ref t1_comp,ref t2_comp,ref t3_comp,ref t4_comp,ref t5_comp);
 
-                if(t0_comp.Dirty>0 && t0_dict.ContainsKey(entityUId))t0_dict[entityUId]=t0_comp;
-                if(t1_comp.Dirty>0 && t1_dict.ContainsKey(entityUId))t1_dict[entityUId]=t1_comp;
-                if(t2_comp.Dirty>0 && t2_dict.ContainsKey(entityUId))t2_dict[entityUId]=t2_comp;
-                if(t3_comp.Dirty>0 && t3_dict.ContainsKey(entityUId))t3_dict[entityUId]=t3_comp;
-                if(t4_comp.Dirty>0 && t4_dict.ContainsKey(entityUId))t4_dict[entityUId]=t4_comp;
-                if(t5_comp.Dirty>0 && t5_dict.ContainsKey(entityUId))t5_dict[entityUId]=t5_comp;
+                if(t0_dict.ContainsKey(entityUId))t0_dict[entityUId]=t0_comp;
+                if(t1_dict.ContainsKey(entityUId))t1_dict[entityUId]=t1_comp;
+                if(t2_dict.ContainsKey(entityUId))t2_dict[entityUId]=t2_comp;
+                if(t3_dict.ContainsKey(entityUId))t3_dict[entityUId]=t3_comp;
+                if(t4_dict.ContainsKey(entityUId))t4_dict[entityUId]=t4_comp;
+                if(t5_dict.ContainsKey(entityUId))t5_dict[entityUId]=t5_comp;
             }
         }     
 
@@ -379,13 +379,13 @@ namespace FGUFW.ECS
 
                 callback(ref t0_comp,ref t1_comp,ref t2_comp,ref t3_comp,ref t4_comp,ref t5_comp,ref t6_comp);
 
-                if(t0_comp.Dirty>0 && t0_dict.ContainsKey(entityUId))t0_dict[entityUId]=t0_comp;
-                if(t1_comp.Dirty>0 && t1_dict.ContainsKey(entityUId))t1_dict[entityUId]=t1_comp;
-                if(t2_comp.Dirty>0 && t2_dict.ContainsKey(entityUId))t2_dict[entityUId]=t2_comp;
-                if(t3_comp.Dirty>0 && t3_dict.ContainsKey(entityUId))t3_dict[entityUId]=t3_comp;
-                if(t4_comp.Dirty>0 && t4_dict.ContainsKey(entityUId))t4_dict[entityUId]=t4_comp;
-                if(t5_comp.Dirty>0 && t5_dict.ContainsKey(entityUId))t5_dict[entityUId]=t5_comp;
-                if(t6_comp.Dirty>0 && t6_dict.ContainsKey(entityUId))t6_dict[entityUId]=t6_comp;
+                if(t0_dict.ContainsKey(entityUId))t0_dict[entityUId]=t0_comp;
+                if(t1_dict.ContainsKey(entityUId))t1_dict[entityUId]=t1_comp;
+                if(t2_dict.ContainsKey(entityUId))t2_dict[entityUId]=t2_comp;
+                if(t3_dict.ContainsKey(entityUId))t3_dict[entityUId]=t3_comp;
+                if(t4_dict.ContainsKey(entityUId))t4_dict[entityUId]=t4_comp;
+                if(t5_dict.ContainsKey(entityUId))t5_dict[entityUId]=t5_comp;
+                if(t6_dict.ContainsKey(entityUId))t6_dict[entityUId]=t6_comp;
             }
         }     
 
@@ -459,14 +459,14 @@ namespace FGUFW.ECS
 
                 callback(ref t0_comp,ref t1_comp,ref t2_comp,ref t3_comp,ref t4_comp,ref t5_comp,ref t6_comp,ref t7_comp);
 
-                if(t0_comp.Dirty>0 && t0_dict.ContainsKey(entityUId))t0_dict[entityUId]=t0_comp;
-                if(t1_comp.Dirty>0 && t1_dict.ContainsKey(entityUId))t1_dict[entityUId]=t1_comp;
-                if(t2_comp.Dirty>0 && t2_dict.ContainsKey(entityUId))t2_dict[entityUId]=t2_comp;
-                if(t3_comp.Dirty>0 && t3_dict.ContainsKey(entityUId))t3_dict[entityUId]=t3_comp;
-                if(t4_comp.Dirty>0 && t4_dict.ContainsKey(entityUId))t4_dict[entityUId]=t4_comp;
-                if(t5_comp.Dirty>0 && t5_dict.ContainsKey(entityUId))t5_dict[entityUId]=t5_comp;
-                if(t6_comp.Dirty>0 && t6_dict.ContainsKey(entityUId))t6_dict[entityUId]=t6_comp;
-                if(t7_comp.Dirty>0 && t7_dict.ContainsKey(entityUId))t7_dict[entityUId]=t7_comp;
+                if(t0_dict.ContainsKey(entityUId))t0_dict[entityUId]=t0_comp;
+                if(t1_dict.ContainsKey(entityUId))t1_dict[entityUId]=t1_comp;
+                if(t2_dict.ContainsKey(entityUId))t2_dict[entityUId]=t2_comp;
+                if(t3_dict.ContainsKey(entityUId))t3_dict[entityUId]=t3_comp;
+                if(t4_dict.ContainsKey(entityUId))t4_dict[entityUId]=t4_comp;
+                if(t5_dict.ContainsKey(entityUId))t5_dict[entityUId]=t5_comp;
+                if(t6_dict.ContainsKey(entityUId))t6_dict[entityUId]=t6_comp;
+                if(t7_dict.ContainsKey(entityUId))t7_dict[entityUId]=t7_comp;
             }
         }     
 
@@ -520,7 +520,7 @@ namespace FGUFW.ECS
             {
                 int entityUId = t0s[i].EntityUId;
 
-                if(t0s[i].Dirty>0)t0_dict[entityUId]=t0s[i];
+                t0_dict[entityUId]=t0s[i];
             }
 
             t0s.Dispose();
@@ -582,8 +582,8 @@ namespace FGUFW.ECS
             {
                 int entityUId = t0s[i].EntityUId;
 
-                if(t0s[i].Dirty>0)t0_dict[entityUId]=t0s[i];
-                if(t1s[i].Dirty>0)t1_dict[entityUId]=t1s[i];
+                t0_dict[entityUId]=t0s[i];
+                t1_dict[entityUId]=t1s[i];
             }
 
             t0s.Dispose();
@@ -654,9 +654,9 @@ namespace FGUFW.ECS
             {
                 int entityUId = t0s[i].EntityUId;
 
-                if(t0s[i].Dirty>0)t0_dict[entityUId]=t0s[i];
-                if(t1s[i].Dirty>0)t1_dict[entityUId]=t1s[i];
-                if(t2s[i].Dirty>0)t2_dict[entityUId]=t2s[i];
+                t0_dict[entityUId]=t0s[i];
+                t1_dict[entityUId]=t1s[i];
+                t2_dict[entityUId]=t2s[i];
             }
 
             t0s.Dispose();
@@ -736,10 +736,10 @@ namespace FGUFW.ECS
             {
                 int entityUId = t0s[i].EntityUId;
 
-                if(t0s[i].Dirty>0)t0_dict[entityUId]=t0s[i];
-                if(t1s[i].Dirty>0)t1_dict[entityUId]=t1s[i];
-                if(t2s[i].Dirty>0)t2_dict[entityUId]=t2s[i];
-                if(t3s[i].Dirty>0)t3_dict[entityUId]=t3s[i];
+                t0_dict[entityUId]=t0s[i];
+                t1_dict[entityUId]=t1s[i];
+                t2_dict[entityUId]=t2s[i];
+                t3_dict[entityUId]=t3s[i];
             }
 
             t0s.Dispose();
@@ -828,11 +828,11 @@ namespace FGUFW.ECS
             {
                 int entityUId = t0s[i].EntityUId;
 
-                if(t0s[i].Dirty>0)t0_dict[entityUId]=t0s[i];
-                if(t1s[i].Dirty>0)t1_dict[entityUId]=t1s[i];
-                if(t2s[i].Dirty>0)t2_dict[entityUId]=t2s[i];
-                if(t3s[i].Dirty>0)t3_dict[entityUId]=t3s[i];
-                if(t4s[i].Dirty>0)t4_dict[entityUId]=t4s[i];
+                t0_dict[entityUId]=t0s[i];
+                t1_dict[entityUId]=t1s[i];
+                t2_dict[entityUId]=t2s[i];
+                t3_dict[entityUId]=t3s[i];
+                t4_dict[entityUId]=t4s[i];
             }
 
             t0s.Dispose();
@@ -930,12 +930,12 @@ namespace FGUFW.ECS
             {
                 int entityUId = t0s[i].EntityUId;
 
-                if(t0s[i].Dirty>0)t0_dict[entityUId]=t0s[i];
-                if(t1s[i].Dirty>0)t1_dict[entityUId]=t1s[i];
-                if(t2s[i].Dirty>0)t2_dict[entityUId]=t2s[i];
-                if(t3s[i].Dirty>0)t3_dict[entityUId]=t3s[i];
-                if(t4s[i].Dirty>0)t4_dict[entityUId]=t4s[i];
-                if(t5s[i].Dirty>0)t5_dict[entityUId]=t5s[i];
+                t0_dict[entityUId]=t0s[i];
+                t1_dict[entityUId]=t1s[i];
+                t2_dict[entityUId]=t2s[i];
+                t3_dict[entityUId]=t3s[i];
+                t4_dict[entityUId]=t4s[i];
+                t5_dict[entityUId]=t5s[i];
             }
 
             t0s.Dispose();
@@ -1042,13 +1042,13 @@ namespace FGUFW.ECS
             {
                 int entityUId = t0s[i].EntityUId;
 
-                if(t0s[i].Dirty>0)t0_dict[entityUId]=t0s[i];
-                if(t1s[i].Dirty>0)t1_dict[entityUId]=t1s[i];
-                if(t2s[i].Dirty>0)t2_dict[entityUId]=t2s[i];
-                if(t3s[i].Dirty>0)t3_dict[entityUId]=t3s[i];
-                if(t4s[i].Dirty>0)t4_dict[entityUId]=t4s[i];
-                if(t5s[i].Dirty>0)t5_dict[entityUId]=t5s[i];
-                if(t6s[i].Dirty>0)t6_dict[entityUId]=t6s[i];
+                t0_dict[entityUId]=t0s[i];
+                t1_dict[entityUId]=t1s[i];
+                t2_dict[entityUId]=t2s[i];
+                t3_dict[entityUId]=t3s[i];
+                t4_dict[entityUId]=t4s[i];
+                t5_dict[entityUId]=t5s[i];
+                t6_dict[entityUId]=t6s[i];
             }
 
             t0s.Dispose();
@@ -1164,14 +1164,14 @@ namespace FGUFW.ECS
             {
                 int entityUId = t0s[i].EntityUId;
 
-                if(t0s[i].Dirty>0)t0_dict[entityUId]=t0s[i];
-                if(t1s[i].Dirty>0)t1_dict[entityUId]=t1s[i];
-                if(t2s[i].Dirty>0)t2_dict[entityUId]=t2s[i];
-                if(t3s[i].Dirty>0)t3_dict[entityUId]=t3s[i];
-                if(t4s[i].Dirty>0)t4_dict[entityUId]=t4s[i];
-                if(t5s[i].Dirty>0)t5_dict[entityUId]=t5s[i];
-                if(t6s[i].Dirty>0)t6_dict[entityUId]=t6s[i];
-                if(t7s[i].Dirty>0)t7_dict[entityUId]=t7s[i];
+                t0_dict[entityUId]=t0s[i];
+                t1_dict[entityUId]=t1s[i];
+                t2_dict[entityUId]=t2s[i];
+                t3_dict[entityUId]=t3s[i];
+                t4_dict[entityUId]=t4s[i];
+                t5_dict[entityUId]=t5s[i];
+                t6_dict[entityUId]=t6s[i];
+                t7_dict[entityUId]=t7s[i];
             }
 
             t0s.Dispose();

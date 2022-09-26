@@ -20,7 +20,7 @@ namespace GUNNAC
         /// </summary>
         void Awake()
         {
-            Application.targetFrameRate = 30*3;    
+            Application.targetFrameRate = 30*2;    
         }
 
         /// <summary>

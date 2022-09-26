@@ -23,7 +23,6 @@ namespace GUNNAC
 
         public void OnUpdate()
         {
-            //IComponent.Dirty > 0 才会修改源数据
             _world.FilterJob((ref NativeArray<PositionComp> positioncomps,ref NativeArray<LineMoveComp> linemovecomps)=>
             {
                 int length = positioncomps.Length;
@@ -67,7 +66,6 @@ namespace GUNNAC
                 {
                     positioncomp.Pos.xyz = pos;
                     positioncomp.PrevPos.xyz = prevPos;
-                    positioncomp.Dirty++;
                 }
 
                 PositionComps[index] = positioncomp;

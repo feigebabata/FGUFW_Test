@@ -23,7 +23,6 @@ namespace GUNNAC
 
         public void OnUpdate()
         {
-            //IComponent.Dirty > 0 才会修改源数据
             _world.Filter((ref BulletComp bulletComp,ref PositionComp positionComp)=>
             {
                 BattleViewRectComp battleViewRectComp;

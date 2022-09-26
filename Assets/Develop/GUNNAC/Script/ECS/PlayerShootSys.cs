@@ -23,7 +23,6 @@ namespace GUNNAC
 
         public void OnUpdate()
         {
-            //IComponent.Dirty > 0 才会修改源数据
             _world.Filter((ref PositionComp positionComp,ref PlayerShootMsgComp playerShootMsgComp,ref PlayerRenderComp playerRenderComp,ref RenderComp renderComp)=>
             {
                 var pos = positionComp.Pos+ playerRenderComp.ShootPoint;
@@ -39,7 +38,6 @@ namespace GUNNAC
                 )=>
                 {
                     positionComp1.Pos = pos;
-                    positionComp1.Dirty++;
 
                     renderComp.GObjType = GameObjectType.PlayerBullet_1;
                     renderComp.GObj = GameObjectPool.Get((int)renderComp.GObjType);

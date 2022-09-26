@@ -23,7 +23,6 @@ namespace GUNNAC
 
         public void OnUpdate()
         {
-            //IComponent.Dirty > 0 才会修改源数据
             _world.Filter((ref PlayerMoveMsgComp playerMoveMsgComp,ref PlayerSizeComp playerSizeComp,ref PositionComp positionComp)=>
             {
                 BattleViewRectComp battleViewRectComp;
@@ -47,7 +46,6 @@ namespace GUNNAC
                 }
                 positionComp.PrevPos = positionComp.Pos;
                 positionComp.Pos.xz = newPos;
-                positionComp.Dirty++;
 
                 _world.RemoveComponent<PlayerMoveMsgComp>(playerMoveMsgComp.EntityUId);
             });
