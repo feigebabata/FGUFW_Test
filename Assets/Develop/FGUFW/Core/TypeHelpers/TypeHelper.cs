@@ -48,5 +48,15 @@ namespace FGUFW
             }
         }
 
+        public static bool ContainsAttribute<T>(this Type self) where T:Attribute
+        {
+            var at = typeof(T);
+            foreach (var item in self.GetCustomAttributesData())
+            {
+                if (item.AttributeType == at) return true;
+            }
+            return false;
+        }
+
     }
 }

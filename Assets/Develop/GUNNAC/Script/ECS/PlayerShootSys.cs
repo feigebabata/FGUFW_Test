@@ -39,14 +39,17 @@ namespace GUNNAC
                 )=>
                 {
                     positionComp1.Pos = pos;
+                    positionComp1.Dirty++;
 
                     renderComp.GObjType = GameObjectType.PlayerBullet_1;
                     renderComp.GObj = GameObjectPool.Get((int)renderComp.GObjType);
+                    renderComp.GObj.transform.parent = null;
                     renderComp.GObj.transform.position = renderPos;
                     renderComp.GObj.SetActive(true);
 
                     colliderComp.GObjType = GameObjectType.PlayerBulletCollider_1;
                     colliderComp.GObj = GameObjectPool.Get((int)colliderComp.GObjType);
+                    colliderComp.GObj.transform.parent = null;
                     colliderComp.GObj.transform.position = pos.xyz;
                     colliderComp.GObj.SetActive(true);
 

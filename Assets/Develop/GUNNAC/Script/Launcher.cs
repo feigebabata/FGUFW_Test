@@ -11,7 +11,17 @@ namespace GUNNAC
         public PlayerMoveInputComp PlayerMoveInputComp;
         public PlayerShootInputComp PlayerShootInputComp;
         public GameObject PlayerRender, PlayerCollider, PlayerBullet1,PlayerBulledCollider1;
-        public World _world;
+        public GameObject BattleRoot;
+
+        private World _world;
+
+        /// <summary>
+        /// Awake is called when the script instance is being loaded.
+        /// </summary>
+        void Awake()
+        {
+            Application.targetFrameRate = 30*3;    
+        }
 
         /// <summary>
         /// Start is called on the frame when a script is enabled just before
@@ -22,6 +32,7 @@ namespace GUNNAC
             _world = new World();
             createPlayer();
             createBattleViewRect();
+            createBattle();
             initGObjPool();
         }
 
@@ -65,7 +76,7 @@ namespace GUNNAC
 
                 playerRenderComp.TailFlameMat = renderComp.GObj.transform.Find("EngineTrails/EngineTrails").GetComponent<MeshRenderer>().material;
                 playerRenderComp.PropertyID = Shader.PropertyToID("_TintColor");
-                playerRenderComp.ShootPoint = new float4(0, 0, 5, 0);
+                playerRenderComp.ShootPoint = new float4(0, 0, 5+1, 0);
             });
             this.PlayerMoveInputComp.PlayerEUId = playerEUId;
             this.PlayerShootInputComp.PlayerEUId = playerEUId;
@@ -84,6 +95,25 @@ namespace GUNNAC
         {
             GameObjectPool.InitPool((int)GameObjectType.PlayerBullet_1,PlayerBullet1,20);
             GameObjectPool.InitPool((int)GameObjectType.PlayerBulletCollider_1, PlayerBulledCollider1, 20);
+        }
+
+        private void createBattle()
+        {
+            var battleConfig = GetComponent<BattleConfigCompAuthoring>();
+            battleConfig.Convert(_world,World.ENTITY_SINGLE);
+            GameObject.Destroy(battleConfig);
+
+            int battleEUId = _world.CreateEntity(
+            (
+                ref PositionComp positionComp,
+                ref RenderComp renderComp,
+                ref BattleDataComp battleDataComp
+            )=>
+            {
+                renderComp.GObj = BattleRoot;
+
+            });
+
         }
 
     }

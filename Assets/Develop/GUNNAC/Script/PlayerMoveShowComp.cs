@@ -39,7 +39,7 @@ namespace GUNNAC
                         tailFlame = Vector3.one*0.2f;
                     }
                 }
-                renderComp.GObj.transform.rotation = Quaternion.Lerp(renderComp.GObj.transform.rotation,rotateTarget,0.025f);
+                renderComp.GObj.transform.rotation = Quaternion.Lerp(renderComp.GObj.transform.rotation,rotateTarget,0.05f);
                 // tailFlame = Vector3.Lerp()
                 var color = playerRenderComp.TailFlameMat.GetColor(playerRenderComp.PropertyID);
                 var current = new Vector3(color.r,color.g,color.b);

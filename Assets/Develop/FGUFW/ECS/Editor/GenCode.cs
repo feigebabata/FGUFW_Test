@@ -63,11 +63,12 @@ namespace FGUFW.ECS.Editor
 
         private static bool existsGenAttribute(Type t)
         {
-            foreach (var item in t.GetCustomAttributesData())
-            {
-                if (item.AttributeType == typeof(GenerateAuthoringComponentAttribute)) return true;
-            }
-            return false;
+            // foreach (var item in t.GetCustomAttributesData())
+            // {
+            //     if (item.AttributeType == typeof(GenerateAuthoringComponentAttribute)) return true;
+            // }
+            // return false;
+            return t.ContainsAttribute<GenerateAuthoringComponentAttribute>();
         }
 
         private static bool existsAuthoring(Type t)

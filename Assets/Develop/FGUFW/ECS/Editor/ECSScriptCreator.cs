@@ -28,13 +28,19 @@ namespace FGUFW.ECS.Editor
         [MenuItem("Assets/Create/ECSScriptCreator")]
         public static void ShowExample()
         {
-            if(FGUFW.EditorUtils.EditorUtils.GetSeleceFolderPath()==null)return;
             ECSScriptCreator wnd = GetWindow<ECSScriptCreator>();
             wnd.titleContent = new GUIContent("ECSScriptCreator");
         }
 
         public void CreateGUI()
         {
+            string path = FGUFW.EditorUtils.EditorUtils.GetSeleceFolderPath();
+
+            if(string.IsNullOrEmpty(path))
+            {
+                this.Close();
+            }
+
             // Each editor window contains a root VisualElement object
             VisualElement root = rootVisualElement;
             // Import UXML
@@ -47,7 +53,7 @@ namespace FGUFW.ECS.Editor
             addListener();
 
             var config = CompAndSysScriptCreator.GetConfig();
-            _pathTitle.text = FGUFW.EditorUtils.EditorUtils.GetSeleceFolderPath();
+            _pathTitle.text = path;
             _namespaceInput.value = config.PrevNamespace;
             onSwitchPanelBtn(config.PrevPanel);
         }

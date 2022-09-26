@@ -14,7 +14,7 @@ namespace GUNNAC
         {
             if(World.Current==null)return;
             var world = World.Current;
-            if(Input.GetKey(KeyCode.Return) || Input.GetKey(KeyCode.KeypadEnter))
+            if(Input.GetKey(KeyCode.Return) || Input.GetKey(KeyCode.KeypadEnter) || Input.GetKey(KeyCode.Space))
             {
                 PlayerShootMsgComp playerShootMsgComp;
                 if(!world.GetComponent(PlayerEUId,out playerShootMsgComp))
