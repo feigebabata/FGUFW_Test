@@ -100,6 +100,7 @@ namespace FGUFW
         public static float LerpByCycle(int cycle,float end_Min=0.75f,float end_Max=0.85f)
         {
             if (cycle <= 0) return 0;
+            if (end_Min<0 || end_Max<0) return 0;
             if (end_Max - end_Min < 0.0001f) return 0;
 
             float length = 0;

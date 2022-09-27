@@ -15,9 +15,20 @@ namespace GUNNAC
         public bool IsCreated { get; private set; }
         #endregion
         //code
-        public GameObject[] BattleItem;
-        public int[] BattleItemCount;
-        public float[] BattleItemSize;
+
+        /// <summary>
+        /// 战场块模板
+        /// </summary>
+        public GameObject[] BattleItems;
+
+        /// <summary>
+        /// 战场块每个节点的资源
+        /// </summary>
+        public int[] BattleItemIndex;
+
+        /// <summary>
+        /// 战场节点的滚动速度
+        /// </summary>
         public float[] BattleItemScorllVelocity;
 
         public BattleConfigComp(int entityUId=0)
@@ -27,9 +38,8 @@ namespace GUNNAC
             IsCreated = true;
             #endregion
             //code
-            BattleItem = null;
-            BattleItemCount = null;
-            BattleItemSize = null;
+            BattleItems = null;
+            BattleItemIndex = null;
             BattleItemScorllVelocity = null;
         }
 
@@ -40,6 +50,9 @@ namespace GUNNAC
             EntityUId = 0;
             #endregion
             //code
+            BattleItems = null;
+            BattleItemIndex = null;
+            BattleItemScorllVelocity = null;
             
         }
     }

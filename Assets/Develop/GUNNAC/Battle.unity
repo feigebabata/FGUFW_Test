@@ -482,10 +482,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5c6c6f3846dedc49b3533778d9d38d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BattleItem: []
-  BattleItemCount: 
-  BattleItemSize: []
-  BattleItemScorllVelocity: []
+  BattleItems:
+  - {fileID: 1441864833767002081, guid: b65ebcb1727f2e944938c720082dcf2b, type: 3}
+  - {fileID: 1441864833767002081, guid: b2d3f62c1727604489d4c138e7257ab6, type: 3}
+  - {fileID: 1441864833767002081, guid: 3095285cac7d2484db3cd557a5a20649, type: 3}
+  - {fileID: 1441864833767002081, guid: 035d9b3b0880f674ea37e98180b41b93, type: 3}
+  BattleItemIndex: 0000000000000000010000000100000002000000020000000300000003000000
+  BattleItemScorllVelocity:
+  - 10
+  - 10
+  - 10
+  - 10
+  - 10
+  - 10
+  - 10
+  - 10
 --- !u!1 &2026959990
 GameObject:
   m_ObjectHideFlags: 0

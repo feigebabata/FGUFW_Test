@@ -19,15 +19,16 @@ namespace GUNNAC
 
                 Vector3 pos = renderComp.GObj.transform.position;
                 Vector3 newPos = positionComp.Pos.xyz;
-                float lerpVal = MathHelper.LerpByCycle(ScreenHelper.FPS / World.FRAME_COUNT);
+                float lerpVal = MathHelper.LerpByCycle(ScreenHelper.FPS / World.FRAME_COUNT,0.6f,0.65f);
                 //Debug.Log(lerpVal);
                 pos = Vector3.Lerp(pos,newPos, lerpVal);
-                //pos = Vector3.SmoothDamp(pos,newPos,ref renderComp.SmoothVelocity,0.05f);
+                // pos = Vector3.SmoothDamp(pos,newPos,ref renderComp.SmoothVelocity,lerpVal);
                 if(Vector3.Distance(pos,newPos)<0.001f)
                 {
                     pos = newPos;
                 }
                 renderComp.GObj.transform.position = pos;
+                
             });
         }
     }

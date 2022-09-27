@@ -219,7 +219,7 @@ namespace FGUFW.ECS.Editor
             _compTypeOrSysOrderInput.label = _panelType==1 ? "组件类型索引:":"系统优先级";
             _compTypeOrSysOrderInput.value = _panelType==1 ? config.CompTypeIndex : 0;
 
-            _countInput.label = _panelType==1 ? "组件类型索引:":"系统优先级";
+            _countInput.label = _panelType==1 ? "组件个数:":"参数个数";
             _countInput.lowValue = _panelType==1 ? 1:0;
             _countInput.highValue = _panelType==1 ? 32:8;
             _countInput.value = _panelType==1 ? 1:0;

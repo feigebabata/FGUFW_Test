@@ -15,14 +15,15 @@ namespace FGUFW.ECS
             var type = typeof(T);
             if(!compTypeDict.ContainsKey(type))
             {
-                using (var t_obj = (IComponent)Activator.CreateInstance(type))
-                {
+                // using (var t_obj = (IComponent)Activator.CreateInstance(type))
+                var t_obj = (IComponent)Activator.CreateInstance(type);
+                // {
                     if(compTypeDict.ContainsValue(t_obj.CompType))
                     {
                         throw new Exception($"组件类型重复 val={t_obj.CompType}");
                     }
                     compTypeDict.Add(type,t_obj.CompType);
-                }
+                // }
             }
             return compTypeDict[type];
         }

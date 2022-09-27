@@ -18,7 +18,7 @@ namespace GUNNAC
         //code
         public GameObject GObj; 
         public GameObjectType GObjType;
-        //public Vector3 SmoothVelocity;
+        // public Vector3 SmoothVelocity;
 
         public RenderComp(int entityUId=0)
         {
@@ -30,7 +30,7 @@ namespace GUNNAC
             //code
             GObj = null;
             GObjType = 0;
-            //SmoothVelocity = Vector3.zero;
+            // SmoothVelocity = Vector3.zero;
         }
 
         public void Dispose()

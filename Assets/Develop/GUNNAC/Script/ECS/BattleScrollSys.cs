@@ -25,7 +25,15 @@ namespace GUNNAC
         {
             _world.Filter((ref BattleDataComp battleDataComp,ref PositionComp positionComp)=>
             {
-                
+                BattleConfigComp battleConfigComp;
+                _world.GetComponent(World.ENTITY_SINGLE,out battleConfigComp);
+
+                int index = battleDataComp.BattleItemIndex;
+                if(index==-1)index=0;
+                float velocity = battleConfigComp.BattleItemScorllVelocity[index];
+                var pos = positionComp.Pos;
+                pos.z -= velocity*_world.DeltaTime;
+                positionComp.Pos = pos;
             });
 
 

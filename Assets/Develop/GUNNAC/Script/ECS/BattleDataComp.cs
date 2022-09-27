@@ -2,6 +2,8 @@
 using FGUFW.ECS;
 using Unity.Mathematics;
 using Unity.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace GUNNAC
 {
@@ -15,6 +17,7 @@ namespace GUNNAC
         #endregion
         //code
         public int BattleItemIndex;
+        public Dictionary<int,GameObject> Childs;
 
         public BattleDataComp(int entityUId=0)
         {
@@ -24,7 +27,7 @@ namespace GUNNAC
             #endregion
             //code
             BattleItemIndex = -1;
-
+            Childs = new Dictionary<int, GameObject>();
         }
 
         public void Dispose()
@@ -34,7 +37,8 @@ namespace GUNNAC
             EntityUId = 0;
             #endregion
             //code
-            
+            Childs.Clear();
+            Childs = null;
         }
     }
 }

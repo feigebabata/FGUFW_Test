@@ -9,18 +9,16 @@ namespace GUNNAC
     [DisallowMultipleComponent]
     public class BattleConfigCompAuthoring:MonoBehaviour, IConvertToComponent
     {
-        public UnityEngine.GameObject[] BattleItem;
-        public System.Int32[] BattleItemCount;
-        public System.Single[] BattleItemSize;
+        public UnityEngine.GameObject[] BattleItems;
+        public System.Int32[] BattleItemIndex;
         public System.Single[] BattleItemScorllVelocity;
 
         public void Convert(World world, int entityUId)
         {
             var comp = new BattleConfigComp(entityUId);
 
-            comp.BattleItem = this.BattleItem;
-            comp.BattleItemCount = this.BattleItemCount;
-            comp.BattleItemSize = this.BattleItemSize;
+            comp.BattleItems = this.BattleItems;
+            comp.BattleItemIndex = this.BattleItemIndex;
             comp.BattleItemScorllVelocity = this.BattleItemScorllVelocity;
 
             world.AddOrSetComponent(entityUId , comp);
