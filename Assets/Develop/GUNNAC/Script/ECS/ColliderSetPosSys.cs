@@ -25,9 +25,16 @@ namespace GUNNAC
         {
             _world.Filter((ref ColliderComp colliderComp,ref PositionComp positionComp)=>
             {
-                //if(positionComp.Dirty>0)
+                float offset = math.distance(positionComp.Pos,positionComp.PrevPos);
+                if(offset==0)return;
+                colliderComp.GObj.transform.position = positionComp.Pos.xyz;
+                if(colliderComp.Collider!=null && colliderComp.Collider is CapsuleCollider)
                 {
-                    colliderComp.GObj.transform.position = positionComp.Pos.xyz;
+                    var collider = colliderComp.Collider;
+                    collider.height = offset+collider.radius*2;
+                    var center = collider.center;
+                    center.z = -offset/2;
+                    collider.center = center;
                 }
             });
 

@@ -2,10 +2,11 @@ namespace GUNNAC
 {
     public enum GameObjectType
     {
-        None,
-        Render,
-        Collider_Player,
-        PlayerBullet_1,
-        PlayerBulletCollider_1,
+        None=0,
+        Render=1,
+        Collider_Player=2,
+        PlayerBullet_1=3,
+        PlayerBulletCollider_1=4,
+        Boom=5,
     }
 }

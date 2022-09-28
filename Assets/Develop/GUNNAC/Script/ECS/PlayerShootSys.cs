@@ -38,15 +38,21 @@ namespace GUNNAC
                 )=>
                 {
                     positionComp1.Pos = pos;
+                    positionComp1.PrevPos = pos;
 
                     renderComp.GObjType = GameObjectType.PlayerBullet_1;
                     renderComp.GObj = GameObjectPool.Get((int)renderComp.GObjType);
+                    renderComp.GObj.name = $"renderComp{bulletComp.EntityUId}";
                     renderComp.GObj.transform.parent = null;
                     renderComp.GObj.transform.position = renderPos;
                     renderComp.GObj.SetActive(true);
 
                     colliderComp.GObjType = GameObjectType.PlayerBulletCollider_1;
                     colliderComp.GObj = GameObjectPool.Get((int)colliderComp.GObjType);
+                    colliderComp.GObj.name = $"colliderComp{bulletComp.EntityUId}";
+                    colliderComp.Collider = colliderComp.GObj.GetComponent<CapsuleCollider>();
+                    colliderComp.Collider.height = colliderComp.Collider.radius*2;
+                    colliderComp.GObj.GetComponent<IBulletAttacker>().EntityUId = bulletComp.EntityUId;
                     colliderComp.GObj.transform.parent = null;
                     colliderComp.GObj.transform.position = pos.xyz;
                     colliderComp.GObj.SetActive(true);

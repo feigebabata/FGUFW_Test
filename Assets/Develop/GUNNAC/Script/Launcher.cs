@@ -12,6 +12,7 @@ namespace GUNNAC
         public PlayerShootInputComp PlayerShootInputComp;
         public GameObject PlayerRender, PlayerCollider, PlayerBullet1,PlayerBulledCollider1;
         public GameObject BattleRoot;
+        public GameObject Boom;
 
         private World _world;
 
@@ -95,12 +96,14 @@ namespace GUNNAC
         {
             GameObjectPool.InitPool((int)GameObjectType.PlayerBullet_1,PlayerBullet1,20);
             GameObjectPool.InitPool((int)GameObjectType.PlayerBulletCollider_1, PlayerBulledCollider1, 20);
+            GameObjectPool.InitPool((int)GameObjectType.Boom, Boom, 20);
         }
 
         private void createBattle()
         {
             var battleConfig = GetComponent<BattleConfigCompAuthoring>();
             battleConfig.Convert(_world,World.ENTITY_SINGLE);
+
             GameObject.Destroy(battleConfig);
 
             int battleEUId = _world.CreateEntity(

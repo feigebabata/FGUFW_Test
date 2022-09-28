@@ -29,10 +29,10 @@ namespace GUNNAC
                 _world.GetComponent(World.ENTITY_SINGLE,out battleViewRectComp);
                 
                 bool outBattle = false;
-                if(positionComp.Pos.x<battleViewRectComp.Rect.z-10)outBattle=true;
-                if(positionComp.Pos.x>battleViewRectComp.Rect.x+10)outBattle=true;
-                if(positionComp.Pos.z<battleViewRectComp.Rect.w-10)outBattle=true;
-                if(positionComp.Pos.z>battleViewRectComp.Rect.y+10)outBattle=true;
+                if(positionComp.Pos.x<battleViewRectComp.Rect.z*1.5f)outBattle=true;
+                if(positionComp.Pos.x>battleViewRectComp.Rect.x*1.5f)outBattle=true;
+                if(positionComp.Pos.z<battleViewRectComp.Rect.w*1.5f)outBattle=true;
+                if(positionComp.Pos.z>battleViewRectComp.Rect.y*1.5f)outBattle=true;
 
                 if(outBattle)
                 {
