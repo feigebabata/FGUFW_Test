@@ -69,6 +69,16 @@ namespace FGUFW.ECS
             return true;
         }
 
+        public Dictionary<int, T>.ValueCollection GetComponents<T>()where T: struct,IComponent
+        {
+            var comps = getComps<T>();
+            if(comps==null || comps.Count==0)
+            {
+                return null;
+            }
+            return comps.Values;
+        }
+
         public void AddOrSetComponent<T>(int entityUId,T comp) where T : struct, IComponent
         {
             if(entityUId==ENTITY_NONE)
@@ -193,7 +203,7 @@ namespace FGUFW.ECS
 
         private void holdNoneEntityUId()
         {
-            
+            // Debug.LogError("无效ID");
         }
 
         private void setFilterKeyCache(ICollection<int> keys)

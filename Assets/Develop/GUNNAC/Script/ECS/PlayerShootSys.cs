@@ -37,6 +37,9 @@ namespace GUNNAC
                     case 2:
                         shoot2(renderPos,pos);
                     break;
+                    case 3:
+                        shoot3(renderPos,pos);
+                    break;
                 }
 
 
@@ -44,6 +47,40 @@ namespace GUNNAC
             });
 
 
+        }
+
+        private void shoot3(float3 renderPos, float4 pos)
+        {
+            for (int i = -1; i < 2; i++)
+            {
+                int entityUId = _world.CreateEntity(
+                (
+                    ref PositionComp positionComp,
+                    ref TargetMoveComp targetMoveComp,
+                    ref BattleOutDestroyComp battleOutDestroyComp,
+                    ref DirectionComp directionComp
+                )=>
+                {
+                    positionComp.Pos = pos;
+                    positionComp.PrevPos = pos;
+
+                    targetMoveComp.MoveVelocity = 50;
+                    targetMoveComp.RotateVelocity = 180;
+                    
+                    directionComp.Forward = math.normalize(new float4(i*1f,0,1,0));
+                });
+                PoolRenderComp poolRenderComp = new PoolRenderComp(entityUId,(int)GameObjectType.PlayerBullet_1);
+                poolRenderComp.GObject.transform.position = renderPos;
+
+                PoolColliderComp poolColliderComp = new PoolColliderComp(entityUId,(int)GameObjectType.PlayerBulletCollider_1);
+                poolColliderComp.GObject.transform.position = pos.xyz;
+                poolColliderComp.GObject.GetComponent<IBulletAttacker>().EntityUId = entityUId;
+                CapsuleCollider capsuleCollider = poolColliderComp.Collider as CapsuleCollider;
+                capsuleCollider.height = capsuleCollider.radius*2;
+
+                _world.AddOrSetComponent(entityUId,poolRenderComp);
+                _world.AddOrSetComponent(entityUId,poolColliderComp);
+            }
         }
 
         private void shoot2(float3 renderPos, float4 pos)

@@ -14,7 +14,7 @@ namespace GUNNAC
         {
             if(World.Current==null)return;
             var world = World.Current;
-            if(Input.GetKey(KeyCode.Return) || Input.GetKey(KeyCode.KeypadEnter))
+            if(Input.GetKey(KeyCode.Return))
             {
                 PlayerShootMsgComp playerShootMsgComp;
                 if(!world.GetComponent(PlayerEUId,out playerShootMsgComp))
@@ -32,6 +32,16 @@ namespace GUNNAC
                     playerShootMsgComp = new PlayerShootMsgComp(PlayerEUId);
                 }
                 playerShootMsgComp.BulletType = 2;
+                world.AddOrSetComponent(PlayerEUId,playerShootMsgComp);
+            }
+            else if( Input.GetKey(KeyCode.KeypadEnter))
+            {
+                PlayerShootMsgComp playerShootMsgComp;
+                if(!world.GetComponent(PlayerEUId,out playerShootMsgComp))
+                {
+                    playerShootMsgComp = new PlayerShootMsgComp(PlayerEUId);
+                }
+                playerShootMsgComp.BulletType = 3;
                 world.AddOrSetComponent(PlayerEUId,playerShootMsgComp);
             }
 

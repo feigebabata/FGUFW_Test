@@ -30,16 +30,14 @@ namespace GUNNAC
                 var targetEUId = targetmovecomp.TargetEUId;
                 PositionComp targetPosComp;
 
-                if(targetEUId!=World.ENTITY_NONE)
+                if (targetEUId == World.ENTITY_NONE || !_world.GetComponent<PositionComp>(targetEUId, out targetPosComp))
                 {
-                    if (!_world.GetComponent<PositionComp>(targetEUId, out targetPosComp))
-                    {
-                        targetEUId = findEnemy();
-                    }
+                    targetEUId = findEnemy(positioncomp.Pos);
                 }
 
+
                 float4 dir = directioncomp.Forward;
-                if (_world.GetComponent<PositionComp>(targetEUId, out targetPosComp))
+                if (targetEUId!=World.ENTITY_NONE && _world.GetComponent<PositionComp>(targetEUId, out targetPosComp))
                 {
                     float4 targetDir = math.normalize(targetPosComp.Pos-positioncomp.Pos);
                     dir = MathHelper.VectorRotateTo(dir,targetDir,targetmovecomp.RotateVelocity*_world.DeltaTime);
@@ -63,9 +61,25 @@ namespace GUNNAC
 
         }
 
-        private int findEnemy()
+        private int findEnemy(float4 pos)
         {
-            return 0;
+            var enemys = _world.GetComponents<EnemyComp>();
+            if(enemys==null)return World.ENTITY_NONE;
+            float minSpace = float.MaxValue;
+            int targetEUId = 0;
+            foreach (var item in enemys)
+            {
+                int entityUId = item.EntityUId;
+                PositionComp positionComp;
+                _world.GetComponent(entityUId,out positionComp);
+                float space = math.distance(positionComp.Pos,pos);
+                if(space<minSpace)
+                {
+                    minSpace = space;
+                    targetEUId = entityUId;
+                }
+            }
+            return targetEUId;
         }
 
         public void Dispose()
