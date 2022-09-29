@@ -29,6 +29,7 @@ namespace FGUFW.ECS
         private Dictionary<int, IDictionary> _compDict = new Dictionary<int, IDictionary>();
         private int[] _filterKeyCache;
         private int _filterKeyCacheLength;
+        private object[] _createArgs=new object[1];
 
         
         public World()

@@ -733,6 +733,9 @@ MonoBehaviour:
   PlayerBullet1: {fileID: 3368863032739428519, guid: 1469ad5b98fc21d48af5065e365433d4, type: 3}
   PlayerBulledCollider1: {fileID: 6097113385006256282, guid: d2f270a921ff6214f8d8e42444d48bb0, type: 3}
   BattleRoot: {fileID: 725318134}
+  Boom: {fileID: 7241731062495035156, guid: f37df216d59603a4b86f1ad170c67ca6, type: 3}
+  Enemy: {fileID: 7298899525714869338, guid: 06b5ed93986dce14e9bbe88ec5a57f02, type: 3}
+  EnemyCollider: {fileID: 4203064059363340474, guid: 7bed61be5cc9bb945b2572642514f658, type: 3}
 --- !u!4 &1909391724
 Transform:
   m_ObjectHideFlags: 0

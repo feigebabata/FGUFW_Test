@@ -32,7 +32,10 @@ namespace FGUFW.ECS
         public static GameObject Get(int type)
         {
             var pool = poolDict[type];
-            return pool.Get();
+            var item = pool.Get();
+            item.transform.parent = null;
+            item.gameObject.SetActive(true);
+            return item;
         }
 
         
@@ -41,6 +44,7 @@ namespace FGUFW.ECS
         {
             if(inPool)
             {
+                obj.gameObject.SetActive(false);
                 obj.transform.SetParent(poolParent);
                 obj.transform.localPosition = Vector3.zero;
             }
@@ -68,5 +72,13 @@ namespace FGUFW.ECS
             poolDict.Clear();
         }
 
+
     }
+
+    public interface IGameObjectPoolItem
+    {
+        GameObject GObject{get;}
+        int ItemType{get;}
+    }
+
 }

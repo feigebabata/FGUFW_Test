@@ -17,7 +17,7 @@ namespace GUNNAC
             {
                 //if(positionComp.Dirty==0)return;
 
-                Vector3 pos = renderComp.GObj.transform.position;
+                Vector3 pos = renderComp.GObject.transform.position;
                 Vector3 newPos = positionComp.Pos.xyz;
                 float lerpVal = MathHelper.LerpByCycle(ScreenHelper.FPS / World.FRAME_COUNT,0.6f,0.65f);
                 //Debug.Log(lerpVal);
@@ -27,7 +27,21 @@ namespace GUNNAC
                 {
                     pos = newPos;
                 }
-                renderComp.GObj.transform.position = pos;
+                renderComp.GObject.transform.position = pos;
+                
+            });
+
+            world.Filter((ref PoolRenderComp poolRenderComp,ref PositionComp positionComp)=>
+            {
+                Vector3 pos = poolRenderComp.GObject.transform.position;
+                Vector3 newPos = positionComp.Pos.xyz;
+                float lerpVal = MathHelper.LerpByCycle(ScreenHelper.FPS / World.FRAME_COUNT,0.6f,0.65f);
+                pos = Vector3.Lerp(pos,newPos, lerpVal);
+                if(Vector3.Distance(pos,newPos)<0.001f)
+                {
+                    pos = newPos;
+                }
+                poolRenderComp.GObject.transform.position = pos;
                 
             });
         }

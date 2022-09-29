@@ -9,7 +9,7 @@ namespace FGUFW.ECS
         {
             if (World.Current == null)
             {
-                Debug.LogWarning("ÕÒ²»µ½WorldÊµÀı");
+                Debug.LogWarning("æ‰¾ä¸åˆ°Worldå®ä¾‹");
                 return;
             }
 
@@ -18,6 +18,7 @@ namespace FGUFW.ECS
             foreach (var item in converts)
             {
                 item.Convert(World.Current,entityUId);
+                Destroy(item as MonoBehaviour);
             }
             Destroy(this);
         }

@@ -1191,8 +1191,9 @@ namespace FGUFW.ECS
         where T0:struct,IComponent
         {
             int entityUId = CreateEntity();
+            _createArgs[0] = entityUId;
 
-            var t0_comp = (T0)Activator.CreateInstance(typeof(T0),entityUId);
+            var t0_comp = (T0)Activator.CreateInstance(typeof(T0),_createArgs);
 
             if(callback!=null)callback(ref t0_comp);
 
@@ -1207,9 +1208,10 @@ namespace FGUFW.ECS
         where T1:struct,IComponent
         {
             int entityUId = CreateEntity();
+            _createArgs[0] = entityUId;
 
-            var t0_comp = (T0)Activator.CreateInstance(typeof(T0),entityUId);
-            var t1_comp = (T1)Activator.CreateInstance(typeof(T1),entityUId);
+            var t0_comp = (T0)Activator.CreateInstance(typeof(T0),_createArgs);
+            var t1_comp = (T1)Activator.CreateInstance(typeof(T1),_createArgs);
 
             if(callback!=null)callback(ref t0_comp,ref t1_comp);
 
@@ -1226,10 +1228,11 @@ namespace FGUFW.ECS
         where T2:struct,IComponent
         {
             int entityUId = CreateEntity();
+            _createArgs[0] = entityUId;
 
-            var t0_comp = (T0)Activator.CreateInstance(typeof(T0),entityUId);
-            var t1_comp = (T1)Activator.CreateInstance(typeof(T1),entityUId);
-            var t2_comp = (T2)Activator.CreateInstance(typeof(T2),entityUId);
+            var t0_comp = (T0)Activator.CreateInstance(typeof(T0),_createArgs);
+            var t1_comp = (T1)Activator.CreateInstance(typeof(T1),_createArgs);
+            var t2_comp = (T2)Activator.CreateInstance(typeof(T2),_createArgs);
 
             if(callback!=null)callback(ref t0_comp,ref t1_comp,ref t2_comp);
 
@@ -1248,11 +1251,12 @@ namespace FGUFW.ECS
         where T3:struct,IComponent
         {
             int entityUId = CreateEntity();
+            _createArgs[0] = entityUId;
 
-            var t0_comp = (T0)Activator.CreateInstance(typeof(T0),entityUId);
-            var t1_comp = (T1)Activator.CreateInstance(typeof(T1),entityUId);
-            var t2_comp = (T2)Activator.CreateInstance(typeof(T2),entityUId);
-            var t3_comp = (T3)Activator.CreateInstance(typeof(T3),entityUId);
+            var t0_comp = (T0)Activator.CreateInstance(typeof(T0),_createArgs);
+            var t1_comp = (T1)Activator.CreateInstance(typeof(T1),_createArgs);
+            var t2_comp = (T2)Activator.CreateInstance(typeof(T2),_createArgs);
+            var t3_comp = (T3)Activator.CreateInstance(typeof(T3),_createArgs);
 
             if(callback!=null)callback(ref t0_comp,ref t1_comp,ref t2_comp,ref t3_comp);
 
@@ -1273,12 +1277,13 @@ namespace FGUFW.ECS
         where T4:struct,IComponent
         {
             int entityUId = CreateEntity();
+            _createArgs[0] = entityUId;
 
-            var t0_comp = (T0)Activator.CreateInstance(typeof(T0),entityUId);
-            var t1_comp = (T1)Activator.CreateInstance(typeof(T1),entityUId);
-            var t2_comp = (T2)Activator.CreateInstance(typeof(T2),entityUId);
-            var t3_comp = (T3)Activator.CreateInstance(typeof(T3),entityUId);
-            var t4_comp = (T4)Activator.CreateInstance(typeof(T4),entityUId);
+            var t0_comp = (T0)Activator.CreateInstance(typeof(T0),_createArgs);
+            var t1_comp = (T1)Activator.CreateInstance(typeof(T1),_createArgs);
+            var t2_comp = (T2)Activator.CreateInstance(typeof(T2),_createArgs);
+            var t3_comp = (T3)Activator.CreateInstance(typeof(T3),_createArgs);
+            var t4_comp = (T4)Activator.CreateInstance(typeof(T4),_createArgs);
 
             if(callback!=null)callback(ref t0_comp,ref t1_comp,ref t2_comp,ref t3_comp,ref t4_comp);
 
@@ -1301,13 +1306,14 @@ namespace FGUFW.ECS
         where T5:struct,IComponent
         {
             int entityUId = CreateEntity();
+            _createArgs[0] = entityUId;
 
-            var t0_comp = (T0)Activator.CreateInstance(typeof(T0),entityUId);
-            var t1_comp = (T1)Activator.CreateInstance(typeof(T1),entityUId);
-            var t2_comp = (T2)Activator.CreateInstance(typeof(T2),entityUId);
-            var t3_comp = (T3)Activator.CreateInstance(typeof(T3),entityUId);
-            var t4_comp = (T4)Activator.CreateInstance(typeof(T4),entityUId);
-            var t5_comp = (T5)Activator.CreateInstance(typeof(T5),entityUId);
+            var t0_comp = (T0)Activator.CreateInstance(typeof(T0),_createArgs);
+            var t1_comp = (T1)Activator.CreateInstance(typeof(T1),_createArgs);
+            var t2_comp = (T2)Activator.CreateInstance(typeof(T2),_createArgs);
+            var t3_comp = (T3)Activator.CreateInstance(typeof(T3),_createArgs);
+            var t4_comp = (T4)Activator.CreateInstance(typeof(T4),_createArgs);
+            var t5_comp = (T5)Activator.CreateInstance(typeof(T5),_createArgs);
 
             if(callback!=null)callback(ref t0_comp,ref t1_comp,ref t2_comp,ref t3_comp,ref t4_comp,ref t5_comp);
 
@@ -1332,14 +1338,15 @@ namespace FGUFW.ECS
         where T6:struct,IComponent
         {
             int entityUId = CreateEntity();
+            _createArgs[0] = entityUId;
 
-            var t0_comp = (T0)Activator.CreateInstance(typeof(T0),entityUId);
-            var t1_comp = (T1)Activator.CreateInstance(typeof(T1),entityUId);
-            var t2_comp = (T2)Activator.CreateInstance(typeof(T2),entityUId);
-            var t3_comp = (T3)Activator.CreateInstance(typeof(T3),entityUId);
-            var t4_comp = (T4)Activator.CreateInstance(typeof(T4),entityUId);
-            var t5_comp = (T5)Activator.CreateInstance(typeof(T5),entityUId);
-            var t6_comp = (T6)Activator.CreateInstance(typeof(T6),entityUId);
+            var t0_comp = (T0)Activator.CreateInstance(typeof(T0),_createArgs);
+            var t1_comp = (T1)Activator.CreateInstance(typeof(T1),_createArgs);
+            var t2_comp = (T2)Activator.CreateInstance(typeof(T2),_createArgs);
+            var t3_comp = (T3)Activator.CreateInstance(typeof(T3),_createArgs);
+            var t4_comp = (T4)Activator.CreateInstance(typeof(T4),_createArgs);
+            var t5_comp = (T5)Activator.CreateInstance(typeof(T5),_createArgs);
+            var t6_comp = (T6)Activator.CreateInstance(typeof(T6),_createArgs);
 
             if(callback!=null)callback(ref t0_comp,ref t1_comp,ref t2_comp,ref t3_comp,ref t4_comp,ref t5_comp,ref t6_comp);
 
@@ -1366,15 +1373,16 @@ namespace FGUFW.ECS
         where T7:struct,IComponent
         {
             int entityUId = CreateEntity();
+            _createArgs[0] = entityUId;
 
-            var t0_comp = (T0)Activator.CreateInstance(typeof(T0),entityUId);
-            var t1_comp = (T1)Activator.CreateInstance(typeof(T1),entityUId);
-            var t2_comp = (T2)Activator.CreateInstance(typeof(T2),entityUId);
-            var t3_comp = (T3)Activator.CreateInstance(typeof(T3),entityUId);
-            var t4_comp = (T4)Activator.CreateInstance(typeof(T4),entityUId);
-            var t5_comp = (T5)Activator.CreateInstance(typeof(T5),entityUId);
-            var t6_comp = (T6)Activator.CreateInstance(typeof(T6),entityUId);
-            var t7_comp = (T7)Activator.CreateInstance(typeof(T7),entityUId);
+            var t0_comp = (T0)Activator.CreateInstance(typeof(T0),_createArgs);
+            var t1_comp = (T1)Activator.CreateInstance(typeof(T1),_createArgs);
+            var t2_comp = (T2)Activator.CreateInstance(typeof(T2),_createArgs);
+            var t3_comp = (T3)Activator.CreateInstance(typeof(T3),_createArgs);
+            var t4_comp = (T4)Activator.CreateInstance(typeof(T4),_createArgs);
+            var t5_comp = (T5)Activator.CreateInstance(typeof(T5),_createArgs);
+            var t6_comp = (T6)Activator.CreateInstance(typeof(T6),_createArgs);
+            var t7_comp = (T7)Activator.CreateInstance(typeof(T7),_createArgs);
 
             if(callback!=null)callback(ref t0_comp,ref t1_comp,ref t2_comp,ref t3_comp,ref t4_comp,ref t5_comp,ref t6_comp,ref t7_comp);
 

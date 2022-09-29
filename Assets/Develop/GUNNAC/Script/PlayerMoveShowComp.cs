@@ -42,7 +42,7 @@ namespace GUNNAC
 
                 float lerpVal = MathHelper.LerpByCycle(ScreenHelper.FPS / World.FRAME_COUNT,0.5f,0.55f);
 
-                renderComp.GObj.transform.rotation = Quaternion.Lerp(renderComp.GObj.transform.rotation,rotateTarget, lerpVal);
+                renderComp.GObject.transform.rotation = Quaternion.Lerp(renderComp.GObject.transform.rotation,rotateTarget, lerpVal);
                 // tailFlame = Vector3.Lerp()
                 var color = playerRenderComp.TailFlameMat.GetColor(playerRenderComp.PropertyID);
                 var current = new Vector3(color.r,color.g,color.b);

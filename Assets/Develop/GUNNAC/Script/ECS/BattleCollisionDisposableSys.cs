@@ -30,7 +30,7 @@ namespace GUNNAC
                 int entityUId = battleCollisionDisposableMsgComp.EntityUId;
                 int targetUId = battleCollisionDisposableMsgComp.TargetEUId;
                 reCycleBullet(entityUId);
-                destroyEnemy(entityUId);
+                destroyEnemy(targetUId);
             });
 
 
@@ -44,17 +44,17 @@ namespace GUNNAC
 
         private void reCycleBullet(int entityUId)
         {
-            RenderComp renderComp;
-            _world.GetComponent(entityUId,out renderComp);
-            renderComp.GObj.SetActive(false);
-            GameObjectPool.ReCycle((int)renderComp.GObjType,renderComp.GObj);
-            renderComp.GObj = null;
+            // RenderComp renderComp;
+            // _world.GetComponent(entityUId,out renderComp);
+            // renderComp.GObject.SetActive(false);
+            // GameObjectPool.ReCycle((int)renderComp.GObjType,renderComp.GObject);
+            // renderComp.GObject = null;
 
-            ColliderComp colliderComp;
-            _world.GetComponent(entityUId,out colliderComp);
-            colliderComp.GObj.SetActive(false);
-            GameObjectPool.ReCycle((int)colliderComp.GObjType,colliderComp.GObj);
-            colliderComp.GObj = null;
+            // ColliderComp colliderComp;
+            // _world.GetComponent(entityUId,out colliderComp);
+            // colliderComp.GObj.SetActive(false);
+            // GameObjectPool.ReCycle((int)colliderComp.GObjType,colliderComp.GObj);
+            // colliderComp.GObj = null;
             _world.DestroyEntity(entityUId);
         }
 

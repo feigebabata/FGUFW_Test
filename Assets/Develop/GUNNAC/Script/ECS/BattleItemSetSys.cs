@@ -32,6 +32,9 @@ namespace GUNNAC
                 const float size = 90;
                 float offset = -positionComp.Pos.z;
                 int currentIndex = (int)((offset)/size);
+                
+                if(currentIndex>=battleConfigComp.BattleItemIndex.Length)return;
+                
                 // Debug.Log(currentIndex);
                 for (int i = 1; i < 3; i++)
                 {
@@ -51,7 +54,7 @@ namespace GUNNAC
                 if(!battleDataComp.Childs.ContainsKey(currentIndex))
                 {
                     int itemIndex = battleConfigComp.BattleItemIndex[currentIndex];
-                    var item = battleConfigComp.BattleItems[itemIndex].Copy(renderComp.GObj.transform);
+                    var item = battleConfigComp.BattleItems[itemIndex].Copy(renderComp.GObject.transform);
                     item.transform.localPosition = new Vector3(0,0,currentIndex*size+size);
                     battleDataComp.Childs.Add(currentIndex,item);
                     // Debug.Log($"添加:{currentIndex}");

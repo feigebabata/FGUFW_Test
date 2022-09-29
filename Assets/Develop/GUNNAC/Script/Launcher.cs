@@ -13,6 +13,7 @@ namespace GUNNAC
         public GameObject PlayerRender, PlayerCollider, PlayerBullet1,PlayerBulledCollider1;
         public GameObject BattleRoot;
         public GameObject Boom;
+        public GameObject Enemy,EnemyCollider;
 
         private World _world;
 
@@ -21,7 +22,7 @@ namespace GUNNAC
         /// </summary>
         void Awake()
         {
-            Application.targetFrameRate = 30*2;    
+            Application.targetFrameRate = 30*10;    
         }
 
         /// <summary>
@@ -35,6 +36,7 @@ namespace GUNNAC
             createBattleViewRect();
             createBattle();
             initGObjPool();
+            createEnemy();
         }
 
         /// <summary>
@@ -59,8 +61,8 @@ namespace GUNNAC
             {
                 var Pos = Vector3.zero;
 
-                renderComp.GObj = PlayerRender.Copy(null);
-                renderComp.GObj.transform.position = Pos;
+                renderComp.GObject = PlayerRender.Copy(null);
+                renderComp.GObject.transform.position = Pos;
 
                 colliderComp.GObj = PlayerCollider.Copy(null);
                 colliderComp.GObj.transform.position = Pos;
@@ -75,7 +77,7 @@ namespace GUNNAC
                 rect.w = boxCollider.size.z/2 - boxCollider.center.z;
                 playerSizeComp.Rect = rect; 
 
-                playerRenderComp.TailFlameMat = renderComp.GObj.transform.Find("EngineTrails/EngineTrails").GetComponent<MeshRenderer>().material;
+                playerRenderComp.TailFlameMat = renderComp.GObject.transform.Find("EngineTrails/EngineTrails").GetComponent<MeshRenderer>().material;
                 playerRenderComp.PropertyID = Shader.PropertyToID("_TintColor");
                 playerRenderComp.ShootPoint = new float4(0, 0, 5+1, 0);
             });
@@ -97,6 +99,8 @@ namespace GUNNAC
             GameObjectPool.InitPool((int)GameObjectType.PlayerBullet_1,PlayerBullet1,20);
             GameObjectPool.InitPool((int)GameObjectType.PlayerBulletCollider_1, PlayerBulledCollider1, 20);
             GameObjectPool.InitPool((int)GameObjectType.Boom, Boom, 20);
+            GameObjectPool.InitPool((int)GameObjectType.Enemy, Enemy, 50);
+            GameObjectPool.InitPool((int)GameObjectType.EnemyCollider, EnemyCollider, 50);
         }
 
         private void createBattle()
@@ -113,10 +117,18 @@ namespace GUNNAC
                 ref BattleDataComp battleDataComp
             )=>
             {
-                renderComp.GObj = BattleRoot;
+                renderComp.GObject = BattleRoot;
 
             });
 
+        }
+
+        private void createEnemy()
+        {
+            _world.CreateEntity((ref EnemyCreateComp enemyCreateComp)=>
+            {
+                enemyCreateComp.Delay = 0;
+            });
         }
 
     }

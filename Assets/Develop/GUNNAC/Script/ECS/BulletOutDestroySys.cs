@@ -10,7 +10,7 @@ using Unity.Jobs;
 
 namespace GUNNAC
 {
-    public class BulletOutBattleRecycleSys : ISystem
+    public class BulletOutDestroySys : ISystem
     {
         public int Order => -10;
 
@@ -23,7 +23,7 @@ namespace GUNNAC
 
         public void OnUpdate()
         {
-            _world.Filter((ref BulletComp bulletComp,ref PositionComp positionComp)=>
+            _world.Filter((ref BattleOutDestroyComp battleOutRecycleComp,ref PositionComp positionComp)=>
             {
                 BattleViewRectComp battleViewRectComp;
                 _world.GetComponent(World.ENTITY_SINGLE,out battleViewRectComp);
@@ -36,19 +36,19 @@ namespace GUNNAC
 
                 if(outBattle)
                 {
-                    int entityUId = bulletComp.EntityUId;
+                    int entityUId = battleOutRecycleComp.EntityUId;
 
-                    RenderComp renderComp;
-                    _world.GetComponent(entityUId,out renderComp);
-                    renderComp.GObj.SetActive(false);
-                    GameObjectPool.ReCycle((int)renderComp.GObjType,renderComp.GObj);
-                    renderComp.GObj = null;
+                    // RenderComp renderComp;
+                    // _world.GetComponent(entityUId,out renderComp);
+                    // renderComp.GObject.SetActive(false);
+                    // GameObjectPool.ReCycle((int)renderComp.GObjType,renderComp.GObject);
+                    // renderComp.GObject = null;
 
-                    ColliderComp colliderComp;
-                    _world.GetComponent(entityUId,out colliderComp);
-                    colliderComp.GObj.SetActive(false);
-                    GameObjectPool.ReCycle((int)colliderComp.GObjType,colliderComp.GObj);
-                    colliderComp.GObj = null;
+                    // ColliderComp colliderComp;
+                    // _world.GetComponent(entityUId,out colliderComp);
+                    // colliderComp.GObj.SetActive(false);
+                    // GameObjectPool.ReCycle((int)colliderComp.GObjType,colliderComp.GObj);
+                    // colliderComp.GObj = null;
 
                     _world.DestroyEntity(entityUId);
                 }

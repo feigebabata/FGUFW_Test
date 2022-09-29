@@ -38,6 +38,22 @@ namespace GUNNAC
                 }
             });
 
+            _world.Filter((ref PoolColliderComp colliderComp,ref PositionComp positionComp)=>
+            {
+                float offset = math.distance(positionComp.Pos,positionComp.PrevPos);
+                if(offset==0)return;
+                colliderComp.GObject.transform.position = positionComp.Pos.xyz;
+                if(colliderComp.Collider!=null && colliderComp.Collider is CapsuleCollider)
+                {
+                    CapsuleCollider collider = colliderComp.Collider as CapsuleCollider;
+                    collider.height = offset+collider.radius*2;
+                    var center = collider.center;
+                    center.z = -offset/2;
+                    collider.center = center;
+                }
+            });
+
+
 
         }
 

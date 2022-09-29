@@ -7,6 +7,7 @@ using Unity.Mathematics;
 using Unity.Collections;
 using UnityEngine.Jobs;
 using Unity.Jobs;
+using System;
 
 namespace GUNNAC
 {
@@ -26,44 +27,83 @@ namespace GUNNAC
             _world.Filter((ref PositionComp positionComp,ref PlayerShootMsgComp playerShootMsgComp,ref PlayerRenderComp playerRenderComp,ref RenderComp renderComp)=>
             {
                 var pos = positionComp.Pos+ playerRenderComp.ShootPoint;
-                float3 renderPos = renderComp.GObj.transform.position;
+                float3 renderPos = renderComp.GObject.transform.position;
                 renderPos += playerRenderComp.ShootPoint.xyz;
-                _world.CreateEntity(
-                (
-                    ref BulletComp bulletComp,
-                    ref PositionComp positionComp1,
-                    ref RenderComp renderComp,
-                    ref LineMoveComp lineMoveComp,
-                    ref ColliderComp colliderComp
-                )=>
+                switch (playerShootMsgComp.BulletType)
                 {
-                    positionComp1.Pos = pos;
-                    positionComp1.PrevPos = pos;
+                    case 1:
+                        shoot1(renderPos,pos);
+                    break;
+                    case 2:
+                        shoot2(renderPos,pos);
+                    break;
+                }
 
-                    renderComp.GObjType = GameObjectType.PlayerBullet_1;
-                    renderComp.GObj = GameObjectPool.Get((int)renderComp.GObjType);
-                    renderComp.GObj.name = $"renderComp{bulletComp.EntityUId}";
-                    renderComp.GObj.transform.parent = null;
-                    renderComp.GObj.transform.position = renderPos;
-                    renderComp.GObj.SetActive(true);
 
-                    colliderComp.GObjType = GameObjectType.PlayerBulletCollider_1;
-                    colliderComp.GObj = GameObjectPool.Get((int)colliderComp.GObjType);
-                    colliderComp.GObj.name = $"colliderComp{bulletComp.EntityUId}";
-                    colliderComp.Collider = colliderComp.GObj.GetComponent<CapsuleCollider>();
-                    colliderComp.Collider.height = colliderComp.Collider.radius*2;
-                    colliderComp.GObj.GetComponent<IBulletAttacker>().EntityUId = bulletComp.EntityUId;
-                    colliderComp.GObj.transform.parent = null;
-                    colliderComp.GObj.transform.position = pos.xyz;
-                    colliderComp.GObj.SetActive(true);
-
-                    lineMoveComp.DirAndVelocity.xyz = Vector3.forward;
-                    lineMoveComp.DirAndVelocity.w = 100;
-                });
                 _world.RemoveComponent<PlayerShootMsgComp>(playerShootMsgComp.EntityUId);
             });
 
 
+        }
+
+        private void shoot2(float3 renderPos, float4 pos)
+        {
+            for (int i = -1; i < 2; i++)
+            {
+                int entityUId = _world.CreateEntity(
+                (
+                    ref PositionComp positionComp,
+                    ref LineMoveComp lineMoveComp,
+                    ref BattleOutDestroyComp battleOutDestroyComp
+                )=>
+                {
+                    positionComp.Pos = pos;
+                    positionComp.PrevPos = pos;
+
+                    lineMoveComp.DirAndVelocity.xyz = new Vector3(i*0.5f,0,1).normalized;
+                    lineMoveComp.DirAndVelocity.w = 100;
+                });
+                PoolRenderComp poolRenderComp = new PoolRenderComp(entityUId,(int)GameObjectType.PlayerBullet_1);
+                poolRenderComp.GObject.transform.position = renderPos;
+
+                PoolColliderComp poolColliderComp = new PoolColliderComp(entityUId,(int)GameObjectType.PlayerBulletCollider_1);
+                poolColliderComp.GObject.transform.position = pos.xyz;
+                poolColliderComp.GObject.GetComponent<IBulletAttacker>().EntityUId = entityUId;
+                CapsuleCollider capsuleCollider = poolColliderComp.Collider as CapsuleCollider;
+                capsuleCollider.height = capsuleCollider.radius*2;
+
+                _world.AddOrSetComponent(entityUId,poolRenderComp);
+                _world.AddOrSetComponent(entityUId,poolColliderComp);
+            }
+        }
+
+        private void shoot1(float3 renderPos, float4 pos)
+        {
+            
+            int entityUId = _world.CreateEntity(
+            (
+                ref PositionComp positionComp,
+                ref LineMoveComp lineMoveComp,
+                ref BattleOutDestroyComp battleOutDestroyComp
+            )=>
+            {
+                positionComp.Pos = pos;
+                positionComp.PrevPos = pos;
+
+                lineMoveComp.DirAndVelocity.xyz = Vector3.forward;
+                lineMoveComp.DirAndVelocity.w = 100;
+            });
+            PoolRenderComp poolRenderComp = new PoolRenderComp(entityUId,(int)GameObjectType.PlayerBullet_1);
+            poolRenderComp.GObject.transform.position = renderPos;
+
+            PoolColliderComp poolColliderComp = new PoolColliderComp(entityUId,(int)GameObjectType.PlayerBulletCollider_1);
+            poolColliderComp.GObject.transform.position = pos.xyz;
+            poolColliderComp.GObject.GetComponent<IBulletAttacker>().EntityUId = entityUId;
+            CapsuleCollider capsuleCollider = poolColliderComp.Collider as CapsuleCollider;
+            capsuleCollider.height = capsuleCollider.radius*2;
+
+            _world.AddOrSetComponent(entityUId,poolRenderComp);
+            _world.AddOrSetComponent(entityUId,poolColliderComp);
         }
 
         public void Dispose()
