@@ -15,7 +15,7 @@ namespace GUNNAC
             var world = World.Current;
 
             float lerpVal = world.RenderFrameLerp;
-            Debug.Log(lerpVal);
+            // Debug.Log(lerpVal);
             world.Filter((ref RenderComp renderComp,ref PositionComp positionComp)=>
             {
                 //if(positionComp.Dirty==0)return;

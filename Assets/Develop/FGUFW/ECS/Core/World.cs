@@ -34,7 +34,7 @@ namespace FGUFW.ECS
         
         public World()
         {
-            _worldCreateTime = UnityEngine.Time.unscaledTime;
+            _worldCreateTime = TimeHelper.Time;
             initSystem();
             PlayerLoopHelper.AddToLoop<UnityEngine.PlayerLoop.Update,World>(update,true);
             Current = this;

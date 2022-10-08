@@ -11,6 +11,12 @@ namespace FGUFW
         /// <value></value>
         public static int FPS { get; private set; } = 60;
 
+        /// <summary>
+        /// 平滑帧率
+        /// </summary>
+        /// <value></value>
+        public static int SmoothFPS { get; private set; }
+
         private static int fpsCount, second;
 
         [RuntimeInitializeOnLoadMethod]
@@ -23,10 +29,12 @@ namespace FGUFW
         private static void updateCallvack()
         {
             fpsCount++;
-            int time = (int)Time.unscaledTime;
+            int time = (int)TimeHelper.Time;
             if (time>second)
             {
-                FPS = fpsCount/(time - second);
+                int newFPS = fpsCount/(time - second);
+                SmoothFPS = FPS+(newFPS-FPS)/2;
+                FPS = newFPS;
                 fpsCount = 0;
                 second = time;
             }

@@ -22,34 +22,44 @@ namespace FGUFW.ECS
         /// <value></value>
         public int RenderFrameIndex{get;private set;}
 
-        public float RenderFrameLerp
-        {
-            get
-            {
-                float lerp = 0;
-                if(ScreenHelper.FPS>0)
-                {
-                    float maxRanderLength = (float)ScreenHelper.FPS/FRAME_COUNT;
-                    lerp = Mathf.Clamp01((RenderFrameIndex+1f)/maxRanderLength);
-                }
-                return lerp;
-            }
-        }
+        /// <summary>
+        /// 渲染帧于逻辑帧插值
+        /// </summary>
+        /// <value></value>
+        public float RenderFrameLerp{get;private set;}
 
         private List<ISystem> _systems = new List<ISystem>();
         private float _worldCreateTime;
-
+        private float _maxRanderLength;
 
         private void update()
         {
-            Debug.Log($"{RenderFrameIndex}");
-            if (UnityEngine.Time.unscaledTime >= getFrameTime(FrameIndex))
-            // if (UnityEngine.Time.time >= getFrameTime(FrameIndex))
-            {
-                RenderFrameIndex = 0;
-                worldUpdate();
-            }
             RenderFrameIndex++;
+            bool canUpdate = getCanUpdate();
+            if (canUpdate)
+            {
+                _maxRanderLength = (float)ScreenHelper.SmoothFPS/FRAME_COUNT;
+                worldUpdate();
+                RenderFrameIndex = 0;
+                // Debug.Log($"-------{ScreenHelper.SmoothFPS}---{_maxRanderLength}------");
+            }
+            setRenderFrameLerp();
+            // Debug.Log($"{RenderFrameIndex:D2}  {RenderFrameLerp}");
+        }
+
+        private void setRenderFrameLerp()
+        {
+            if(ScreenHelper.SmoothFPS>0)
+            {
+                RenderFrameLerp = Mathf.Clamp01((RenderFrameIndex+1f)/_maxRanderLength);
+            }
+        }
+
+        private bool getCanUpdate()
+        {
+            // Debug.LogWarning($"{TimeHelper.Time}  {getFrameTime(FrameIndex)}");
+            // Debug.LogWarning(UnityEngine.Time.deltaTime);
+            return TimeHelper.Time >= getFrameTime(FrameIndex);
         }
 
         private void worldUpdate()
