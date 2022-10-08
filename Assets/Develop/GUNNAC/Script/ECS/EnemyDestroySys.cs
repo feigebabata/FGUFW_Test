@@ -13,7 +13,7 @@ namespace GUNNAC
 {
     public class EnemyDestroySys : ISystem
     {
-        public int Order => 0;
+        public int Order => 10;
 
         private World _world;
 

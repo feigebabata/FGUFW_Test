@@ -91,7 +91,8 @@ namespace GUNNAC
                 (
                     ref PositionComp positionComp,
                     ref LineMoveComp lineMoveComp,
-                    ref BattleOutDestroyComp battleOutDestroyComp
+                    ref BattleOutDestroyComp battleOutDestroyComp,
+                    ref DirectionComp directionComp
                 )=>
                 {
                     positionComp.Pos = pos;
@@ -99,6 +100,8 @@ namespace GUNNAC
 
                     lineMoveComp.DirAndVelocity.xyz = new Vector3(i*0.5f,0,1).normalized;
                     lineMoveComp.DirAndVelocity.w = 100;
+
+                    directionComp.Forward = math.normalize(new float4(i*1f,0,1,0));
                 });
                 PoolRenderComp poolRenderComp = new PoolRenderComp(entityUId,(int)GameObjectType.PlayerBullet_1);
                 poolRenderComp.GObject.transform.position = renderPos;
@@ -121,7 +124,8 @@ namespace GUNNAC
             (
                 ref PositionComp positionComp,
                 ref LineMoveComp lineMoveComp,
-                ref BattleOutDestroyComp battleOutDestroyComp
+                ref BattleOutDestroyComp battleOutDestroyComp,
+                ref DirectionComp directionComp
             )=>
             {
                 positionComp.Pos = pos;
@@ -129,6 +133,8 @@ namespace GUNNAC
 
                 lineMoveComp.DirAndVelocity.xyz = Vector3.forward;
                 lineMoveComp.DirAndVelocity.w = 100;
+
+                directionComp.Forward = math.normalize(new float4(0,0,1,0));
             });
             PoolRenderComp poolRenderComp = new PoolRenderComp(entityUId,(int)GameObjectType.PlayerBullet_1);
             poolRenderComp.GObject.transform.position = renderPos;

@@ -13,7 +13,7 @@ namespace GUNNAC
 {
     public class BattleCollisionDisposableSys : ISystem
     {
-        public int Order => -10;
+        public int Order => 10;
 
         private World _world;
 

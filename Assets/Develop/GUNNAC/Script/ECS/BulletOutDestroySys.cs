@@ -12,7 +12,7 @@ namespace GUNNAC
 {
     public class BulletOutDestroySys : ISystem
     {
-        public int Order => -10;
+        public int Order => 10;
 
         private World _world;
 

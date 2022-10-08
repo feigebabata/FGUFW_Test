@@ -23,13 +23,14 @@ namespace GUNNAC
 
         public void OnUpdate()
         {
-            _world.FilterJob((ref NativeArray<PositionComp> positioncomps,ref NativeArray<LineMoveComp> linemovecomps)=>
+            _world.FilterJob((ref NativeArray<PositionComp> positioncomps,ref NativeArray<LineMoveComp> linemovecomps,ref NativeArray<DirectionComp> directionComps)=>
             {
                 int length = positioncomps.Length;
                 var job = new Job
                 {
                     PositionComps = positioncomps,
                     LineMoveComps = linemovecomps,
+                    DirectionComps = directionComps,
                     DeltaTime = _world.DeltaTime
                 };
                 job.Run(length);
@@ -51,12 +52,14 @@ namespace GUNNAC
         {
             public NativeArray<PositionComp> PositionComps;
             public NativeArray<LineMoveComp> LineMoveComps;
+            public NativeArray<DirectionComp> DirectionComps;
             public float DeltaTime;
 
             public void Execute(int index)
             {
                 var positioncomp = PositionComps[index];
                 var linemovecomp = LineMoveComps[index];
+                var directionComp = DirectionComps[index];
                 //code
                 float3 dir = linemovecomp.DirAndVelocity.xyz;
                 float v = linemovecomp.DirAndVelocity.w;
@@ -68,8 +71,14 @@ namespace GUNNAC
                     positioncomp.PrevPos.xyz = prevPos;
                 }
 
+                if(!math.all(pos==prevPos))
+                {
+                    directionComp.Forward = math.normalize(positioncomp.Pos-positioncomp.PrevPos);
+                }
+
                 PositionComps[index] = positioncomp;
                 LineMoveComps[index] = linemovecomp;
+                DirectionComps[index] = directionComp;
             }
 
         }

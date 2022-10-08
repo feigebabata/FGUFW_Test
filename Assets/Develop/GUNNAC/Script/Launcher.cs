@@ -14,6 +14,7 @@ namespace GUNNAC
         public GameObject BattleRoot;
         public GameObject Boom;
         public GameObject Enemy,EnemyCollider;
+        public int EnemyCreateDelay=0;
 
         private World _world;
 
@@ -22,7 +23,7 @@ namespace GUNNAC
         /// </summary>
         void Awake()
         {
-            Application.targetFrameRate = 30*10;    
+            Application.targetFrameRate = 30*2;    
         }
 
         /// <summary>
@@ -127,7 +128,7 @@ namespace GUNNAC
         {
             _world.CreateEntity((ref EnemyCreateComp enemyCreateComp)=>
             {
-                enemyCreateComp.Delay = 0;
+                enemyCreateComp.Delay = EnemyCreateDelay;
             });
         }
 

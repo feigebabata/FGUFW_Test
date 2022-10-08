@@ -35,7 +35,8 @@ namespace GUNNAC
                     ref PositionComp positionComp,
                     ref LineMoveComp lineMoveComp,
                     ref BattleOutDestroyComp battleOutDestroyComp,
-                    ref EnemyComp enemyComp
+                    ref EnemyComp enemyComp,
+                    ref DirectionComp directionComp
                 )=>
                 {
 

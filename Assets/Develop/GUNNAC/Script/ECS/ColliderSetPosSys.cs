@@ -38,7 +38,7 @@ namespace GUNNAC
                 }
             });
 
-            _world.Filter((ref PoolColliderComp colliderComp,ref PositionComp positionComp)=>
+            _world.Filter((ref PoolColliderComp colliderComp,ref PositionComp positionComp,ref DirectionComp directionComp)=>
             {
                 float offset = math.distance(positionComp.Pos,positionComp.PrevPos);
                 if(offset==0)return;
@@ -51,6 +51,9 @@ namespace GUNNAC
                     center.z = -offset/2;
                     collider.center = center;
                 }
+
+                colliderComp.GObject.transform.forward = directionComp.Forward.xyz;
+
             });
 
 

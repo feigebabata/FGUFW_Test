@@ -44,7 +44,7 @@ namespace GUNNAC
                 }
                 
                 float4 pos = positioncomp.Pos + _world.DeltaTime*targetmovecomp.MoveVelocity*dir;
-                float4 prevPos = positioncomp.PrevPos;
+                float4 prevPos = positioncomp.Pos;
 
                 if(!math.all(positioncomp.Pos==pos) || !math.all(positioncomp.PrevPos==pos))
                 {
