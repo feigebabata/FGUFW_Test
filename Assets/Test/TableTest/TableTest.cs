@@ -16,7 +16,8 @@ public static class TableTest
     [MenuItem("Test/TableTest")]
     static void tableTest()
     {
-        Debug.Log(MathHelper.LerpByCycle(17,0.85f,0.9f));
+        int i = 1;
+        Debug.Log((i+1f).GetType());
     }
 
     [MenuItem("Test/TableTest2")]

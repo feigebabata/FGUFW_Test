@@ -28,6 +28,7 @@ namespace GUNNAC
             //code
             ItemType = itemType;
             GObject = GameObjectPool.Get(ItemType);
+            GObject.name = $"{EntityUId}_{ItemType}";
         }
 
         public void Dispose()

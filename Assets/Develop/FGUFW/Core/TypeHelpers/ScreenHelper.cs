@@ -5,24 +5,30 @@ namespace FGUFW
 {
     static public class ScreenHelper
     {
+        /// <summary>
+        /// 当前帧率
+        /// </summary>
+        /// <value></value>
         public static int FPS { get; private set; } = 60;
+
         private static int fpsCount, second;
 
         [RuntimeInitializeOnLoadMethod]
         private static void addListenerUpdate()
         {
-            PlayerLoopHelper.RemoveToLoop<UnityEngine.PlayerLoop.Update>(updateCallvack);
-            PlayerLoopHelper.AddToLoop<UnityEngine.PlayerLoop.Update,object>(updateCallvack);
+            PlayerLoopHelper.RemoveToLoop<UnityEngine.PlayerLoop.PreUpdate>(updateCallvack);
+            PlayerLoopHelper.AddToLoop<UnityEngine.PlayerLoop.PreUpdate,FPSCount>(updateCallvack);
         }
 
         private static void updateCallvack()
         {
             fpsCount++;
-            if ((int)Time.unscaledTime>second)
+            int time = (int)Time.unscaledTime;
+            if (time>second)
             {
-                FPS = fpsCount/((int)Time.unscaledTime- second);
+                FPS = fpsCount/(time - second);
                 fpsCount = 0;
-                second = (int)Time.unscaledTime;
+                second = time;
             }
         }
 
@@ -38,4 +44,6 @@ namespace FGUFW
             Screen.orientation = ScreenOrientation.Portrait;
         }
     }
+
+    public class FPSCount{}
 }

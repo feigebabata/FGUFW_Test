@@ -30,6 +30,7 @@ namespace GUNNAC
             ItemType = itemType;
             GObject = GameObjectPool.Get(ItemType);
             Collider = GObject.GetComponent<Collider>();
+            GObject.name = $"{EntityUId}_{ItemType}";
         }
 
         public void Dispose()

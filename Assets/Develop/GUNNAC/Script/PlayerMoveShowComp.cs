@@ -40,8 +40,9 @@ namespace GUNNAC
                     }
                 }
 
-                float lerpVal = MathHelper.LerpByCycle(ScreenHelper.FPS / World.FRAME_COUNT,0.5f,0.55f);
-
+                // float lerpVal = MathHelper.LerpByCycle(ScreenHelper.FPS / World.FRAME_COUNT,0.5f,0.55f);
+                float lerpVal = world.RenderFrameLerp;
+                // Debug.Log($"{lerpVal}  {ScreenHelper.RenderFrameIndex}  {ScreenHelper.FPS}");
                 renderComp.GObject.transform.rotation = Quaternion.Lerp(renderComp.GObject.transform.rotation,rotateTarget, lerpVal);
                 // tailFlame = Vector3.Lerp()
                 var color = playerRenderComp.TailFlameMat.GetColor(playerRenderComp.PropertyID);

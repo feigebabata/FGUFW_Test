@@ -5,6 +5,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using GUNNAC;
 using System;
+using FGUFW;
 
 namespace ECSTest
 {
@@ -61,7 +62,7 @@ namespace ECSTest
                 // if(playerPosComp.Dirty>0)
                 {
                     // Debug.Log(_world.FrameIndex);
-                    Player.position = Vector3.Lerp(Player.position,playerPosComp.Pos.xyz,0.25f);
+                    Player.position = Vector3.Lerp(Player.position,playerPosComp.Pos.xyz,0.5f);
                 }
             }
             DirectionComp directionComp;

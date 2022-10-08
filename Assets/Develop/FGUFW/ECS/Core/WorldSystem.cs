@@ -15,7 +15,26 @@ namespace FGUFW.ECS
         public float Time {get;private set;}
         
         public int FrameIndex{get;private set;}
-        
+
+        /// <summary>
+        /// 渲染帧索引 于逻辑帧更新时重置
+        /// </summary>
+        /// <value></value>
+        public int RenderFrameIndex{get;private set;}
+
+        public float RenderFrameLerp
+        {
+            get
+            {
+                float lerp = 0;
+                if(ScreenHelper.FPS>0)
+                {
+                    float maxRanderLength = (float)ScreenHelper.FPS/FRAME_COUNT;
+                    lerp = Mathf.Clamp01((RenderFrameIndex+1f)/maxRanderLength);
+                }
+                return lerp;
+            }
+        }
 
         private List<ISystem> _systems = new List<ISystem>();
         private float _worldCreateTime;
@@ -23,11 +42,14 @@ namespace FGUFW.ECS
 
         private void update()
         {
-            // if (UnityEngine.Time.unscaledTime >= getFrameTime(FrameIndex))
-            if (UnityEngine.Time.time >= getFrameTime(FrameIndex))
+            Debug.Log($"{RenderFrameIndex}");
+            if (UnityEngine.Time.unscaledTime >= getFrameTime(FrameIndex))
+            // if (UnityEngine.Time.time >= getFrameTime(FrameIndex))
             {
+                RenderFrameIndex = 0;
                 worldUpdate();
             }
+            RenderFrameIndex++;
         }
 
         private void worldUpdate()
