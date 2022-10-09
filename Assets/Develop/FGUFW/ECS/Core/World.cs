@@ -34,6 +34,7 @@ namespace FGUFW.ECS
         
         public World()
         {
+            _maxRanderLength = (float)ScreenHelper.SmoothFPS/FRAME_COUNT;
             _worldCreateTime = TimeHelper.Time;
             initSystem();
             PlayerLoopHelper.AddToLoop<UnityEngine.PlayerLoop.Update,World>(update,true);

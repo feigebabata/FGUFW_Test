@@ -7,10 +7,10 @@ namespace FGUFW.ECS
 {
     public partial class World:IDisposable
     {
-        public const int FRAME_COUNT = 16;
+        public const int FRAME_COUNT = 20;
         private readonly float frameDelay = 1f/(float)FRAME_COUNT;
 
-        public float TimeScale=1;
+        public float TimeScale=1f;
         public float DeltaTime=> frameDelay*TimeScale;
         public float Time {get;private set;}
         
@@ -30,6 +30,10 @@ namespace FGUFW.ECS
 
         private List<ISystem> _systems = new List<ISystem>();
         private float _worldCreateTime;
+
+        /// <summary>
+        /// 没逻辑帧跑多少次渲染帧
+        /// </summary>
         private float _maxRanderLength;
 
         private void update()
@@ -38,27 +42,24 @@ namespace FGUFW.ECS
             bool canUpdate = getCanUpdate();
             if (canUpdate)
             {
-                _maxRanderLength = (float)ScreenHelper.SmoothFPS/FRAME_COUNT;
+                //获取平滑的渲染帧/逻辑帧
+                _maxRanderLength = Mathf.Lerp(_maxRanderLength,RenderFrameIndex,0.5f);
                 worldUpdate();
                 RenderFrameIndex = 0;
                 // Debug.Log($"-------{ScreenHelper.SmoothFPS}---{_maxRanderLength}------");
             }
             setRenderFrameLerp();
-            // Debug.Log($"{RenderFrameIndex:D2}  {RenderFrameLerp}");
+            // Debug.Log($"{RenderFrameIndex:D2}   {RenderFrameLerp} ");
         }
 
         private void setRenderFrameLerp()
         {
-            if(ScreenHelper.SmoothFPS>0)
-            {
-                RenderFrameLerp = Mathf.Clamp01((RenderFrameIndex+1f)/_maxRanderLength);
-            }
+            float newLerp = Mathf.Clamp01((RenderFrameIndex+1f)/_maxRanderLength);
+            RenderFrameLerp = newLerp;
         }
 
         private bool getCanUpdate()
         {
-            // Debug.LogWarning($"{TimeHelper.Time}  {getFrameTime(FrameIndex)}");
-            // Debug.LogWarning(UnityEngine.Time.deltaTime);
             return TimeHelper.Time >= getFrameTime(FrameIndex);
         }
 

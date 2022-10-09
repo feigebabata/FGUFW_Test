@@ -808,7 +808,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerEUId: 0
-  Delay: 3
+  Delay: 5
 --- !u!4 &2026959992
 Transform:
   m_ObjectHideFlags: 0

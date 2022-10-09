@@ -33,7 +33,7 @@ namespace FGUFW
             if (time>second)
             {
                 int newFPS = fpsCount/(time - second);
-                SmoothFPS = FPS+(newFPS-FPS)/2;
+                SmoothFPS = (int)Mathf.Lerp(FPS,newFPS,0.5f);
                 FPS = newFPS;
                 fpsCount = 0;
                 second = time;

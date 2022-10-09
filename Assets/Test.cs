@@ -5,70 +5,73 @@ using SAO_UI;
 using System;
 using FGUFW;
 
-public class Test : MonoBehaviour
+namespace SAO_UI
 {
-    public Sprite[] SelectSprites,UnselectSprites;
-    public Sprite[] SelectIcons, UnselectIcons;
-    public string[] Titles;
-    public SecondaryMenuListComp SecondaryListComp;
-    private int _secondarySelectIndex=int.MaxValue;
-
-    // Start is called before the first frame update
-    void Start()
+    public class Test : MonoBehaviour
     {
-        var list = GetComponent<MainMenuListComp>();
-        list.OnItemShow += OnItemShow;
-        list.OnItemSelect += OnItemSelect;
-        list.OnItemUnselect += OnItemUnselect;
-        list.Init(7);
-    }
+        public Sprite[] SelectSprites, UnselectSprites;
+        public Sprite[] SelectIcons, UnselectIcons;
+        public string[] Titles;
+        public SecondaryMenuListComp SecondaryListComp;
+        private int _secondarySelectIndex = int.MaxValue;
 
-    private void OnItemUnselect(int arg1, LoopListItemBaseComp arg2)
-    {
-        if(_secondarySelectIndex==arg1)
+        // Start is called before the first frame update
+        void Start()
         {
-            SecondaryListComp.Close();
+            var list = GetComponent<MainMenuListComp>();
+            list.OnItemShow += OnItemShow;
+            list.OnItemSelect += OnItemSelect;
+            list.OnItemUnselect += OnItemUnselect;
+            list.Init(7);
         }
-    }
 
-    private void OnItemSelect(int arg1, LoopListItemBaseComp arg2)
-    {
-        _secondarySelectIndex = arg1;
-        // Debug.Log($"OnItemSelect:{arg1}");
-        SecondaryListComp.OnItemShow -= OnSecondaryItemShow;
-        SecondaryListComp.OnItemShow += OnSecondaryItemShow;
-        SecondaryListComp.Init(3);
-    }
+        private void OnItemUnselect(int arg1, LoopListItemBaseComp arg2)
+        {
+            if (_secondarySelectIndex == arg1)
+            {
+                SecondaryListComp.Close();
+            }
+        }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+        private void OnItemSelect(int arg1, LoopListItemBaseComp arg2)
+        {
+            _secondarySelectIndex = arg1;
+            // Debug.Log($"OnItemSelect:{arg1}");
+            SecondaryListComp.OnItemShow -= OnSecondaryItemShow;
+            SecondaryListComp.OnItemShow += OnSecondaryItemShow;
+            SecondaryListComp.Init(3);
+        }
 
-    void OnItemShow(int itemIndex,LoopListItemBaseComp item)
-    {
-        var comp = (MainMenuListItemComp)item;
-        comp.gameObject.SetActive(true);
-        comp.Select = SelectSprites[itemIndex];
-        comp.Unselect = UnselectSprites[itemIndex];
+        // Update is called once per frame
+        void Update()
+        {
 
-        comp.Img.sprite = comp.Unselect;
-    }
+        }
 
-    void OnSecondaryItemShow(int itemIndex, LoopListItemBaseComp item)
-    {
-        var comp = (SecondaryMenuListItemComp)item;
-        comp.gameObject.SetActive(true);
-        comp.Select = SelectIcons[itemIndex];
-        comp.Unselect = UnselectIcons[itemIndex];
-        comp.Title.text = Titles[itemIndex];
+        void OnItemShow(int itemIndex, LoopListItemBaseComp item)
+        {
+            var comp = (MainMenuListItemComp)item;
+            comp.gameObject.SetActive(true);
+            comp.Select = SelectSprites[itemIndex];
+            comp.Unselect = UnselectSprites[itemIndex];
 
-        
-        comp.Img_Icon.sprite = comp.Unselect;
-        comp.Img_BG.color = new Color32(255, 255, 255, 255);
-        comp.Img_Select.color = new Color32(255, 255, 255, 255);
-        comp.Title.color = SecondaryMenuListItemComp.Unselect_Text_Color;
-        comp.Img_Group.alpha = 1;
+            comp.Img.sprite = comp.Unselect;
+        }
+
+        void OnSecondaryItemShow(int itemIndex, LoopListItemBaseComp item)
+        {
+            var comp = (SecondaryMenuListItemComp)item;
+            comp.gameObject.SetActive(true);
+            comp.Select = SelectIcons[itemIndex];
+            comp.Unselect = UnselectIcons[itemIndex];
+            comp.Title.text = Titles[itemIndex];
+
+
+            comp.Img_Icon.sprite = comp.Unselect;
+            comp.Img_BG.color = new Color32(255, 255, 255, 255);
+            comp.Img_Select.color = new Color32(255, 255, 255, 255);
+            comp.Title.color = SecondaryMenuListItemComp.Unselect_Text_Color;
+            comp.Img_Group.alpha = 1;
+        }
     }
 }

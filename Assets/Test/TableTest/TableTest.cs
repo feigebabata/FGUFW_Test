@@ -17,7 +17,7 @@ public static class TableTest
     static void tableTest()
     {
         int i = 1;
-        Debug.Log((i+1f).GetType());
+        Debug.Log(0.5f/i);
     }
 
     [MenuItem("Test/TableTest2")]

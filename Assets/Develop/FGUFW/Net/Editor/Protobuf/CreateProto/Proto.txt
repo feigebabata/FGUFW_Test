@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+/*
+引用库 例 import "Develop/FGUFW/Core/Layer2/System/NetworkSyncSystem/Data/MsgData.proto"; 
+类型proto>>C# 
+uint32:uint 
+sint32:int   含有负值时效率比int32高
+bytes:byte[] 字节数组
+集合关键字 repeated
+int无<32位
+*/
+
+package #NAMESPACE#;
+
+message MSG_NAME
+{
+    uint32 ID=1;
+}

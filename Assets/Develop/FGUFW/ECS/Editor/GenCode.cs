@@ -18,11 +18,6 @@ namespace FGUFW.ECS.Editor
         [MenuItem("ECS/生成被标记组件的Mono脚本")]
         private static void compilationFinished()
         {
-            var dirPath = $"{Application.dataPath.Replace("Assets", GEN_CODE_DIR)}";
-            if (!Directory.Exists(dirPath))
-            {
-                Directory.CreateDirectory(dirPath);
-            }
 
             AssemblyHelper.FilterClassAndStruct<IConvertToComponent>(t =>
             {
@@ -57,7 +52,14 @@ namespace FGUFW.ECS.Editor
             if (genType != null && genType.EqualsFileds(t)) return;
 
             var script = getAuthoringScript(t);
-            File.WriteAllText(getAuthoringScriptPath(t), script);
+            var filePath = getAuthoringScriptPath(t);
+            var dirPath = Path.GetDirectoryName(filePath);
+            if (!Directory.Exists(dirPath))
+            {
+                Directory.CreateDirectory(dirPath);
+            }
+
+            File.WriteAllText(filePath, script);
             AssetDatabase.Refresh();
         }
 
@@ -90,7 +92,7 @@ namespace FGUFW.ECS.Editor
 
         private static string getAuthoringScriptPath(Type t)
         {
-            return $"{Application.dataPath.Replace("Assets", GEN_CODE_DIR)}/{t.Name}Authoring.cs";
+            return $"{Application.dataPath.Replace("Assets", GEN_CODE_DIR)}/{t.Namespace}/{t.Name}Authoring.cs";
         }
 
         private static string getOriginScriptPath(Type t)
