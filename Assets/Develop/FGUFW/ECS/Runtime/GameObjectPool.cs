@@ -7,7 +7,6 @@ namespace FGUFW.ECS
 {
     public static class GameObjectPool
     {
-
         private static Dictionary<int,Pool<GameObject>> poolDict = new Dictionary<int, Pool<GameObject>>();
         private static Transform poolParent;
 

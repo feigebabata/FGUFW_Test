@@ -29,16 +29,33 @@ namespace FGUFW.ECS
         public float RenderFrameLerp{get;private set;}
 
         private List<ISystem> _systems = new List<ISystem>();
-        private float _worldCreateTime;
+        private float _nextUpdateTime;
 
         /// <summary>
         /// 没逻辑帧跑多少次渲染帧
         /// </summary>
         private float _maxRanderLength;
 
+        private void onCreateSystem()
+        {
+            _maxRanderLength = (float)ScreenHelper.SmoothFPS/FRAME_COUNT;
+            initSystem();
+            PlayerLoopHelper.AddToLoop<UnityEngine.PlayerLoop.Update,World>(update,true);
+        }
+
+        private void onDestorySystem()
+        {
+            PlayerLoopHelper.RemoveToLoop<UnityEngine.PlayerLoop.Update>(update);
+            
+            disposeSys();
+        }
+
+
+
         private void update()
         {
             RenderFrameIndex++;
+            frameSyncUpdate();
             bool canUpdate = getCanUpdate();
             if (canUpdate)
             {
@@ -46,10 +63,9 @@ namespace FGUFW.ECS
                 _maxRanderLength = Mathf.Lerp(_maxRanderLength,RenderFrameIndex,0.5f);
                 worldUpdate();
                 RenderFrameIndex = 0;
-                // Debug.Log($"-------{ScreenHelper.SmoothFPS}---{_maxRanderLength}------");
+                _nextUpdateTime = TimeHelper.Time+frameDelay;
             }
             setRenderFrameLerp();
-            // Debug.Log($"{RenderFrameIndex:D2}   {RenderFrameLerp} ");
         }
 
         private void setRenderFrameLerp()
@@ -60,7 +76,14 @@ namespace FGUFW.ECS
 
         private bool getCanUpdate()
         {
-            return TimeHelper.Time >= getFrameTime(FrameIndex);
+            bool delayEnd = getDelayEnd();
+            bool frameOperateComplete = _frameOperates[FrameIndex].Complete(_operatorCount);
+            return delayEnd && frameOperateComplete;
+        }
+
+        private bool getDelayEnd()
+        {
+            return TimeHelper.Time >= _nextUpdateTime;
         }
 
         private void worldUpdate()
@@ -101,12 +124,5 @@ namespace FGUFW.ECS
             }
         }
 
-        private float getFrameTime(int FrameIndex)
-        {
-            float time = FrameIndex/FRAME_COUNT;
-            time += frameDelay*(FrameIndex%FRAME_COUNT);
-            time += _worldCreateTime;
-            return time;
-        }
     }
 }

@@ -13,6 +13,7 @@ namespace FGUFW.Net.Test
         // Start is called before the first frame update
         void Start()
         {
+            Debug.Log("启动");
             Application.targetFrameRate = 60;
             UdpUtility.On();
         }

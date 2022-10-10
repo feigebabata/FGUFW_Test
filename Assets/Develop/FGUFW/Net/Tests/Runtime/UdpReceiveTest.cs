@@ -9,11 +9,12 @@ namespace FGUFW.Net.Test
 {
     public class UdpReceiveTest : MonoBehaviour
     {
-        private int i;
+        private int prevVal;
 
         // Start is called before the first frame update
         void Start()
         {
+            DateTime.UtcNow.SetRecord();
             UdpUtility.On();
             UdpUtility.OnReceive += onReceive;
         }
@@ -21,7 +22,10 @@ namespace FGUFW.Net.Test
         private void onReceive(UdpReceiveResult result)
         {
             int val = BitConverter.ToInt32(result.Buffer,0);
-            Debug.Log(val);
+            Debug.Log($"{val} {DateTime.UtcNow.GetRecordTime()}");
+            if(prevVal!=val-1)Debug.LogWarning("丢包");
+            prevVal = val;
+            DateTime.UtcNow.SetRecord();
         }
 
 

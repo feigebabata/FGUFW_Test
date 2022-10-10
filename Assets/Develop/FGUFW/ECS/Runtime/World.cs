@@ -31,22 +31,23 @@ namespace FGUFW.ECS
         private int _filterKeyCacheLength;
         private object[] _createArgs=new object[1];
 
-        
-        public World()
+        private World(){}
+        public World(int operatorCount=1)
         {
-            _maxRanderLength = (float)ScreenHelper.SmoothFPS/FRAME_COUNT;
-            _worldCreateTime = TimeHelper.Time;
-            initSystem();
-            PlayerLoopHelper.AddToLoop<UnityEngine.PlayerLoop.Update,World>(update,true);
+            onCreateSystem();
+            onCreateSync(operatorCount);
             Current = this;
         }
 
         public void Dispose()
         {
-            PlayerLoopHelper.RemoveToLoop<UnityEngine.PlayerLoop.Update>(update);
+            onDestorySystem();
             
-            disposeSys();
+            #if !UNITY_EDITOR
             disposeComps();
+            #endif
+            
+            onDestroySync();
             Current = null;
         }
 
