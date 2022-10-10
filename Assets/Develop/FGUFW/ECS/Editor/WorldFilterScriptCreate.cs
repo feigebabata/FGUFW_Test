@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System.Text;
 using UnityEditor;
 using UnityEngine;
@@ -73,38 +74,38 @@ namespace FGUFW.ECS.Editor
                     comp_job_set[i] = $"t{i}s[i] = t{i}_dict[entityUId];";
                 }
 
-                func = filter_fun_Script.Replace("#TYPES#", string.Join(",",types));
-                func = func.Replace("#COUNT#",length.ToString());
-                func = func.Replace("#TYPES_WHERE#",string.Join("\n        ",types_where));
-                func = func.Replace("#TYPES_VAL#",string.Join("\n            ",types_val));
-                func = func.Replace("#TYPES_RETURN#",string.Join("\n                ||",types_return));
-                func = func.Replace("#COMP_DICTS#",string.Join("\n            ",comp_dicts));
-                func = func.Replace("#TYPES_MIN#",string.Join("\n            ",types_min));
-                func = func.Replace("#TYPES_COMP#",string.Join("\n                ",types_comp));
-                func = func.Replace("#CALLBACK#",string.Join(",",callback));
-                func = func.Replace("#SET_COMPS#",string.Join("\n                ",setComps));
+                func = filter_fun_Script.Replace("|TYPES|", string.Join(",",types));
+                func = func.Replace("|COUNT|",length.ToString());
+                func = func.Replace("|TYPES_WHERE|",string.Join("\n        ",types_where));
+                func = func.Replace("|TYPES_VAL|",string.Join("\n            ",types_val));
+                func = func.Replace("|TYPES_RETURN|",string.Join("\n                ||",types_return));
+                func = func.Replace("|COMP_DICTS|",string.Join("\n            ",comp_dicts));
+                func = func.Replace("|TYPES_MIN|",string.Join("\n            ",types_min));
+                func = func.Replace("|TYPES_COMP|",string.Join("\n                ",types_comp));
+                func = func.Replace("|CALLBACK|",string.Join(",",callback));
+                func = func.Replace("|SET_COMPS|",string.Join("\n                ",setComps));
 
-                create = create_fun_Script.Replace("#TYPES#", string.Join(",",types));
-                create = create.Replace("#TYPES_WHERE#", string.Join("\n        ",types_where));
-                create = create.Replace("#INSTANCE#", string.Join("\n            ",instance));
-                create = create.Replace("#ADD_COMP#", string.Join("\n            ",addComps));
-                create = create.Replace("#COUNT#", length.ToString());
-                create = create.Replace("#CALLBACK#", string.Join(",",callback));
+                create = create_fun_Script.Replace("|TYPES|", string.Join(",",types));
+                create = create.Replace("|TYPES_WHERE|", string.Join("\n        ",types_where));
+                create = create.Replace("|INSTANCE|", string.Join("\n            ",instance));
+                create = create.Replace("|ADD_COMP|", string.Join("\n            ",addComps));
+                create = create.Replace("|COUNT|", length.ToString());
+                create = create.Replace("|CALLBACK|", string.Join(",",callback));
 
-                func_job = filterJob_fun_script.Replace("#TYPES#", string.Join(",",types));
-                func_job = func_job.Replace("#TYPES_JOB#",string.Join(",",types_job));
-                func_job = func_job.Replace("#TYPES_WHERE#",string.Join("\n        ",types_where));
-                func_job = func_job.Replace("#TYPES_VAL#",string.Join("\n            ",types_val));
-                func_job = func_job.Replace("#TYPES_RETURN#",string.Join("\n                ||",types_return));
-                func_job = func_job.Replace("#COMP_DICTS#",string.Join("\n            ",comp_dicts));
-                func_job = func_job.Replace("#TYPES_MIN#",string.Join("\n            ",types_min));
-                func_job = func_job.Replace("#TYPES_COMP#",string.Join("\n                ",types_comp));
-                func_job = func_job.Replace("#CALLBACK_JOB#",string.Join(",",callback_job));
-                func_job = func_job.Replace("#SET_COMPS_JOB#",string.Join("\n                ",setComp_job));
-                func_job = func_job.Replace("#TYPES_COMP_JOB#",string.Join("\n            ",types_comp_job));
-                func_job = func_job.Replace("#TYPES_COMP_JOB_DISPOSE#",string.Join("\n            ",comp_job_dispose));
-                func_job = func_job.Replace("#COMPS_JOB_SET#",string.Join("\n                ",comp_job_set));
-                func_job = func_job.Replace("#COUNT#",length.ToString());
+                func_job = filterJob_fun_script.Replace("|TYPES|", string.Join(",",types));
+                func_job = func_job.Replace("|TYPES_JOB|",string.Join(",",types_job));
+                func_job = func_job.Replace("|TYPES_WHERE|",string.Join("\n        ",types_where));
+                func_job = func_job.Replace("|TYPES_VAL|",string.Join("\n            ",types_val));
+                func_job = func_job.Replace("|TYPES_RETURN|",string.Join("\n                ||",types_return));
+                func_job = func_job.Replace("|COMP_DICTS|",string.Join("\n            ",comp_dicts));
+                func_job = func_job.Replace("|TYPES_MIN|",string.Join("\n            ",types_min));
+                func_job = func_job.Replace("|TYPES_COMP|",string.Join("\n                ",types_comp));
+                func_job = func_job.Replace("|CALLBACK_JOB|",string.Join(",",callback_job));
+                func_job = func_job.Replace("|SET_COMPS_JOB|",string.Join("\n                ",setComp_job));
+                func_job = func_job.Replace("|TYPES_COMP_JOB|",string.Join("\n            ",types_comp_job));
+                func_job = func_job.Replace("|TYPES_COMP_JOB_DISPOSE|",string.Join("\n            ",comp_job_dispose));
+                func_job = func_job.Replace("|COMPS_JOB_SET|",string.Join("\n                ",comp_job_set));
+                func_job = func_job.Replace("|COUNT|",length.ToString());
 
 
                 filter_fun +=$"\n{func}";
@@ -112,29 +113,29 @@ namespace FGUFW.ECS.Editor
                 createFun += $"\n{create}";
                 delegates +=$"\n    public delegate void WorldFilterDelegate_R{length}<{string.Join(",",types)}>({string.Join(",",ref_types)});";
             }
-            var scriptText = script.Replace("#DELEGATES#",delegates);
-            scriptText = scriptText.Replace("#CREATE_FUN#", createFun);
-            scriptText = scriptText.Replace("#FILTER_JOB_FUN#", filter_job_fun);
-            return scriptText.Replace("#FILTER_FUN#", filter_fun);
+            var scriptText = script.Replace("|DELEGATES|",delegates);
+            scriptText = scriptText.Replace("|CREATE_FUN|", createFun);
+            scriptText = scriptText.Replace("|FILTER_JOB_FUN|", filter_job_fun);
+            return scriptText.Replace("|FILTER_FUN|", filter_fun);
         }
 
         const string filterJob_fun_script = @"
-        public void FilterJob<#TYPES#>(WorldFilterDelegate_R#COUNT#<#TYPES_JOB#> callback)
-        #TYPES_WHERE#
+        public void FilterJob<|TYPES|>(WorldFilterDelegate_R|COUNT|<|TYPES_JOB|> callback)
+        |TYPES_WHERE|
         {
-            #TYPES_VAL#
+            |TYPES_VAL|
 
             if
             (
-                #TYPES_RETURN#
+                |TYPES_RETURN|
             )return;
 
-            #COMP_DICTS#
+            |COMP_DICTS|
 
             ICollection<int> minCountEntityUIds = null;
             int minCount = int.MaxValue;
 
-            #TYPES_MIN#
+            |TYPES_MIN|
 
             setFilterKeyCache(minCountEntityUIds);
 
@@ -144,69 +145,69 @@ namespace FGUFW.ECS.Editor
             {
                 var entityUId = _filterKeyCache[i];
                 
-                #TYPES_COMP#
+                |TYPES_COMP|
 
                 _filterKeyCache[entityCount++] = entityUId;
             }
 
             if(entityCount==0)return;
 
-            #TYPES_COMP_JOB#
+            |TYPES_COMP_JOB|
 
             for (int i = 0; i < entityCount; i++)
             {
                 var entityUId = _filterKeyCache[i];
 
-                #COMPS_JOB_SET#
+                |COMPS_JOB_SET|
             }
 
-            callback(#CALLBACK_JOB#);
+            callback(|CALLBACK_JOB|);
 
             for (int i = 0; i < entityCount; i++)
             {
                 int entityUId = t0s[i].EntityUId;
 
-                #SET_COMPS_JOB#
+                |SET_COMPS_JOB|
             }
 
-            #TYPES_COMP_JOB_DISPOSE#
+            |TYPES_COMP_JOB_DISPOSE|
         }    
 ";
 
         const string create_fun_Script = @"
-        public int CreateEntity<#TYPES#>(WorldFilterDelegate_R#COUNT#<#TYPES#> callback = null)
-        #TYPES_WHERE#
+        public int CreateEntity<|TYPES|>(WorldFilterDelegate_R|COUNT|<|TYPES|> callback = null)
+        |TYPES_WHERE|
         {
             int entityUId = CreateEntity();
             _createArgs[0] = entityUId;
 
-            #INSTANCE#
+            |INSTANCE|
 
-            if(callback!=null)callback(#CALLBACK#);
+            if(callback!=null)callback(|CALLBACK|);
 
-            #ADD_COMP#
+            |ADD_COMP|
 
             return entityUId;
         }
 ";
 
         const string filter_fun_Script = @"
-        public void Filter<#TYPES#>(WorldFilterDelegate_R#COUNT#<#TYPES#> callback)
-        #TYPES_WHERE#
+        public void Filter<|TYPES|>(WorldFilterDelegate_R|COUNT|<|TYPES|> callback)
+        |TYPES_WHERE|
         {
-            #TYPES_VAL#
+            |TYPES_VAL|
 
             if
             (
-                #TYPES_RETURN#
+                |TYPES_RETURN|
             )return;
 
-            #COMP_DICTS#
+            |COMP_DICTS|
 
             ICollection<int> minCountEntityUIds = null;
             int minCount = int.MaxValue;
 
-            #TYPES_MIN#
+            |TYPES_MIN|
 
             setFilterKeyCache(minCountEntityUIds);
 
@@ -214,11 +215,11 @@ namespace FGUFW.ECS.Editor
             {
                 var entityUId = _filterKeyCache[i];
                 
-                #TYPES_COMP#
+                |TYPES_COMP|
 
-                callback(#CALLBACK#);
+                callback(|CALLBACK|);
 
-                #SET_COMPS#
+                |SET_COMPS|
             }
         }     
 ";
@@ -230,15 +231,15 @@ using Unity.Collections;
 
 namespace FGUFW.ECS
 {
-    #DELEGATES#
+    |DELEGATES|
 
     public partial class World
     {
-        #FILTER_FUN#
+        |FILTER_FUN|
 
-        #FILTER_JOB_FUN#
+        |FILTER_JOB_FUN|
         
-        #CREATE_FUN#
+        |CREATE_FUN|
     }
 }
 ";
@@ -246,3 +247,4 @@ namespace FGUFW.ECS
 
     }
 }
+#endif

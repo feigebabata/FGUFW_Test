@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -116,10 +117,10 @@ namespace FGUFW.ECS.Editor
                 fieldls[i] = filed.ToScript();
                 setFields[i] = $"comp.{filed.Name} = this.{filed.Name};";
             }
-            script = compAuthoringScript.Replace("#NAMESPACE#",nameSpace);
-            script = script.Replace("#NAME#", name);
-            script = script.Replace("#FILEDS#", string.Join("\n        ", fieldls));
-            script = script.Replace("#SET_FILEDS#", string.Join("\n            ", setFields));
+            script = compAuthoringScript.Replace("|NAMESPACE|",nameSpace);
+            script = script.Replace("|NAME|", name);
+            script = script.Replace("|FILEDS|", string.Join("\n        ", fieldls));
+            script = script.Replace("|SET_FILEDS|", string.Join("\n            ", setFields));
 
             return script;
         }
@@ -130,18 +131,18 @@ using Unity.Collections;
 using UnityEngine;
 using FGUFW.ECS;
 
-namespace #NAMESPACE#
+namespace |NAMESPACE|
 {
     [DisallowMultipleComponent]
-    public class #NAME#Authoring:MonoBehaviour, IConvertToComponent
+    public class |NAME|Authoring:MonoBehaviour, IConvertToComponent
     {
-        #FILEDS#
+        |FILEDS|
 
         public void Convert(World world, int entityUId)
         {
-            var comp = new #NAME#(entityUId);
+            var comp = new |NAME|(entityUId);
 
-            #SET_FILEDS#
+            |SET_FILEDS|
 
             world.AddOrSetComponent(entityUId , comp);
         }
@@ -151,3 +152,4 @@ namespace #NAMESPACE#
 
     }
 }
+#endif

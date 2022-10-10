@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
@@ -64,10 +65,10 @@ namespace FGUFW.ECS.Editor
 
         private static void createCompScript(string folderPath,string nameSpace,string name,int compTypeIndex, bool useMonoComp)
         {
-            var text = compScript.Replace("#NAMESPACE#",nameSpace);
-            text = text.Replace("#NAME#",name);
-            text = text.Replace("#COMPTYPE#",compTypeIndex.ToString());
-            text = text.Replace("#ATTRIBUTE#", useMonoComp? "[GenerateAuthoringComponent]":"");
+            var text = compScript.Replace("|NAMESPACE|",nameSpace);
+            text = text.Replace("|NAME|",name);
+            text = text.Replace("|COMPTYPE|",compTypeIndex.ToString());
+            text = text.Replace("|ATTRIBUTE|", useMonoComp? "[GenerateAuthoringComponent]":"");
 
             string path = $"{Application.dataPath.Replace("Assets",folderPath)}/{name}.cs";
             File.WriteAllText(path,text);
@@ -84,9 +85,9 @@ namespace FGUFW.ECS.Editor
 
         public static void CreateSysScript(string folderPath,string nameSpace,string name,int order,List<string> typeNames,bool useJob)
         {
-            var text = sysScript.Replace("#NAMESPACE#",nameSpace);
-            text = text.Replace("#NAME#",name);
-            text = text.Replace("#ORDER#",order.ToString());
+            var text = sysScript.Replace("|NAMESPACE|",nameSpace);
+            text = text.Replace("|NAME|",name);
+            text = text.Replace("|ORDER|",order.ToString());
 
             string filter = "";
             string jobStruct = "";
@@ -116,13 +117,13 @@ namespace FGUFW.ECS.Editor
                     jobComps[jobComps.Length-1] = "public float DeltaTime;";
                     setJob[setJob.Length-1] = "DeltaTime = _world.DeltaTime";
 
-                    filter = filterJobScript.Replace("#TYPES_JOB#", string.Join(",", typeNames));
-                    filter = filter.Replace("#SET_JOB#", string.Join(",\n                    ", setJob));
-                    filter = filter.Replace("#FIRST_COMPS#", firstComp);
+                    filter = filterJobScript.Replace("|TYPES_JOB|", string.Join(",", typeNames));
+                    filter = filter.Replace("|SET_JOB|", string.Join(",\n                    ", setJob));
+                    filter = filter.Replace("|FIRST_COMPS|", firstComp);
 
-                    jobStruct = jobStructScript.Replace("#JOB_COMPS#", string.Join("\n            ", jobComps));
-                    jobStruct = jobStruct.Replace("#COMP_GET#", string.Join("\n                ", compGets));
-                    jobStruct = jobStruct.Replace("#COMP_SET#", string.Join("\n                ", compSets));
+                    jobStruct = jobStructScript.Replace("|JOB_COMPS|", string.Join("\n            ", jobComps));
+                    jobStruct = jobStruct.Replace("|COMP_GET|", string.Join("\n                ", compGets));
+                    jobStruct = jobStruct.Replace("|COMP_SET|", string.Join("\n                ", compSets));
 
                 }
                 else
@@ -134,11 +135,11 @@ namespace FGUFW.ECS.Editor
 
                         typeNames[i] = $"ref {typeName} {minTypeName}";
                     }
-                    filter = filterScript.Replace("#TYPES#", string.Join(",", typeNames));
+                    filter = filterScript.Replace("|TYPES|", string.Join(",", typeNames));
                 }
             }
-            text = text.Replace("#FILTER#", filter);
-            text = text.Replace("#JOB_STURCT#", jobStruct);
+            text = text.Replace("|FILTER|", filter);
+            text = text.Replace("|JOB_STURCT|", jobStruct);
 
             string path = $"{Application.dataPath.Replace("Assets",folderPath)}/{name}.cs";
             File.WriteAllText(path,text);
@@ -155,27 +156,27 @@ namespace FGUFW.ECS.Editor
         const string jobStructScript = @"
         public struct Job : IJobParallelFor
         {
-            #JOB_COMPS#
+            |JOB_COMPS|
 
             public void Execute(int index)
             {
-                #COMP_GET#
+                |COMP_GET|
                 //code
                 
                 
-                #COMP_SET#
+                |COMP_SET|
             }
 
         }
 ";
 
         const string filterJobScript = @"
-            _world.FilterJob((#TYPES_JOB#)=>
+            _world.FilterJob((|TYPES_JOB|)=>
             {
-                int length = #FIRST_COMPS#.Length;
+                int length = |FIRST_COMPS|.Length;
                 var job = new Job
                 {
-                    #SET_JOB#
+                    |SET_JOB|
                 };
                 job.Run(length);
                 //code
@@ -184,7 +185,7 @@ namespace FGUFW.ECS.Editor
 ";
 
         const string filterScript = @"
-            _world.Filter((#TYPES#)=>
+            _world.Filter((|TYPES|)=>
             {
                 
             });
@@ -200,11 +201,11 @@ using Unity.Collections;
 using UnityEngine.Jobs;
 using Unity.Jobs;
 
-namespace #NAMESPACE#
+namespace |NAMESPACE|
 {
-    public class #NAME# : ISystem
+    public class |NAME| : ISystem
     {
-        public int Order => #ORDER#;
+        public int Order => |ORDER|;
 
         private World _world;
 
@@ -215,7 +216,7 @@ namespace #NAMESPACE#
 
         public void OnUpdate()
         {
-            #FILTER#
+            |FILTER|
 
         }
 
@@ -224,7 +225,7 @@ namespace #NAMESPACE#
             _world = null;
         }
 
-        #JOB_STURCT#
+        |JOB_STURCT|
 
     }
 }
@@ -236,35 +237,35 @@ using FGUFW.ECS;
 using Unity.Mathematics;
 using Unity.Collections;
 
-namespace #NAMESPACE#
+namespace |NAMESPACE|
 {
-    #ATTRIBUTE#
-    public struct #NAME# : IComponent
+    |ATTRIBUTE|
+    public struct |NAME| : IComponent
     {
-        #region 不可修改
-        public int CompType => #COMPTYPE#;
+        |region 不可修改
+        public int CompType => |COMPTYPE|;
         public int EntityUId { get; set; }
         public bool IsCreated { get; private set; }
-        #endregion
+        |endregion
         //code
 
 
-        public #NAME#(int entityUId=0)
+        public |NAME|(int entityUId=0)
         {
-            #region 不可修改
+            |region 不可修改
             EntityUId = entityUId;
             IsCreated = true;
-            #endregion
+            |endregion
             //code
             
         }
 
         public void Dispose()
         {
-            #region 不可修改
+            |region 不可修改
             IsCreated = false;
             EntityUId = 0;
-            #endregion
+            |endregion
             //code
             
         }
@@ -274,3 +275,4 @@ namespace #NAMESPACE#
 
     }
 }
+#endif

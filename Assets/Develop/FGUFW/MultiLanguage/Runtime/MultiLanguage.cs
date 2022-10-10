@@ -72,8 +72,8 @@ namespace FGUFW.MultiLanguage
                 OnLanguageChanged?.Invoke();
             }
             #else
-            Worlds.GameMap.GameRecordDatas.RecordDatas.LanguageIndex = index;
-            Worlds.GameMap.GameRecordDatas.Save();
+            // Worlds.GameMap.GameRecordDatas.RecordDatas.LanguageIndex = index;
+            // Worlds.GameMap.GameRecordDatas.Save();
             OnLanguageChanged?.Invoke();
             #endif
         }
