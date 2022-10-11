@@ -29,7 +29,7 @@ namespace FGUFW.ECS
         public float RenderFrameLerp{get;private set;}
 
         private List<ISystem> _systems = new List<ISystem>();
-        private float _nextUpdateTime;
+        private float _nextUpdateTime = 0;
 
         /// <summary>
         /// 没逻辑帧跑多少次渲染帧
@@ -38,9 +38,11 @@ namespace FGUFW.ECS
 
         private void onCreateSystem()
         {
+            UnityEngine.Random.InitState(314);
             _maxRanderLength = (float)ScreenHelper.SmoothFPS/FRAME_COUNT;
             initSystem();
             PlayerLoopHelper.AddToLoop<UnityEngine.PlayerLoop.Update,World>(update,true);
+            DateTime.UtcNow.SetRecord();
         }
 
         private void onDestorySystem()
@@ -59,8 +61,11 @@ namespace FGUFW.ECS
             bool canUpdate = getCanUpdate();
             if (canUpdate)
             {
+                // Debug.Log(DateTime.UtcNow.GetRecordTime());
+                DateTime.UtcNow.SetRecord();
                 //获取平滑的渲染帧/逻辑帧
                 _maxRanderLength = Mathf.Lerp(_maxRanderLength,RenderFrameIndex,0.5f);
+                Cmd2Comp?.Convert(this,_frameOperates[FrameIndex][0]);
                 worldUpdate();
                 RenderFrameIndex = 0;
                 _nextUpdateTime = TimeHelper.Time+frameDelay;
@@ -77,13 +82,13 @@ namespace FGUFW.ECS
         private bool getCanUpdate()
         {
             bool delayEnd = getDelayEnd();
-            bool frameOperateComplete = _frameOperates[FrameIndex].Complete(_operatorCount);
+            bool frameOperateComplete = getFrameOperateComplete();
             return delayEnd && frameOperateComplete;
         }
 
         private bool getDelayEnd()
         {
-            return TimeHelper.Time >= _nextUpdateTime;
+            return TimeHelper.Time > _nextUpdateTime;
         }
 
         private void worldUpdate()

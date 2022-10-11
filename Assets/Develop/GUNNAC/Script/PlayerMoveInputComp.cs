@@ -7,9 +7,6 @@ namespace GUNNAC
 {
     public class PlayerMoveInputComp : MonoBehaviour
     {
-        public Vector2 Velocity = new Vector2(20f,18f);
-        public int PlayerEUId;
-
         // Update is called once per frame
         void Update()
         {
@@ -18,44 +15,19 @@ namespace GUNNAC
             
             if(Input.GetKey(KeyCode.W))
             {
-                PlayerMoveMsgComp playerMoveMsgComp;
-                if(!world.GetComponent(PlayerEUId,out playerMoveMsgComp))
-                {
-                    playerMoveMsgComp = new PlayerMoveMsgComp(PlayerEUId);
-                }
-                playerMoveMsgComp.Velocity.y = Velocity.y;
-                world.AddOrSetComponent(PlayerEUId,playerMoveMsgComp);
+                world.PutCmd((int)OperateId.PlayerMoveF);
             }
             if(Input.GetKey(KeyCode.S))
             {
-                PlayerMoveMsgComp playerMoveMsgComp;
-                if(!world.GetComponent(PlayerEUId,out playerMoveMsgComp))
-                {
-                    playerMoveMsgComp = new PlayerMoveMsgComp(PlayerEUId);
-                }
-                playerMoveMsgComp.Velocity.y = -Velocity.y;
-                world.AddOrSetComponent(PlayerEUId,playerMoveMsgComp);
+                world.PutCmd((int)OperateId.PlayerMoveB);
             }
             if(Input.GetKey(KeyCode.A))
             {
-                PlayerMoveMsgComp playerMoveMsgComp;
-                if(!world.GetComponent(PlayerEUId,out playerMoveMsgComp))
-                {
-                    playerMoveMsgComp = new PlayerMoveMsgComp(PlayerEUId);
-                }
-                playerMoveMsgComp.Velocity.x = -Velocity.x;
-                world.AddOrSetComponent(PlayerEUId,playerMoveMsgComp);
-
+                world.PutCmd((int)OperateId.PlayerMoveL);
             }
             if(Input.GetKey(KeyCode.D))
             {
-                PlayerMoveMsgComp playerMoveMsgComp;
-                if(!world.GetComponent(PlayerEUId,out playerMoveMsgComp))
-                {
-                    playerMoveMsgComp = new PlayerMoveMsgComp(PlayerEUId);
-                }
-                playerMoveMsgComp.Velocity.x = Velocity.x;
-                world.AddOrSetComponent(PlayerEUId,playerMoveMsgComp);
+                world.PutCmd((int)OperateId.PlayerMoveR);
             }
 
         }

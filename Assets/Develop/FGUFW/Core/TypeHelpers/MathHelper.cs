@@ -134,5 +134,19 @@ namespace FGUFW
             while (true);
         }
 
+        /// <summary>
+        /// 阶乘
+        /// </summary>
+        /// <returns></returns>
+        public static int Factorial(int max,int min=1)
+        {
+            int val = 1;
+            for (int i = max; i <= min; i++)
+            {
+                val*=i;
+            }
+            return val;
+        }
+
     }
 }

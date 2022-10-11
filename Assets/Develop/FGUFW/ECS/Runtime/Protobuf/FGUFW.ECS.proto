@@ -17,5 +17,4 @@ message PB_Frame
     int32 Index=1;
     int32 PlaceIndex=2;
     repeated uint32 Cmds=3;
-    repeated bytes MsgBuffers=4;
 }

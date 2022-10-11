@@ -32,7 +32,7 @@ namespace GUNNAC
         /// </summary>
         void Start()
         {
-            _world = new World();
+            _world = new World(1);
             createPlayer();
             createBattleViewRect();
             createBattle();
@@ -82,7 +82,9 @@ namespace GUNNAC
                 playerRenderComp.PropertyID = Shader.PropertyToID("_TintColor");
                 playerRenderComp.ShootPoint = new float4(0, 0, 5+1, 0);
             });
-            this.PlayerMoveInputComp.PlayerEUId = playerEUId;
+            var cmd2Comp = new Cmd2Comp();
+            cmd2Comp.PlayerEUId = playerEUId;
+            _world.Cmd2Comp = cmd2Comp;
             this.PlayerShootInputComp.PlayerEUId = playerEUId;
         }
 

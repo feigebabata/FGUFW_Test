@@ -1,57 +1,53 @@
-
 using System;
 
-namespace FGUFW.ECS
+namespace FGUFW
 {
-    /// <summary>
-    /// 0:空 1:无操作
-    /// </summary>
-    public struct FrameOperate
+    public struct Ints8
     {
-        public uint CMD_0;
-        public uint CMD_1;
-        public uint CMD_2;
-        public uint CMD_3;
-        public uint CMD_4;
-        public uint CMD_5;
-        public uint CMD_6;
-        public uint CMD_7;
+        public int I0;
+        public int I1;
+        public int I2;
+        public int I3;
+        public int I4;
+        public int I5;
+        public int I6;
+        public int I7;
 
-        public uint this[int idx]
+        public int this[int idx]
         {
             get
             {
                 if(idx==0)
                 {
-                    return CMD_0;
+                    return I0;
                 }
                 else if(idx==1)
                 {
-                    return CMD_1;
+                    return I1;
                 }
                 else if(idx==2)
                 {
-                    return CMD_2;
+                    return I2;
                 }
                 else if(idx==3)
                 {
-                    return CMD_3;
+                    return I3;
                 }
                 else if(idx==4)
                 {
-                    return CMD_4;
+                    return I4;
                 }
                 else if(idx==5)
                 {
-                    return CMD_5;
+                    return I5;
                 }
                 else if(idx==6)
                 {
-                    return CMD_6;
+                    return I6;
                 }
                 else if(idx==7)
                 {
-                    return CMD_7;
+                    return I7;
                 }
                 throw new IndexOutOfRangeException();
             }
@@ -59,35 +55,35 @@ namespace FGUFW.ECS
             {
                 if(idx==0)
                 {
-                    CMD_0=value;
+                    I0=value;
                 }
                 else if(idx==1)
                 {
-                    CMD_1=value;
+                    I1=value;
                 }
                 else if(idx==2)
                 {
-                    CMD_2=value;
+                    I2=value;
                 }
                 else if(idx==3)
                 {
-                    CMD_3=value;
+                    I3=value;
                 }
                 else if(idx==4)
                 {
-                    CMD_4=value;
+                    I4=value;
                 }
                 else if(idx==5)
                 {
-                    CMD_5=value;
+                    I5=value;
                 }
                 else if(idx==6)
                 {
-                    CMD_6=value;
+                    I6=value;
                 }
                 else if(idx==7)
                 {
-                    CMD_7=value;
+                    I7=value;
                 }
                 else
                 {
@@ -96,7 +92,7 @@ namespace FGUFW.ECS
             }
         }
 
-        public bool Complete(int length)
+        public bool InitialValue(int length=8)
         {
             if(length>8)length=8;
             for (int i = 0; i < length; i++)

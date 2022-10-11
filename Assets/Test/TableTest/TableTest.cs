@@ -17,8 +17,7 @@ public static class TableTest
     [MenuItem("Test/TableTest")]
     static void tableTest()
     {
-        int i = 1;
-        Debug.Log(0.5f/i);
+        Debug.Log(5|3);
     }
 
     [MenuItem("Test/TableTest2")]

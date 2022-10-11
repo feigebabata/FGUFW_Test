@@ -21,35 +21,17 @@ namespace GUNNAC
             var world = World.Current;
             if(Input.GetKey(KeyCode.Return))
             {
-                PlayerShootMsgComp playerShootMsgComp;
-                if(!world.GetComponent(PlayerEUId,out playerShootMsgComp))
-                {
-                    playerShootMsgComp = new PlayerShootMsgComp(PlayerEUId);
-                }
-                playerShootMsgComp.BulletType = 1;
-                world.AddOrSetComponent(PlayerEUId,playerShootMsgComp);
+                world.PutCmd((uint)OperateId.PlayerShoot1);
                 shootDowncount = Delay;
             }
             else if(Input.GetKey(KeyCode.Space))
             {
-                PlayerShootMsgComp playerShootMsgComp;
-                if(!world.GetComponent(PlayerEUId,out playerShootMsgComp))
-                {
-                    playerShootMsgComp = new PlayerShootMsgComp(PlayerEUId);
-                }
-                playerShootMsgComp.BulletType = 2;
-                world.AddOrSetComponent(PlayerEUId,playerShootMsgComp);
+                world.PutCmd((uint)OperateId.PlayerShoot2);
                 shootDowncount = Delay;
             }
             else if( Input.GetKey(KeyCode.KeypadEnter))
             {
-                PlayerShootMsgComp playerShootMsgComp;
-                if(!world.GetComponent(PlayerEUId,out playerShootMsgComp))
-                {
-                    playerShootMsgComp = new PlayerShootMsgComp(PlayerEUId);
-                }
-                playerShootMsgComp.BulletType = 3;
-                world.AddOrSetComponent(PlayerEUId,playerShootMsgComp);
+                world.PutCmd((uint)OperateId.PlayerShoot3);
                 shootDowncount = Delay;
             }
 

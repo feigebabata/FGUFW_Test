@@ -25,13 +25,12 @@ namespace FGUFW.ECS {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "CjJEZXZlbG9wL0ZHVUZXL0VDUy9SdW50aW1lL1Byb3RvYnVmL0ZHVUZXLkVD",
-            "Uy5wcm90bxIJRkdVRlcuRUNTIk8KCFBCX0ZyYW1lEg0KBUluZGV4GAEgASgF",
-            "EhIKClBsYWNlSW5kZXgYAiABKAUSDAoEQ21kcxgDIAMoDRISCgpNc2dCdWZm",
-            "ZXJzGAQgAygMYgZwcm90bzM="));
+            "Uy5wcm90bxIJRkdVRlcuRUNTIjsKCFBCX0ZyYW1lEg0KBUluZGV4GAEgASgF",
+            "EhIKClBsYWNlSW5kZXgYAiABKAUSDAoEQ21kcxgDIAMoDWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::FGUFW.ECS.PB_Frame), global::FGUFW.ECS.PB_Frame.Parser, new[]{ "Index", "PlaceIndex", "Cmds", "MsgBuffers" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::FGUFW.ECS.PB_Frame), global::FGUFW.ECS.PB_Frame.Parser, new[]{ "Index", "PlaceIndex", "Cmds" }, null, null, null)
           }));
     }
     #endregion
@@ -66,7 +65,6 @@ namespace FGUFW.ECS {
       index_ = other.index_;
       placeIndex_ = other.placeIndex_;
       cmds_ = other.cmds_.Clone();
-      msgBuffers_ = other.msgBuffers_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -107,16 +105,6 @@ namespace FGUFW.ECS {
       get { return cmds_; }
     }
 
-    /// <summary>Field number for the "MsgBuffers" field.</summary>
-    public const int MsgBuffersFieldNumber = 4;
-    private static readonly pb::FieldCodec<pb::ByteString> _repeated_msgBuffers_codec
-        = pb::FieldCodec.ForBytes(34);
-    private readonly pbc::RepeatedField<pb::ByteString> msgBuffers_ = new pbc::RepeatedField<pb::ByteString>();
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::RepeatedField<pb::ByteString> MsgBuffers {
-      get { return msgBuffers_; }
-    }
-
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as PB_Frame);
@@ -133,7 +121,6 @@ namespace FGUFW.ECS {
       if (Index != other.Index) return false;
       if (PlaceIndex != other.PlaceIndex) return false;
       if(!cmds_.Equals(other.cmds_)) return false;
-      if(!msgBuffers_.Equals(other.msgBuffers_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -143,7 +130,6 @@ namespace FGUFW.ECS {
       if (Index != 0) hash ^= Index.GetHashCode();
       if (PlaceIndex != 0) hash ^= PlaceIndex.GetHashCode();
       hash ^= cmds_.GetHashCode();
-      hash ^= msgBuffers_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -166,7 +152,6 @@ namespace FGUFW.ECS {
         output.WriteInt32(PlaceIndex);
       }
       cmds_.WriteTo(output, _repeated_cmds_codec);
-      msgBuffers_.WriteTo(output, _repeated_msgBuffers_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -182,7 +167,6 @@ namespace FGUFW.ECS {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(PlaceIndex);
       }
       size += cmds_.CalculateSize(_repeated_cmds_codec);
-      size += msgBuffers_.CalculateSize(_repeated_msgBuffers_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -201,7 +185,6 @@ namespace FGUFW.ECS {
         PlaceIndex = other.PlaceIndex;
       }
       cmds_.Add(other.cmds_);
-      msgBuffers_.Add(other.msgBuffers_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -224,10 +207,6 @@ namespace FGUFW.ECS {
           case 26:
           case 24: {
             cmds_.AddEntriesFrom(input, _repeated_cmds_codec);
-            break;
-          }
-          case 34: {
-            msgBuffers_.AddEntriesFrom(input, _repeated_msgBuffers_codec);
             break;
           }
         }

@@ -15,7 +15,7 @@ namespace FGUFW
         /// 平滑帧率
         /// </summary>
         /// <value></value>
-        public static int SmoothFPS { get; private set; }
+        public static int SmoothFPS { get; private set; } = 60;
 
         private static int fpsCount, second;
 
