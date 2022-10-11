@@ -5,7 +5,7 @@ namespace GUNNAC
 {
     public class Cmd2Comp:ICmd2Comp
     {
-        public Vector2 Velocity = new Vector2(20f,18f);
+        public Vector2 Velocity = new Vector2(40f,36f);
         public int PlayerEUId;
 
         public void Convert(World world,uint cmd)

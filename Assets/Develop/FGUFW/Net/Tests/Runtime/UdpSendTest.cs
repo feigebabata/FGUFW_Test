@@ -14,7 +14,7 @@ namespace FGUFW.Net.Test
         void Start()
         {
             Debug.Log("启动");
-            Application.targetFrameRate = 60;
+            Application.targetFrameRate = 30*10;
             UdpUtility.On();
         }
 

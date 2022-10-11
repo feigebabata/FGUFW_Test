@@ -16,7 +16,7 @@ namespace FGUFW.ECS
         private int _operatorCount;
         private uint[] _selfCmds;
         private int _syncFrameIndex;
-        private bool _singleMode = true;
+        private bool _singleMode = false;
 
 
         private void onCreateSync(int operatorCount)
@@ -39,11 +39,20 @@ namespace FGUFW.ECS
 
         private void frameSyncUpdate()
         {
-            if(_syncFrameIndex!=FrameIndex)return;
-            // bool delayEnd = getDelayEnd();
-            // if(!delayEnd)return;
-            if((int)_maxRanderLength-1!=RenderFrameIndex)return;
+            if(!getCanSyncFrame())return;
+            
             syncFrameOperate();
+        }
+
+        private bool getCanSyncFrame()
+        {
+            //是否已同步
+            if(_syncFrameIndex != FrameIndex)return false;
+
+            //提前1.5渲染帧同步操作
+            if(TimeHelper.Time+TimeHelper.DeltaTime*1.5f < _nextUpdateTime)return false;
+
+            return true;
         }
 
         private void syncFrameOperate()
@@ -52,7 +61,8 @@ namespace FGUFW.ECS
             {
                 UInts8 frameOperate = _frameOperates[FrameIndex];
                 
-                int index = _syncFrameIndex.RoundIndex(_selfCmds.Length);
+                int index = FrameIndex.RoundIndex(_selfCmds.Length);
+                frameOperate[0] = _selfCmds[index];
                 
                 _frameOperates[FrameIndex] = frameOperate;
             }
@@ -116,6 +126,14 @@ namespace FGUFW.ECS
                 complete = _frameOperates[FrameIndex].InitialValue(_operatorCount);
             }
             return complete;
+        }
+
+        private void waitFrameOperateComplete()
+        {
+            while (!getFrameOperateComplete())
+            {
+                
+            }
         }
 
     }

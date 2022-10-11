@@ -57,19 +57,24 @@ namespace FGUFW.ECS
         private void update()
         {
             RenderFrameIndex++;
-            frameSyncUpdate();
             bool canUpdate = getCanUpdate();
             if (canUpdate)
             {
-                // Debug.Log(DateTime.UtcNow.GetRecordTime());
-                DateTime.UtcNow.SetRecord();
+                //Debug.Log(DateTime.UtcNow.GetRecordTime());
+                //DateTime.UtcNow.SetRecord();
                 //获取平滑的渲染帧/逻辑帧
                 _maxRanderLength = Mathf.Lerp(_maxRanderLength,RenderFrameIndex,0.5f);
+
+                //死循环卡住主线程 等同步完成
+                waitFrameOperateComplete();
+
                 Cmd2Comp?.Convert(this,_frameOperates[FrameIndex][0]);
                 worldUpdate();
                 RenderFrameIndex = 0;
+                
                 _nextUpdateTime = TimeHelper.Time+frameDelay;
             }
+            frameSyncUpdate();
             setRenderFrameLerp();
         }
 
@@ -88,7 +93,7 @@ namespace FGUFW.ECS
 
         private bool getDelayEnd()
         {
-            return TimeHelper.Time > _nextUpdateTime;
+            return TimeHelper.Time >= _nextUpdateTime;
         }
 
         private void worldUpdate()
