@@ -17,7 +17,7 @@ namespace GUNNAC
         private int _placeCount,_placeIndex;
         private uint[] _selfCmds;
         private int _syncFrameIndex;
-        private bool _singleMode = false;
+        private bool _singleMode = true;
 
         private WorldFrameSync(){}
 
@@ -115,8 +115,8 @@ namespace GUNNAC
                     UdpUtility.Send(sendBuffer);
                 }
             }
-            _syncFrameIndex++;
             resetNextCmd();
+            _syncFrameIndex++;
         }
 
         public void PutCmd(uint cmd)

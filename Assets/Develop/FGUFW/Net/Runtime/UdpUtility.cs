@@ -14,6 +14,7 @@ namespace FGUFW.Net
         public static void On()
         {
             if(isOn)return;
+            AndroidWifi.I.LockAcquire();
             broadcastIEP = new IPEndPoint(IPAddress.Broadcast,PortConfig.BROADCAST_RECEIVE);
             sendClient = new UdpClient(PortConfig.BROADCAST_SEND);
             receiveClient = new UdpClient(PortConfig.BROADCAST_RECEIVE);
@@ -24,6 +25,7 @@ namespace FGUFW.Net
         public static void Off()
         {
             if(!isOn)return;
+            AndroidWifi.I.LockRelease();
             isOn = false;
             sendClient.Close();
             receiveClient.Close();

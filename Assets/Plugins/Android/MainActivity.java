@@ -14,13 +14,13 @@ public class MainActivity extends UnityPlayerActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        // Log.d("Unity","安卓 活动 初始化");
+        Log.d("Unity","安卓 活动 初始化");
         super.onCreate(savedInstanceState);
 
         WifiManager manager = (WifiManager) this.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         lock= manager.createMulticastLock("test wifi");
 
-        // UnityPlayer.UnitySendMessage("AndroidBehaviour","OnAndroidMsg","安卓消息");
+        UnityPlayer.UnitySendMessage("AndroidWifi","OnAndroidMsg","安卓消息");
     }
 
     @Override

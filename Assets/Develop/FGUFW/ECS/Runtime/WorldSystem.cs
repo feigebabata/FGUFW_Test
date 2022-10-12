@@ -63,7 +63,6 @@ namespace FGUFW.ECS
         private List<Func<World, bool>> _canUpdates;
 
 
-        
 
         private void onCreateSystem(int seed)
         {
