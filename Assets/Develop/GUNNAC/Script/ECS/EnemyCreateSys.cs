@@ -7,6 +7,7 @@ using Unity.Mathematics;
 using Unity.Collections;
 using UnityEngine.Jobs;
 using Unity.Jobs;
+using FGUFW;
 
 namespace GUNNAC
 {
@@ -29,7 +30,7 @@ namespace GUNNAC
                 if(_world.FrameIndex-enemyCreateComp.PrevCreateTime<enemyCreateComp.Delay)return;
                 enemyCreateComp.PrevCreateTime = _world.FrameIndex;
 
-                var pos = new Vector3(UnityEngine.Random.Range(-50,50),0,60);
+                var pos = new Vector3(_world.Random.Range(-50,50),0,60);
                 int entityUId = _world.CreateEntity(
                 (
                     ref PositionComp positionComp,

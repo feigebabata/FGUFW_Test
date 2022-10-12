@@ -9,6 +9,7 @@ namespace GUNNAC
     {
         public int PlayerEUId;
         public int Delay=16;
+        public WorldFrameSync WorldFrameSync;
         private int shootDowncount;
 
         // Update is called once per frame
@@ -21,17 +22,17 @@ namespace GUNNAC
             var world = World.Current;
             if(Input.GetKey(KeyCode.Return))
             {
-                world.PutCmd((uint)OperateId.PlayerShoot1);
+                WorldFrameSync.PutCmd((uint)OperateId.PlayerShoot1);
                 shootDowncount = Delay;
             }
             else if(Input.GetKey(KeyCode.Space))
             {
-                world.PutCmd((uint)OperateId.PlayerShoot2);
+                WorldFrameSync.PutCmd((uint)OperateId.PlayerShoot2);
                 shootDowncount = Delay;
             }
             else if( Input.GetKey(KeyCode.KeypadEnter))
             {
-                world.PutCmd((uint)OperateId.PlayerShoot3);
+                WorldFrameSync.PutCmd((uint)OperateId.PlayerShoot3);
                 shootDowncount = Delay;
             }
 

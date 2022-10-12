@@ -32,10 +32,9 @@ namespace FGUFW.ECS
         private object[] _createArgs=new object[1];
 
         private World(){}
-        public World(int operatorCount=1)
+        public World(int seed=1)
         {
-            onCreateSystem();
-            onCreateSync(operatorCount);
+            onCreateSystem(seed);
             Current = this;
         }
 
@@ -47,7 +46,6 @@ namespace FGUFW.ECS
             disposeComps();
             #endif
             
-            onDestroySync();
             Current = null;
         }
 

@@ -11,20 +11,27 @@ namespace FGUFW.Net.Test
         private int i;
 
         // Start is called before the first frame update
-        void Start()
+        IEnumerator Start()
         {
             Debug.Log("启动");
+            yield return new WaitForSeconds(3);
             Application.targetFrameRate = 30*10;
             UdpUtility.On();
+
+            for (int i = 0; i < 100; i++)
+            {
+                var buffer = BitConverter.GetBytes(i);
+                UdpUtility.Send(buffer);
+            }
         }
 
         // Update is called once per frame
-        void Update()
-        {
-            i++;
-            var buffer = BitConverter.GetBytes(i);
-            UdpUtility.Send(buffer);
-        }
+        // void Update()
+        // {
+        //     i++;
+        //     var buffer = BitConverter.GetBytes(i);
+        //     UdpUtility.Send(buffer);
+        // }
 
         /// <summary>
         /// This function is called when the MonoBehaviour will be destroyed.

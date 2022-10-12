@@ -13,11 +13,27 @@ using Unity.Mathematics;
 
 public static class TableTest
 {
+    static Func<bool> callback;
 
     [MenuItem("Test/TableTest")]
     static void tableTest()
     {
-        Debug.Log(5|3);
+        callback += fun1;
+        callback += fun2;
+
+        bool b = callback();
+        
+        Debug.Log(b);
+    }
+
+    private static bool fun2()
+    {
+        return false;
+    }
+
+    private static bool fun1()
+    {
+        return false;
     }
 
     [MenuItem("Test/TableTest2")]

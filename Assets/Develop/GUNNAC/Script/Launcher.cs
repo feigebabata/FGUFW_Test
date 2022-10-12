@@ -17,13 +17,18 @@ namespace GUNNAC
         public int EnemyCreateDelay=0;
 
         private World _world;
+        private WorldFrameSync _worldFrameSync;
+
+        public int PlaceCount=1,PlaceIndex=0;
+
+        public TextMesh Text;
 
         /// <summary>
         /// Awake is called when the script instance is being loaded.
         /// </summary>
         void Awake()
         {
-            Application.targetFrameRate = 30*2;    
+            Application.targetFrameRate = 30*10;    
         }
 
         /// <summary>
@@ -32,12 +37,28 @@ namespace GUNNAC
         /// </summary>
         void Start()
         {
-            _world = new World(1);
-            createPlayer();
+            _world = new World();
+            _worldFrameSync = new WorldFrameSync(_world,PlaceCount,PlaceIndex);
+            this.PlayerMoveInputComp.WorldFrameSync = _worldFrameSync;
+            this.PlayerShootInputComp.WorldFrameSync = _worldFrameSync;
+
+            int playerEUId = 0;
+            var playerEUIds = new int[PlaceCount];
+
+            for (int i = 0; i < PlaceCount; i++)
+            {
+                playerEUIds[i] = createPlayer();
+                if(i==PlaceIndex)playerEUId = playerEUIds[i];
+            }
+
             createBattleViewRect();
             createBattle();
             initGObjPool();
             createEnemy();
+
+            var cmd2Comp = new Cmd2Comp();
+            cmd2Comp.PlayerEUIds = playerEUIds;
+            _worldFrameSync.Cmd2Comp = cmd2Comp;
         }
 
         /// <summary>
@@ -45,10 +66,22 @@ namespace GUNNAC
         /// </summary>
         void OnDestroy()
         {
+            _worldFrameSync.Dispose(_world);
             _world.Dispose();
         }
 
-        private void createPlayer()
+        /// <summary>
+        /// Update is called every frame, if the MonoBehaviour is enabled.
+        /// </summary>
+        void Update()
+        {
+            int renderFPS = ScreenHelper.FPS;
+            int logicFrameIndex = _world.FrameIndex;
+            int logicFrameDelay = (int)(_world.PrevFrameUpdateDelay*1000);
+            this.Text.text = $"PI:{PlaceIndex} RF:{renderFPS} LFD:{logicFrameDelay} LFI:{logicFrameIndex} ";
+        }
+
+        private int createPlayer()
         {
             int playerEUId = _world.CreateEntity(
             (
@@ -82,10 +115,10 @@ namespace GUNNAC
                 playerRenderComp.PropertyID = Shader.PropertyToID("_TintColor");
                 playerRenderComp.ShootPoint = new float4(0, 0, 5+1, 0);
             });
-            var cmd2Comp = new Cmd2Comp();
-            cmd2Comp.PlayerEUId = playerEUId;
-            _world.Cmd2Comp = cmd2Comp;
+            
             this.PlayerShootInputComp.PlayerEUId = playerEUId;
+
+            return playerEUId;
         }
 
         private void createBattleViewRect()

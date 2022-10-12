@@ -28,17 +28,47 @@ namespace FGUFW.ECS
         /// <value></value>
         public float RenderFrameLerp{get;private set;}
 
-        private List<ISystem> _systems = new List<ISystem>();
-        private float _nextUpdateTime = 0;
+        /// <summary>
+        /// 逻辑帧下次更新事件
+        /// </summary>
+        /// <value></value>
+        public float NextUpdateTime{get;private set;}
 
         /// <summary>
-        /// 没逻辑帧跑多少次渲染帧
+        /// 随机数
+        /// </summary>
+        /// <value></value>
+        public System.Random Random{get;private set;}
+
+        public Action<World> OnPreUpdate;
+
+        /// <summary>
+        /// 上一帧更新延迟 延迟=实际间隔事件-frameDelay
+        /// </summary>
+        /// <value></value>
+        public float PrevFrameUpdateDelay{get;private set;}
+
+        private float _prevFrameUpdateTime;
+
+        private List<ISystem> _systems = new List<ISystem>();
+
+        /// <summary>
+        /// 每逻辑帧跑多少次渲染帧
         /// </summary>
         private float _maxRanderLength;
+        
+        /// <summary>
+        /// 外接逻辑帧更新影响
+        /// </summary>
+        private List<Func<World, bool>> _canUpdates;
 
-        private void onCreateSystem()
+
+        
+
+        private void onCreateSystem(int seed)
         {
-            UnityEngine.Random.InitState(314);
+            _canUpdates = new List<Func<World, bool>>();
+            this.Random = new System.Random(seed);
             _maxRanderLength = (float)ScreenHelper.SmoothFPS/FRAME_COUNT;
             initSystem();
             PlayerLoopHelper.AddToLoop<UnityEngine.PlayerLoop.Update,World>(update,true);
@@ -47,34 +77,35 @@ namespace FGUFW.ECS
 
         private void onDestorySystem()
         {
+            _canUpdates.Clear();
             PlayerLoopHelper.RemoveToLoop<UnityEngine.PlayerLoop.Update>(update);
             
             disposeSys();
         }
 
 
-
         private void update()
         {
             RenderFrameIndex++;
+
+            bool delayEnd = getDelayEnd();
             bool canUpdate = getCanUpdate();
-            if (canUpdate)
+            
+            if (delayEnd && canUpdate)
             {
-                //Debug.Log(DateTime.UtcNow.GetRecordTime());
-                //DateTime.UtcNow.SetRecord();
                 //获取平滑的渲染帧/逻辑帧
                 _maxRanderLength = Mathf.Lerp(_maxRanderLength,RenderFrameIndex,0.5f);
 
-                //死循环卡住主线程 等同步完成
-                waitFrameOperateComplete();
-
-                Cmd2Comp?.Convert(this,_frameOperates[FrameIndex][0]);
-                worldUpdate();
-                RenderFrameIndex = 0;
+                if(OnPreUpdate!=null)OnPreUpdate(this);
                 
-                _nextUpdateTime = TimeHelper.Time+frameDelay;
+                worldUpdate();
+
+                RenderFrameIndex = 0;
+                NextUpdateTime = TimeHelper.Time+frameDelay;
+                
+                PrevFrameUpdateDelay = TimeHelper.Time-_prevFrameUpdateTime-frameDelay;
+                _prevFrameUpdateTime = TimeHelper.Time;
             }
-            frameSyncUpdate();
             setRenderFrameLerp();
         }
 
@@ -86,14 +117,16 @@ namespace FGUFW.ECS
 
         private bool getCanUpdate()
         {
-            bool delayEnd = getDelayEnd();
-            bool frameOperateComplete = getFrameOperateComplete();
-            return delayEnd && frameOperateComplete;
+            for (int i = 0; i < _canUpdates.Count; i++)
+            {
+                if(!_canUpdates[i](this))return false;
+            }
+            return true;
         }
 
         private bool getDelayEnd()
         {
-            return TimeHelper.Time >= _nextUpdateTime;
+            return TimeHelper.Time >= NextUpdateTime;
         }
 
         private void worldUpdate()
@@ -133,6 +166,17 @@ namespace FGUFW.ECS
                 sys.OnInit(this);
             }
         }
+
+        public void AddCanUpdate(Func<World,bool> canUpdate)
+        {
+            _canUpdates?.Add(canUpdate);
+        }
+
+        public void RemoveCanUpdate(Func<World,bool> canUpdate)
+        {
+            _canUpdates?.Remove(canUpdate);
+        }
+
 
     }
 }

@@ -7,6 +7,8 @@ namespace GUNNAC
 {
     public class PlayerMoveInputComp : MonoBehaviour
     {
+        public WorldFrameSync WorldFrameSync;
+        
         // Update is called once per frame
         void Update()
         {
@@ -15,19 +17,19 @@ namespace GUNNAC
             
             if(Input.GetKey(KeyCode.W))
             {
-                world.PutCmd((int)OperateId.PlayerMoveF);
+                WorldFrameSync.PutCmd((int)OperateId.PlayerMoveF);
             }
             if(Input.GetKey(KeyCode.S))
             {
-                world.PutCmd((int)OperateId.PlayerMoveB);
+                WorldFrameSync.PutCmd((int)OperateId.PlayerMoveB);
             }
             if(Input.GetKey(KeyCode.A))
             {
-                world.PutCmd((int)OperateId.PlayerMoveL);
+                WorldFrameSync.PutCmd((int)OperateId.PlayerMoveL);
             }
             if(Input.GetKey(KeyCode.D))
             {
-                world.PutCmd((int)OperateId.PlayerMoveR);
+                WorldFrameSync.PutCmd((int)OperateId.PlayerMoveR);
             }
 
         }

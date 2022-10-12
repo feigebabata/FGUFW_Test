@@ -5,23 +5,54 @@ using UnityEngine;
 using FGUFW.Net;
 using Google.Protobuf;
 using System.Net.Sockets;
+using FGUFW.ECS;
 
-namespace FGUFW.ECS
+namespace GUNNAC
 {
-    public partial class World
+    public sealed class WorldFrameSync
     {
         public ICmd2Comp Cmd2Comp;
         private FixedList<UInts8> _frameOperates;
         private object _frameOperateLock = new object();
-        private int _operatorCount;
+        private int _placeCount,_placeIndex;
         private uint[] _selfCmds;
         private int _syncFrameIndex;
         private bool _singleMode = false;
 
+        private WorldFrameSync(){}
 
-        private void onCreateSync(int operatorCount)
+        public WorldFrameSync(World world,int placeCount,int placeIndex)
         {
-            _operatorCount = operatorCount;
+            onCreateSync(placeCount,placeIndex);
+
+            world.AddCanUpdate(onCanUpdate);
+            world.OnPreUpdate += onPreUpdate;
+        }
+
+        public void Dispose(World world)
+        {
+            world.OnPreUpdate -= onPreUpdate;
+            world.RemoveCanUpdate(onCanUpdate);
+            onDestroySync();
+        }
+
+        private void onPreUpdate(World world)
+        {
+            waitFrameOperateComplete(world);
+            Cmd2Comp?.Convert(world,_frameOperates[world.FrameIndex]);
+        }
+
+        private bool onCanUpdate(World world)
+        {
+            frameSyncUpdate(world);
+
+            return getFrameOperateComplete(world);
+        }
+
+        private void onCreateSync(int placeCount,int placeIndex)
+        {
+            _placeIndex = placeIndex;
+            _placeCount = placeCount;
             _frameOperates = new FixedList<UInts8>();
             _selfCmds = new uint[8];
             _selfCmds[0]=1;
@@ -37,20 +68,22 @@ namespace FGUFW.ECS
             UdpUtility.Off();
         }
 
-        private void frameSyncUpdate()
+        private void frameSyncUpdate(World world)
         {
-            if(!getCanSyncFrame())return;
+            if(!getCanSyncFrame(world))return;
             
             syncFrameOperate();
         }
 
-        private bool getCanSyncFrame()
+        private bool getCanSyncFrame(World world)
         {
             //是否已同步
-            if(_syncFrameIndex != FrameIndex)return false;
+            if(_syncFrameIndex != world.FrameIndex)return false;
 
-            //提前1.5渲染帧同步操作
-            if(TimeHelper.Time+TimeHelper.DeltaTime*1.5f < _nextUpdateTime)return false;
+            // float syncTime = Mathf.Clamp(TimeHelper.DeltaTime,0.050f,0.050f);
+            // syncTime = 0.040f;
+            // //提前syncTime同步操作
+            // if(TimeHelper.Time+syncTime < world.NextUpdateTime)return false;
 
             return true;
         }
@@ -59,19 +92,19 @@ namespace FGUFW.ECS
         {
             if(_singleMode)
             {
-                UInts8 frameOperate = _frameOperates[FrameIndex];
+                UInts8 frameOperate = _frameOperates[_syncFrameIndex];
                 
-                int index = FrameIndex.RoundIndex(_selfCmds.Length);
-                frameOperate[0] = _selfCmds[index];
+                int index = _syncFrameIndex.RoundIndex(_selfCmds.Length);
+                frameOperate[_placeIndex] = _selfCmds[index];
                 
-                _frameOperates[FrameIndex] = frameOperate;
+                _frameOperates[_syncFrameIndex] = frameOperate;
             }
             else
             {
                 PB_Frame frame = new PB_Frame();
-                frame.Index = FrameIndex;
-                frame.PlaceIndex = 0;
-                for (int i = 0,f_idx=FrameIndex; i < 3 && f_idx>=0; i++,f_idx--)
+                frame.Index = _syncFrameIndex;
+                frame.PlaceIndex = _placeIndex;
+                for (int i = 0,f_idx=_syncFrameIndex; i < 3 && f_idx>=0; i++,f_idx--)
                 {
                     int index = f_idx.RoundIndex(_selfCmds.Length);
                     frame.Cmds.Add(_selfCmds[index]);
@@ -97,7 +130,7 @@ namespace FGUFW.ECS
 
         private void resetNextCmd()
         {
-            int index = (FrameIndex+1).RoundIndex(_selfCmds.Length);
+            int index = (_syncFrameIndex+1).RoundIndex(_selfCmds.Length);
             _selfCmds[index] = 1;
         }
 
@@ -118,19 +151,19 @@ namespace FGUFW.ECS
             }
         }
 
-        private bool getFrameOperateComplete()
+        private bool getFrameOperateComplete(World world)
         {
             bool complete = false;
             lock (_frameOperateLock)
             {
-                complete = _frameOperates[FrameIndex].InitialValue(_operatorCount);
+                complete = _frameOperates[world.FrameIndex].InitialValue(_placeCount);
             }
             return complete;
         }
 
-        private void waitFrameOperateComplete()
+        private void waitFrameOperateComplete(World world)
         {
-            while (!getFrameOperateComplete())
+            while (!getFrameOperateComplete(world))
             {
                 
             }
