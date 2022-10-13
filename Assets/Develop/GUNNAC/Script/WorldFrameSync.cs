@@ -17,7 +17,7 @@ namespace GUNNAC
         private int _placeCount,_placeIndex;
         private uint[] _selfCmds;
         private int _syncFrameIndex;
-        private bool _singleMode = true;
+        private bool _singleMode = false;
 
         private WorldFrameSync(){}
 
@@ -38,7 +38,6 @@ namespace GUNNAC
 
         private void onPreUpdate(World world)
         {
-            waitFrameOperateComplete(world);
             Cmd2Comp?.Convert(world,_frameOperates[world.FrameIndex]);
         }
 
@@ -80,10 +79,9 @@ namespace GUNNAC
             //是否已同步
             if(_syncFrameIndex != world.FrameIndex)return false;
 
-            // float syncTime = Mathf.Clamp(TimeHelper.DeltaTime,0.050f,0.050f);
-            // syncTime = 0.040f;
-            // //提前syncTime同步操作
-            // if(TimeHelper.Time+syncTime < world.NextUpdateTime)return false;
+            float syncTime = Mathf.Clamp(TimeHelper.DeltaTime,0.016f,0.032f);
+            //提前syncTime同步操作
+            if(TimeHelper.Time+syncTime < world.NextUpdateTime)return false;
 
             return true;
         }

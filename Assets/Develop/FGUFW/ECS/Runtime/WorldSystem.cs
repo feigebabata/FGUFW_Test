@@ -7,7 +7,7 @@ namespace FGUFW.ECS
 {
     public partial class World:IDisposable
     {
-        public const int FRAME_COUNT = 20;
+        public const int FRAME_COUNT = 16;
         private readonly float frameDelay = 1f/(float)FRAME_COUNT;
 
         public float TimeScale=1f;
