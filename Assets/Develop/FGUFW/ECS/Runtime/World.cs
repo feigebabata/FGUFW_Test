@@ -32,8 +32,9 @@ namespace FGUFW.ECS
         private object[] _createArgs=new object[1];
 
         private World(){}
-        public World(int seed=1)
+        public World(int seed=1,IWorldUpdateControl worldUpdateControl=null)
         {
+            _worldUpdateControl = worldUpdateControl;
             onCreateSystem(seed);
             Current = this;
         }

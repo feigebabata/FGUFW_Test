@@ -28,7 +28,7 @@ namespace GUNNAC
         /// </summary>
         void Awake()
         {
-            Application.targetFrameRate = 30*10;    
+            Application.targetFrameRate = 30*2;    
         }
 
         /// <summary>
@@ -37,8 +37,8 @@ namespace GUNNAC
         /// </summary>
         void Start()
         {
-            _world = new World();
-            _worldFrameSync = new WorldFrameSync(_world,PlaceCount,PlaceIndex);
+            _worldFrameSync = new WorldFrameSync(PlaceCount,PlaceIndex);
+            _world = new World(1,_worldFrameSync);
             this.PlayerMoveInputComp.WorldFrameSync = _worldFrameSync;
             this.PlayerShootInputComp.WorldFrameSync = _worldFrameSync;
 

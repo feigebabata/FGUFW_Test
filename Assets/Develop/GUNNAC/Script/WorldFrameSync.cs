@@ -9,7 +9,7 @@ using FGUFW.ECS;
 
 namespace GUNNAC
 {
-    public sealed class WorldFrameSync
+    public sealed class WorldFrameSync:IWorldUpdateControl
     {
         public ICmd2Comp Cmd2Comp;
         private FixedList<UInts8> _frameOperates;
@@ -21,31 +21,17 @@ namespace GUNNAC
 
         private WorldFrameSync(){}
 
-        public WorldFrameSync(World world,int placeCount,int placeIndex)
+        public WorldFrameSync(int placeCount,int placeIndex)
         {
             onCreateSync(placeCount,placeIndex);
 
-            world.AddCanUpdate(onCanUpdate);
-            world.OnPreUpdate += onPreUpdate;
+ 
         }
 
         public void Dispose(World world)
         {
-            world.OnPreUpdate -= onPreUpdate;
-            world.RemoveCanUpdate(onCanUpdate);
+ 
             onDestroySync();
-        }
-
-        private void onPreUpdate(World world)
-        {
-            Cmd2Comp?.Convert(world,_frameOperates[world.FrameIndex]);
-        }
-
-        private bool onCanUpdate(World world)
-        {
-            frameSyncUpdate(world);
-
-            return getFrameOperateComplete(world);
         }
 
         private void onCreateSync(int placeCount,int placeIndex)
@@ -107,6 +93,7 @@ namespace GUNNAC
                     int index = f_idx.RoundIndex(_selfCmds.Length);
                     frame.Cmds.Add(_selfCmds[index]);
                 }
+                
                 var sendBuffer = frame.ToByteArray();
                 for (int i = 0; i < 3; i++)
                 {
@@ -167,5 +154,20 @@ namespace GUNNAC
             }
         }
 
+        public void OnPreUpdate(World world)
+        {
+            frameSyncUpdate(world);   
+        }
+
+        public void OnPreWorldUpdate(World world)
+        {
+            Cmd2Comp?.Convert(world,_frameOperates[world.FrameIndex]);
+        }
+
+        public bool CanUpdate(World world)
+        {
+
+            return getFrameOperateComplete(world);
+        }
     }
 }

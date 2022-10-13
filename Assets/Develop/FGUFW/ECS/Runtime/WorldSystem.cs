@@ -7,7 +7,7 @@ namespace FGUFW.ECS
 {
     public partial class World:IDisposable
     {
-        public const int FRAME_COUNT = 16;
+        public const int FRAME_COUNT = 20;
         private readonly float frameDelay = 1f/(float)FRAME_COUNT;
 
         public float TimeScale=1f;
@@ -40,8 +40,6 @@ namespace FGUFW.ECS
         /// <value></value>
         public System.Random Random{get;private set;}
 
-        public Action<World> OnPreUpdate;
-
         /// <summary>
         /// 上一帧更新延迟 延迟=实际间隔事件-frameDelay
         /// </summary>
@@ -56,17 +54,13 @@ namespace FGUFW.ECS
         /// 每逻辑帧跑多少次渲染帧
         /// </summary>
         private float _maxRanderLength;
-        
-        /// <summary>
-        /// 外接逻辑帧更新影响
-        /// </summary>
-        private List<Func<World, bool>> _canUpdates;
+
+        private IWorldUpdateControl _worldUpdateControl;
 
 
 
         private void onCreateSystem(int seed)
         {
-            _canUpdates = new List<Func<World, bool>>();
             this.Random = new System.Random(seed);
             _maxRanderLength = (float)ScreenHelper.SmoothFPS/FRAME_COUNT;
             initSystem();
@@ -76,7 +70,6 @@ namespace FGUFW.ECS
 
         private void onDestorySystem()
         {
-            _canUpdates.Clear();
             PlayerLoopHelper.RemoveToLoop<UnityEngine.PlayerLoop.Update>(update);
             
             disposeSys();
@@ -86,16 +79,16 @@ namespace FGUFW.ECS
         private void update()
         {
             RenderFrameIndex++;
-
+            _worldUpdateControl?.OnPreUpdate(this);
             bool delayEnd = getDelayEnd();
-            bool canUpdate = getCanUpdate();
+            bool canUpdate = _worldUpdateControl==null ? false : _worldUpdateControl.CanUpdate(this);
             
             if (delayEnd && canUpdate)
             {
                 //获取平滑的渲染帧/逻辑帧
                 _maxRanderLength = Mathf.Lerp(_maxRanderLength,RenderFrameIndex,0.5f);
 
-                if(OnPreUpdate!=null)OnPreUpdate(this);
+                _worldUpdateControl?.OnPreWorldUpdate(this);
                 
                 worldUpdate();
 
@@ -112,15 +105,6 @@ namespace FGUFW.ECS
         {
             float newLerp = Mathf.Clamp01((RenderFrameIndex+1f)/_maxRanderLength);
             RenderFrameLerp = newLerp;
-        }
-
-        private bool getCanUpdate()
-        {
-            for (int i = 0; i < _canUpdates.Count; i++)
-            {
-                if(!_canUpdates[i](this))return false;
-            }
-            return true;
         }
 
         private bool getDelayEnd()
@@ -164,16 +148,6 @@ namespace FGUFW.ECS
             {
                 sys.OnInit(this);
             }
-        }
-
-        public void AddCanUpdate(Func<World,bool> canUpdate)
-        {
-            _canUpdates?.Add(canUpdate);
-        }
-
-        public void RemoveCanUpdate(Func<World,bool> canUpdate)
-        {
-            _canUpdates?.Remove(canUpdate);
         }
 
 

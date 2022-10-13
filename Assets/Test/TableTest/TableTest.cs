@@ -18,12 +18,7 @@ public static class TableTest
     [MenuItem("Test/TableTest")]
     static void tableTest()
     {
-        callback += fun1;
-        callback += fun2;
-
-        bool b = callback();
         
-        Debug.Log(b);
     }
 
     private static bool fun2()
