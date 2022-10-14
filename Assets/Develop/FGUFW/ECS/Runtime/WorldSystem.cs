@@ -63,6 +63,7 @@ namespace FGUFW.ECS
         {
             this.Random = new System.Random(seed);
             _maxRanderLength = (float)ScreenHelper.SmoothFPS/FRAME_COUNT;
+            _prevFrameUpdateTime = TimeHelper.Time;
             initSystem();
             PlayerLoopHelper.AddToLoop<UnityEngine.PlayerLoop.Update,World>(update,true);
             DateTime.UtcNow.SetRecord();
@@ -81,7 +82,7 @@ namespace FGUFW.ECS
             RenderFrameIndex++;
             _worldUpdateControl?.OnPreUpdate(this);
             bool delayEnd = getDelayEnd();
-            bool canUpdate = _worldUpdateControl==null ? false : _worldUpdateControl.CanUpdate(this);
+            bool canUpdate = _worldUpdateControl==null ? true : _worldUpdateControl.CanUpdate(this);
             
             if (delayEnd && canUpdate)
             {

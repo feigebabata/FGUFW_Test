@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 
 namespace FGUFW.Net
 {
@@ -19,7 +20,7 @@ namespace FGUFW.Net
             sendClient = new UdpClient(PortConfig.BROADCAST_SEND);
             receiveClient = new UdpClient(PortConfig.BROADCAST_RECEIVE);
             isOn=true;
-            loopReceive();
+            Task.Run(loopReceive);
         }
 
         public static void Off()
@@ -40,14 +41,15 @@ namespace FGUFW.Net
             catch (System.Exception){}
         }
 
-        private async static void loopReceive()
+        private static void loopReceive()
         {
             while (isOn)
             {
-                UdpReceiveResult result;
+                IPEndPoint remoteEP = new IPEndPoint(0,0);
+                byte[] buffer = null;
                 try
                 {
-                    result = await receiveClient.ReceiveAsync();
+                    buffer = receiveClient.Receive(ref remoteEP);
                 }
                 catch (System.Exception ex)
                 {
@@ -57,6 +59,7 @@ namespace FGUFW.Net
                     }
                     continue;
                 }
+                UdpReceiveResult result = new UdpReceiveResult(buffer,remoteEP);
                 if(OnReceive!=null)OnReceive(result);
             }
         }

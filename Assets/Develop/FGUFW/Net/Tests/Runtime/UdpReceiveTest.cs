@@ -14,7 +14,6 @@ namespace FGUFW.Net.Test
         // Start is called before the first frame update
         void Start()
         {
-            DateTime.UtcNow.SetRecord();
             UdpUtility.On();
             UdpUtility.OnReceive += onReceive;
         }
@@ -25,7 +24,6 @@ namespace FGUFW.Net.Test
             Debug.Log($"{val} {DateTime.UtcNow.GetRecordTime()}");
             if(prevVal!=val-1)Debug.LogWarning("丢包");
             prevVal = val;
-            DateTime.UtcNow.SetRecord();
         }
 
 

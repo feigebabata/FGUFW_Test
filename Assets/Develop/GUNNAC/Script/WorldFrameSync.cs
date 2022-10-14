@@ -23,19 +23,6 @@ namespace GUNNAC
 
         public WorldFrameSync(int placeCount,int placeIndex)
         {
-            onCreateSync(placeCount,placeIndex);
-
- 
-        }
-
-        public void Dispose(World world)
-        {
- 
-            onDestroySync();
-        }
-
-        private void onCreateSync(int placeCount,int placeIndex)
-        {
             _placeIndex = placeIndex;
             _placeCount = placeCount;
             _frameOperates = new FixedList<UInts8>();
@@ -45,7 +32,7 @@ namespace GUNNAC
             UdpUtility.On();
         }
 
-        private void onDestroySync()
+        public void Dispose(World world)
         {
             _frameOperates.Clear();
             _frameOperates = null;
@@ -53,12 +40,6 @@ namespace GUNNAC
             UdpUtility.Off();
         }
 
-        private void frameSyncUpdate(World world)
-        {
-            if(!getCanSyncFrame(world))return;
-            
-            syncFrameOperate();
-        }
 
         private bool getCanSyncFrame(World world)
         {
@@ -93,7 +74,6 @@ namespace GUNNAC
                     int index = f_idx.RoundIndex(_selfCmds.Length);
                     frame.Cmds.Add(_selfCmds[index]);
                 }
-                
                 var sendBuffer = frame.ToByteArray();
                 for (int i = 0; i < 3; i++)
                 {
@@ -146,17 +126,19 @@ namespace GUNNAC
             return complete;
         }
 
-        private void waitFrameOperateComplete(World world)
-        {
-            while (!getFrameOperateComplete(world))
-            {
+        // private void waitFrameOperateComplete(World world)
+        // {
+        //     while (!getFrameOperateComplete(world))
+        //     {
                 
-            }
-        }
+        //     }
+        // }
 
         public void OnPreUpdate(World world)
         {
-            frameSyncUpdate(world);   
+            if(!getCanSyncFrame(world))return;
+            
+            syncFrameOperate();
         }
 
         public void OnPreWorldUpdate(World world)
@@ -166,8 +148,7 @@ namespace GUNNAC
 
         public bool CanUpdate(World world)
         {
-
-            return getFrameOperateComplete(world);
+           return getFrameOperateComplete(world);
         }
     }
 }

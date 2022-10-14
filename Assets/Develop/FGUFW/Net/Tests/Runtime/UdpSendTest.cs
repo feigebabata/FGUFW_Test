@@ -13,7 +13,7 @@ namespace FGUFW.Net.Test
         // Start is called before the first frame update
         void Start()
         {
-            Application.targetFrameRate = 30*2;
+            Application.targetFrameRate = 30*1;
             UdpUtility.On();
         }
 
@@ -21,7 +21,9 @@ namespace FGUFW.Net.Test
         void Update()
         {
             i++;
+            if(i%30!=0)return;
             var buffer = BitConverter.GetBytes(i);
+            DateTime.UtcNow.SetRecord();
             UdpUtility.Send(buffer);
         }
 
