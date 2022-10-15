@@ -78,7 +78,7 @@ namespace GUNNAC
             int renderFPS = ScreenHelper.FPS;
             int logicFrameIndex = _world.FrameIndex;
             int logicFrameDelay = (int)(_world.PrevFrameUpdateDelay*1000);
-            this.Text.text = $"PI:{PlaceIndex} RF:{renderFPS} LFD:{logicFrameDelay} LFI:{logicFrameIndex} ";
+            this.Text.text = $"玩家:{PlaceIndex} \n渲染帧率:{renderFPS} \n逻辑帧延迟:{logicFrameDelay}ms \n逻辑帧索引:{logicFrameIndex} ";
         }
 
         private int createPlayer()

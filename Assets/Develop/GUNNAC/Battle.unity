@@ -483,7 +483,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 737200492}
-  m_Text: Hello World
+  m_Text: info
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1
@@ -833,7 +833,7 @@ MonoBehaviour:
   EnemyCollider: {fileID: 4203064059363340474, guid: 7bed61be5cc9bb945b2572642514f658, type: 3}
   EnemyCreateDelay: 0
   PlaceCount: 2
-  PlaceIndex: 0
+  PlaceIndex: 1
   Text: {fileID: 737200493}
 --- !u!4 &1909391724
 Transform:
