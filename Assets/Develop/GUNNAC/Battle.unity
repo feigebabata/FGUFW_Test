@@ -832,8 +832,8 @@ MonoBehaviour:
   Enemy: {fileID: 7298899525714869338, guid: 06b5ed93986dce14e9bbe88ec5a57f02, type: 3}
   EnemyCollider: {fileID: 4203064059363340474, guid: 7bed61be5cc9bb945b2572642514f658, type: 3}
   EnemyCreateDelay: 0
-  PlaceCount: 2
-  PlaceIndex: 1
+  PlaceCount: 1
+  PlaceIndex: 0
   Text: {fileID: 737200493}
 --- !u!4 &1909391724
 Transform:

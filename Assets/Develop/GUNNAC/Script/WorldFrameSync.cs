@@ -113,7 +113,7 @@ namespace GUNNAC
                     frameOperate[frame.PlaceIndex] = cmd;
                     _frameOperates[frameIndex] = frameOperate;
                 }
-                Debug.Log($"玩家:{frame.PlaceIndex} 逻辑帧索引:{frame.Index}");
+                // Debug.Log($"玩家:{frame.PlaceIndex} 逻辑帧索引:{frame.Index}");
             }
         }
 

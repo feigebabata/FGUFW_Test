@@ -132,11 +132,11 @@ namespace GUNNAC
 
         private void initGObjPool()
         {
-            GameObjectPool.InitPool((int)GameObjectType.PlayerBullet_1,PlayerBullet1,20);
-            GameObjectPool.InitPool((int)GameObjectType.PlayerBulletCollider_1, PlayerBulledCollider1, 20);
-            GameObjectPool.InitPool((int)GameObjectType.Boom, Boom, 20);
-            GameObjectPool.InitPool((int)GameObjectType.Enemy, Enemy, 50);
-            GameObjectPool.InitPool((int)GameObjectType.EnemyCollider, EnemyCollider, 50);
+            GameObjectPool.InitPool((int)GameObjectType.PlayerBullet_1,PlayerBullet1,100);
+            GameObjectPool.InitPool((int)GameObjectType.PlayerBulletCollider_1, PlayerBulledCollider1, 100);
+            GameObjectPool.InitPool((int)GameObjectType.Boom, Boom, 100);
+            GameObjectPool.InitPool((int)GameObjectType.Enemy, Enemy, 100);
+            GameObjectPool.InitPool((int)GameObjectType.EnemyCollider, EnemyCollider, 100);
         }
 
         private void createBattle()
