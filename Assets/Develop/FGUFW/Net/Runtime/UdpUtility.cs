@@ -35,11 +35,11 @@ namespace FGUFW.Net
             client.Close();
         }
 
-        public async static void Send(byte[] buffer)
+        public static void Send(byte[] buffer)
         {
             try
             {
-                await client.SendAsync(buffer,buffer.Length,broadcastIEP);
+                client.SendAsync(buffer,buffer.Length,broadcastIEP);
             }
             catch (System.Exception){}
         }

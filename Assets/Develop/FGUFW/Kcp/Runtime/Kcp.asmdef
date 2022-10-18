@@ -1,13 +1,10 @@
 {
-    "name": "FGUFW.Net",
+    "name": "Kcp",
     "rootNamespace": "",
-    "references": [
-        "GUID:559fbe227f95568448fca764eab257dd",
-        "GUID:ef8ceb0662214ee4889fdeeff061fea3"
-    ],
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
-    "allowUnsafeCode": false,
+    "allowUnsafeCode": true,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,

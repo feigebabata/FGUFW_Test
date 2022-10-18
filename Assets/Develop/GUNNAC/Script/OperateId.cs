@@ -2,18 +2,17 @@ namespace GUNNAC
 {
     public enum OperateId
     {
-        //0123 4567 89ab cdef
-        None=0x00000000,
-        Nothing=0x00000001,
-        PlayerMoveL=0x00000002,
-        PlayerMoveR=0x00000004,
-        PlayerMoveF=0x00000008,
-        PlayerMoveB=0x00000010,
-        PlayerShoot1=0x00000020,
-        PlayerShoot2=0x00000040,
-        PlayerShoot3=0x00000080,
+        None = 0,
+        Nothing = 1,
+        PlayerMoveL = 1 << 1,
+        PlayerMoveR = 1 << 2,
+        PlayerMoveF = 1 << 3,
+        PlayerMoveB = 1 << 4,
+        PlayerShoot1 = 1 << 5,
+        PlayerShoot2 = 1 << 6,
+        PlayerShoot3 = 1 << 7,
 
-        MaxValue=0x00000081,
-    
+        MaxValue = 1 << 7 + 1,
+
     }
 }
