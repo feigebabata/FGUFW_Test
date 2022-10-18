@@ -4,32 +4,32 @@ namespace FGUFW
 {
 	public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T>
 	{
-		private static T mInstance = null;
+		private static T instance = null;
 
 		public static T I
 		{
 			get
 			{
-				if (mInstance == null)
+				if (instance == null)
 				{
-					mInstance = GameObject.FindObjectOfType(typeof(T)) as T;
-					if (mInstance == null)
+					instance = GameObject.FindObjectOfType(typeof(T)) as T;
+					if (instance == null)
 					{
 						GameObject go = new GameObject(typeof(T).Name);
-						mInstance = go.AddComponent<T>();
+						instance = go.AddComponent<T>();
 					}
 				}
 
-				return mInstance;
+				return instance;
 			}
 		}
 
 
 		private void Awake()
 		{
-			if (mInstance == null)
+			if (instance == null)
 			{
-				mInstance = this as T;
+				instance = this as T;
 
 				if(IsDontDestroyOnLoad())
 				{
@@ -50,7 +50,7 @@ namespace FGUFW
 		void OnDestroy()
 		{
 			Dispose();
-			MonoSingleton<T>.mInstance = null;
+			MonoSingleton<T>.instance = null;
 		}
 	
 		protected virtual void Init()
@@ -69,6 +69,11 @@ namespace FGUFW
 		}
 
 		protected abstract bool IsDontDestroyOnLoad();
+
+		public static bool NotNull()
+		{
+			return instance!=null;
+		}
 
 	}
 }

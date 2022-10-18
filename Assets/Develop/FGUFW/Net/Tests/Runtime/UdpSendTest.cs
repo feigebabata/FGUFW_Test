@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using FGUFW.Net;
 using System;
+using UnityEngine.AI;
 
 namespace FGUFW.Net.Test
 {

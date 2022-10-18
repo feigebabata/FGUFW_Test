@@ -18,7 +18,8 @@ public static class TableTest
     [MenuItem("Test/TableTest")]
     static void tableTest()
     {
-        
+        List<int> ls = new List<int>();
+        Debug.Log(ls.GetType().Namespace);
     }
 
     private static bool fun2()
