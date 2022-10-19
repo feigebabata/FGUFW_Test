@@ -196,49 +196,60 @@ namespace System.Net.Sockets.Kcp
         /// </summary>
         protected uint probe;
         protected uint current;
+
         /// <summary>
         /// 内部flush刷新间隔
         /// </summary>
         protected uint interval;
+
         /// <summary>
         /// 下次flush刷新时间戳
         /// </summary>
         protected uint ts_flush;
         protected uint xmit;
+
         /// <summary>
         /// 是否启动无延迟模式
         /// </summary>
         protected uint nodelay;
+
         /// <summary>
         /// 是否调用过update函数的标识
         /// </summary>
         protected uint updated;
+
         /// <summary>
         /// 下次探查窗口的时间戳
         /// </summary>
         protected uint ts_probe;
+
         /// <summary>
         /// 探查窗口需要等待的时间
         /// </summary>
         protected uint probe_wait;
+
         /// <summary>
         /// 最大重传次数
         /// </summary>
         protected uint dead_link;
+
         /// <summary>
         /// 可发送的最大数据量
         /// </summary>
         protected uint incr;
+
         /// <summary>
         /// 触发快速重传的重复ack个数
         /// </summary>
         public int fastresend;
         public int fastlimit;
+
         /// <summary>
         /// 取消拥塞控制
         /// </summary>
         protected int nocwnd;
         protected int logmask;
+        
         /// <summary>
         /// 是否采用流传输模式
         /// </summary>

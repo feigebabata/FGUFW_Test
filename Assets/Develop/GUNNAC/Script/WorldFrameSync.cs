@@ -6,6 +6,7 @@ using FGUFW.Net;
 using Google.Protobuf;
 using System.Net.Sockets;
 using FGUFW.ECS;
+using System.Net;
 
 namespace GUNNAC
 {
@@ -18,6 +19,7 @@ namespace GUNNAC
         private uint[] _selfCmds;
         private int _syncFrameIndex;
         private bool _singleMode = false;
+        private KcpClient _kcpClient;
 
         private WorldFrameSync(){}
 
@@ -28,16 +30,17 @@ namespace GUNNAC
             _frameOperates = new FixedList<UInts8>();
             _selfCmds = new uint[8];
             _selfCmds[0]=1;
-            UdpUtility.OnReceive += onReceiveUdp;
-            UdpUtility.On();
+
+            _kcpClient = new KcpClient(PortConfig.BROADCAST_RECEIVE,new IPEndPoint(IPAddress.Broadcast,PortConfig.BROADCAST_RECEIVE));
+            _kcpClient.OnReceive += onReceiveUdp;
         }
 
         public void Dispose(World world)
         {
             _frameOperates.Clear();
             _frameOperates = null;
-            UdpUtility.OnReceive -= onReceiveUdp;
-            UdpUtility.Off();
+            _kcpClient.OnReceive -= onReceiveUdp;
+            _kcpClient.Dispose();
         }
 
 
@@ -75,9 +78,9 @@ namespace GUNNAC
                     frame.Cmds.Add(_selfCmds[index]);
                 }
                 var sendBuffer = frame.ToByteArray();
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < 1; i++)
                 {
-                    UdpUtility.Send(sendBuffer);
+                    _kcpClient.Send(sendBuffer);
                 }
             }
             resetNextCmd();
@@ -99,9 +102,9 @@ namespace GUNNAC
             _selfCmds[index] = 1;
         }
 
-        private void onReceiveUdp(UdpReceiveResult result)
+        private void onReceiveUdp(byte[] buffer)
         {
-            PB_Frame frame = PB_Frame.Parser.ParseFrom(result.Buffer);
+            PB_Frame frame = PB_Frame.Parser.ParseFrom(buffer);
             lock (_frameOperateLock)
             {
                 int frameIndex = frame.Index;
