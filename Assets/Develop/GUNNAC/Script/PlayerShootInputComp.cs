@@ -11,6 +11,7 @@ namespace GUNNAC
         public int Delay=16;
         public WorldFrameSync WorldFrameSync;
         private int shootDowncount;
+        private Vector3 _oldPos;
 
         // Update is called once per frame
         void Update()
@@ -31,6 +32,11 @@ namespace GUNNAC
                 shootDowncount = Delay;
             }
             else if( Input.GetKey(KeyCode.KeypadEnter))
+            {
+                WorldFrameSync.PutCmd((uint)OperateId.PlayerShoot3);
+                shootDowncount = Delay;
+            }
+            else if( Input.GetMouseButton(0))
             {
                 WorldFrameSync.PutCmd((uint)OperateId.PlayerShoot3);
                 shootDowncount = Delay;

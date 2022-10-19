@@ -11,7 +11,7 @@ namespace FGUFW.ECS
     {
         int CompType { get;}
         int EntityUId { get; set; }
-        //int Dirty {get;set;}
+        int Dirty {get;set;}
     }
 
 }

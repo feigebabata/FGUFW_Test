@@ -12,6 +12,7 @@ namespace GUNNAC
         #region 不可修改
         public int CompType => 27;
         public int EntityUId { get; set; }
+        public int Dirty { get; set; }
         public bool IsCreated { get; private set; }
         public GameObject GObject { get; private set; }
         public int ItemType { get; private set; }
@@ -23,6 +24,7 @@ namespace GUNNAC
         {
             #region 不可修改
             EntityUId = entityUId;
+            Dirty = 0;
             IsCreated = true;
             #endregion
             //code

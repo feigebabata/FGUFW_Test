@@ -51,12 +51,12 @@ namespace FGUFW.Net
             _kcp.Send(buffer);
         }
 
-        private void loopKcpUpdate()
+        private async void loopKcpUpdate()
         {
             while (_runing)
             {
                 _kcp.Update(DateTimeOffset.UtcNow);
-                // await Task.Delay(10);
+                await Task.Delay(4);
             }
         }
 
@@ -90,11 +90,7 @@ namespace FGUFW.Net
             while (_runing)
             {
                 var (buffer, avalidLength) = _kcp.TryRecv();
-                if (buffer == null)
-                {
-                    // await Task.Delay(10);
-                }
-                else
+                if (buffer != null)
                 {
                     var bytes = buffer.Memory.Slice(0, avalidLength).ToArray();
                     if(OnReceive!=null)OnReceive(bytes);
