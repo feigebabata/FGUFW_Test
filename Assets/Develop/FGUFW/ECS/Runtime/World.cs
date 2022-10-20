@@ -220,6 +220,32 @@ namespace FGUFW.ECS
             _filterKeyCacheLength = length;
         }
 
+        /// <summary>
+        /// 获取world快照
+        /// </summary>
+        /// <returns></returns>
+        public IComponent[] GetAllComponent()
+        {
+            int length = 0;
+            foreach (var item in _compDict)
+            {
+                length += item.Value.Count;
+            }
+
+            IComponent[] allComp = new IComponent[length];
+
+            int index=0;
+            foreach (var dict in _compDict.Values)
+            {
+                var comps = dict as Dictionary<int,IComponent>;
+                foreach (var comp in comps.Values)
+                {
+                    allComp[index++] = comp;
+                }
+            }
+            return allComp;
+        }
+
         
     }
 }
