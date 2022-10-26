@@ -13,7 +13,7 @@ namespace GUNNAC
     public sealed class WorldFrameSync:IWorldUpdateControl
     {
         public ICmd2Comp Cmd2Comp;
-        private FixedList<UInts8> _frameOperates;
+        private UnlimitedList<UInts8> _frameOperates;
         private object _frameOperateLock = new object();
         private int _placeCount,_placeIndex;
         private uint[] _selfCmds;
@@ -27,7 +27,7 @@ namespace GUNNAC
         {
             _placeIndex = placeIndex;
             _placeCount = placeCount;
-            _frameOperates = new FixedList<UInts8>();
+            _frameOperates = new UnlimitedList<UInts8>();
             _selfCmds = new uint[8];
             _selfCmds[0]=1;
 

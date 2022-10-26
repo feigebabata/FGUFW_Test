@@ -3,13 +3,17 @@ using System.Collections.Generic;
 
 namespace FGUFW
 {
-    public class FixedList<T>
+    /// <summary>
+    /// 无限数组
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class UnlimitedList<T>
     {
         private List<T[]> _list;
         private int _itemLength;
 
-        private FixedList(){}
-        public FixedList(int itemLength = 1024)
+        private UnlimitedList(){}
+        public UnlimitedList(int itemLength = 1024)
         {
             if(itemLength<8)itemLength=1024;
             _itemLength = itemLength;

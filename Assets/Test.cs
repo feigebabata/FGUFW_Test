@@ -4,6 +4,7 @@ using UnityEngine;
 using SAO_UI;
 using System;
 using FGUFW;
+using Unity.Collections;
 
 namespace SAO_UI
 {
@@ -40,6 +41,7 @@ namespace SAO_UI
             SecondaryListComp.OnItemShow -= OnSecondaryItemShow;
             SecondaryListComp.OnItemShow += OnSecondaryItemShow;
             SecondaryListComp.Init(3);
+            
         }
 
         // Update is called once per frame
