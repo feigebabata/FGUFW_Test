@@ -18,8 +18,16 @@ public static class TableTest
     [MenuItem("Test/TableTest")]
     static void tableTest()
     {
-        List<int> ls = new List<int>();
-        Debug.Log(ls.GetType().Namespace);
+        object[] arr1 = new object[2];
+        object[] arr2 = new object[2];
+        
+        arr1[1] = Vector3.one;
+
+        Array.Copy(arr1,arr2,2);
+
+        arr1[1] = Vector3.back;
+
+        Debug.Log(arr2[1]);
     }
 
     private static bool fun2()
