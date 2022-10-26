@@ -24,16 +24,25 @@ namespace GUNNAC
 
         public void OnUpdate()
         {
+            CollisionSystemComp collisionSystemComp;
+            if(!_world.GetComponent(World.ENTITY_SINGLE,out collisionSystemComp))
+            {
+                collisionSystemComp = new CollisionSystemComp(World.ENTITY_SINGLE);
+            }
+            detectAABB(collisionSystemComp);
             
-
         }
+
 
         public void Dispose()
         {
             _world = null;
         }
 
-        
+        private void detectAABB(CollisionSystemComp collisionSystemComp)
+        {
+
+        }
 
     }
 }

@@ -172,7 +172,16 @@ namespace FGUFW
 
         public void AddRange(ICollection<T> collection,int index)
         {
-
+            int maxLength = index + collection.Count;
+            if(Capacity<maxLength)
+            {
+                Capacity=maxLength;
+            }
+            if(_count<maxLength)
+            {
+                _count=maxLength;
+            }
+            collection.CopyTo(_items,index);
         }
 
         
