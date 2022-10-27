@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace FGUFW
 {
     //无序的列表
-    public sealed class UnorderedList<T>
+    public sealed class UnorderedList<T>:IDisposable
     {
         private const int EXPAND = 1024;
 
@@ -39,8 +39,6 @@ namespace FGUFW
 
         private int _count;
         public int Count=>_count;
-
-        public bool IsReadOnly => false;
 
         public UnorderedList(int capacity=4)
         {
@@ -148,13 +146,6 @@ namespace FGUFW
             return _items[index];
         }
 
-        public void Clear()
-        {
-            if(_capacity==0)return;
-            Array.Clear(_items,0,_capacity);
-
-        }
-
         public bool Contains(T item)
         {
             return IndexOf(item) != -1;
@@ -165,9 +156,9 @@ namespace FGUFW
             Array.Copy(_items, 0, array, arrayIndex, _count);
         }
 
-        public void Sort(IComparer<T> comparer)
+        public void Sort(Comparison<T> comparer)
         {
-            Array.Sort<T>(_items,0,_count,comparer);
+            Array.Sort<T>(_items,0,_count,new SortComparer<T>(comparer));
         }
 
         public void AddRange(ICollection<T> collection,int index)
@@ -184,6 +175,30 @@ namespace FGUFW
             collection.CopyTo(_items,index);
         }
 
-        
+        public void Clear()
+        {
+            _count = 0;
+        }
+
+        public void Dispose()
+        {
+            Clear();
+            if(_capacity==0)return;
+            Array.Clear(_items,0,_capacity);
+        }
+
+        public struct SortComparer<K> : IComparer<K>
+        {
+            private Comparison<K> _comparison;
+
+            public SortComparer(Comparison<K> comparison)
+            {
+                _comparison = comparison;
+            }
+            public int Compare(K x, K y)
+            {
+                return _comparison(x,y);
+            }
+        }
     }
 }
