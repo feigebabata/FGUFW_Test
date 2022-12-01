@@ -6,6 +6,7 @@ using Kcp = System.Net.Sockets.Kcp.UnSafeSegManager.Kcp;
 using System;
 using System.Threading.Tasks;
 using System.Threading;
+using UnityEngine;
 
 namespace FGUFW.Net
 {
@@ -20,6 +21,7 @@ namespace FGUFW.Net
 
         public void Output(IMemoryOwner<byte> buffer, int avalidLength)
         {
+            // Debug.Log($"发送 {avalidLength}");
             byte[] dgram = buffer.Memory.Slice(0,avalidLength).ToArray();
             _udpClient.SendAsync(dgram,avalidLength,_endPoint);
         }
@@ -78,6 +80,7 @@ namespace FGUFW.Net
                     continue;
                 }
                 
+                // Debug.Log($"接收 {buffer.Length}");
                 if(buffer!=null && buffer.Length>0)
                 {
                     _kcp.Input(buffer);

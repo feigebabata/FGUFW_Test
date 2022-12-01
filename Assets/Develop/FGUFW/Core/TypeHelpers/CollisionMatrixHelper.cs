@@ -12,13 +12,14 @@ namespace FGUFW
         [RuntimeInitializeOnLoadMethod]
         public static void Init()
         {
-            if(layerIgnore==null)layerIgnore = new bool[512];
+            if(layerIgnore==null)layerIgnore = new bool[528];
             int index = 0;
             for (int line = 0; line<32; line++)
             {
                 for (int i = 31; i >= line; i--)
                 {
-                    layerIgnore[index++] = Physics.GetIgnoreLayerCollision(line,i);
+                    layerIgnore[index] = Physics.GetIgnoreLayerCollision(line,i);
+                    index++;
                 }
             }
         }
