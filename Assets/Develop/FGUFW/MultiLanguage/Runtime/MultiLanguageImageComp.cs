@@ -37,7 +37,7 @@ namespace FGUFW.MultiLanguage
                 }
                 else
                 {
-                    sprite = AddressablesHelper.Load<Sprite>($"ArtResources/MultiLanguageSprite/{text}.png");
+                    sprite = AssetHelper.Load<Sprite>($"ArtResources/MultiLanguageSprite/{text}.png");
                 }
             #else
                 sprite = AddressablesHelper.Load<Sprite>($"ArtResources/MultiLanguageSprite/{text}.png");

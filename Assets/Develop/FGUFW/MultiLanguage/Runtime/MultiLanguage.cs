@@ -19,9 +19,9 @@ namespace FGUFW.MultiLanguage
 
         static public void InitConfig()
         {
-            var textAsset = AddressablesHelper.Load<TextAsset>("FGUFW/MultiLanguageConfig");
+            var textAsset = AssetHelper.Load<TextAsset>("FGUFW/MultiLanguageConfig");
             languageConfig = textAsset.text.ToCsvDict();
-            MultiLanguangeFonts = AddressablesHelper.Load<MultiLanguangeFont>("Assets/Develop/FGUFW/MultiLanguage/MultiLanguangeFonts.asset");
+            MultiLanguangeFonts = AssetHelper.Load<MultiLanguangeFont>("Assets/Develop/FGUFW/MultiLanguage/MultiLanguangeFonts.asset");
         }
 
         static public Font GetMultiLanguangeFont()
