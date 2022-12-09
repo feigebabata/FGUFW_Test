@@ -1,0 +1,20 @@
+游戏工程构建体系
+Play
+    Model
+    ModelInput
+    ModelOutput
+协程管理
+有序广播
+资源加载
+
+IPart
+    OnCreating
+    OnDestroying
+
+IUpdate
+    OnUpdate
+    
+IEnabled
+    OnEnable
+    OnDisable
+    Enable

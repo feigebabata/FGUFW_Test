@@ -85,10 +85,7 @@ namespace FGUFW
                 {
                     I7=value;
                 }
-                else
-                {
-                    throw new IndexOutOfRangeException();
-                }
+                throw new IndexOutOfRangeException();
             }
         }
 

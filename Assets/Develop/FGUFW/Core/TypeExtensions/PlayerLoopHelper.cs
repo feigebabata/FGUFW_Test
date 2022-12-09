@@ -18,13 +18,18 @@ namespace FGUFW
         /// <returns></returns>
         public static void AddToLoop<T,U>(PlayerLoopSystem.UpdateFunction callback,bool first=false)
         {
+            AddToLoop<T>(callback,typeof(U),first);
+        }
+
+        public static void AddToLoop<T>(PlayerLoopSystem.UpdateFunction callback,Type from,bool first=false)
+        {
             var currentPlayerLoop = PlayerLoop.GetCurrentPlayerLoop();
             var updateIndex = currentPlayerLoop.subSystemList.IndexOf<PlayerLoopSystem>(p=> p.type==typeof(T));
             var updateSys = currentPlayerLoop.subSystemList[updateIndex];
             var ls = new List<PlayerLoopSystem>(updateSys.subSystemList);
             var newLoop = new PlayerLoopSystem
             {
-                type = typeof(U),
+                type = from,
                 updateDelegate = callback
             };
             if(first)

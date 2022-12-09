@@ -26,12 +26,12 @@ namespace FGUFW
             return Addressables.LoadAssetAsync<T>(path).WaitForCompletion();
         }
 
-        public static Task<GameObject> CopyAsync<T>(string path,Transform parent)
+        public static Task<GameObject> CopyAsync(string path,Transform parent)
         {
             return Addressables.InstantiateAsync(path,parent).Task;
         }
 
-        public static GameObject Copy<T>(string path,Transform parent)
+        public static GameObject Copy(string path,Transform parent)
         {
             return Addressables.InstantiateAsync(path,parent).WaitForCompletion();
         }
