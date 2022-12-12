@@ -41,6 +41,16 @@ namespace GamePlay
             await self.OnDestroying(parent);
         }
 
+        public static T GetPart<T>(this IPart self) where T : IPart
+        {
+            var subPart = self.SubParts.Find(sp=>sp.GetType()==typeof(T));
+            if(subPart!=null)
+            {
+                return (T)subPart;
+            }
+            return default(T);
+        }
+
         private static void tryAddUpdate(IPart self)
         {
             if(self is IUpdate)
