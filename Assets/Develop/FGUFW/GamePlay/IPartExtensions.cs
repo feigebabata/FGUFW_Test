@@ -23,6 +23,8 @@ namespace GamePlay
 
         public static async Task Destroying(this IPart self,IPart parent)
         {
+            tryRemoveUpdate(self);
+
             if(self.SubParts!=null)
             {
                 foreach (var subPart in self.SubParts)
@@ -30,8 +32,6 @@ namespace GamePlay
                     await subPart.Destroying(self);
                 }
             }
-
-            tryRemoveUpdate(self);
 
             if(self.SubParts!=null)
             {
@@ -43,7 +43,7 @@ namespace GamePlay
 
         public static T GetPart<T>(this IPart self) where T : IPart
         {
-            var subPart = self.SubParts.Find(sp=>sp.GetType()==typeof(T));
+            var subPart = self.SubParts.Find(sp=>sp is T);
             if(subPart!=null)
             {
                 return (T)subPart;
