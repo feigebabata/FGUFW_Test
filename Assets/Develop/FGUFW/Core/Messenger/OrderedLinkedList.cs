@@ -7,29 +7,31 @@ namespace FGUFW
 {
     public class OrderedLinkedList<T>:IEnumerable<OrderedLinkedNode<T>>,ICloneable
     {
-        private OrderedLinkedNode<T> first;
+        private OrderedLinkedNode<T> _first;
 
         public int Length{get;private set;}
+
+        public OrderedLinkedNode<T> First => _first;
 
         public void Add(int weight,T val)
         {
             Length++;
             var newNode = new OrderedLinkedNode<T>(){Weight=weight,Value=val};
-            if(first==null)
+            if(_first==null)
             {
-                first = newNode;
+                _first = newNode;
                 return;
             }
 
             OrderedLinkedNode<T> previous = null;
-            for (var node = first; node!=null; node=node.Next)
+            for (var node = _first; node!=null; node=node.Next)
             {
                 if(newNode.Weight>node.Weight)
                 {
                     newNode.Next = node;
                     if(previous==null)
                     {
-                        first = newNode;
+                        _first = newNode;
                     }
                     else
                     {
@@ -45,13 +47,13 @@ namespace FGUFW
         public void Remove(T val)
         {
             OrderedLinkedNode<T> previous=null;
-            for (var node = first; node!=null; node=node.Next)
+            for (var node = _first; node!=null; node=node.Next)
             {
                 if(val.Equals(node.Value))
                 {
                     if(previous==null)
                     {
-                        first = node.Next;
+                        _first = node.Next;
                     }
                     else
                     {
@@ -67,12 +69,12 @@ namespace FGUFW
 
         public void Dispose()
         {
-            first = null;
+            _first = null;
         }
 
         public bool Contains(T val)
         {
-            for (var node = first; node!=null; node=node.Next)
+            for (var node = _first; node!=null; node=node.Next)
             {
                 if(val.Equals(node.Value))
                 {
@@ -100,12 +102,12 @@ namespace FGUFW
 
         public object Clone()
         {
-            if(first==null)return null;
+            if(_first==null)return null;
             var f = new OrderedLinkedNode<T>();
-            f.Weight = first.Weight;
-            f.Value = first.Value;
+            f.Weight = _first.Weight;
+            f.Value = _first.Value;
             var n = f;
-            var node = first;
+            var node = _first;
             while (node.Next!=null)
             {
                 n.Next = new OrderedLinkedNode<T>();
