@@ -3,12 +3,12 @@ using UnityEngine;
 
 namespace FGUFW
 {
-    static public class DateTimeExtensions
+    public static class DateTimeExtensions
     {
         private static long prevTick=-1;
         private static DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
-        static public long UnixMilliseconds(this DateTime dateTime)
+        public static long UnixMilliseconds(this DateTime dateTime)
         {
             return Convert.ToInt64((dateTime.ToUniversalTime() - epoch).TotalMilliseconds);
         }

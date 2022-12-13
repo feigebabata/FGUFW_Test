@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace FGUFW.Platform
 {
-    static public class WinPlatform
+    public static class WinPlatform
     {
         #region 显示器分辨率
 
@@ -18,7 +18,7 @@ namespace FGUFW.Platform
         // private static int SM_CXFULLSCREEN = 16; //最大化窗口宽度（减去任务栏）
         // private static int SM_CYFULLSCREEN = 17; //最大化窗口高度（减去任务栏）
 
-        static public Vector2Int GetScreenSize()
+        public static Vector2Int GetScreenSize()
         {
             var size = Vector2Int.zero;
             #if UNITY_STANDALONE_WIN
@@ -86,7 +86,7 @@ namespace FGUFW.Platform
         [DllImport("Comdlg32.dll", SetLastError = true, ThrowOnUnmappableChar = true, CharSet = CharSet.Auto)]
         public static extern bool GetSaveFileName([In, Out] ChinarFileDlog ofd);
 
-        static public string OpenFilePath(string initialDir,string extension="*",string title="打开文件")
+        public static string OpenFilePath(string initialDir,string extension="*",string title="打开文件")
         {
             string path = null;
             #if UNITY_STANDALONE_WIN
@@ -110,7 +110,7 @@ namespace FGUFW.Platform
             return path;
         }        
         
-        static public string SaveFilePath(string initialDir,string extension="*",string title="保存文件")
+        public static string SaveFilePath(string initialDir,string extension="*",string title="保存文件")
         {
             string path = null;
             #if UNITY_STANDALONE_WIN
@@ -135,7 +135,7 @@ namespace FGUFW.Platform
         }
 
         [Conditional("UNITY_STANDALONE_WIN")]
-        static public void OpenExplorer(string path)
+        public static void OpenExplorer(string path)
         {
             path = path.Replace('/','\\');
             Process p = new Process();

@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace FGUFW.CSV
 {
-    static public class ToUTF8_BOM
+    public static class ToUTF8_BOM
     {
 
         const string Extension = ".csv";

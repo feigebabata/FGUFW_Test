@@ -1,8 +1,8 @@
 
 namespace FGUFW
 {
-    static public class GlobalMessenger
+    public static class GlobalMessenger
     {
-        static public IOrderedMessenger<string> M = new OrderedMessenger<string>();
+        public static IOrderedMessenger<string> M = new OrderedMessenger<string>();
     }
 }

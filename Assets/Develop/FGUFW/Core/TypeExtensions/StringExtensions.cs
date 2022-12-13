@@ -5,14 +5,14 @@ using UnityEngine;
 
 namespace FGUFW
 {
-    static public class StringExtensions
+    public static class StringExtensions
     {
-        static public Uri ToUri(this string text)
+        public static Uri ToUri(this string text)
         {
             return new Uri(text);
         }
         
-        static public IPAddress ToIP(this string text)
+        public static IPAddress ToIP(this string text)
         {
             return IPAddress.Parse(text);
         }
@@ -55,14 +55,14 @@ namespace FGUFW
             return dict;
         }
 
-        static public Color ToColor(this string self)
+        public static Color ToColor(this string self)
         {
             Color color;
             ColorUtility.TryParseHtmlString(self,out color);
             return color;
         }
 
-        static public string[,] ToCsvTable(this string csvText)
+        public static string[,] ToCsvTable(this string csvText)
         {
             csvText = csvText.Trim();
             string[] arr = csvText.ToCsvLines();
@@ -81,13 +81,13 @@ namespace FGUFW
             return lines;
         }
 
-        static public string[] ToCsvLines(this string csvText)
+        public static string[] ToCsvLines(this string csvText)
         {
             csvText = csvText.Trim();
             return csvText.Split(new string[]{"\r\n"},StringSplitOptions.None);
         }
 
-        static public T ToEnum<T>(this string self) where T:Enum
+        public static T ToEnum<T>(this string self) where T:Enum
         {
             return (T)Enum.Parse(typeof(T),self);
         }

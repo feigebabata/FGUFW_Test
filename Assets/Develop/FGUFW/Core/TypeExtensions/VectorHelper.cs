@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace FGUFW
 {
-    static public class VectorHelper
+    public static class VectorHelper
     {
         /// <summary>
         /// 约等于 ≈
@@ -12,7 +12,7 @@ namespace FGUFW
         /// <param name="v1"></param>
         /// <param name="v2"></param>
         /// <returns></returns>
-        static public bool Approximately(Vector3 v1,Vector3 v2)
+        public static bool Approximately(Vector3 v1,Vector3 v2)
         {
             return Mathf.Approximately(v1.x,v2.x) && Mathf.Approximately(v1.y,v2.y) && Mathf.Approximately(v1.z,v2.z);
         }
@@ -23,7 +23,7 @@ namespace FGUFW
         /// <param name="v1"></param>
         /// <param name="v2"></param>
         /// <returns></returns>
-        static public bool Approximately(Vector2 v1,Vector2 v2)
+        public static bool Approximately(Vector2 v1,Vector2 v2)
         {
             return Mathf.Approximately(v1.x,v2.x) && Mathf.Approximately(v1.y,v2.y);
         }
@@ -37,7 +37,7 @@ namespace FGUFW
         /// <param name="gravityVelocity">加速度</param>
         /// <param name="t">时刻</param>
         /// <returns></returns>
-        static public Vector3 Acceleration(Vector3 startPoint,Vector3 startVelocity,Vector3 gravityVelocity,float t)
+        public static Vector3 Acceleration(Vector3 startPoint,Vector3 startVelocity,Vector3 gravityVelocity,float t)
         {
             Vector3 offset = Vector3.zero;
             offset.x = getMovingDistance(startVelocity.x,gravityVelocity.x,t);
@@ -66,7 +66,7 @@ namespace FGUFW
         /// <param name="gravityVelocity">加速度</param>
         /// <param name="time">时间</param>
         /// <returns></returns>
-        static public Vector3 AccelerationStartVelocity(Vector3 startPoint,Vector3 endPoint,Vector3 gravityVelocity,float time)
+        public static Vector3 AccelerationStartVelocity(Vector3 startPoint,Vector3 endPoint,Vector3 gravityVelocity,float time)
         {
             Vector3 space = endPoint-startPoint;
             Vector3 startVelocity = Vector3.zero;
@@ -96,7 +96,7 @@ namespace FGUFW
         /// <param name="width">椭圆宽</param>
         /// <param name="height">椭圆高</param>
         /// <returns></returns>
-        static public bool PointInEllipse(float3 point,float3 center,float width,float height)
+        public static bool PointInEllipse(float3 point,float3 center,float width,float height)
         {
             float a = width/2;
             float b = height/2;
@@ -121,7 +121,7 @@ namespace FGUFW
         /// <param name="rotation"></param>
         /// <param name="pointCount"></param>
         /// <returns></returns>
-        static public Vector2[] Ellipse(Vector2 center, float width, float height, float rotation,int pointCount)
+        public static Vector2[] Ellipse(Vector2 center, float width, float height, float rotation,int pointCount)
         {
             Vector2[] points = new Vector2[pointCount];
             for (float i = 0; i < pointCount; i++)
@@ -156,7 +156,7 @@ namespace FGUFW
         /// <param name="v1"></param>
         /// <param name="v2"></param>
         /// <returns></returns>
-        static public float Dot(Vector3 v1,Vector3 v2)
+        public static float Dot(Vector3 v1,Vector3 v2)
         {
             return (v1.x*v2.x+v1.y*v2.y+v1.z+v2.z)/(Mathf.Pow((v1.x*v1.x+v1.y*v1.y+v1.z+v1.z),0.5f)*Mathf.Pow((v2.x*v2.x+v2.y*v2.y+v2.z+v2.z),0.5f));
         }
@@ -166,7 +166,7 @@ namespace FGUFW
         /// </summary>
         /// <param name="v"></param>
         /// <returns></returns>
-        static public float Magnitude(Vector3 v)
+        public static float Magnitude(Vector3 v)
         {
             return Mathf.Pow(v.x*v.x+v.y*v.y+v.z+v.z,0.5f);
         }
@@ -180,7 +180,7 @@ namespace FGUFW
         /// <param name="d">D点</param>
         /// <param name="intersectPos">AB与CD的交点</param>
         /// <returns>是否相交 true:相交 false:未相交</returns>
-        static public bool TryGetIntersectPoint(Vector3 a, Vector3 b, Vector3 c, Vector3 d, out Vector3 intersectPos)
+        public static bool TryGetIntersectPoint(Vector3 a, Vector3 b, Vector3 c, Vector3 d, out Vector3 intersectPos)
         {
             intersectPos = Vector3.zero;
 
@@ -229,7 +229,7 @@ namespace FGUFW
         /// </summary>
         /// <param name="dir"></param>
         /// <returns></returns>
-        static public float Angle_Y(Vector3 dir)
+        public static float Angle_Y(Vector3 dir)
         {
             dir = dir.normalized;
             float angle = 0;
@@ -251,7 +251,7 @@ namespace FGUFW
         /// <param name="l_p1"></param>
         /// <param name="l_p2"></param>
         /// <returns></returns>
-        static public float PointLineSpace(Vector3 point, Vector3 l_p1,Vector3 l_p2)
+        public static float PointLineSpace(Vector3 point, Vector3 l_p1,Vector3 l_p2)
         {
             if(l_p1==l_p2)return Vector3.Distance(l_p1,point);
             
@@ -273,7 +273,7 @@ namespace FGUFW
         /// <param name="l_p1"></param>
         /// <param name="l_p2"></param>
         /// <returns></returns>
-        static public float PointInLineSpace(Vector3 point, Vector3 l_p1,Vector3 l_p2)
+        public static float PointInLineSpace(Vector3 point, Vector3 l_p1,Vector3 l_p2)
         {
             if(l_p1==l_p2)return Vector3.Distance(l_p1,point);
 
@@ -324,7 +324,7 @@ namespace FGUFW
         /// <param name="centerPoint"></param>
         /// <param name="radius"></param>
         /// <returns></returns>
-        static public Vector3 RandomInCircle(Vector3 centerPoint,float radius)
+        public static Vector3 RandomInCircle(Vector3 centerPoint,float radius)
         {
             Vector3 dir = Vector3.zero;
             dir.x = UnityEngine.Random.Range(-radius,radius);

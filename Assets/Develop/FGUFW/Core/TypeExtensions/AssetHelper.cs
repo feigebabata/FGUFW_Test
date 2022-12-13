@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace FGUFW
 {
-    static public class AssetHelper
+    public static class AssetHelper
     {
-        static public async void SetSpritePathAsync(this Image self,string path,Action callback=null)
+        public static async void SetSpritePathAsync(this Image self,string path,Action callback=null)
         {
             self.sprite = await Addressables.LoadAssetAsync<Sprite>(path).Task;
             callback?.Invoke();

@@ -37,7 +37,7 @@ namespace FGUFW.FlowFieldPathfinding
             }
         }
 
-        static public Vector2Int Index2Position(int index,int width)
+        public static Vector2Int Index2Position(int index,int width)
         {
             var pos = Vector2Int.zero;
             pos.x = index%width;
@@ -45,7 +45,7 @@ namespace FGUFW.FlowFieldPathfinding
             return pos;
         }
 
-        static public int Position2Index(Vector2Int pos,int width)
+        public static int Position2Index(Vector2Int pos,int width)
         {
             var index = 0;
             index = pos.y*width+pos.x;

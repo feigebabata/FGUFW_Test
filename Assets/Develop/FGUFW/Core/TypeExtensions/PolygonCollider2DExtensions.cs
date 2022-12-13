@@ -2,9 +2,9 @@ using UnityEngine;
 
 namespace FGUFW
 {
-    static public class PolygonCollider2DExtensions
+    public static class PolygonCollider2DExtensions
     {
-        static public void ToEllipse(this PolygonCollider2D self, float width,float height,int pointCount)
+        public static void ToEllipse(this PolygonCollider2D self, float width,float height,int pointCount)
         {
             var points = VectorHelper.Ellipse(Vector2.zero,width,height,0,pointCount);
             self.SetPath(0,points);

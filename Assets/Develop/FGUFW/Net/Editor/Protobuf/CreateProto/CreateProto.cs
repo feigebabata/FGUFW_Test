@@ -7,7 +7,7 @@ using UnityEditor;
 using UnityEditor.ProjectWindowCallback;
 using UnityEngine;
 
-static public class CreateProto
+public static class CreateProto
 {
     const string TempScriptFolder = "Assets/Develop/FGUFW/Net/Editor/Protobuf/CreateProto/";
 

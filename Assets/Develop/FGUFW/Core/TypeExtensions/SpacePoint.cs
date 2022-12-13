@@ -21,16 +21,16 @@ namespace FGUFW
         /// <summary>
         /// 每个格子里点的数量
         /// </summary>
-        private int[] _gridSizes;
+        private int[] _gridCapacitys;
         private Vector3 _center,_girdSize,_spaceMinPoint,_spaceMaxPoint;
 
         //----------------------------------------------
 
-        private int _newPointIndex=0;
+        private int _newPointId=0;
         public int PointCount{get;private set;}
 
         /// <summary>
-        /// 所有点索引的集合 按格子顺序
+        /// 所有点索引的集合 按格子顺序 先存outSide
         /// </summary>
         private int[] _pointIndexs;
         private Vector3[] _points;
@@ -43,7 +43,7 @@ namespace FGUFW
             X = spaceSize.x;
             Y = spaceSize.y;
             Z = spaceSize.z;
-            _gridSizes = new int[GridLength];
+            _gridCapacitys = new int[GridLength+1];
             _center = center;
             _girdSize = gridSize;
 
@@ -57,10 +57,8 @@ namespace FGUFW
         }
 
         /// <summary>
-        /// 遍历某个格子里所有点的索引
+        /// 遍历某个格子里所有点的Id
         /// </summary>
-        /// <param name="gridIndex"></param>
-        /// <param name="callback"></param>
         public void ForeachGrid(int gridIndex,Action<int> callback)
         {
             if(callback==null)return;
@@ -68,36 +66,91 @@ namespace FGUFW
         }
 
         /// <summary>
-        /// 添加新点对象 返回点索引
+        /// 添加新点对象 返回点Id
         /// </summary>
-        /// <param name="point"></param>
-        /// <returns></returns>
         public int Add(Vector3 point)
         {
-            int index = _newPointIndex;
-            _newPointIndex++;
-            PointCount++;
-            if(PointCount>_pointIndexs.Length)ensureCapacity();
+            int newIndex,oldIndex;
+            Vector3 oldPoint,newPoint;
 
-            return index;
+            int gridIndex = FindGridIndex(point);
+
+            newIndex = _newPointId;
+            newPoint = point;
+            _newPointId++;
+
+            if(PointCount+1>_pointIndexs.Length)ensureCapacity();
+            
+            int pointIndex = 0;
+            for (int i = -1; i < GridLength; i++)
+            {
+                int capacity = _gridCapacitys[i+1];
+                pointIndex+=capacity;
+                if(i==gridIndex)
+                {
+                    newIndex = pointIndex;
+                    oldIndex = _pointIndexs[pointIndex];
+                    oldPoint = _points[pointIndex];
+
+                    _pointIndexs[pointIndex] = newIndex;
+                    _points[pointIndex] = newPoint;
+                }
+                else if(i>gridIndex && capacity>0)
+                {
+                    oldIndex = _pointIndexs[pointIndex];
+                    oldPoint = _points[pointIndex];
+
+                    _pointIndexs[pointIndex] = newIndex;
+                    _points[pointIndex] = newPoint;
+                }
+            }
+            PointCount++;
+            _gridCapacitys[gridIndex+1]++;
+
+            return _newPointId-1;
         }
 
         /// <summary>
         /// 移除点
         /// </summary>
-        /// <param name="pointIndex"></param>
-        public void Remove(int pointIndex)
+        public void Remove(int pointId)
         {
+            int newIndex,oldIndex;
+            Vector3 oldPoint,newPoint;
+
+            // newIndex = _pointIndexs.IndexOf(pointId);
+            // int gridIndex = FindGridIndex(_points[newIndex]);
+
+            // int index = 0;
+            // for (int i = -1; i < GridLength; i++)
+            // {
+            //     int capacity = _gridCapacitys[i+1];
+            //     index+=capacity;
+            //     if(i==gridIndex)
+            //     {
+            //         oldIndex = _pointIndexs[index];
+            //         oldPoint = _points[index];
+
+            //         _pointIndexs[index] = newIndex;
+            //         _points[index] = newPoint;
+            //     }
+            //     else if(i>gridIndex && capacity>0)
+            //     {
+            //         oldIndex = _pointIndexs[index];
+            //         oldPoint = _points[index];
+
+            //         _pointIndexs[index] = newIndex;
+            //         _points[index] = newPoint;
+            //     }
+            // }
+
             PointCount--;
         }
 
         /// <summary>
-        /// 点位置改变 返回移动后所在格子索引
+        /// 点位置改变 返回移动后所在格子Id
         /// </summary>
-        /// <param name="pointIndex"></param>
-        /// <param name="newPos"></param>
-        /// <returns></returns>
-        public int PointMove(int pointIndex,Vector3 newPos)
+        public int PointMove(int pointId,Vector3 newPos)
         {
             int gridIndex = -1;
 
@@ -115,6 +168,31 @@ namespace FGUFW
             Array.Copy(_points,newPoints,capacity);
             _pointIndexs = newPointIndexs;
             _points = newPoints;
+        }
+
+        /// <summary>
+        /// 获取格子容量
+        /// </summary>
+        public int GetGridCapacity(int gridIndex)
+        {
+            return _gridCapacitys[gridIndex+1];
+        }
+
+        /// <summary>
+        /// 获取点在空间中的格子索引
+        /// </summary>
+        public int FindGridIndex(Vector3 point)
+        {
+            int gridIndex = -1;
+            int idx_x = MathHelper.IndexOf(X,point.x,_spaceMaxPoint.x-_spaceMinPoint.x,_spaceMinPoint.x);
+            int idx_y = MathHelper.IndexOf(Y,point.y,_spaceMaxPoint.y-_spaceMinPoint.y,_spaceMinPoint.y);
+            int idx_z = MathHelper.IndexOf(Z,point.z,_spaceMaxPoint.z-_spaceMinPoint.z,_spaceMinPoint.z);
+            if(idx_x==-1 || idx_y==-1 || idx_z==-1)
+            {
+                return gridIndex;
+            }
+            gridIndex = idx_z*X*Y + idx_y*X + idx_x;
+            return gridIndex;
         }
 
         

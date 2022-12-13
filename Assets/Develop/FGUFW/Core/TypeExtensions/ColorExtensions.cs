@@ -6,7 +6,7 @@ namespace FGUFW
 {
     public static class ColorExtensions
     {
-        static public string RichText(this Color color,string text)
+        public static string RichText(this Color color,string text)
         {
             return $"<color=#{ColorUtility.ToHtmlStringRGB(color)}>{text}</color>";
         }

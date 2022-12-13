@@ -4,24 +4,24 @@ using UnityEngine;
 
 namespace FGUFW
 {
-    static public class CoroutineExtensions
+    public static class CoroutineExtensions
     {
 		/// <summary>
 		/// 启动协程 需要主动结束协程调用Coroutine.Stop()
 		/// </summary>
 		/// <param name="self"></param>
 		/// <returns></returns>
-		static public Coroutine Start(this IEnumerator self)
+		public static Coroutine Start(this IEnumerator self)
 		{
 			return GlobalCoroutineSystem.I.StartCoroutine(self);
 		}
 
-		static public void Stop(this Coroutine self)
+		public static void Stop(this Coroutine self)
 		{
 			GlobalCoroutineSystem.I.StopCoroutine(self);
 		}
 
-		static public void StopAll()
+		public static void StopAll()
 		{
 			GlobalCoroutineSystem.I.StopAllCoroutines();
 		}
@@ -31,12 +31,12 @@ namespace FGUFW
 		/// </summary>
 		/// <param name="self"></param>
 		/// <returns>返回值可以用在CoroutineCore.I.StopIO(int id) 来结束加载协程</returns>
-		static public int StartIO(this IEnumerator self)
+		public static int StartIO(this IEnumerator self)
 		{
 			return GlobalCoroutineSystem.I.StartIO(self);
 		}
 
-		static public void Enqueue(this IEnumerator self,int queueID=0)
+		public static void Enqueue(this IEnumerator self,int queueID=0)
 		{
 			lock(queueDicLock)
 			{

@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace FGUFW
 {
-    static public class CollectionExtensions
+    public static class CollectionExtensions
     {
-        static public T Random<T>(this List<T> self)
+        public static T Random<T>(this List<T> self)
         {
             if(self==null || self.Count==0)
             {
@@ -16,26 +16,26 @@ namespace FGUFW
             return self[idx];
         }
 
-        static public T Random<T>(this Array self)
+        public static T Random<T>(this T[] self)
         {
             if(self==null || self.Length==0)
             {
                 return default(T);
             }
             int idx = UnityEngine.Random.Range(0,self.Length);
-            return (T)self.GetValue(idx);
+            return self[idx];
         }
 
-        static public int IndexOf(this Array self,object val,int startIndex=0)
+        public static int IndexOf<T>(this T[] self,T val,int startIndex=0)
         {
             if(self!=null)
             {
-                return Array.IndexOf(self,val,startIndex);
+                return Array.IndexOf<T>(self,val,startIndex);
             }
             return -1;
         }
 
-        static public int IndexOf<T>(this Array self,Predicate<T> match,int startIndex=0,int length=0)
+        public static int IndexOf<T>(this T[] self,Predicate<T> match,int startIndex=0,int length=0)
         {
             if(self!=null)
             {
@@ -43,21 +43,21 @@ namespace FGUFW
                 
                 for (int i = startIndex; i < length; i++)
                 {
-                    var t_obj = (T)self.GetValue(i);
+                    var t_obj = self[i];
                     if(match(t_obj))return i;
                 }
             }
             return -1;
         }
 
-        static public T Find<T>(this Array self,Predicate<T> match)
+        public static T Find<T>(this T[] self,Predicate<T> match)
         {
             if(self!=null)
             {
                 int length = self.Length;
                 for (int i = 0; i < length; i++)
                 {
-                    var t_obj = (T)self.GetValue(i);
+                    var t_obj = self[i];
                     if(match(t_obj))return t_obj;
                 }
             }
@@ -72,7 +72,7 @@ namespace FGUFW
         /// <param name="getWeight"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        static public T RandomByWeight<T>(this IEnumerable collection,Func<T,float> getWeight)
+        public static T RandomByWeight<T>(this IEnumerable collection,Func<T,float> getWeight)
         {
             float maxValue = 0;
             foreach (T item in collection)
@@ -92,7 +92,7 @@ namespace FGUFW
             return default(T);
         }
 
-        static public T[] Copy<T>(this Array self,int length)
+        public static T[] Copy<T>(this T[] self,int length)
         {
             if(self==null || self.Length==0)
             {

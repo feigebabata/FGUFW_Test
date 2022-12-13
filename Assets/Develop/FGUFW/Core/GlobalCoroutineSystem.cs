@@ -20,7 +20,7 @@ namespace FGUFW
 			Runing,
 		}
 
-		static public class Config
+		public static class Config
 		{
 			public const int MAX_IO_COUNT=10;
 		}

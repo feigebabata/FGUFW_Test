@@ -10,21 +10,27 @@ public class MessagerTest : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        messenger = new OrderedMessenger<int>();
+        // messenger = new OrderedMessenger<int>();
 
-        messenger.Broadcast(666);
-        messenger.Remove<int>(666,test2);
+        // messenger.Broadcast(666);
+        // messenger.Remove<int>(666,test2);
 
-        messenger.Add<int>(666,test1_1);
-        messenger.Add<int>(666,test2);
-        messenger.Broadcast(66);
-        messenger.Remove(666,test1);
-        messenger.Broadcast(666,4);
+        // messenger.Add<int>(666,test1_1);
+        // messenger.Add<int>(666,test2);
+        // messenger.Broadcast(66);
+        // messenger.Remove(666,test1);
+        // messenger.Broadcast(666,4);
+
+        test1();
     }
 
     void test1()
     {
-        Debug.Log("test1");
+        int count = 5;
+        float p = 1.2f;
+        float length = 10f;
+        float start = -5;
+        Debug.Log(MathHelper.IndexOf(count,p,length,start));
     }
 
     void test1_1(int i)

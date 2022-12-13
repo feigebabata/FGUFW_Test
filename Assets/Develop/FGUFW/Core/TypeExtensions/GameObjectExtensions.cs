@@ -5,9 +5,9 @@ using UnityEngine;
 
 namespace FGUFW
 {
-    static public class GameObjectExtensions
+    public static class GameObjectExtensions
     {
-        static public GameObject Copy(this GameObject self,Transform parent)
+        public static GameObject Copy(this GameObject self,Transform parent)
         {
             return GameObject.Instantiate(self,parent);
         }

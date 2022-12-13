@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace FGUFW
 {
-    static public class ScreenHelper
+    public static class ScreenHelper
     {
         /// <summary>
         /// 当前帧率
@@ -40,14 +40,14 @@ namespace FGUFW
             }
         }
 
-        static public void Landscape()
+        public static void Landscape()
         {
             Screen.orientation = ScreenOrientation.AutoRotation;
             Screen.autorotateToPortrait = false;
             Screen.autorotateToPortraitUpsideDown = false;
         }
 
-        static public void Portrait()
+        public static void Portrait()
         {
             Screen.orientation = ScreenOrientation.Portrait;
         }

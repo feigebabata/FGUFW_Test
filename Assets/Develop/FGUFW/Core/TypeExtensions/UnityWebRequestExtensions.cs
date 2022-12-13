@@ -8,9 +8,9 @@ using UnityEngine.Networking;
 
 namespace FGUFW
 {
-    static public class UnityWebRequestExtensions
+    public static class UnityWebRequestExtensions
     {
-        static public IEnumerator StreamingCopy(string originPath,string savePath,Action<string> complete)
+        public static IEnumerator StreamingCopy(string originPath,string savePath,Action<string> complete)
         {
             var url = new Uri(Path.Combine(Application.streamingAssetsPath,originPath));
             UnityWebRequest uwr = new UnityWebRequest(url);

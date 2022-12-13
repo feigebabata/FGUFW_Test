@@ -3,24 +3,21 @@ using UnityEngine;
 
 namespace FGUFW
 {
-    static public class MathHelper
+    public static class MathHelper
     {
         /// <summary>
-        /// 区间索引
+        /// 返回p在count个格子的某一个 (min <= p < max) 否则返回-1
         /// </summary>
-        /// <param name="count">区间分段</param>
-        /// <param name="length">区间长</param>
-        /// <param name="index">位置</param>
-        /// <returns></returns>
-        static public int IndexOf(int count ,float length,float index)
+        public static int IndexOf(int count,float p,float length,float start=0)
         {
-            float t = count*index/length;
-            int idx = (int)t;
-            idx = Mathf.Clamp(idx,0,count-1);
+            p -= start;
+            int idx = -1;
+            if(p<0 || p>=length)return idx;
+            idx = (int)(p/length*count);
             return idx;
         }
 
-        static public int SortInt(float d)
+        public static int SortInt(float d)
         {
             if(d>0)
             {
@@ -33,7 +30,7 @@ namespace FGUFW
             return 0;
         }
 
-        static public int SortInt(double d)
+        public static int SortInt(double d)
         {
             if(d>0)
             {
@@ -46,12 +43,12 @@ namespace FGUFW
             return 0;
         }
 
-        static public int Ceil(this float self)
+        public static int Ceil(this float self)
         {
             return Mathf.CeilToInt(self);
         }
 
-        static public int ToInt32(this float self)
+        public static int ToInt32(this float self)
         {
             return (int)self;
         }
@@ -61,7 +58,7 @@ namespace FGUFW
         /// </summary>
         /// <param name="self"></param>
         /// <returns></returns>
-        static public int RoundIndex(this int self,int length)
+        public static int RoundIndex(this int self,int length)
         {
             int idx = (self%length+length)%length;
             return idx;

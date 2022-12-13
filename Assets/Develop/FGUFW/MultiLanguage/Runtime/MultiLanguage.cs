@@ -8,23 +8,23 @@ using FGUFW;
 namespace FGUFW.MultiLanguage
 {
     
-    static public class MultiLanguage
+    public static class MultiLanguage
     {
         
         static private IReadOnlyDictionary<string, IReadOnlyList<string>> languageConfig;
         
-        static public int LanguageIndex{get; private set;}
-        static public Action OnLanguageChanged;
-        static public MultiLanguangeFont MultiLanguangeFonts;
+        public static int LanguageIndex{get; private set;}
+        public static Action OnLanguageChanged;
+        public static MultiLanguangeFont MultiLanguangeFonts;
 
-        static public void InitConfig()
+        public static void InitConfig()
         {
             var textAsset = AssetHelper.Load<TextAsset>("FGUFW/MultiLanguageConfig");
             languageConfig = textAsset.text.ToCsvDict();
             MultiLanguangeFonts = AssetHelper.Load<MultiLanguangeFont>("Assets/Develop/FGUFW/MultiLanguage/MultiLanguangeFonts.asset");
         }
 
-        static public Font GetMultiLanguangeFont()
+        public static Font GetMultiLanguangeFont()
         {
             if(MultiLanguangeFonts==null)
             {
@@ -35,12 +35,12 @@ namespace FGUFW.MultiLanguage
             return MultiLanguangeFonts.Fonts[LanguageIndex];
         }
 
-        static public IReadOnlyList<string> GetLanguageNames()
+        public static IReadOnlyList<string> GetLanguageNames()
         {
             return languageConfig["*"];
         }
 
-        static public string GetLanguageText(string id)
+        public static string GetLanguageText(string id)
         {
             if (string.IsNullOrEmpty(id))
             {
@@ -60,7 +60,7 @@ namespace FGUFW.MultiLanguage
             return text;
         }
 
-        static public void SetLanguage(int index)
+        public static void SetLanguage(int index)
         {
             // Debug.Log($"语言切换:{index}:{GetLanguageNames()[index+1]}");
             LanguageIndex = index;
@@ -82,7 +82,7 @@ namespace FGUFW.MultiLanguage
         /// 转当前语言
         /// </summary>
         /// <returns></returns>
-        static public string ToCL(this string text)
+        public static string ToCL(this string text)
         {
             return GetLanguageText(text);
         }

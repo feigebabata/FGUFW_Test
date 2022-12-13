@@ -6,18 +6,18 @@ using UnityEngine;
 
 namespace FGUFW
 {
-    static public class TransformExtensions
+    public static class TransformExtensions
     {
-        static public RectTransform AsRT(this Transform t)
+        public static RectTransform AsRT(this Transform t)
         {
             return t as RectTransform;
         }
-        static public RectTransform GetChildRT(this Transform t,int index)
+        public static RectTransform GetChildRT(this Transform t,int index)
         {
             return t.GetChild(index) as RectTransform;
         }
 
-        static public IEnumerator MoveWorld(this Transform transform,Vector3 endPos,float time)
+        public static IEnumerator MoveWorld(this Transform transform,Vector3 endPos,float time)
         {
             float startTime = Time.time;
             while (Time.time-startTime<time)
@@ -29,7 +29,7 @@ namespace FGUFW
             transform.position = endPos;
         }
 
-        static public IEnumerator MoveLocal(this Transform transform,Vector3 endPos,float time)
+        public static IEnumerator MoveLocal(this Transform transform,Vector3 endPos,float time)
         {
             float startTime = Time.time;
             while (Time.time-startTime<time)
@@ -41,7 +41,7 @@ namespace FGUFW
             transform.localPosition = endPos;
         }
 
-        static public IEnumerator RotateLocal(this Transform transform,Vector3 endAngle,float time)
+        public static IEnumerator RotateLocal(this Transform transform,Vector3 endAngle,float time)
         {
             float startTime = Time.time;
             Quaternion rotation = Quaternion.Euler(endAngle);
@@ -54,7 +54,7 @@ namespace FGUFW
             transform.localRotation = rotation;
         }
 
-        static public IEnumerator RotateWorld(this Transform transform,Vector3 endAngle,float time)
+        public static IEnumerator RotateWorld(this Transform transform,Vector3 endAngle,float time)
         {
             float startTime = Time.time;
             Quaternion rotation = Quaternion.Euler(endAngle);
@@ -67,7 +67,7 @@ namespace FGUFW
             transform.rotation = rotation;
         }
 
-        static public void Foreach<V>(this Transform transform,IEnumerable list,Action<Transform,V> callback)
+        public static void Foreach<V>(this Transform transform,IEnumerable list,Action<Transform,V> callback)
         {
             int idx = 0;
             if(list!=null)
@@ -87,7 +87,7 @@ namespace FGUFW
             }
         }
 
-        static public void Foreach<T,V>(this Transform transform,IEnumerable list,Action<T,V> callback)
+        public static void Foreach<T,V>(this Transform transform,IEnumerable list,Action<T,V> callback)
         {
             int idx = 0;
             if(list!=null)
@@ -107,7 +107,7 @@ namespace FGUFW
             }
         }
 
-        static public void For(this Transform transform,int count,Action<int,Transform> callback)
+        public static void For(this Transform transform,int count,Action<int,Transform> callback)
         {
             for (int i = 0; i < count; i++)
             {
@@ -121,7 +121,7 @@ namespace FGUFW
             }
         }
 
-        static public void For<T>(this Transform transform,int count,Action<int,T> callback)
+        public static void For<T>(this Transform transform,int count,Action<int,T> callback)
         {
             for (int i = 0; i < count; i++)
             {
@@ -135,7 +135,7 @@ namespace FGUFW
             }
         }
 
-        static public string FullPath(this Transform t)
+        public static string FullPath(this Transform t)
         {
             StringBuilder s = new StringBuilder();
             do
@@ -147,7 +147,7 @@ namespace FGUFW
             return s.ToString();
         }
 
-        static public void Sort<T>(this Transform t,Comparison<T> comparison) where T:MonoBehaviour
+        public static void Sort<T>(this Transform t,Comparison<T> comparison) where T:MonoBehaviour
         {
             List<T> childs = new List<T>(t.childCount);
             foreach (Transform item in t)
@@ -161,19 +161,19 @@ namespace FGUFW
             }
         }
 
-        static public Transform RandomChild(this Transform t)
+        public static Transform RandomChild(this Transform t)
         {
             int idx = UnityEngine.Random.Range(0,t.childCount);
             return t.GetChild(idx);
         }
 
-        static public T RandomChild<T>(this Transform t)
+        public static T RandomChild<T>(this Transform t)
         {
             int idx = UnityEngine.Random.Range(0,t.childCount);
             return t.GetChild(idx).GetComponent<T>();
         }
 
-        static public Transform GetOrCreateChild(this Transform t,int index,string createName=null)
+        public static Transform GetOrCreateChild(this Transform t,int index,string createName=null)
         {
             while (index >= t.childCount)
             {
@@ -183,7 +183,7 @@ namespace FGUFW
             return t.GetChild(index);
         }
 
-        static public T GetOrCreateChild<T>(this Transform t,int index,string createName=null)
+        public static T GetOrCreateChild<T>(this Transform t,int index,string createName=null)
         {
             while (index >= t.childCount)
             {

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace FGUFW
 {
-    static public class TimeHelper
+    public static class TimeHelper
     {
         public static bool UnscaleTimeMode = true;
 

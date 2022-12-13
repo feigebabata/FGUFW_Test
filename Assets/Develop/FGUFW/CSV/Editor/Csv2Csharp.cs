@@ -7,7 +7,7 @@ using System.Text;
 
 namespace FGUFW.CSV
 {
-    static public class Csv2Csharp
+    public static class Csv2Csharp
     {
         const string Extension = ".csv";
         
@@ -256,7 +256,7 @@ namespace #NAMESPACE#
 #MEMBER_SETS#
         }
 
-        static public #CLASSNAME#[] ToArray(string csvText)
+        public static #CLASSNAME#[] ToArray(string csvText)
         {
             string[] lines = csvText.ToCsvLines();
             #CLASSNAME#[] list = new #CLASSNAME#[lines.Length-4];
@@ -267,7 +267,7 @@ namespace #NAMESPACE#
             return list;
         }
 
-        static public Dictionary<#FRIST_TYPE#,#CLASSNAME#> ToDict(string csvText)
+        public static Dictionary<#FRIST_TYPE#,#CLASSNAME#> ToDict(string csvText)
         {
             string[] lines = csvText.ToCsvLines();
             Dictionary<#FRIST_TYPE#,#CLASSNAME#> dict = new Dictionary<#FRIST_TYPE#,#CLASSNAME#>();

@@ -10,13 +10,13 @@ namespace FGUFW
     {
         static private List<Canvas> panelCanvas = new List<Canvas>();
 
-        static public void SetPanelSortOrder(this Canvas canvas)
+        public static void SetPanelSortOrder(this Canvas canvas)
         {
             panelCanvas.Add(canvas);
             resetPanelCanvasSortOrder();
         }
 
-        static public void ClearSortOrder(this Canvas canvas)
+        public static void ClearSortOrder(this Canvas canvas)
         {
             panelCanvas.Remove(canvas);
             resetPanelCanvasSortOrder();
@@ -30,7 +30,7 @@ namespace FGUFW
             }
         }
 
-        static public List<RaycastResult> GetRaycastResults()
+        public static List<RaycastResult> GetRaycastResults()
         {
             PointerEventData ped = new PointerEventData(EventSystem.current);
             ped.position = Input.mousePosition;
@@ -44,7 +44,7 @@ namespace FGUFW
         /// </summary>
         /// <param name="self"></param>
         /// <returns></returns>
-        static public Vector3 GetCenterPosition(this RectTransform self)
+        public static Vector3 GetCenterPosition(this RectTransform self)
         {
             var size = self.sizeDelta;
             var pivot = self.pivot;
