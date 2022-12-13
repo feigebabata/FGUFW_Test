@@ -19,11 +19,13 @@ namespace GamePlay
             }
 
             tryAddUpdate(self);
+            tryAddCoroutine(self);
         }
 
         public static async Task Destroying(this IPart self,IPart parent)
         {
             tryRemoveUpdate(self);
+            tryRemoveCoroutine(self);
 
             if(self.SubParts!=null)
             {
@@ -66,6 +68,24 @@ namespace GamePlay
             {
                 var iUpdate = self as IUpdate;
                 iUpdate.RemoveUpdateToPlayerLoop();
+            }
+        }
+
+        private static void tryAddCoroutine(IPart self)
+        {
+            if(self is ICoroutineable)
+            {
+                var coroutineable = self as ICoroutineable;
+                coroutineable.AddCoroutineBehaviour();
+            }
+        }
+
+        private static void tryRemoveCoroutine(IPart self)
+        {
+            if(self is ICoroutineable)
+            {
+                var coroutineable = self as ICoroutineable;
+                coroutineable.AddCoroutineBehaviour();
             }
         }
     }
