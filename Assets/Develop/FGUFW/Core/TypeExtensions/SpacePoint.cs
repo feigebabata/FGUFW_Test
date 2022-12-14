@@ -86,49 +86,33 @@ namespace FGUFW
             return -1;
         }
 
+        private int getGridFirstPointIndex(int gridIndex)
+        {
+            int pointIndex=0;
+            for (int i = -1; i < gridIndex; i++)
+            {
+                pointIndex+=_gridCapacitys[i+1];
+            }            
+            return pointIndex;
+        }
+
         /// <summary>
         /// 添加新点对象 返回点Id
         /// </summary>
         public int Add(Vector3 point)
         {
-            int newIndex,oldIndex;
-            Vector3 oldPoint,newPoint;
-
-            int gridIndex = GetGridIndex(point);
-
-            newIndex = _newPointId;
-            newPoint = point;
-            _newPointId++;
-
             if(PointCount+1>_pointIds.Length)ensureCapacity();
-            
-            int pointIndex = 0;
-            for (int i = -1; i < GridLength; i++)
-            {
-                int capacity = _gridCapacitys[i+1];
-                pointIndex+=capacity;
-                if(i==gridIndex)
-                {
-                    newIndex = pointIndex;
-                    oldIndex = _pointIds[pointIndex];
-                    oldPoint = _points[pointIndex];
 
-                    _pointIds[pointIndex] = newIndex;
-                    _points[pointIndex] = newPoint;
-                }
-                else if(i>gridIndex && capacity>0)
-                {
-                    oldIndex = _pointIds[pointIndex];
-                    oldPoint = _points[pointIndex];
-
-                    _pointIds[pointIndex] = newIndex;
-                    _points[pointIndex] = newPoint;
-                }
-            }
+            var pointId = _newPointId++;
+            int gridIndex = GetGridIndex(point);
+            int pointIndex = getGridFirstPointIndex(gridIndex);
+            moveBack(gridIndex);
+            _pointIds[pointIndex] = pointId;
+            _points[pointIndex] = point;
             PointCount++;
             _gridCapacitys[gridIndex+1]++;
 
-            return _newPointId-1;
+            return pointId;
         }
 
         /// <summary>
@@ -136,35 +120,10 @@ namespace FGUFW
         /// </summary>
         public void Remove(int pointId)
         {
-            int newIndex,oldIndex;
-            Vector3 oldPoint,newPoint;
-
-            // newIndex = _pointIndexs.IndexOf(pointId);
-            // int gridIndex = FindGridIndex(_points[newIndex]);
-
-            // int index = 0;
-            // for (int i = -1; i < GridLength; i++)
-            // {
-            //     int capacity = _gridCapacitys[i+1];
-            //     index+=capacity;
-            //     if(i==gridIndex)
-            //     {
-            //         oldIndex = _pointIndexs[index];
-            //         oldPoint = _points[index];
-
-            //         _pointIndexs[index] = newIndex;
-            //         _points[index] = newPoint;
-            //     }
-            //     else if(i>gridIndex && capacity>0)
-            //     {
-            //         oldIndex = _pointIndexs[index];
-            //         oldPoint = _points[index];
-
-            //         _pointIndexs[index] = newIndex;
-            //         _points[index] = newPoint;
-            //     }
-            // }
-
+            int pointIndex = getPointIndex(pointId);
+            int gridIndex = GetGridIndex(_points[pointIndex]);
+            moveForward(pointIndex,gridIndex);
+            _gridCapacitys[gridIndex+1]--;
             PointCount--;
         }
 
@@ -173,9 +132,14 @@ namespace FGUFW
         /// </summary>
         public int PointMove(int pointId,Vector3 newPos)
         {
-            int gridIndex = -1;
-
-            return gridIndex;
+            int pointIndex = getPointIndex(pointId);
+            int oldGridIndex = GetGridIndex(_points[pointIndex]);
+            int newGridIndex = GetGridIndex(newPos);
+            if(oldGridIndex==newGridIndex)return newGridIndex;
+            movePointIndex(pointIndex,oldGridIndex,newGridIndex);
+            _gridCapacitys[newGridIndex+1]++;
+            _gridCapacitys[oldGridIndex+1]--;
+            return newGridIndex;
         }
 
         private void ensureCapacity() 
@@ -216,12 +180,14 @@ namespace FGUFW
             return gridIndex;
         }
 
-
+        /// <summary>
+        /// 从gridIndex开始整体后移 留出gridindex第一个point的空位
+        /// </summary>
         private void moveBack(int startGridIndex)
         {
-            for (int girdIndex = GridLength,index=PointCount; girdIndex >= startGridIndex; girdIndex--)
+            for (int gridIndex = GridLength,index=PointCount; gridIndex >= startGridIndex; gridIndex--)
             {
-                int capacity = _gridCapacitys[girdIndex];
+                int capacity = _gridCapacitys[gridIndex+1];
                 if(capacity>0)
                 {
                     _pointIds[index] = _pointIds[index-capacity];
@@ -231,11 +197,107 @@ namespace FGUFW
             }
         }
 
-        private void moveForward(int pointIndex)
+        /// <summary>
+        /// 从gridIndex开始整体前移 覆盖pointIndex
+        /// </summary>
+        private void moveForward(int startPointIndex,int startGridIndex)
         {
+            int tempId=_pointIds[PointCount-1];
+            Vector3 tempPoint=_points[PointCount-1];
+            for (int gridIndex = GridLength,pointIndex=PointCount-1; gridIndex >= startGridIndex; gridIndex--)
+            {
+                int capacity = _gridCapacitys[gridIndex+1];
+                if(capacity>0)
+                {
+                    if(gridIndex==startGridIndex)
+                    {
+                        _pointIds[startPointIndex] = tempId;
+                        _points[startPointIndex] = tempPoint;
+                    }
+                    else
+                    {
+                        int index = pointIndex-capacity;
+                        int id = _pointIds[index];
+                        Vector3 point = _points[index];
+                        _pointIds[index] = tempId;
+                        _points[index] = tempPoint;
+
+                        tempId = id;
+                        tempPoint = point;
+                    }
+                    pointIndex -= capacity;
+                }
+            }
         }
 
-        
+        /// <summary>
+        /// 移动point的位置
+        /// </summary>
+        private void movePointIndex(int startPointIndex,int startGridIndex,int endGridIndex)
+        {
+            int tempId=_pointIds[startPointIndex];
+            Vector3 tempPoint=_points[startPointIndex];
+
+            if(endGridIndex>startGridIndex)
+            {
+                int pointIndex = getGridFirstPointIndex(startGridIndex);
+                for (int gridIndex = startGridIndex; gridIndex <= endGridIndex; gridIndex++)
+                {
+                    int capacity = _gridCapacitys[gridIndex+1];
+                    if(capacity>0)
+                    {
+                        if(gridIndex==startGridIndex)
+                        {
+                            _pointIds[startPointIndex]=_pointIds[pointIndex+capacity-1];
+                            _points[startPointIndex]=_points[pointIndex+capacity-1];
+                        }
+                        else
+                        {
+                            _pointIds[pointIndex-1]=_pointIds[pointIndex+capacity-1];
+                            _points[pointIndex-1]=_points[pointIndex+capacity-1];
+                        }
+                    }
+                    pointIndex+=capacity;
+                }
+                _pointIds[pointIndex-1]=tempId;
+                _points[pointIndex-1]=tempPoint;   
+
+            }
+            else
+            {
+                int pointIndex = getGridFirstPointIndex(startGridIndex);
+                for (int gridIndex = startGridIndex; gridIndex >= endGridIndex; gridIndex--)
+                {
+                    
+                    int capacity = _gridCapacitys[gridIndex+1];
+                    if(capacity>0)
+                    {
+                        if(gridIndex==startGridIndex)
+                        {
+                            _pointIds[startPointIndex]=_pointIds[pointIndex];
+                            _points[startPointIndex]=_points[pointIndex];
+                        }
+                        else
+                        {
+                            _pointIds[pointIndex-capacity]=_pointIds[pointIndex];
+                            _points[pointIndex-capacity]=_points[pointIndex];
+                        }
+                    }
+                    pointIndex-=capacity;
+                }
+                _pointIds[pointIndex]=tempId;
+                _points[pointIndex]=tempPoint;  
+            }
+        }
+
+        public int[] BoxInGrids(Bounds bounds)
+        {
+            Vector3 min = bounds.min,max=bounds.max;
+            Vector3Int boxInGridSize = Vector3Int.zero;
+            Vector3Int boxInGridIndex = Vector3Int.zero;
+            
+            return null;
+        }
 
     }
 }
