@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace FGUFW
@@ -23,6 +24,7 @@ namespace FGUFW
         /// </summary>
         private int[] _gridCapacitys;
         private Vector3 _center,_girdSize,_spaceMinPoint,_spaceMaxPoint;
+        private Bounds _spaceBounds;
 
         //----------------------------------------------
 
@@ -47,9 +49,11 @@ namespace FGUFW
             _center = center;
             _girdSize = gridSize;
 
-            Vector3 half = new Vector3(gridSize.x*X,gridSize.y*Y,gridSize.z*Z)*0.5f;
+            var size = new Vector3(gridSize.x*X,gridSize.y*Y,gridSize.z*Z);
+            Vector3 half = size*0.5f;
             _spaceMinPoint = center - half;
             _spaceMaxPoint = center + half;
+            _spaceBounds = new Bounds(center,size);
 
             if(capacity<=0)capacity=8;
             _pointIds = new int[capacity];
@@ -62,7 +66,12 @@ namespace FGUFW
         public void ForeachGrid(int gridIndex,Action<int,Vector3> callback)
         {
             if(callback==null)return;
-
+            int pointIndex = getGridFirstPointIndex(gridIndex);
+            int length = pointIndex+_gridCapacitys[gridIndex+1];
+            for (;pointIndex < length; pointIndex++)
+            {
+                callback(_pointIds[pointIndex],_points[pointIndex]);
+            }
         }
 
         /// <summary>
@@ -163,6 +172,7 @@ namespace FGUFW
             return _gridCapacitys[gridIndex+1];
         }
 
+
         /// <summary>
         /// 获取点在空间中的格子索引
         /// </summary>
@@ -176,8 +186,13 @@ namespace FGUFW
             {
                 return gridIndex;
             }
-            gridIndex = idx_z*X*Y + idx_y*X + idx_x;
+            gridIndex = getGridIndex(idx_x,idx_y,idx_z);
             return gridIndex;
+        }
+
+        private int getGridIndex(int x,int y,int z)
+        {
+            return z*X*Y + y*X + x;
         }
 
         /// <summary>
@@ -290,14 +305,124 @@ namespace FGUFW
             }
         }
 
-        public int[] BoxInGrids(Bounds bounds)
+        /// <summary>
+        /// 返回重叠的所有格子索引
+        /// </summary>
+        public int[] OverlapGrids(Bounds bounds)
         {
-            Vector3 min = bounds.min,max=bounds.max;
             Vector3Int boxInGridSize = Vector3Int.zero;
             Vector3Int boxInGridIndex = Vector3Int.zero;
+
+            var (overlap,overlapBounds) = _spaceBounds.Overlap(bounds);
+            if(!overlap)return new int[]{-1};
+            var min = overlapBounds.min;
+            var size = overlapBounds.size;
             
-            return null;
+            boxInGridIndex.x = MathHelper.IndexOf(X,min.x,_spaceMaxPoint.x-_spaceMinPoint.x,_spaceMinPoint.x);
+            boxInGridIndex.y = MathHelper.IndexOf(Y,min.y,_spaceMaxPoint.y-_spaceMinPoint.y,_spaceMinPoint.y);
+            boxInGridIndex.z = MathHelper.IndexOf(Z,min.z,_spaceMaxPoint.z-_spaceMinPoint.z,_spaceMinPoint.z);
+
+            float length = 0;
+            length = (size.x - (boxInGridIndex.x+1)*_girdSize.x - min.x)/_girdSize.x;
+            boxInGridSize.x = length<0?1:2+(int)(length/_girdSize.x);
+
+            length = (size.y - (boxInGridIndex.y+1)*_girdSize.y - min.y)/_girdSize.y;
+            boxInGridSize.y = length<0?1:2+(int)(length/_girdSize.y);
+
+            length = (size.z - (boxInGridIndex.z+1)*_girdSize.z - min.z)/_girdSize.z;
+            boxInGridSize.z = length<0?1:2+(int)(length/_girdSize.z);
+
+            int[] ls;
+            int count = boxInGridSize.x*boxInGridSize.y*boxInGridSize.z;
+            if(
+                bounds.min.x<_spaceBounds.min.x ||
+                bounds.min.y<_spaceBounds.min.y ||
+                bounds.min.z<_spaceBounds.min.z ||
+                bounds.max.x>=_spaceBounds.max.x ||
+                bounds.max.y>=_spaceBounds.max.y ||
+                bounds.max.z>=_spaceBounds.max.z
+            )
+            {
+                ls = new int[count+1];
+                ls[count] = -1;
+            }
+            else
+            {
+                ls = new int[count];
+            }
+
+            for (int z = 0,i=0; z < boxInGridSize.z; z++)
+            {
+                for (int y = 0; y < boxInGridSize.y; y++)
+                {
+                    for (int x = 0; x < boxInGridSize.x; x++,i++)
+                    {
+                        ls[i] = getGridIndex(boxInGridIndex.x+x,boxInGridIndex.y+y,boxInGridIndex.z+z);
+                    }
+                }
+            }
+
+            return ls;
         }
+
+        /// <summary>
+        /// 返回重叠的所有格子索引
+        /// </summary>
+        public void OverlapGrids(Bounds bounds,Action<int> callback)
+        {
+            if(callback==null)return;
+            Vector3Int boxInGridSize = Vector3Int.zero;
+            Vector3Int boxInGridIndex = Vector3Int.zero;
+
+            var (overlap,overlapBounds) = _spaceBounds.Overlap(bounds);
+            if(!overlap)
+            {
+                callback(-1);
+                return;
+            }
+            var min = overlapBounds.min;
+            var size = overlapBounds.size;
+            
+            boxInGridIndex.x = MathHelper.IndexOf(X,min.x,_spaceMaxPoint.x-_spaceMinPoint.x,_spaceMinPoint.x);
+            boxInGridIndex.y = MathHelper.IndexOf(Y,min.y,_spaceMaxPoint.y-_spaceMinPoint.y,_spaceMinPoint.y);
+            boxInGridIndex.z = MathHelper.IndexOf(Z,min.z,_spaceMaxPoint.z-_spaceMinPoint.z,_spaceMinPoint.z);
+
+            float length = 0;
+            length = (size.x - (boxInGridIndex.x+1)*_girdSize.x - min.x)/_girdSize.x;
+            boxInGridSize.x = length<0?1:2+(int)(length/_girdSize.x);
+
+            length = (size.y - (boxInGridIndex.y+1)*_girdSize.y - min.y)/_girdSize.y;
+            boxInGridSize.y = length<0?1:2+(int)(length/_girdSize.y);
+
+            length = (size.z - (boxInGridIndex.z+1)*_girdSize.z - min.z)/_girdSize.z;
+            boxInGridSize.z = length<0?1:2+(int)(length/_girdSize.z);
+
+            int count = boxInGridSize.x*boxInGridSize.y*boxInGridSize.z;
+            if(
+                bounds.min.x<_spaceBounds.min.x ||
+                bounds.min.y<_spaceBounds.min.y ||
+                bounds.min.z<_spaceBounds.min.z ||
+                bounds.max.x>=_spaceBounds.max.x ||
+                bounds.max.y>=_spaceBounds.max.y ||
+                bounds.max.z>=_spaceBounds.max.z
+            )
+            {
+                callback(-1);
+            }
+
+            for (int z = 0,i=0; z < boxInGridSize.z; z++)
+            {
+                for (int y = 0; y < boxInGridSize.y; y++)
+                {
+                    for (int x = 0; x < boxInGridSize.x; x++,i++)
+                    {
+                        var gridIndex = getGridIndex(boxInGridIndex.x+x,boxInGridIndex.y+y,boxInGridIndex.z+z);
+                        callback(gridIndex);
+                    }
+                }
+            }
+        }
+        
 
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -143,6 +144,39 @@ namespace FGUFW
                 val*=i;
             }
             return val;
+        }
+
+        /// <summary>
+        /// 线段相交区域 传入线的起点和长度 点在线上(min >= p <max)
+        /// </summary>
+        public static ValueTuple<bool,Vector2> LineOverlap(Vector2 l1,Vector2 l2)
+        {
+            var overlap = Vector2.zero;
+            float start_1 = l1.x;
+            float length_1 = l1.y;
+            float start_2 = l2.x;
+            float length_2 = l2.y;
+
+            if(start_1==start_2)
+            {
+                return (true,new Vector2(start_2,math.min(start_1+length_1,start_2+length_2)-start_2));
+            }
+            else if(start_1<start_2)
+            {
+                if(start_2 < start_1+length_1)
+                {
+                    return (true,new Vector2(start_2,math.min(start_1+length_1,start_2+length_2)-start_2));
+                }
+            }
+            else
+            {
+                if(start_1 < start_2+length_2)
+                {
+                    return (true,new Vector2(start_1,math.min(start_2+length_2,start_1+length_1)-start_1));
+                }
+            }
+
+            return (false,overlap);
         }
 
     }
