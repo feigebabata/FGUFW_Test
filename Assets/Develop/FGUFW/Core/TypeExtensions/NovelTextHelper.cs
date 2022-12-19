@@ -68,7 +68,7 @@ namespace FGUFW
             return ls.ToArray();
         }
 
-        public static string GetChapter(string lines,Vector2Int chapterIndex)
+        public static string GetChapter(string[] lines,Vector2Int chapterIndex)
         {
             return string.Join("\n",lines,chapterIndex.x,chapterIndex.y);
         }
