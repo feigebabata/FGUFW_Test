@@ -31,57 +31,57 @@ namespace FGUFW
 		/// </summary>
 		/// <param name="self"></param>
 		/// <returns>返回值可以用在CoroutineCore.I.StopIO(int id) 来结束加载协程</returns>
-		public static int StartIO(this IEnumerator self)
-		{
-			return GlobalCoroutineSystem.I.StartIO(self);
-		}
+		// public static int StartIO(this IEnumerator self)
+		// {
+		// 	return GlobalCoroutineSystem.I.StartIO(self);
+		// }
 
-		public static void Enqueue(this IEnumerator self,int queueID=0)
-		{
-			lock(queueDicLock)
-			{
-				if(runTable==null)
-				{
-					runTable = new HashSet<int>();
-					GlobalAppEventSystem.I.UpdateListener+=Update;
-				}
-				if(!queueDic.ContainsKey(queueID))
-				{
-					queueDic.Add(queueID,new Queue<IEnumerator>());
-				}
-				queueDic[queueID].Enqueue(self);
-			}
-		}
+		// public static void Enqueue(this IEnumerator self,int queueID=0)
+		// {
+		// 	lock(queueDicLock)
+		// 	{
+		// 		if(runTable==null)
+		// 		{
+		// 			runTable = new HashSet<int>();
+		// 			GlobalAppEventSystem.I.UpdateListener+=Update;
+		// 		}
+		// 		if(!queueDic.ContainsKey(queueID))
+		// 		{
+		// 			queueDic.Add(queueID,new Queue<IEnumerator>());
+		// 		}
+		// 		queueDic[queueID].Enqueue(self);
+		// 	}
+		// }
 
-		private static Dictionary<int,Queue<IEnumerator>> queueDic = new Dictionary<int, Queue<IEnumerator>>();
-		private static object queueDicLock = new object();
-		private static HashSet<int> runTable;
-		private static IEnumerator queueCor(IEnumerator cor,int queueID)
-		{
-			runTable.Add(queueID);
-			yield return cor;
-			runTable.Remove(queueID);
-		}
+		// private static Dictionary<int,Queue<IEnumerator>> queueDic = new Dictionary<int, Queue<IEnumerator>>();
+		// private static object queueDicLock = new object();
+		// private static HashSet<int> runTable;
+		// private static IEnumerator queueCor(IEnumerator cor,int queueID)
+		// {
+		// 	runTable.Add(queueID);
+		// 	yield return cor;
+		// 	runTable.Remove(queueID);
+		// }
 
-		private static void Update()
-		{
-			int removeKey=int.MinValue;
-			foreach (var item in queueDic)
-			{
-				if(!runTable.Contains(item.Key))
-				{
-					queueCor(item.Value.Dequeue(),item.Key).Start();
-					if(item.Value.Count==0)
-					{
-						removeKey = item.Key;
-					}
-				}
-			}
-			if(removeKey!=int.MinValue)
-			{
-				queueDic.Remove(removeKey);
-			}
-		}
+		// private static void Update()
+		// {
+		// 	int removeKey=int.MinValue;
+		// 	foreach (var item in queueDic)
+		// 	{
+		// 		if(!runTable.Contains(item.Key))
+		// 		{
+		// 			queueCor(item.Value.Dequeue(),item.Key).Start();
+		// 			if(item.Value.Count==0)
+		// 			{
+		// 				removeKey = item.Key;
+		// 			}
+		// 		}
+		// 	}
+		// 	if(removeKey!=int.MinValue)
+		// 	{
+		// 		queueDic.Remove(removeKey);
+		// 	}
+		// }
 
     }    
 }
