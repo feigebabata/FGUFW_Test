@@ -99,6 +99,7 @@ namespace FGUFW
                 flagCount=0;
                 int itemIndex = 0;
                 var line = lines[lineIndex];
+                lineLength = line.Length;
                 int index = 0;
                 for (int i = 0; i < lineLength; i++)
                 {
