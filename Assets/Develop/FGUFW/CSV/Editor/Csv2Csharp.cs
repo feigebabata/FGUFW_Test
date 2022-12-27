@@ -46,7 +46,7 @@ namespace FGUFW.CSV
                     }
                     break;
                     case "enum":
-                        
+                        File.WriteAllText(savePath,ScriptTextHelper.Csv2CsharpEnum(table));
                     break;
                     default:
                         Debug.LogError($"未标注类型 {csharptype}");

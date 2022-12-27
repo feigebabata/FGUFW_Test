@@ -94,7 +94,7 @@ namespace FGUFW
             string[,] table = new string[lnLength,colLength];
 
             
-            for (int lineIndex = 0; lineIndex < lineLength; lineIndex++)
+            for (int lineIndex = 0; lineIndex < lnLength; lineIndex++)
             {
                 flagCount=0;
                 int itemIndex = 0;

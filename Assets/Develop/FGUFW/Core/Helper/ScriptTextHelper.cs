@@ -18,7 +18,8 @@ namespace FGUFW
 
         public static string Csv2CsharpClass(string[,] table,int typeLine=1,int nameLine=2,int summaryLine=3)
         {
-            string script = @"using FGUFW;
+            string script = 
+@"using FGUFW;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
@@ -83,6 +84,43 @@ namespace |NAME_SPACE|
             script = script.Replace(MEMBERS,members);
             script = script.Replace(MEMBER_SETS,memberSets);
 
+            return script;
+        }
+
+        public static string Csv2CsharpEnum(string[,] table)
+        {
+            string script = 
+@"namespace |NAME_SPACE|
+{
+    /// <summary>
+    /// |CLASS_SUMMARY|
+    /// </summary>
+    public enum |CLASS_NAME|
+    {
+|MEMBERS|
+    }
+}
+";
+            StringBuilder sb = new StringBuilder();
+            int length = table.GetLength(0);
+            for (int i = 2; i < length; i++)
+            {
+                sb.AppendLine(
+@$"        /// <summary>
+        /// {table[i,2]}
+        /// </summary>
+        {table[i,0]} = {table[i,1]},
+");
+            }
+
+            var nameSpaceArr = table[0,1].Split('.');
+            var nameSpace = string.Join(".",nameSpaceArr,0,nameSpaceArr.Length-1);
+            var className = nameSpaceArr[nameSpaceArr.Length-1];
+            var classSummary = table[0,2];
+            script = script.Replace(MEMBERS,sb.ToString());
+            script = script.Replace(NAME_SPACE,nameSpace);
+            script = script.Replace(CLASS_NAME,className);
+            script = script.Replace(CLASS_SUMMARY,classSummary);
             return script;
         }
 
