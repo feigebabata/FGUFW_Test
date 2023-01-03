@@ -10,7 +10,7 @@ namespace FGUFW.GamePlay
         public static T I;
         public IOrderedMessenger<Enum> Messenger;
 
-        public List<IPart> SubParts {get;set;} = new List<IPart>();
+        public IList<IPart> SubParts {get;set;} = new List<IPart>();
 
         public virtual Task OnCreating(IPart parent)
         {

@@ -5,7 +5,7 @@ namespace FGUFW.GamePlay
 {
     public interface IPart
     {
-        List<IPart> SubParts{get;set;}
+        IList<IPart> SubParts{get;set;}
 
         Task OnCreating(IPart parent);
         

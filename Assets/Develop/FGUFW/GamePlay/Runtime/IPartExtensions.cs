@@ -49,10 +49,13 @@ namespace FGUFW.GamePlay
 
         public static T GetPart<T>(this IPart self) where T : IPart
         {
-            var subPart = self.SubParts.Find(sp=>sp is T);
-            if(subPart!=null)
+            int length = self.SubParts.Count;
+            for (int i = 0; i < length; i++)
             {
-                return (T)subPart;
+                if(self.SubParts[i] is T)
+                {
+                    return (T)self.SubParts[i];
+                }
             }
             return default(T);
         }
