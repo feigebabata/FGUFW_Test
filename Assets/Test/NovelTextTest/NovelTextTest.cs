@@ -17,7 +17,7 @@ public class NovelTextTest : MonoBehaviour
             CharacterInfo info;
             if(textComp.font.GetCharacterInfo(item,out info,textComp.fontSize))
             {
-                Debug.Log(info.width);
+                // Debug.Log(info.width);
             }
         }
     }
