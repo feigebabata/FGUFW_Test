@@ -179,5 +179,28 @@ namespace FGUFW
             return (false,overlap);
         }
 
+        /// <summary>
+        /// 乒乓回弹运动
+        /// </summary>
+        public static ValueTuple<int,float> PingPong(float maxSpace,float length)
+        {
+            float v = 0;
+            int signed = 0;
+            int turn = (int)(length/maxSpace);
+            if(turn%2==0)
+            {
+                v = length%maxSpace;
+                signed = 1;
+            }
+            else
+            {
+                v = maxSpace-length%maxSpace;
+                signed = -1;
+            }
+
+            return (signed,v);
+        }
+
+
     }
 }

@@ -40,7 +40,7 @@ namespace FGUFW
         private NativeList<int> _pointIds;
         private NativeList<float3> _points;
 
-        private NativeList<ParallelWriterCommand> _parallelWriterCommands;
+        // private NativeList<ParallelWriterCommand> _parallelWriterCommands;
 
         public NativeSpacePoint(int3 spaceSize, float3 gridSize,float3 center,int capacity=8)
         {
@@ -420,51 +420,76 @@ namespace FGUFW
                     }
                 }
             }
-        }
 
-        public NativeList<ParallelWriterCommand>.ParallelWriter AsParallelWriter()
-        {
-            if(!_parallelWriterCommands.IsCreated)
-            {
-                _parallelWriterCommands = new NativeList<ParallelWriterCommand>(PointCount,Allocator.Persistent);
-            }
-            else if(_parallelWriterCommands.Length<PointCount)
-            {
-                _parallelWriterCommands.Capacity = PointCount;
-            }
-            _parallelWriterCommands.Clear();
-
-            return _parallelWriterCommands.AsParallelWriter();
-        }
-
-        public void ExecuteParallelWriterCommands()
-        {
             
         }
 
+ //job多线程写入问题太多 暂封存
+        // public NativeList<ParallelWriterCommand>.ParallelWriter AsParallelWriter()
+        // {
+        //     if(!_parallelWriterCommands.IsCreated)
+        //     {
+        //         _parallelWriterCommands = new NativeList<ParallelWriterCommand>(PointCount,Allocator.Persistent);
+        //     }
+        //     else if(_parallelWriterCommands.Length<PointCount)
+        //     {
+        //         _parallelWriterCommands.Capacity = PointCount;
+        //     }
+        //     _parallelWriterCommands.Clear();
 
-        public struct ParallelWriterCommand
-        {
-            /// <summary>
-            /// 1:添加,2:删除
-            /// </summary>
-            public byte Command;
+        //     return _parallelWriterCommands.AsParallelWriter();
+        // }
 
-            public int Id;
-            public float3 Point;
+        // public void ExecuteParallelWriterCommands()
+        // {
+        //     ParallelWriterCommand command;
+        //     int length = _parallelWriterCommands.Length;
+        //     for (int i = 0; i < length; i++)
+        //     {
+        //         command = _parallelWriterCommands[i];
+        //         if(command.Command==1)
+        //         {
+                    
+        //         }
+        //         else if(command.Command==2)
+        //         {
 
-            public ParallelWriterCommand Add(int id,float3 point)
-            {
-                return new ParallelWriterCommand{Command=1,Id=id,Point=point};
-            }
+        //         }
+        //         else if(command.Command==3)
+        //         {
+                    
+        //         }
+        //     }
+        // }
 
-            public ParallelWriterCommand Remove(int id)
-            {
-                return new ParallelWriterCommand{Command=2,Id=id};
-            }
 
-        }
-        
+        // public struct ParallelWriterCommand
+        // {
+        //     /// <summary>
+        //     /// 1:添加,2:删除,3:移动
+        //     /// </summary>
+        //     public byte Command;
+
+        //     public int Id;
+        //     public float3 Point;
+
+        //     public static ParallelWriterCommand Add(int id,float3 point)
+        //     {
+        //         return new ParallelWriterCommand{Command=1,Id=id,Point=point};
+        //     }
+
+        //     public static ParallelWriterCommand Remove(int id)
+        //     {
+        //         return new ParallelWriterCommand{Command=2,Id=id};
+        //     }
+
+        //     public static ParallelWriterCommand Move(int id,float3 point)
+        //     {
+        //         return new ParallelWriterCommand{Command=3,Id=id,Point=point};
+        //     }
+
+        // }
+
 
     }
 }

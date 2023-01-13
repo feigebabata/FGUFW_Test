@@ -16,6 +16,7 @@ namespace FGUFW
         public const string FRIST_TYPE = "|FRIST_TYPE|";
         public const string FRIST_MEMBER = "|FRIST_MEMBER|";
 
+        
         public static string Csv2CsharpClass(string[,] table,int typeLine=1,int nameLine=2,int summaryLine=3)
         {
             string script = 
