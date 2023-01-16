@@ -8,6 +8,11 @@ namespace FGUFW
 {
     public static class ScriptTextHelper
     {
+/*
+解析规则:
+    数组以'\n'分割
+    向量以','分割
+*/
         public const string NAME_SPACE = "|NAME_SPACE|";
         public const string CLASS_NAME = "|CLASS_NAME|";
         public const string MEMBERS = "|MEMBERS|";
@@ -16,7 +21,6 @@ namespace FGUFW
         public const string FRIST_TYPE = "|FRIST_TYPE|";
         public const string FRIST_MEMBER = "|FRIST_MEMBER|";
 
-        
         public static string Csv2CsharpClass(string[,] table,int typeLine=1,int nameLine=2,int summaryLine=3)
         {
             string script = 
@@ -181,7 +185,7 @@ namespace |NAME_SPACE|
                             memberSet = $"            {memberName}=ScriptTextHelper.Parse_{memberType}s(table[lineIndex,{i}]);";
                         break;
                         default:
-                            memberSet = $"            {memberName}=ScriptTextHelper.Parse_enum<{memberType}s>(table[lineIndex,{i}]);";
+                            memberSet = $"            {memberName}=ScriptTextHelper.Parse_enums<{memberType}>(table[lineIndex,{i}]);";
                         break;
                     }
                 }
