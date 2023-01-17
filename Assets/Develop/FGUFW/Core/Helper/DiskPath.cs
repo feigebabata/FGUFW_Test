@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 namespace FGUFW
 {
+    /// <summary>
+    /// 磁盘路径助手
+    /// </summary>
     public sealed class DiskPath
     {
         public List<string> Directorys{get;private set;} = new List<string>();

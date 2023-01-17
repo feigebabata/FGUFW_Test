@@ -19,7 +19,11 @@ namespace FGUFW
         private static Regex regexChapter3_1 = new Regex($"（[{NUMBER}]+）$");
         private static Regex regexChapter3_2 = new Regex($"（[{NUMBER}]+-[{NUMBER}]+）$");
 
-
+        /// <summary>
+        /// 章节分割 v2.x:起点 v2.y:长度
+        /// </summary>
+        /// <param name="lines"></param>
+        /// <returns></returns>
         public static Vector2Int[] SplitChapter(string[] lines)
         {
             List<Vector2Int> indexs = new List<Vector2Int>(lines.Length/100);
@@ -48,6 +52,13 @@ namespace FGUFW
             return indexs.ToArray();
         }
 
+        /// <summary>
+        /// 格式化行数据: 
+        /// 行首4空格缩进 
+        /// 行之间添加空行
+        /// </summary>
+        /// <param name="lines"></param>
+        /// <returns></returns>
         public static string[] FormatLines(string[] lines)
         {
             List<string> ls = new List<string>(lines.Length);
@@ -73,6 +84,11 @@ namespace FGUFW
             return string.Join("\n",lines,chapterIndex.x,chapterIndex.y);
         }
 
+        /// <summary>
+        /// 是否为章节名
+        /// </summary>
+        /// <param name="line"></param>
+        /// <returns></returns>
         public static bool LineIsChapter(string line)
         {
             if(line.Length>CHAPER_MAX_LENGTH)return false;
@@ -83,17 +99,16 @@ namespace FGUFW
             || regexChapter3_2.IsMatch(line);
         }
 
+        /// <summary>
+        /// 是否为正常结尾
+        /// </summary>
+        /// <param name="line"></param>
+        /// <returns></returns>
         public static bool LineIsEnd(string line)
         {
             return regexLineEnd.IsMatch(line);
         }
-
-        public static int GetTextLength(Font font,int size,Vector2 rect,string text,int index)
-        {
-            int length = 0;
-            
-            return length;
-        }
+        
 
 
     }

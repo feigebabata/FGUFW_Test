@@ -24,6 +24,12 @@ namespace FGUFW
             }
         }
 
+        /// <summary>
+        /// 层与层是否能作用 基于unity物理设置3D
+        /// </summary>
+        /// <param name="layer1"></param>
+        /// <param name="layer2"></param>
+        /// <returns></returns>
         public static bool GetIgnoreLayerCollision(int layer1,int layer2)
         {
             if(layerIgnore==null)Init();

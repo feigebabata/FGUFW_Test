@@ -365,16 +365,15 @@ namespace FGUFW
             return false;
         }
 
-        public static Vector3 Parse3(string text)
+        public static Vector3 Parse(string text)
         {
             var arr = text.Split(',');
-            return new Vector3(arr[0].ToFloat(),arr[1].ToFloat(),arr[2].ToFloat());
-        }
-
-        public static Vector2 Parse2(string text)
-        {
-            var arr = text.Split(',');
-            return new Vector2(arr[0].ToFloat(),arr[1].ToFloat());
+            return new Vector3
+            (
+                arr.Length>0?arr[0].ToFloat():0,
+                arr.Length>1?arr[1].ToFloat():0,
+                arr.Length>2?arr[2].ToFloat():0
+            );
         }
 
     }

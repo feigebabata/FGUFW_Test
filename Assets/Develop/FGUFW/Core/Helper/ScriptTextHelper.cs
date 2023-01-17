@@ -21,6 +21,17 @@ namespace FGUFW
         public const string FRIST_TYPE = "|FRIST_TYPE|";
         public const string FRIST_MEMBER = "|FRIST_MEMBER|";
 
+        /// <summary>
+        /// 第一行:类全名,class,类备注
+        /// 第二行:字段类型 
+        /// 第三行:字段名 
+        /// 第四行:字段备注
+        /// </summary>
+        /// <param name="table"></param>
+        /// <param name="typeLine"></param>
+        /// <param name="nameLine"></param>
+        /// <param name="summaryLine"></param>
+        /// <returns></returns>
         public static string Csv2CsharpClass(string[,] table,int typeLine=1,int nameLine=2,int summaryLine=3)
         {
             string script = 
@@ -92,6 +103,12 @@ namespace |NAME_SPACE|
             return script;
         }
 
+        /// <summary>
+        /// 第一行:枚举全名,enmu,枚举备注 
+        /// 第二行:列注释(枚举名,枚举值,备注)
+        /// </summary>
+        /// <param name="table"></param>
+        /// <returns></returns>
         public static string Csv2CsharpEnum(string[,] table)
         {
             string script = 
@@ -234,7 +251,7 @@ namespace |NAME_SPACE|
             {
                 return val;
             }
-            return VectorHelper.Parse2(memberText);
+            return VectorHelper.Parse(memberText);
         }
 
         public static Vector3 Parse_Vector3(string memberText)
@@ -244,7 +261,7 @@ namespace |NAME_SPACE|
             {
                 return val;
             }
-            return VectorHelper.Parse3(memberText);
+            return VectorHelper.Parse(memberText);
         }
 
         //------------------------------------------------------------------------
@@ -352,7 +369,7 @@ namespace |NAME_SPACE|
                 var vals = new Vector2[length];
                 for (int i = 0; i < length; i++)
                 {
-                    vals[i] = VectorHelper.Parse2(arr[i]);
+                    vals[i] = VectorHelper.Parse(arr[i]);
                 }
                 return vals;
             }
@@ -371,7 +388,7 @@ namespace |NAME_SPACE|
                 var vals = new Vector3[length];
                 for (int i = 0; i < length; i++)
                 {
-                    vals[i] = VectorHelper.Parse3(arr[i]);
+                    vals[i] = VectorHelper.Parse(arr[i]);
                 }
                 return vals;
             }

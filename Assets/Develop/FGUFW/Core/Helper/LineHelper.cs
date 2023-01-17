@@ -7,6 +7,13 @@ namespace FGUFW
 {
     public static class LineHelper
     {
+        /// <summary>
+        /// 获取平行线
+        /// </summary>
+        /// <param name="line"></param>
+        /// <param name="offset"></param>
+        /// <param name="normal"></param>
+        /// <returns></returns>
         public static Vector3[] GetParallel(Vector3[] line,float offset,Vector3 normal)
         {
             var newLine = new Vector3[line.Length];
@@ -30,6 +37,13 @@ namespace FGUFW
             return newLine;
         }
 
+        /// <summary>
+        /// 生成线的多边形2D碰撞体的点集合 (未完成)
+        /// </summary>
+        /// <param name="line"></param>
+        /// <param name="offset"></param>
+        /// <param name="normal"></param>
+        /// <returns></returns>
         public static Vector2[] GetPolygon2DPoints(Vector3[] line,float offset,Vector3 normal)
         {
             var points = new Vector2[line.Length*2];

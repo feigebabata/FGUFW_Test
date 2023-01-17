@@ -7,7 +7,14 @@ namespace FGUFW
     public static class TypeExtensions
     {
         private static Type[] reflectionNoneAges = new Type[0];
+        private const BindingFlags All_MEMBER = BindingFlags.NonPublic|BindingFlags.Public|BindingFlags.Instance;
 
+        /// <summary>
+        /// 比较数据结构公开字段是否一致
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="t"></param>
+        /// <returns></returns>
         public static bool EqualsFileds(this Type self,Type t)
         {
             var fileds1 = self.GetFields();
@@ -23,11 +30,21 @@ namespace FGUFW
             return true;
         }
 
+        /// <summary>
+        /// 字段编码
+        /// </summary>
+        /// <param name="self"></param>
+        /// <returns></returns>
         public static string ToScript(this FieldInfo self)
         {
             return $"public {GetFiledTypeName(self.FieldType)} {self.Name};";
         }
-
+        
+        /// <summary>
+        /// 类型文本(泛型比较麻烦)
+        /// </summary>
+        /// <param name="t"></param>
+        /// <returns></returns>
         public static string GetFiledTypeName(this Type t)
         {
             if (t.IsGenericType)
@@ -50,6 +67,12 @@ namespace FGUFW
             }
         }
 
+        /// <summary>
+        /// 包含特性
+        /// </summary>
+        /// <param name="self"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public static bool ContainsAttribute<T>(this Type self) where T:Attribute
         {
             var at = typeof(T);
@@ -60,7 +83,14 @@ namespace FGUFW
             return false;
         }
 
-        public static object ReflectionInvoke(this object obj,string fun_name,params object[] ages)
+        /// <summary>
+        /// 反射调用函数
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="fun_name"></param>
+        /// <param name="ages"></param>
+        /// <returns></returns>
+        public static object ReflectionInvoke(this object self,string fun_name,params object[] ages)
         {
             Type[] ageTypes = null;
             if(ages==null && ages.Length==0)
@@ -75,16 +105,29 @@ namespace FGUFW
                     ageTypes[i] = ages[i].GetType();
                 }
             }
-            MethodInfo method = obj.GetType().GetMethod
+            MethodInfo method = self.GetType().GetMethod
             (
                 fun_name,
-                BindingFlags.NonPublic|BindingFlags.Public|BindingFlags.Instance,
+                All_MEMBER,
                 null,
                 CallingConventions.Any,
                 ageTypes,
                 null
             );
-            return method?.Invoke(obj,ages);
+            return method?.Invoke(self,ages);
+        }
+
+        /// <summary>
+        /// 反射获取字段值
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="field_name"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static T ReflectionField<T>(this object self,string field_name)
+        {
+            return (T)self.GetType().GetField(field_name,
+            All_MEMBER).GetValue(self);
         }
 
     }

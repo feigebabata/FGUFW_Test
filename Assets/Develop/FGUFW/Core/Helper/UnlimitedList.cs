@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace FGUFW
 {
     /// <summary>
-    /// 无限数组
+    /// 无限数组 数组列表的封装
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class UnlimitedList<T>

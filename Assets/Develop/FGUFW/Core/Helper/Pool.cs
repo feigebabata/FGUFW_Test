@@ -16,6 +16,14 @@ namespace FGUFW
 
         private Pool(){}
 
+        /// <summary>
+        /// 对象池
+        /// </summary>
+        /// <param name="template">模板</param>
+        /// <param name="capacity">池容量</param>
+        /// <param name="limited">容量有限</param>
+        /// <param name="copyT">复制模板实现</param>
+        /// <param name="recycle">回收实现</param>
         public Pool(T template,int capacity,bool limited,Func<T,T> copyT,Action<bool,T> recycle=null)
         {
             if(capacity<1)capacity=1;

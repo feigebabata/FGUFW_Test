@@ -4,7 +4,10 @@ using System.Collections.Generic;
 
 namespace FGUFW
 {
-    //无序的列表
+    /// <summary>
+    /// 无序列表 避免移除时后面整体向前复制,但打乱了顺序
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public sealed class UnorderedList<T>:IDisposable
     {
         private const int EXPAND = 1024;

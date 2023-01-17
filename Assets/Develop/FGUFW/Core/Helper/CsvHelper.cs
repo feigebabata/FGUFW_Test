@@ -129,6 +129,11 @@ namespace FGUFW
             return table;
         }
 
+        /// <summary>
+        /// 解析表格数据
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public static string UnpackItem(string item)
         {
             item = item.Replace($"{FLAG}{FLAG}",$"{FLAG}");
@@ -139,7 +144,11 @@ namespace FGUFW
             return item;
         }
 
-        
+        /// <summary>
+        /// 打包成存储格式
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public static string PackItem(string item)
         {
             item = item.Replace(TABLE_SPLITE,$"{LF}");
