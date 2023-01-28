@@ -16,6 +16,7 @@ namespace FGUFW
 		{
 			return Enum.GetName(typeof(T), status);
 		}
+
 		/// <summary>
 		/// 获取枚举名称集合
 		/// </summary>
@@ -25,6 +26,7 @@ namespace FGUFW
 		{
 			return Enum.GetNames(typeof(T));
 		}
+
 		/// <summary>
 		/// 将枚举转换成字典集合
 		/// </summary>
@@ -43,6 +45,7 @@ namespace FGUFW
 			}
 			return resultList;
 		}
+		
 		/// <summary>
 		/// 将枚举转换成字典
 		/// </summary>

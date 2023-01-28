@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using FGUFW;
 using UnityEngine;
 
@@ -18,6 +19,16 @@ public class PolygonTest : MonoBehaviour
         var points = LineHelper.GetPolygon2DPoints(line,50,Vector3.back);
         collider.pathCount = points.Length;
         collider.points = points;
+    }
+
+    public int Val;
+
+    /// <summary>
+    /// This function is called when the object becomes enabled and active.
+    /// </summary>
+    void OnEnable()
+    {
+        Debug.Log(new BitEnums<BindingFlags>(Val));
     }
 
 

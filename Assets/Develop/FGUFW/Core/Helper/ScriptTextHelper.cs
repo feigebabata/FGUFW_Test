@@ -240,7 +240,7 @@ namespace |NAME_SPACE|
             }
             else
             {
-                return (T)Enum.Parse(typeof(T),memberText);
+                return memberText.ToEnum<T>();
             }
         }
 
@@ -350,7 +350,7 @@ namespace |NAME_SPACE|
                 var vals = new T[length];
                 for (int i = 0; i < length; i++)
                 {
-                    vals[i] = (T)Enum.Parse(typeof(T),arr[i]);
+                    vals[i] = arr[i].ToEnum<T>();
                 }
                 return vals;
             }
