@@ -51,6 +51,22 @@ namespace FGUFW
             _bits = bits;
         }
 
+        public BitEnums(IEnumerable<E> bits)
+        {
+            foreach (var item in bits)
+            {
+                this[item]=true;
+            }
+        }
+
+        public BitEnums(IEnumerable<int> bits)
+        {
+            foreach (var item in bits)
+            {
+                this[item]=true;
+            }
+        }
+
         public BitEnums<E> Pares(string text,char separator=',')
         {
             var bitEnums = new BitEnums<E>();
@@ -68,20 +84,43 @@ namespace FGUFW
             _bits = 0;
         }
 
-        public E[] ToArray()
+        // public E[] ToArray()
+        // {
+        //     if(_bits==0)return null;
+
+        //     var items = Enum.GetValues(typeof(E));
+        //     var list = new List<E>();
+        //     foreach (E item in items)
+        //     {
+        //         if(this[item])
+        //         {
+        //             list.Add(item);
+        //         }
+        //     }
+        //     return list.ToArray();
+        // }
+
+        public unsafe E[] ToArray()
         {
             if(_bits==0)return null;
 
             var items = Enum.GetValues(typeof(E));
-            var list = new List<E>();
-            foreach (E item in items)
+            var indexs = stackalloc int[items.Length];
+            int length = 0;
+            for (int i = 0; i < items.Length; i++)
             {
+                var item = (E)items.GetValue(i);
                 if(this[item])
                 {
-                    list.Add(item);
+                    indexs[length++] = i;
                 }
             }
-            return list.ToArray();
+            var arr = new E[length];
+            for (int i = 0; i < length; i++)
+            {
+                arr[i] = (E)items.GetValue(indexs[i]);
+            }
+            return arr;
         }
 
         public override string ToString()
