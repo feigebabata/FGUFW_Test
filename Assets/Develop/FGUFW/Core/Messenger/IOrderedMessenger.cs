@@ -23,5 +23,7 @@ namespace FGUFW
 		void Broadcast<T,U,V>(K msgID,T arg1,U arg2,V arg3);
 
         void Abort(K msgID);
+
+		int Count{get;}
     }
 }

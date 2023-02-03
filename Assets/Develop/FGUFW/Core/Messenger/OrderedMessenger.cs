@@ -11,6 +11,14 @@ namespace FGUFW
         Dictionary<K,OrderedLinkedList<Delegate>> _dict = new Dictionary<K, OrderedLinkedList<Delegate>>();
         HashSet<K> _aborts = new HashSet<K>();
 
+        public int Count
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         public void Abort(K msgId)
         {
             // Debug.LogWarning("Abort "+msgId);

@@ -53,14 +53,7 @@ namespace FGUFW
 
         public BitEnums(IEnumerable<E> bits)
         {
-            foreach (var item in bits)
-            {
-                this[item]=true;
-            }
-        }
-
-        public BitEnums(IEnumerable<int> bits)
-        {
+            _bits = 0;
             foreach (var item in bits)
             {
                 this[item]=true;
