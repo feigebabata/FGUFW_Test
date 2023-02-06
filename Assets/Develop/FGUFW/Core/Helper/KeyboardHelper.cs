@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using UnityEngine.PlayerLoop;
+using UnityEngine.EventSystems;
 
 namespace FGUFW
 {
@@ -16,6 +17,9 @@ namespace FGUFW
         
         static Dictionary<KeyCode,int> keyDownCounter = new Dictionary<KeyCode, int>();
 
+        static OrderedLinkedList<Action> clickScreenNonUI = new OrderedLinkedList<Action>();
+        static bool abortClickScreen;
+
         public static void AddListener_KeyDown(Action callback,int weight,params KeyCode[] keyCodes)
         {
             var keys = ToKey(keyCodes);
@@ -23,7 +27,7 @@ namespace FGUFW
 
             if(keyDownListener.Count==0)
             {
-                PlayerLoopHelper.AddToLoop<PreUpdate,object>(checkKeyDownEvent);
+                PlayerLoopHelper.AddToLoop<PreUpdate,CheckKeyDownEvent>(checkKeyDownEvent);
             }
 
             foreach (var keyCode in keyCodes)
@@ -62,6 +66,10 @@ namespace FGUFW
                         }
                     }
                 }
+                if(keyDownListener.Count==0)
+                {
+                    PlayerLoopHelper.RemoveToLoop<PreUpdate>(checkKeyDownEvent);
+                }
             }
             
         }
@@ -93,6 +101,8 @@ namespace FGUFW
 
             return key;
         }
+
+        class CheckKeyDownEvent{}
 
         static void checkKeyDownEvent()
         {
@@ -154,6 +164,47 @@ namespace FGUFW
             count++;
         }
 
+        public static void AddListener_ClickScreenNonUI(Action callback,int weight=0)
+        {
+            if(clickScreenNonUI.Length==0)
+            {
+                PlayerLoopHelper.AddToLoop<Update,CheckClickScreen>(checkClickScreen);
+            }
+            clickScreenNonUI.Add(weight,callback);
+        }
 
+        class CheckClickScreen{}
+
+        private static void checkClickScreen()
+        {
+            if(Input.GetMouseButtonDown(0))
+            {
+                if(EventSystem.current!=null && EventSystem.current.currentSelectedGameObject!=null)return;
+
+                foreach (var item in clickScreenNonUI)
+                {
+                    if(!abortClickScreen)
+                    {
+                        item.Value();
+                        abortClickScreen = false;
+                        return;
+                    }
+                }
+            }
+        }
+
+        public static void RemoveListener_ClickScreenNonUI(Action callback)
+        {
+            clickScreenNonUI.Remove(callback);
+            if(clickScreenNonUI.Length==0)
+            {
+                PlayerLoopHelper.RemoveToLoop<Update>(checkClickScreen);
+            }
+        }
+
+        public static void Abort_ClickScreenNonUI()
+        {
+            abortClickScreen = true;
+        }
     }
 }

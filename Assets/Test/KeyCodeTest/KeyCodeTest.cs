@@ -9,12 +9,12 @@ public class KeyCodeTest : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        KeyboardHelper.AddListener_KeyDown(onKeyDown,0,KeyCode.Space);
+        KeyboardHelper.AddListener_ClickScreenNonUI(onKeyDown);
     }
 
     private void onKeyDown()
     {
-        Debug.Log("Esc");
+        Debug.Log("click");
     }
 
     /// <summary>
@@ -22,7 +22,7 @@ public class KeyCodeTest : MonoBehaviour
     /// </summary>
     void OnDestroy()
     {
-        KeyboardHelper.RemoveListener_KeyDown(onKeyDown,KeyCode.Escape);
+        KeyboardHelper.RemoveListener_ClickScreenNonUI(onKeyDown);
     }
 
 }
