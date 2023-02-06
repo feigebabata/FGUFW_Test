@@ -44,7 +44,7 @@ namespace FGUFW
             previous.Next = newNode;
         }
 
-        public void Remove(T val)
+        public bool Remove(T val)
         {
             OrderedLinkedNode<T> previous=null;
             for (var node = _first; node!=null; node=node.Next)
@@ -61,10 +61,11 @@ namespace FGUFW
                     }
                     node.Next = null;
                     Length--;
-                    return;
+                    return true;
                 }
                 previous = node;
             }
+            return false;
         }
 
         public void Dispose()

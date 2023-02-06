@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using UnityEngine.PlayerLoop;
 
 namespace FGUFW
 {
@@ -9,22 +10,70 @@ namespace FGUFW
     /// </summary>
     public static class KeyboardHelper
     {
-        static IList<KeyCode> listenerKeybord = new List<KeyCode>();
+        static IList<KeyCode> keyDownListener = new List<KeyCode>();
 
         static IOrderedMessenger<UInt64> keyDownMessenger=new OrderedMessenger<UInt64>();
+        
+        static Dictionary<KeyCode,int> keyDownCounter = new Dictionary<KeyCode, int>();
 
-        public static void AddListener_KeyDown(UInt64 keys,Action callback,int weight=0)
+        public static void AddListener_KeyDown(Action callback,int weight,params KeyCode[] keyCodes)
         {
+            var keys = ToKey(keyCodes);
             keyDownMessenger.Add(keys,callback,weight);
+
+            if(keyDownListener.Count==0)
+            {
+                PlayerLoopHelper.AddToLoop<PreUpdate,object>(checkKeyDownEvent);
+            }
+
+            foreach (var keyCode in keyCodes)
+            {
+                if(keyDownCounter.ContainsKey(keyCode))
+                {
+                    keyDownCounter[keyCode]++;
+                }
+                else
+                {
+                    keyDownCounter[keyCode]=1;
+                }
+
+                if(!keyDownListener.Contains(keyCode))
+                {
+                    keyDownListener.Add(keyCode);
+                }
+            }
         }
 
-        public static void RemoveListener_KeyDown(UInt64 keys,Action callback)
+        public static void RemoveListener_KeyDown(Action callback,params KeyCode[] keyCodes)
         {
-            keyDownMessenger.Remove(keys,callback);
+            var keys = ToKey(keyCodes);
+            if(keyDownMessenger.Remove(keys,callback))
+            {
+                foreach (var keyCode in keyCodes)
+                {
+                    if(keyDownCounter.ContainsKey(keyCode))
+                    {
+                        keyDownCounter[keyCode]--;
+
+                        if(keyDownCounter[keyCode]==0)
+                        {
+                            keyDownCounter.Remove(keyCode);
+                            keyDownListener.Remove(keyCode);
+                        }
+                    }
+                }
+            }
+            
         }
 
         public static void Abort_KeyDown(UInt64 keys)
         {
+            keyDownMessenger.Abort(keys);
+        }
+
+        public static void Abort_KeyDown(params KeyCode[] keyCodes)
+        {
+            var keys = ToKey(keyCodes);
             keyDownMessenger.Abort(keys);
         }
 
@@ -39,7 +88,7 @@ namespace FGUFW
             {
                 UInt64 val = (UInt64)keys[i];
                 val = val<<(i*16);
-                key = key & val;
+                key = key | val;
             }
 
             return key;
@@ -47,29 +96,35 @@ namespace FGUFW
 
         static void checkKeyDownEvent()
         {
-            var (keys,count) = getDownKeys();
-            var origin = keys;
-            for (int i = 0; i < listenerKeybord.Count; i++)
+            if(Input.GetKeyDown(KeyCode.Escape))
             {
-                var key = listenerKeybord[i];
-                if(Input.GetKeyDown(key) && !KeyInKeys(key,keys))
+                // Debug.Log("");
+            }
+            var (keys,count) = getDownKeys();
+            var isKeyDown = false;
+            for (int i = 0; i < keyDownListener.Count; i++)
+            {
+                var key = keyDownListener[i];
+                if(Input.GetKeyDown(key))
                 {
-                    AddKey(key,ref keys,ref count);
+                    if(!KeyInKeys(key,keys))AddKey(key,ref keys,ref count);
+                    isKeyDown = true;
                 }
                 if(count>=4)break;
             }
 
-            if(keys==origin)return;
+            if(!isKeyDown)return;
+            keyDownMessenger.Broadcast(keys);
         }
 
         static ValueTuple<UInt64,int> getDownKeys()
         {
             UInt64 keys = 0b_0000000000000000_0000000000000000_0000000000000000_0000000000000000;
             int count = 0;
-            int length = listenerKeybord.Count;
+            int length = keyDownListener.Count;
             for (int i = 0; i < length; i++)
             {
-                var key = listenerKeybord[i];
+                var key = keyDownListener[i];
                 if(Input.GetKey(key))
                 {
                     AddKey(key,ref keys,ref count);
@@ -95,7 +150,7 @@ namespace FGUFW
         {
             UInt64 val = (UInt64)key;
             val = val << (count*16);
-            keys = keys & val;
+            keys = keys | val;
             count++;
         }
 

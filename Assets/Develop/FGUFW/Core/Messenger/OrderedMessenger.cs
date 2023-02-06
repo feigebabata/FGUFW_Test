@@ -11,14 +11,6 @@ namespace FGUFW
         Dictionary<K,OrderedLinkedList<Delegate>> _dict = new Dictionary<K, OrderedLinkedList<Delegate>>();
         HashSet<K> _aborts = new HashSet<K>();
 
-        public int Count
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
-
         public void Abort(K msgId)
         {
             // Debug.LogWarning("Abort "+msgId);
@@ -197,72 +189,72 @@ namespace FGUFW
             }
         }
 
-        public void Remove(K msgId, Action callback)
+        public bool Remove(K msgId, Action callback)
         {
             if(callback==null)Debug.LogError($"回调不能为空:msgId={msgId}");
 
-            if(!_dict.ContainsKey(msgId) || _dict[msgId].Length==0)return;
+            if(!_dict.ContainsKey(msgId) || _dict[msgId].Length==0)return false;
 
             var link = _dict[msgId];
 
             if(link.First.Value.GetType()!=callback.GetType())
             {
                 Debug.LogError($"回调类型不统一:msgId={msgId},callback={callback}");
-                return;
+                return false;
             }
 
-            link.Remove(callback);
+            return link.Remove(callback);
         }
 
-        public void Remove<T>(K msgId, Action<T> callback)
+        public bool Remove<T>(K msgId, Action<T> callback)
         {
             if(callback==null)Debug.LogError($"回调不能为空:msgId={msgId}");
 
-            if(!_dict.ContainsKey(msgId) || _dict[msgId].Length==0)return;
+            if(!_dict.ContainsKey(msgId) || _dict[msgId].Length==0)return false;
 
             var link = _dict[msgId];
 
             if(link.First.Value.GetType()!=callback.GetType())
             {
                 Debug.LogError($"回调类型不统一:msgId={msgId},callback={callback}");
-                return;
+                return false;
             }
 
-            link.Remove(callback);
+            return link.Remove(callback);
         }
 
-        public void Remove<T, U>(K msgId, Action<T, U> callback)
+        public bool Remove<T, U>(K msgId, Action<T, U> callback)
         {
             if(callback==null)Debug.LogError($"回调不能为空:msgId={msgId}");
 
-            if(!_dict.ContainsKey(msgId) || _dict[msgId].Length==0)return;
+            if(!_dict.ContainsKey(msgId) || _dict[msgId].Length==0)return false;
 
             var link = _dict[msgId];
 
             if(link.First.Value.GetType()!=callback.GetType())
             {
                 Debug.LogError($"回调类型不统一:msgId={msgId},callback={callback}");
-                return;
+                return false;
             }
 
-            link.Remove(callback);
+            return link.Remove(callback);
         }
 
-        public void Remove<T, U, V>(K msgId, Action<T, U, V> callback)
+        public bool Remove<T, U, V>(K msgId, Action<T, U, V> callback)
         {
             if(callback==null)Debug.LogError($"回调不能为空:msgId={msgId}");
 
-            if(!_dict.ContainsKey(msgId) || _dict[msgId].Length==0)return;
+            if(!_dict.ContainsKey(msgId) || _dict[msgId].Length==0)return false;
 
             var link = _dict[msgId];
 
             if(link.First.Value.GetType()!=callback.GetType())
             {
                 Debug.LogError($"回调类型不统一:msgId={msgId},callback={callback}");
-                return;
+                return false;
             }
 
-            link.Remove(callback);
+            return link.Remove(callback);
         }
     }
 }
