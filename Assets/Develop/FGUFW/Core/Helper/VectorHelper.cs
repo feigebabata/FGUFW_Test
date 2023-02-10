@@ -354,7 +354,7 @@ namespace FGUFW
         /// <param name="trs"></param>
         /// <param name="position"></param>
         /// <returns></returns>
-        public static bool IsPointInTransform(Transform trs, Vector2 position)
+        public static bool IsPointInRectTransform(Transform trs, Vector2 position)
         {
             RectTransform rect = trs as RectTransform;
             if (rect != null)
@@ -374,6 +374,31 @@ namespace FGUFW
                 arr.Length>1?arr[1].ToFloat():0,
                 arr.Length>2?arr[2].ToFloat():0
             );
+        }
+
+        /// <summary>
+        /// 点在三角形内
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <param name="c"></param>
+        /// <returns></returns>
+        public static bool InTriangle(Vector3 point,Vector3 a,Vector3 b,Vector3 c)
+        {
+            Vector3 pa = a - point;
+            Vector3 pb = b - point;
+            Vector3 pc = c - point;
+            Vector3 pab = Vector3.Cross(pa,pb);
+            Vector3 pbc = Vector3.Cross(pb, pc);
+            Vector3 pca = Vector3.Cross(pc, pa);
+            
+            float d1 = Vector3.Dot(pab, pbc);
+            float d2 = Vector3.Dot(pab, pca);
+            float d3 = Vector3.Dot(pbc, pca);
+ 
+            if (d1 > 0 && d2 > 0 && d3 > 0) return true;
+            return false;
         }
 
     }

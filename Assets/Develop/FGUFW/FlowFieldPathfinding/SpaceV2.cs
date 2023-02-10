@@ -13,29 +13,29 @@ namespace FGUFW.FlowFieldPathfinding
         
         private SpaceV2(){}
 
-        public SpaceV2(int width,int height)
+        public SpaceV2(int width,int height,GridV2[] grids)
         {
             GridsWidth = width;
             GridsHeight = height;
             _grids = new GridV2[width*height];
         }
 
-        public void RandomObstacle()
-        {
-            int length = _grids.Length;
-            for (int i = 0; i < length; i++)
-            {
-                _grids[i].Position = Index2Position(i,GridsWidth);
-                if(Random.Range(0,100)<30)
-                {
-                    _grids[i].Distance = -2;
-                }
-                else
-                {
-                    _grids[i].Distance = -1;
-                }
-            }
-        }
+        // public void RandomObstacle()
+        // {
+        //     int length = _grids.Length;
+        //     for (int i = 0; i < length; i++)
+        //     {
+        //         _grids[i].Position = Index2Position(i,GridsWidth);
+        //         if(Random.Range(0,100)<30)
+        //         {
+        //             _grids[i].Distance = -2;
+        //         }
+        //         else
+        //         {
+        //             _grids[i].Distance = -1;
+        //         }
+        //     }
+        // }
 
         public static Vector2Int Index2Position(int index,int width)
         {
@@ -54,6 +54,16 @@ namespace FGUFW.FlowFieldPathfinding
 
         public void Flow(Vector2Int start)
         {
+            for (int i = 0; i < _grids.Length; i++)
+            {
+                var grid = _grids[i];
+                if(grid.Distance!=-2)
+                {
+                    grid.Distance=-1;
+                    _grids[i] = grid;
+                }
+            }
+
             bool[] complete = new bool[_grids.Length];
             Queue<GridV2> queue = new Queue<GridV2>();
             int index = Position2Index(start,GridsWidth);

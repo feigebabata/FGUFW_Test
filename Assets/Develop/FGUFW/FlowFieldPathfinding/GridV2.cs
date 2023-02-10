@@ -12,5 +12,6 @@ namespace FGUFW.FlowFieldPathfinding
         /// </summary>
         public int Distance;
         public Vector2Int Position;
+
     }
 }

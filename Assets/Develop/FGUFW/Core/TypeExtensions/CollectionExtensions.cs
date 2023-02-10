@@ -103,5 +103,17 @@ namespace FGUFW
             return newArray;
         }
 
+        public static U[] To<T,U>(this T[] self,Func<T,U> convert)
+        {
+            var length = self.Length;
+            U[] array = new U[length];
+            for (int i = 0; i < length; i++)
+            {
+                array[i] = convert(self[i]);
+            }
+            return array;
+        }
+
+
     }
 }
