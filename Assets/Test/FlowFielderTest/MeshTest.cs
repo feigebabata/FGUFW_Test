@@ -13,11 +13,7 @@ public class MeshTest : MonoBehaviour
     /// </summary>
     void Start()
     {
-        Vector3 a = new Vector3(1,0,0).normalized;
-        Vector3 b = new Vector3(-1,1,0).normalized;
-        Vector3 c = new Vector3(-1,-1,0).normalized;
-        Debug.Log(Vector3.Dot(a,b));
-        Debug.Log(Vector3.Dot(a,c));
+        
     }
 
     // Update is called once per frame
@@ -31,17 +27,18 @@ public class MeshTest : MonoBehaviour
     /// </summary>
     void OnDrawGizmos()
     {
-        // List<Point> points = new List<Point>();
-        // foreach (Transform item in transform)
-        // {
-        //     points.Add(new Point{X=item.position.x,Y=item.position.y});
-        // }
-        // var triangles = DelaunayTriangulation.DelaunayTriangulation.Triangulate(points);
-        // foreach (var item in triangles)
-        // {
-        //     Debug.DrawLine(item.A,item.B);
-        //     Debug.DrawLine(item.A,item.C);
-        //     Debug.DrawLine(item.C,item.B);
-        // }
+        List<Vector3> points = new List<Vector3>();
+        foreach (Transform item in transform)
+        {
+            points.Add(item.position);
+        }
+        bool error = false;
+        var triangles = Polygon2TrianglesHelper.ToTriangles(points.ToArray(),Vector3.forward,ref error);
+        for (int i = 0; i < triangles.Length; i+=3)
+        {
+            Debug.DrawLine(points[triangles[i]],points[triangles[i+1]],error?Color.red:Color.green);
+            Debug.DrawLine(points[triangles[i+1]],points[triangles[i+2]],error?Color.red:Color.green);
+            Debug.DrawLine(points[triangles[i+2]],points[triangles[i]],error?Color.red:Color.green);
+        }
     }
 }

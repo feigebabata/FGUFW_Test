@@ -10,91 +10,56 @@ namespace FGUFW
     public static class Polygon2TrianglesHelper
     {
 
-        public unsafe static int[] ToTriangles(Vector3[] vertices,int[] triangles=null)
+        public unsafe static int[] ToTriangles(Vector3[] vertices,Vector3 normal,ref bool error,int[] triangles=null)
         {
             if(vertices==null || vertices.Length<3)return null;
 
             int triangleLength = (vertices.Length-2)*3;
             if(triangles==null || triangles.Length!=triangleLength)triangles=new int[triangleLength];
-            
+            int triangleIndex = 0;
             var polygonLength = vertices.Length;
             var polygonPointer = stackalloc Vector3[polygonLength];
-            var polygon = new StackPolygon(polygonPointer,vertices);
+            var polygonIndex = stackalloc int[polygonLength];
+            var polygon = new StackPolygon(polygonPointer,polygonIndex,vertices,normal.normalized);
+            error = false;
             while (!polygon.ConvexPolygon())
             {
+                error = true;
                 for (int i = 0; i < polygon.Length; i++)
                 {
                     //DO:切耳朵
+                    if(polygon.CanCutConcaveAngle(i))
+                    {
+                        polygon.CutConvexAngle(i,triangles,ref triangleIndex);
+                        error = false;
+                        break;
+                    }
                 }
+                if(error)break;
             }
+            polygon.SqlitConvex(triangles,ref triangleIndex);
             
             return triangles;
-        }
-
-        static ValueTuple<Vector3,Vector3> getVector(Vector3[] polygon,int vertexIndex)
-        {
-            int length = polygon.Length;
-            // 计算该内角对应的两个相邻顶点的向量
-            Vector3 v1 = polygon[(vertexIndex + length - 1) % length] - polygon[vertexIndex];
-            Vector3 v2 = polygon[(vertexIndex + 1) % length] - polygon[vertexIndex];
-
-            return (v1,v2);
-        }
-
-        /// <summary>
-        /// 凸多边形
-        /// </summary>
-        public unsafe static bool ConvexPolygon(Vector3* polygon,int startIndex,int length)
-        {
-            return true;
-        }
-
-
-
-        /// <summary>
-        /// 凹顶点
-        /// </summary>
-        public static bool IsConcaveAngle(Vector3[] polygon,Vector3 center, int vertexIndex)
-        {
-            var (v1,v2) = getVector(polygon,vertexIndex);
-
-            // 计算该内角的外向法线
-            Vector3 normal = Vector3.Cross(v1, v2).normalized;
-
-            // 计算该内角的外向法线与多边形内部的向量
-            Vector3 direction = polygon[vertexIndex] - center;
-
-            // 判断该内角的外向法线与多边形内部的向量的点积是否为负
-            return Vector3.Dot(normal, direction) < 0;
-        }
-
-        public static Vector3 CenterPoint(Vector3[] polygon)
-        {
-            // 计算多边形的中心点
-            Vector3 center = Vector3.zero;
-            for (int i = 0; i < polygon.Length; i++)
-            {
-                center += polygon[i];
-            }
-            center /= polygon.Length;
-            return center;
         }
 
 
         private unsafe struct StackPolygon
         {
             private Vector3* _vertices;
-            private Vector3 _center;
+            private int* _verticeIndexs;
+            private Vector3 _normal;
             public int Length{get;private set;}
-            public StackPolygon(Vector3* vertices,Vector3[] polygon)
+            public StackPolygon(Vector3* vertices,int* verticeIndexs,Vector3[] polygon,Vector3 normal)
             {
                 _vertices = vertices;
+                _verticeIndexs = verticeIndexs;
                 Length = polygon.Length;
                 for (int i = 0; i < Length; i++)
                 {
                     vertices[i] = polygon[i];
+                    verticeIndexs[i] = i;
                 }
-                _center = centerPoint(_vertices,Length);
+                _normal = normal;
             }
 
             /// <summary>
@@ -123,15 +88,18 @@ namespace FGUFW
                 // 计算该内角的外向法线
                 Vector3 normal = Vector3.Cross(v1, v2).normalized;
 
-                // 计算该内角的外向法线与多边形内部的向量
-                Vector3 direction = _vertices[vertexIndex] - _center;
-
-                // 判断该内角的外向法线与多边形内部的向量的点积是否为负
-                return Vector3.Dot(normal, direction) < 0;
+                var val = Vector3.Dot(normal, _normal);
+                return val < 0;
             }
 
+            /// <summary>
+            /// 能否切去耳朵
+            /// </summary>
+            /// <param name="vertexIndex"></param>
+            /// <returns></returns>
             public bool CanCutConcaveAngle(int vertexIndex)
             {
+                if(!IsConcaveAngle(vertexIndex))return false;
                 int l_idx = (vertexIndex-1).RoundIndex(Length);
                 int r_idx = (vertexIndex+1).RoundIndex(Length);
                 return !IsConcaveAngle(l_idx) || !IsConcaveAngle(r_idx);
@@ -145,9 +113,53 @@ namespace FGUFW
                 return (v1,v2);
             }
 
-            void cutConvexAngle(int vertex)
+            /// <summary>
+            /// 切去凹角旁边的凸角
+            /// </summary>
+            public void CutConvexAngle(int vertexIndex,int[] triangles,ref int triangleIndex)
             {
+                int l_idx = (vertexIndex-1).RoundIndex(Length);
+                int r_idx = (vertexIndex+1).RoundIndex(Length);
+                if(!IsConcaveAngle(l_idx))
+                {
+                    vertexIndex-=2;
+                    triangles[triangleIndex++] = _verticeIndexs[(vertexIndex++).RoundIndex(Length)];
+                    triangles[triangleIndex++] = _verticeIndexs[(vertexIndex++).RoundIndex(Length)];
+                    triangles[triangleIndex++] = _verticeIndexs[(vertexIndex++).RoundIndex(Length)];
+                    RemoveVertex(l_idx);
+                }
+                else if(!IsConcaveAngle(r_idx))
+                {
+                    triangles[triangleIndex++] = _verticeIndexs[(vertexIndex--).RoundIndex(Length)];
+                    triangles[triangleIndex++] = _verticeIndexs[(vertexIndex--).RoundIndex(Length)];
+                    triangles[triangleIndex++] = _verticeIndexs[(vertexIndex--).RoundIndex(Length)];
+                    RemoveVertex(r_idx);
+                }
+            }
 
+            public void RemoveVertex(int vertexIndex)
+            {
+                if(vertexIndex>=Length)return;
+                Length--;
+                for (int i = vertexIndex; i < Length; i++)
+                {
+                    _vertices[i]=_vertices[i+1];
+                    _verticeIndexs[i]=_verticeIndexs[i+1];
+                }
+            }
+
+            /// <summary>
+            /// 切割凸多边形
+            /// </summary>
+            public void SqlitConvex(int[] triangles,ref int triangleIndex)
+            {
+                if(Length<3)return;
+                for (int i = 1; i < Length-1; i++)
+                {
+                    triangles[triangleIndex++] = _verticeIndexs[0];
+                    triangles[triangleIndex++] = _verticeIndexs[(i).RoundIndex(Length)];
+                    triangles[triangleIndex++] = _verticeIndexs[(i+1).RoundIndex(Length)];
+                }
             }
 
             static Vector3 centerPoint(Vector3* vertices,int length)
