@@ -33,7 +33,7 @@ public class MeshTest : MonoBehaviour
             points.Add(item.position);
         }
         bool error = false;
-        var triangles = Polygon2TrianglesHelper.ToTriangles(points.ToArray(),Vector3.forward,ref error);
+        var triangles = GeometryHelper.Polygon2Triangles(points.ToArray(),Vector3.down,ref error);
         for (int i = 0; i < triangles.Length; i+=3)
         {
             Debug.DrawLine(points[triangles[i]],points[triangles[i+1]],error?Color.red:Color.green);

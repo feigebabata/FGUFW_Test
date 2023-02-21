@@ -89,68 +89,6 @@ namespace FGUFW
         }
 
         /// <summary>
-        /// 点是否在椭圆内 水平方向 无旋转
-        /// </summary>
-        /// <param name="point"></param>
-        /// <param name="center">中心点</param>
-        /// <param name="width">椭圆宽</param>
-        /// <param name="height">椭圆高</param>
-        /// <returns></returns>
-        public static bool PointInEllipse(float3 point,float3 center,float width,float height)
-        {
-            float a = width/2;
-            float b = height/2;
-
-            float X = center.x;
-            float Y = center.y;
-            float x = point.x;
-            float y = point.y;
-
-            float cc = ((x-X)*(x-X)) / (a*a) + ((y-Y)*(y-Y)) / (b*b);
-
-            return cc<=1f;
-        }
-        
-
-        /// <summary>
-        /// 椭圆形2D
-        /// </summary>
-        /// <param name="center"></param>
-        /// <param name="width">长半轴</param>
-        /// <param name="height">短半轴</param>
-        /// <param name="rotation"></param>
-        /// <param name="pointCount"></param>
-        /// <returns></returns>
-        public static Vector2[] Ellipse(Vector2 center, float width, float height, float rotation,int pointCount)
-        {
-            Vector2[] points = new Vector2[pointCount];
-            for (float i = 0; i < pointCount; i++)
-            {
-                float rate = i/pointCount;
-                float angle = 2*Mathf.PI*rate;
-                points[(int)i] = getPointOnEllipse(center,width,height,angle,rotation);
-            }
-            return points;
-        }
-
-        /// <summary>
-        /// 椭圆边上的点
-        /// </summary>
-        /// <param name="center"></param>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        /// <param name="angle"></param>
-        /// <param name="rotation"></param>
-        /// <returns></returns>
-        static private Vector2 getPointOnEllipse(Vector2 center, float width, float height, float angle, float rotation)
-        {
-            float dLiXin = Mathf.Atan2(width*Mathf.Sin(angle), height*Mathf.Cos(angle));//离心角
-            float x = width*Mathf.Cos(dLiXin)*Mathf.Cos(rotation) - height*Mathf.Sin(dLiXin)*Mathf.Sin(rotation) + center.x;
-            float y = width*Mathf.Cos(dLiXin)*Mathf.Sin(rotation) + height*Mathf.Sin(dLiXin)*Mathf.Cos(rotation) + center.y;
-            return new Vector2(x, y);
-        }
-
-        /// <summary>
         /// 点乘
         /// </summary>
         /// <param name="v1"></param>
@@ -377,28 +315,57 @@ namespace FGUFW
         }
 
         /// <summary>
-        /// 点在三角形内
+        /// 乘法 各维度相乘
         /// </summary>
-        /// <param name="point"></param>
-        /// <param name="a"></param>
-        /// <param name="b"></param>
-        /// <param name="c"></param>
         /// <returns></returns>
-        public static bool InTriangle(Vector3 point,Vector3 a,Vector3 b,Vector3 c)
+        public static Vector3 Multiply(Vector3 l,Vector3 r)
         {
-            Vector3 pa = a - point;
-            Vector3 pb = b - point;
-            Vector3 pc = c - point;
-            Vector3 pab = Vector3.Cross(pa,pb);
-            Vector3 pbc = Vector3.Cross(pb, pc);
-            Vector3 pca = Vector3.Cross(pc, pa);
-            
-            float d1 = Vector3.Dot(pab, pbc);
-            float d2 = Vector3.Dot(pab, pca);
-            float d3 = Vector3.Dot(pbc, pca);
- 
-            if (d1 > 0 && d2 > 0 && d3 > 0) return true;
-            return false;
+            return new Vector3
+            (
+                l.x*r.x,
+                l.y*r.y,
+                l.z*r.z
+            );
+        }
+
+        /// <summary>
+        /// 乘法 各维度相乘
+        /// </summary>
+        /// <returns></returns>
+        public static Vector3 Multiply(Vector3 l,Vector3Int r)
+        {
+            return new Vector3
+            (
+                l.x*r.x,
+                l.y*r.y,
+                l.z*r.z
+            );
+        }
+
+        /// <summary>
+        /// 除法 各维度相除
+        /// </summary>
+        /// <returns></returns>
+        public static Vector3 Division(Vector3 l,Vector3 r)
+        {
+            Vector3 val = Vector3.zero;
+            if(l.x!=0 && r.x!=0)val.x=l.x/r.x;
+            if(l.y!=0 && r.y!=0)val.y=l.y/r.y;
+            if(l.z!=0 && r.z!=0)val.z=l.z/r.z;
+            return val;
+        }
+
+        /// <summary>
+        /// 除法 各维度相除
+        /// </summary>
+        /// <returns></returns>
+        public static Vector3 Division(Vector3 l,Vector3Int r)
+        {
+            Vector3 val = Vector3.zero;
+            if(l.x!=0 && r.x!=0)val.x=l.x/r.x;
+            if(l.y!=0 && r.y!=0)val.y=l.y/r.y;
+            if(l.z!=0 && r.z!=0)val.z=l.z/r.z;
+            return val;
         }
 
     }

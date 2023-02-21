@@ -1,29 +1,40 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FGUFW;
+using FGUFW.FlowFieldPathfinding;
 
 public class FlowFielderTest : MonoBehaviour
 {
-    public Transform point;
-    public Collider2D[] Collider2Ds;
+    public Vector3 SpaceMin,SpaceMax;
+    public Vector3Int GridCount;
 
-    /// <summary>
-    /// This function is called when the object becomes enabled and active.
-    /// </summary>
-    void Update()
-    {
-        Debug.Log(inObstacle(new Vector2(point.position.x,point.position.y),Collider2Ds));
-    }
+    public Transform EndPoint,NodeRoot,MoveNodeRoot;
 
-    private bool inObstacle(Vector2 point,Collider2D[] collider2Ds)
+
+    private FGUFW.FlowFieldPathfinding.Space _space;
+
+
+    // Start is called before the first frame update
+    void Start()
     {
-        foreach (var collider2D in collider2Ds)
+        _space = new FGUFW.FlowFieldPathfinding.Space(GridCount,SpaceMin,SpaceMax);
+        NodeRoot.For<Grid>(NodeRoot.childCount,(i,comp)=>
         {
-            if(collider2D.OverlapPoint(point))
-            {
-                return true;
-            }
+            _space[comp.transform.position] = new FGUFW.FlowFieldPathfinding.Grid((int)comp.Grid_Type,1);
+        });
+
+        if(!_space.Flow(EndPoint.position,1))return;
+
+        foreach (Transform item in MoveNodeRoot)
+        {
+            
         }
-        return false;
     }
+
+    IEnumerator pathMove(Transform node)
+    {
+        yield break;
+    }
+
 }

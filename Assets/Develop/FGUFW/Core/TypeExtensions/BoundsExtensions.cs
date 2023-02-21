@@ -32,5 +32,10 @@ namespace FGUFW
             }
             return (false,default(Bounds));
         }
+
+        public static void ForeachGrid(this Bounds self,Vector3Int gridCount,Vector3 pivot,Action<Vector3Int,int,Vector3> callback)
+        {
+            GeometryHelper.SpaceForeachGrid(self.min,self.max,gridCount,pivot,callback);
+        }
     }
 }

@@ -17,7 +17,7 @@ namespace FGUFW
             {
                 if(i==0)return false;
 
-                return (_bits & i)==i;
+                return BitHelper.Contains(_bits,i);
             }
             set
             {
@@ -25,11 +25,11 @@ namespace FGUFW
 
                 if(value)
                 {
-                    _bits = _bits | i;
+                    _bits = BitHelper.Add(_bits,i);
                 }
                 else
                 {
-                    _bits = _bits & (~i);
+                    _bits = BitHelper.Sub(_bits,i);
                 }
             }
         }
@@ -76,22 +76,6 @@ namespace FGUFW
         {
             _bits = 0;
         }
-
-        // public E[] ToArray()
-        // {
-        //     if(_bits==0)return null;
-
-        //     var items = Enum.GetValues(typeof(E));
-        //     var list = new List<E>();
-        //     foreach (E item in items)
-        //     {
-        //         if(this[item])
-        //         {
-        //             list.Add(item);
-        //         }
-        //     }
-        //     return list.ToArray();
-        // }
 
         public unsafe E[] ToArray()
         {
