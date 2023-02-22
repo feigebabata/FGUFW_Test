@@ -47,7 +47,13 @@ namespace FGUFW
             {
                 throw new IndexOutOfRangeException("出队失败 队列已空!");
             }
-            return _array[--Count];
+            Count--;
+            T t = _array[0];
+            for (int i = 0; i < Count; i++)
+            {
+                _array[i] = _array[i+1];
+            }
+            return t;
         }
 
         public bool Contains(T t)

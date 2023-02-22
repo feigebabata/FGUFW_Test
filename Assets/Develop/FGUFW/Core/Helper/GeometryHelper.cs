@@ -344,7 +344,7 @@ namespace FGUFW
         public static int SpaceCoord2Index(Vector3Int gridCount,Vector3Int coord)
         {
             int idx = -1;
-            if(SpaceCoordInside(gridCount,coord))return idx;
+            if(!SpaceCoordInside(gridCount,coord))return idx;
             idx = coord.y*(gridCount.x*gridCount.z) + coord.z*gridCount.x + coord.x;
             return idx;
         }

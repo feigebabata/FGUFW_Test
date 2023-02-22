@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class Grid : MonoBehaviour
 {
     public GridType Grid_Type=GridType.Normal;
+    public Text Num;
     
     void Awake()
     {
