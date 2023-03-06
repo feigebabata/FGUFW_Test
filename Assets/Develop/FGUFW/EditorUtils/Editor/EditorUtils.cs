@@ -6,6 +6,7 @@ using UnityEditor;
 using System.IO;
 using FGUFW.Platform;
 using FGUFW;
+using System;
 
 namespace FGUFW.EditorUtils
 {
@@ -49,18 +50,70 @@ namespace FGUFW.EditorUtils
         }
 
         
-        [MenuItem("Assets/PrintAssetPath")]
-        static private void printAssetPath()
-        {
-            string path = AssetDatabase.GetAssetPath(Selection.activeObject);
-            Debug.Log(path);
-        }
+        // [MenuItem("Assets/PrintAssetPath")]
+        // static private void printAssetPath()
+        // {
+        //     string path = AssetDatabase.GetAssetPath(Selection.activeObject);
+        //     Debug.Log(path);
+        // }
 
         [MenuItem("文件夹/程序持续存储文件夹")]
         static void openDir()
         {
             WinPlatform.OpenExplorer(Application.persistentDataPath);
         }
+
+        public static BuildTargetGroup GetCurrentBuildTargetGroup()
+        {
+            var buildTargetGroup = BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget);
+            return buildTargetGroup;
+        }
+
+        public static void ScriptingDefineSymbols_Add(string define)
+        {
+            var buildTargetGroup = GetCurrentBuildTargetGroup();
+            string[] defines = null;
+            PlayerSettings.GetScriptingDefineSymbolsForGroup(buildTargetGroup,out defines);
+            bool contains = defines!=null && Array.IndexOf<string>(defines,define)!=-1;
+            if(!contains)
+            {
+                var newDefines = new string[defines.Length+1];
+                Array.Copy(defines,newDefines,defines.Length);
+                newDefines[newDefines.Length-1]=define;
+                PlayerSettings.SetScriptingDefineSymbolsForGroup(buildTargetGroup,newDefines);
+            }
+        }
+
+        public static void ScriptingDefineSymbols_Remove(string define)
+        {
+            var buildTargetGroup = GetCurrentBuildTargetGroup();
+            string[] defines = null;
+            PlayerSettings.GetScriptingDefineSymbolsForGroup(buildTargetGroup,out defines);
+            bool contains = defines!=null && Array.IndexOf<string>(defines,define)!=-1;
+            if(contains)
+            {
+                var newDefines = new string[defines.Length-1];
+                for (int i = 0,newIdx=0; i < defines.Length; i++)
+                {
+                    if(defines[i]!=define)
+                    {
+                        newDefines[newIdx++]=defines[i];
+                    }
+                }
+                
+                PlayerSettings.SetScriptingDefineSymbolsForGroup(buildTargetGroup,newDefines);
+            }
+        }
+
+        public static bool ScriptingDefineSymbols_Contains(string define)
+        {
+            var buildTargetGroup = GetCurrentBuildTargetGroup();
+            string[] defines = null;
+            PlayerSettings.GetScriptingDefineSymbolsForGroup(buildTargetGroup,out defines);
+            bool contains = defines!=null && Array.IndexOf<string>(defines,define)!=-1;
+            return contains;
+        }
+
 
     }
 }
