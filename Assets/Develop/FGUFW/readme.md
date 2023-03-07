@@ -4,11 +4,14 @@
             日志级别
             时间戳
             线程号
-            日志信息
             功能模块名
             编辑者
             自定义flag
+            日志信息
+            调用堆栈
         存储
+            Application.logMessageReceivedThreaded
+            以空行分隔
         过滤
         开关
             ConditionalAttribute
