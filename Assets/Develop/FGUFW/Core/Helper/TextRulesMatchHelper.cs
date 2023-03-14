@@ -9,6 +9,7 @@ namespace FGUFW
 数据源用于用反射还是整形Id(#123)
 常量解析后存储为固定值免得每次调用都Parse字符串
 但目前这些符号只能做数值比较
+&(且)的优先级高于|(或)
 */
     /// <summary>
     /// 规则匹配 用于配表中的触发判定
@@ -18,10 +19,10 @@ namespace FGUFW
         public const string Greater = ">";
         public const string Less = "<";
         public const string Equal = "=";
+        public const string NotEqual = "≠";
         public const string GreaterAndEqual = "≥";
         public const string LessAndEqual = "≤";
         public const string And = "&";
-        public const string Not = "!";
         public const string Or = "|";
         public const string DomainStart = "(";
         public const string DomainEnd = ")";
@@ -36,7 +37,7 @@ namespace FGUFW
 
     public interface ITextRulesMatch
     {
-        bool Mathc(string rules,string target,string value);
+        bool Match(string rules,string target,string value);
     }
 
     public class TextRules
@@ -59,4 +60,7 @@ namespace FGUFW
             return exists.Equals();
         }
     }
+
+
+
 }
