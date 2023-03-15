@@ -41,6 +41,7 @@ public struct SpriteRender:IComponentData
     public Entity Self;
     public int SpriteIndex;
 }
+DynamicBuffer<T>//存储集合
 
 //组件合并 针对业务生成组件集Aspect 字段必须只读
 public readonly partial struct SpriteRenderAspect:IAspect
