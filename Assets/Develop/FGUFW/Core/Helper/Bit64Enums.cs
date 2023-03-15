@@ -7,19 +7,19 @@ namespace FGUFW
     /// <summary>
     /// 位枚举数组 枚举按位赋值 必须>0
     /// </summary>
-    public struct BitEnums<E> where E:Enum
+    public struct Bit64Enums<E> where E:Enum
     {
-        private int _bits;
+        private Int64 _bits;
 
-        public int Value => _bits;
+        public Int64 Value => _bits;
 
-        public bool this[int i]
+        public bool this[Int64 i]
         {
             get
             {
                 if(i==0)return false;
 
-                return BitHelper.Contains(_bits,i);
+                return Bit64Helper.Contains(_bits,i);
             }
             set
             {
@@ -27,11 +27,11 @@ namespace FGUFW
 
                 if(value)
                 {
-                    _bits = BitHelper.Add(_bits,i);
+                    _bits = Bit64Helper.Add(_bits,i);
                 }
                 else
                 {
-                    _bits = BitHelper.Sub(_bits,i);
+                    _bits = Bit64Helper.Sub(_bits,i);
                 }
             }
         }
@@ -48,12 +48,12 @@ namespace FGUFW
             }
         }
 
-        public BitEnums(int bits)
+        public Bit64Enums(Int64 bits)
         {
             _bits = bits;
         }
 
-        public BitEnums(IEnumerable<E> bits)
+        public Bit64Enums(IEnumerable<E> bits)
         {
             _bits = 0;
             foreach (var item in bits)
@@ -111,16 +111,6 @@ namespace FGUFW
             sb.AppendLine(_bits.ToBitString());
             sb.Append(string.Join<E>(",",items));
             return sb.ToString();
-        }
-
-        public override int GetHashCode()
-        {
-            return _bits;
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj.GetHashCode()==this.GetHashCode();
         }
 
     }

@@ -1,3 +1,4 @@
+//https://zhuanlan.zhihu.com/p/573071972
 实体查询:
 EntityQuery eq = new EntityQueryBuilder(Allocator.Temp).WithAll<SpriteRender,SpriteRenderer>().Build(ref state);
 eq.ToComponentDataArray<SpriteRender>(Allocator.Temp);
