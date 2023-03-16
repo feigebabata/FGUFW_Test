@@ -9,6 +9,7 @@ namespace FGUFW.ECS_SpriteAnimator
     public class SpriteAnimatorAuthoring : MonoBehaviour
     {
         public float Speed=1;
+        public float StartTime=0;
     }
 
     class SpriteAnimatorBaker : Baker<SpriteAnimatorAuthoring>
@@ -19,6 +20,7 @@ namespace FGUFW.ECS_SpriteAnimator
             {
                 Self = GetEntity(authoring),
                 Speed = authoring.Speed,
+                Time = authoring.StartTime
             });
         }
     }

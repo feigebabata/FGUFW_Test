@@ -135,6 +135,8 @@ GameObject:
   - component: {fileID: 992550400}
   - component: {fileID: 992550403}
   - component: {fileID: 992550402}
+  - component: {fileID: 992550405}
+  - component: {fileID: 992550406}
   m_Layer: 0
   m_Name: Square
   m_TagString: Untagged
@@ -183,7 +185,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b785e7ceece374e4ebbb50531cc24bb5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -223,7 +225,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_MotionType: 1
   m_Smoothing: 0
-  m_Mass: 1
+  m_Mass: 0.1
   m_LinearDamping: 0.01
   m_AngularDamping: 0.05
   m_InitialLinearVelocity:
@@ -281,3 +283,31 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 0.2}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &992550405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 992550399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d48f0f9f7a26bf841bb5a2d5921f47f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Speed: 1
+  StartTime: 0
+--- !u!114 &992550406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 992550399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 202d1d17ca072a9418d0ce10ffae8f06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Force: 400
+  MaxVelocity: 100
