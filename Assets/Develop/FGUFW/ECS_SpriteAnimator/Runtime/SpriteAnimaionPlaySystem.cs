@@ -1,10 +1,10 @@
-using UnityEngine;
 using Unity.Entities;
 using Unity.Collections;
 using Unity.Mathematics;
 using Unity.Transforms;
 using static Unity.Entities.SystemAPI;
 using static Unity.Entities.SystemAPI.ManagedAPI;
+using Unity.Burst;
 
 namespace FGUFW.ECS_SpriteAnimator
 {
@@ -14,34 +14,69 @@ namespace FGUFW.ECS_SpriteAnimator
     /// </summary>
     public class SpriteAnimatorSystemGroup : ComponentSystemGroup{}
 
+    
+    [BurstCompile]
     [UpdateInGroup(typeof(SpriteAnimatorSystemGroup))]
     partial struct SpriteAnimaionPlaySystem:ISystem
     {
+        
+        [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
-            EntityQuery eq = new EntityQueryBuilder(Allocator.Temp).WithAll<SpriteAnimator,SpriteAnimInfoData,SpriteAnimFrameData,SpriteRenderer>().Build(ref state);
+            EntityQuery eq = new EntityQueryBuilder(Allocator.Temp).WithNone<SpriteAnimUpdate>().WithAll<SpriteAnimator,SpriteAnimInfoData>().Build(ref state);
             state.RequireForUpdate(eq);
         }
         
+        
+        [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            foreach (var (spriteAnimator,spriteAnimInfoData) in Query<RefRW<SpriteAnimator>,SpriteAnimInfoData>())
+            var ecb = SystemAPI.GetSingleton<EndFixedStepSimulationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);
+            state.Dependency = new SpriteAnimaionPlayJob
             {
-                spriteAnimator.ValueRW.Time = (SystemAPI.Time.DeltaTime+spriteAnimator.ValueRW.Time)%spriteAnimInfoData.Length;
-
-                var newFrameIndex = (int)(spriteAnimator.ValueRW.Time/spriteAnimInfoData.Length);
-
-                if(newFrameIndex==spriteAnimator.ValueRW.FrameIndex)continue;
-
-                spriteAnimator.ValueRW.FrameIndex = newFrameIndex;
-                var entity = spriteAnimator.ValueRW.Self;
-                GetComponent<SpriteRenderer>(entity).sprite = GetComponent<SpriteAnimFrameData>(entity).Frames[newFrameIndex];
+                ECBP = ecb.AsParallelWriter(),
+                DeltaTime = Time.DeltaTime
             }
+            .ScheduleParallel(state.Dependency);
         }
         
+        [BurstCompile]
         public void OnDestroy(ref SystemState state)
         {
+            
+        }
 
+        [BurstCompile]
+        partial struct SpriteAnimaionPlayJob:IJobEntity
+        {
+            public EntityCommandBuffer.ParallelWriter ECBP;
+
+            [ReadOnly]
+            public float DeltaTime;
+
+            void Execute([ChunkIndexInQuery] int chunkInQueryIndex,in SpriteAnimInfoData spriteAnimInfoData,ref SpriteAnimator spriteAnimator)
+            {
+                if(!spriteAnimInfoData.Loop)
+                {
+                    spriteAnimator.Time = math.clamp(DeltaTime*spriteAnimator.Speed+spriteAnimator.Time,0,spriteAnimInfoData.Length);
+                }
+                else
+                {
+                    spriteAnimator.Time = (DeltaTime*spriteAnimator.Speed+spriteAnimator.Time)%spriteAnimInfoData.Length;
+                }
+
+                int newFrameIndex = (int)math.clamp(spriteAnimator.Time/spriteAnimInfoData.Length*spriteAnimInfoData.FrameCount,0,spriteAnimInfoData.FrameCount-1);
+
+                if(newFrameIndex!=spriteAnimator.FrameIndex)
+                {
+                    spriteAnimator.FrameIndex = newFrameIndex;
+                    ECBP.AddComponent(chunkInQueryIndex,spriteAnimator.Self,new SpriteAnimUpdate
+                    {
+                        FrameIndex = newFrameIndex,
+                        Self = spriteAnimator.Self
+                    });
+                }
+            }
         }
     }
 }
