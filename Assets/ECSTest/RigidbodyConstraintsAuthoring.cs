@@ -8,6 +8,7 @@ using Unity.Collections;
 using Unity.Physics;
 using Unity.Transforms;
 using Unity.Physics.Systems;
+using Unity.Physics.Authoring;
 
 public class RigidbodyConstraintsAuthoring : MonoBehaviour
 {
@@ -34,11 +35,12 @@ public readonly partial struct RigidbodyConstraintsAspect:IAspect
 {
     public readonly Entity Self;
     public readonly RefRW<PhysicsMass> Mass;
+    public readonly RefRW<PhysicsVelocity> Velocity;
     public readonly RefRO<RigidbodyConstraints> Constraints;
 }
 
-[UpdateInGroup(typeof(PhysicsSystemGroup))]
-[UpdateBefore(typeof(PhysicsSimulationGroup))]
+
+[UpdateBefore(typeof(PhysicsSystemGroup))]
 [BurstCompile]
 partial struct RigidbodyConstraintsSystem:ISystem
 {
@@ -61,11 +63,25 @@ partial struct RigidbodyConstraintsSystem:ISystem
         void Execute([ChunkIndexInQuery] int chunkInQueryIndex,RigidbodyConstraintsAspect rigidbodyConstraintsAspect)
         {
             var inverseInertia = rigidbodyConstraintsAspect.Mass.ValueRO.InverseInertia;
-            if(rigidbodyConstraintsAspect.Constraints.ValueRO.FreezeRotation.x)inverseInertia.x=0;
-            if(rigidbodyConstraintsAspect.Constraints.ValueRO.FreezeRotation.y)inverseInertia.y=0;
-            if(rigidbodyConstraintsAspect.Constraints.ValueRO.FreezeRotation.z)inverseInertia.z=0;
+            var angular = rigidbodyConstraintsAspect.Velocity.ValueRO.Angular;
+            if(rigidbodyConstraintsAspect.Constraints.ValueRO.FreezeRotation.x)
+            {
+                inverseInertia.x=0;
+                angular.x=0;
+            }
+            if(rigidbodyConstraintsAspect.Constraints.ValueRO.FreezeRotation.y)
+            {
+                inverseInertia.y=0;
+                angular.y=0;
+            }
+            if(rigidbodyConstraintsAspect.Constraints.ValueRO.FreezeRotation.z)
+            {
+                inverseInertia.z=0;
+                angular.z=0;
+            }
             
             rigidbodyConstraintsAspect.Mass.ValueRW.InverseInertia = inverseInertia;
+            rigidbodyConstraintsAspect.Velocity.ValueRW.Angular =angular;
             ECBP.RemoveComponent<RigidbodyConstraints>(chunkInQueryIndex,rigidbodyConstraintsAspect.Self);
         }
     }

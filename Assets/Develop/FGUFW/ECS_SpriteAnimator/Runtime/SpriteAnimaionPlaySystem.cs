@@ -54,7 +54,7 @@ namespace FGUFW.ECS_SpriteAnimator
             [ReadOnly]
             public float DeltaTime;
 
-            void Execute([ChunkIndexInQuery] int chunkInQueryIndex,in SpriteAnimInfoData spriteAnimInfoData,ref SpriteAnimator spriteAnimator)
+            void Execute([ChunkIndexInQuery] int chunkInQueryIndex,Entity entity,in SpriteAnimInfoData spriteAnimInfoData,ref SpriteAnimator spriteAnimator)
             {
                 if(!spriteAnimInfoData.Loop)
                 {
@@ -70,10 +70,9 @@ namespace FGUFW.ECS_SpriteAnimator
                 if(newFrameIndex!=spriteAnimator.FrameIndex)
                 {
                     spriteAnimator.FrameIndex = newFrameIndex;
-                    ECBP.AddComponent(chunkInQueryIndex,spriteAnimator.Self,new SpriteAnimUpdate
+                    ECBP.AddComponent(chunkInQueryIndex,entity,new SpriteAnimUpdate
                     {
-                        FrameIndex = newFrameIndex,
-                        Self = spriteAnimator.Self
+                        FrameIndex = newFrameIndex
                     });
                 }
             }

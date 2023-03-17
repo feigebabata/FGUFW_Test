@@ -18,7 +18,6 @@ namespace FGUFW.ECS_SpriteAnimator
         {
             AddComponent(new SpriteAnimator
             {
-                Self = GetEntity(authoring),
                 Speed = authoring.Speed,
                 Time = authoring.StartTime
             });
@@ -27,7 +26,6 @@ namespace FGUFW.ECS_SpriteAnimator
 
     public struct SpriteAnimator:IComponentData
     {
-        public Entity Self;
         public float Speed;//播放速度
         public float Time;//当前时间 每帧叠加detalTime 切换动画时需要置为0
         public int FrameIndex;//当前帧索引
@@ -35,7 +33,6 @@ namespace FGUFW.ECS_SpriteAnimator
 
     public struct SpriteAnimUpdate:IComponentData//动画帧更新事件
     {
-        public Entity Self;
         public int FrameIndex;
     }
 }
