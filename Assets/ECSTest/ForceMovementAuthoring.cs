@@ -5,7 +5,6 @@ using Unity.Mathematics;
 using UnityEngine;
 using Unity.Burst;
 using Unity.Collections;
-using static Unity.Entities.SystemAPI;
 using Unity.Physics;
 using Unity.Transforms;
 using Unity.Physics.Systems;
@@ -48,9 +47,10 @@ partial struct ForceMovementSystem:ISystem
         {
             DeltaTime = SystemAPI.Time.DeltaTime
         }
-        .Schedule/*Parallel*/(state.Dependency);
+        .ScheduleParallel(state.Dependency);
     }
 
+    [BurstCompile]
     partial struct ForceMovementJob : IJobEntity
     {
         [ReadOnly]
