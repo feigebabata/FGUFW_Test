@@ -12,105 +12,41 @@ public class ECSTest : MonoBehaviour
 
 
 
+[UpdateInGroup(typeof(FixedStepSimulationSystemGroup))]
 [UpdateBefore(typeof(ForceMovementSystem))]
 partial struct ForceMovementControlSystem:ISystem
 {
     public void OnUpdate(ref SystemState state)
     {
-        const float space = 1;
-
-        float3 down = float3.zero;
-        if(Input.GetKeyDown(KeyCode.W))
+        float3 key = float3.zero;
+        if(Input.GetKey(KeyCode.W))
         {
-            down.y += space;
+            key.y += 10000;
         }
-        if(Input.GetKeyDown(KeyCode.S))
+        if(Input.GetKey(KeyCode.S))
         {
-            down.y += -space;
+            key.y -= 10000;
         }
-        if(Input.GetKeyDown(KeyCode.A))
+        if(Input.GetKey(KeyCode.A))
         {
-            down.x += -space;
+            key.x -= 10000;
         }
-        if(Input.GetKeyDown(KeyCode.D))
+        if(Input.GetKey(KeyCode.D))
         {
-            down.x += space;
+            key.x += 10000;
         }
-
-        if(!math.all(down==float3.zero))
+        
+        foreach (var (move,transform) in SystemAPI.Query<RefRW<ForceMovement>,WorldTransform>())
         {
-            foreach (var forceMovement in SystemAPI.Query<RefRW<ForceMovement>>())
+            if(math.all(key==float3.zero))
             {
-                var targetPoint = forceMovement.ValueRW.TargetPoint;
-                if(down.x==space)
-                {
-                    targetPoint.x = 10000;
-                }
-                if(down.x==-space)
-                {
-                    targetPoint.x = -10000;
-                }
-
-                
-                if(down.y==space)
-                {
-                    targetPoint.y = 10000;
-                }
-                if(down.y==-space)
-                {
-                    targetPoint.y = -10000;
-                }
-                forceMovement.ValueRW.TargetPoint = targetPoint;
+                if(!math.all(move.ValueRO.TargetPoint==transform.Position))move.ValueRW.TargetPoint = transform.Position;
+            }
+            else
+            {
+                if(!math.all(move.ValueRO.TargetPoint==key))move.ValueRW.TargetPoint = key;
             }
         }
-
-        float3 up = float3.zero;
-        if(Input.GetKeyUp(KeyCode.W))
-        {
-            up.y += space;
-        }
-        if(Input.GetKeyUp(KeyCode.S))
-        {
-            up.y += -space;
-        }
-        if(Input.GetKeyUp(KeyCode.A))
-        {
-            up.x += -space;
-        }
-        if(Input.GetKeyUp(KeyCode.D))
-        {
-            up.x += space;
-        }
-
-
-        if(!math.all(up==float3.zero))
-        {
-            foreach (var (forceMovement,transform) in SystemAPI.Query<RefRW<ForceMovement>,WorldTransform>())
-            {
-                var targetPoint = forceMovement.ValueRW.TargetPoint;
-                if(up.x==space)
-                {
-                    targetPoint.x = transform.Position.x;
-                }
-                if(up.x==-space)
-                {
-                    targetPoint.x = transform.Position.x;
-                }
-
-                
-                if(up.y==space)
-                {
-                    targetPoint.y = transform.Position.y;
-                }
-                if(up.y==-space)
-                {
-                    targetPoint.y = transform.Position.y;
-                }
-                Debug.LogWarning(targetPoint);
-                forceMovement.ValueRW.TargetPoint = targetPoint;
-            }
-        }
-
 
     }
 }

@@ -35,7 +35,8 @@ public struct ForceMovement:IComponentData //依赖PhysicsVelocity
     public float3 TargetPoint;//目标方向
 }
 
-[UpdateBefore(typeof(PhysicsSimulationGroup))]
+[UpdateBefore(typeof(PhysicsSystemGroup))]
+[UpdateInGroup(typeof(FixedStepSimulationSystemGroup))]
 [BurstCompile]
 partial struct ForceMovementSystem:ISystem
 {
@@ -47,7 +48,7 @@ partial struct ForceMovementSystem:ISystem
         {
             DeltaTime = SystemAPI.Time.DeltaTime
         }
-        .ScheduleParallel(state.Dependency);
+        .Schedule/*Parallel*/(state.Dependency);
     }
 
     partial struct ForceMovementJob : IJobEntity
@@ -58,7 +59,6 @@ partial struct ForceMovementSystem:ISystem
         void Execute(in ForceMovement forceMovement,ref PhysicsVelocity physicsVelocity,ref WorldTransform transform)
         {
             float space = math.distance(forceMovement.TargetPoint,transform.Position);
-            Debug.Log(space);
             //已到达目的地则退出
             if(space==0)
             {

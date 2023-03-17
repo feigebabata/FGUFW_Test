@@ -77,7 +77,7 @@ if (world.CastRay(rayInput, out RaycastHit rayResult))//射线检测
 }
 //物理系统之前
 [UpdateInGroup(typeof(FixedStepSimulationSystemGroup))]
-[UpdateBefore(typeof(PhysicsSystemGroup))]
+[UpdateBefore(typeof(PhysicsSystemGroup))] //同组之内设置先后才有效?
 触发器job:ITriggerEventsJob
 碰撞器job:ICollisionEventsJob
 state.Dependency = new TriggerGravityFactorJob
