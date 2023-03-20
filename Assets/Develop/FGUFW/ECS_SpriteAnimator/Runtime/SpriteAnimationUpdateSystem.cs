@@ -10,17 +10,14 @@ namespace FGUFW.ECS_SpriteAnimator
 {
     [UpdateAfter(typeof(SpriteAnimaionPlaySystem))]
     [UpdateInGroup(typeof(SpriteAnimatorSystemGroup))]
-    [BurstCompile]
     partial struct SpriteAnimationUpdateSystem:ISystem
     {
-        [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
             EntityQuery eq = new EntityQueryBuilder(Allocator.Temp).WithAll<SpriteAnimUpdate,SpriteAnimFrameData>().Build(ref state);
             state.RequireForUpdate(eq);
         }
 
-        [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
             var ecb = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);

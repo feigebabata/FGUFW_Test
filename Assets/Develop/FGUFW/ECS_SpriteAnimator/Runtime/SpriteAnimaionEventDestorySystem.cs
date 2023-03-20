@@ -11,8 +11,10 @@ namespace FGUFW.ECS_SpriteAnimator
 {
     [UpdateAfter(typeof(SpriteAnimaionEventCreateSystem))]
     [UpdateInGroup(typeof(SpriteAnimatorSystemGroup))]
+    [BurstCompile]
     public partial struct SpriteAnimaionEventDestorySystem:ISystem
     {
+        [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
             state.Dependency.Complete();
