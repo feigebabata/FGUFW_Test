@@ -31,7 +31,7 @@ namespace FGUFW.ECS_SpriteAnimator
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            var ecb = SystemAPI.GetSingleton<EndFixedStepSimulationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);
+            var ecb = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);
             state.Dependency = new SpriteAnimaionPlayJob
             {
                 ECBP = ecb.AsParallelWriter(),
@@ -70,6 +70,7 @@ namespace FGUFW.ECS_SpriteAnimator
                 if(newFrameIndex!=spriteAnimator.FrameIndex)
                 {
                     spriteAnimator.FrameIndex = newFrameIndex;
+                    // UnityEngine.Debug.Log($"newFrameIndex {newFrameIndex}");
                     ECBP.AddComponent(chunkInQueryIndex,entity,new SpriteAnimUpdate
                     {
                         FrameIndex = newFrameIndex

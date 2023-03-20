@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
+using FGUFW.ECS_SpriteAnimator;
 
 public class ECSTest : MonoBehaviour
 {
@@ -14,9 +16,31 @@ public class ECSTest : MonoBehaviour
     void Start()
     {
         Rigidbody rigidbody = null;
-        
+        NativeList<int> ls;
     }
     
+}
+
+struct SpriteAnimEventJob : ISpriteAnimEventJob
+{
+    public void Execute(Entity entity, SpriteEvent spriteEvent)
+    {
+        Debug.Log($"{System.Threading.Thread.GetCurrentProcessorId()} {entity} {spriteEvent.FrameEvent}");
+    }
+}
+
+
+[UpdateBefore(typeof(SpriteAnimaionEventDestorySystem))]
+[UpdateAfter(typeof(SpriteAnimaionEventCreateSystem))]
+[UpdateInGroup(typeof(SpriteAnimatorSystemGroup))]
+partial struct SpriteAnimEventSystem:ISystem
+{
+    public void OnUpdate(ref SystemState state)
+    {
+        state.Dependency = new SpriteAnimEventJob()
+        {
+        }.Schedule(SystemAPI.GetSingleton<SpriteAnimEventsSingleton>(),state.Dependency);
+    }
 }
 
 
@@ -56,6 +80,7 @@ partial struct ForceMovementControlSystem:ISystem
                 if(!math.all(move.ValueRO.TargetPoint==key))move.ValueRW.TargetPoint = key;
             }
         }
+
 
     }
 }

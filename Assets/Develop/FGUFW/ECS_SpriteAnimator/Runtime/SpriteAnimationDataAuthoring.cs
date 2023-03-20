@@ -2,6 +2,7 @@ using UnityEngine;
 using Unity.Entities;
 using Unity.Collections;
 using Unity.Mathematics;
+using Unity.Collections.LowLevel.Unsafe;
 
 namespace FGUFW.ECS_SpriteAnimator
 {
@@ -32,9 +33,15 @@ namespace FGUFW.ECS_SpriteAnimator
                 Loop = authoring.Loop
             });
             if(authoring.Events==null || authoring.Events.Length==0)return;
-            AddComponent(new SpriteAnimEventData
+
+            var events = new UnsafeList<SpriteEvent>(authoring.Events.Length,Allocator.Persistent);
+            foreach (var item in authoring.Events)
             {
-                Events = new NativeArray<SpriteEvent>(authoring.Events,Allocator.Persistent)
+                events.Add(item);
+            }
+            AddComponent(new SpriteAnimEventsData
+            {
+                Events = events
             });
         }
     }
@@ -56,9 +63,9 @@ namespace FGUFW.ECS_SpriteAnimator
     }
 
 
-    public struct SpriteAnimEventData:IComponentData//用户自定义事件检测和后续处理
+    public struct SpriteAnimEventsData:IComponentData//用户自定义事件检测和后续处理
     {
-        public NativeArray<SpriteEvent> Events;//没事件就没有这个组件
+        public UnsafeList<SpriteEvent> Events;//没事件就没有这个组件
     }
 
     [System.Serializable]
@@ -68,4 +75,5 @@ namespace FGUFW.ECS_SpriteAnimator
         
         public int FrameEvent;//事件id 手动转事件枚举/转事件组件 0为空
     }
+    
 }

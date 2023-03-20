@@ -47,7 +47,7 @@ partial struct RigidbodyConstraintsSystem:ISystem
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        var ecb = SystemAPI.GetSingleton<EndFixedStepSimulationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);
+        var ecb = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);
         state.Dependency = new RigidbodyConstraintsJob
         {
             ECBP = ecb.AsParallelWriter()

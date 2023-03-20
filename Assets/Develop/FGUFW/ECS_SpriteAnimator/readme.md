@@ -21,7 +21,7 @@ ecb.SetComponent(entity,spriteRender);
 ecb.Playback(state.EntityManager);
 ecb.Dispose();
 //省去playback和dispose
-SystemAPI.GetSingleton<EndFixedStepSimulationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged)
+SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged)
 
 组件配置:
 class继承IComponentData可以被SystemAPI.Query查询
@@ -86,3 +86,6 @@ state.Dependency = new TriggerGravityFactorJob
 //动态物理组件
 ComponentLookup<PhysicsVelocity> PhysicsVelocityData;
 PhysicsVelocityData.HasComponent(entity);
+
+//尝试自定义job
+static readonly SharedStatic<IntPtr> jobReflectionData = SharedStatic<IntPtr>.GetOrCreate<TriggerEventJobProcess<T>>(); //Job里共享的静态只读字段
