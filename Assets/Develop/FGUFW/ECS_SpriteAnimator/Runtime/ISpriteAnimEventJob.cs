@@ -52,7 +52,7 @@ namespace FGUFW.ECS_SpriteAnimator
         internal unsafe struct SpriteAnimEventJobData<T> where T : struct
         {
             public T UserJobData;
-            [NativeDisableContainerSafetyRestriction] public NativeList<SpriteAnimEventData> Events;
+            public NativeList<SpriteAnimEventData> Events;
         }
 
         internal struct SpriteAnimEventJobProcess<T> where T : struct, ISpriteAnimEventJob
@@ -68,11 +68,9 @@ namespace FGUFW.ECS_SpriteAnimator
                     
             }
 
-            public delegate void ExecuteJobFunction(ref SpriteAnimEventJobData<T> jobData, IntPtr additionalData,
-                IntPtr bufferRangePatchData, ref JobRanges ranges, int jobIndex);
+            public delegate void ExecuteJobFunction(ref SpriteAnimEventJobData<T> jobData);
 
-            public unsafe static void Execute(ref SpriteAnimEventJobData<T> jobData, IntPtr additionalData,
-                IntPtr bufferRangePatchData, ref JobRanges ranges, int jobIndex)
+            public unsafe static void Execute(ref SpriteAnimEventJobData<T> jobData)
             {
                 foreach (var eventData in jobData.Events)
                 {

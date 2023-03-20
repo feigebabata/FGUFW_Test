@@ -245,4 +245,8 @@ MonoBehaviour:
   AnimID: 0
   Events:
   - FrameIndex: 1
-    FrameEvent: 666
+    FrameEvent: 101
+  - FrameIndex: 1
+    FrameEvent: 102
+  - FrameIndex: 3
+    FrameEvent: 301
