@@ -332,6 +332,19 @@ namespace FGUFW
         /// 乘法 各维度相乘
         /// </summary>
         /// <returns></returns>
+        public static Vector2 Multiply(Vector2 l,Vector2 r)
+        {
+            return new Vector2
+            (
+                l.x*r.x,
+                l.y*r.y
+            );
+        }
+
+        /// <summary>
+        /// 乘法 各维度相乘
+        /// </summary>
+        /// <returns></returns>
         public static Vector3 Multiply(Vector3 l,Vector3Int r)
         {
             return new Vector3
