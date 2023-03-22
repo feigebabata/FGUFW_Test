@@ -89,3 +89,6 @@ PhysicsVelocityData.HasComponent(entity);
 
 //尝试自定义job
 static readonly SharedStatic<IntPtr> jobReflectionData = SharedStatic<IntPtr>.GetOrCreate<TriggerEventJobProcess<T>>(); //Job里共享的静态只读字段
+
+//unity对象
+UnityObjectRef<>

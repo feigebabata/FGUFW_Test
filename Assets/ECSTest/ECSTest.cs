@@ -6,6 +6,7 @@ using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
 using FGUFW.ECS_SpriteAnimator;
+using Unity.Rendering;
 
 public class ECSTest : MonoBehaviour
 {
@@ -17,6 +18,9 @@ public class ECSTest : MonoBehaviour
     {
         Rigidbody rigidbody = null;
         NativeList<int> ls;
+        RenderMeshArray rms;
+        RenderMesh rm;
+        MeshRenderer mr;
     }
     
 }

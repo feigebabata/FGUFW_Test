@@ -9,6 +9,7 @@ public class MaskTest : MonoBehaviour
     void Start()
     {
         Quad.ToString();
+        // GetComponent<MeshRenderer>().sortingOrder
     }
 
     // Update is called once per frame
