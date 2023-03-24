@@ -70,6 +70,7 @@ Material:
     - _QueueControl: 1
     - _QueueOffset: 0
     - _SampleGI: 0
+    - _Scale: 1.52
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0

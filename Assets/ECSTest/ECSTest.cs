@@ -7,6 +7,7 @@ using Unity.Transforms;
 using UnityEngine;
 using FGUFW.ECS_SpriteAnimator;
 using Unity.Rendering;
+using UnityEngine.Rendering;
 
 public class ECSTest : MonoBehaviour
 {

@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Mask
-  m_Shader: {fileID: 4800000, guid: 73083bcc67951344791f993d546f69aa, type: 3}
+  m_Name: SpriteFlipBook
+  m_Shader: {fileID: -6465566751694194690, guid: a1974af0c1f753c468a9ba69acc3ea11, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -27,18 +27,28 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _PointsTex:
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _PointCapacity: 1
-    - _PointCount: 1
+    - _FlipX: 1
+    - _Index: 0
+    - _Scale: 1
+    - _Size: 0
     m_Colors:
-    - _MainColor: {r: 0, g: 0, b: 0, a: 0.9490196}
+    - _Size: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
---- !u!114 &2992650579291138037
+--- !u!114 &8248558420711997380
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
