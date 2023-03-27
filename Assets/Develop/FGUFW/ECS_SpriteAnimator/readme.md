@@ -92,3 +92,6 @@ static readonly SharedStatic<IntPtr> jobReflectionData = SharedStatic<IntPtr>.Ge
 
 //unity对象
 UnityObjectRef<>
+
+//job中修改材质字段 不能用于SpriteRenderer
+[MaterialProperty("_Scale")]
