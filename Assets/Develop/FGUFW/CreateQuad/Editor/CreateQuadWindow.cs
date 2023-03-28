@@ -8,6 +8,16 @@ namespace FGUFW.CreateQuad
 {
     public class CreateQuadWindow : EditorWindow
     {
+        [MenuItem("Assets/CreateTrail")]
+        private static void createTrail()
+        {
+            int layer = 16;
+            var mesh = MeshHelper.CreateTrail(layer);
+            var path = $"Assets/Trail_{layer}.asset";
+            AssetDatabase.CreateAsset(mesh,path);
+            AssetDatabase.Refresh();
+        }
+
 
         [SerializeField]
         private VisualTreeAsset m_VisualTreeAsset = default;
