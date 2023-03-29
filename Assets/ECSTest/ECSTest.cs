@@ -5,7 +5,7 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
-using FGUFW.ECS_SpriteAnimator;
+using FGUFW.Entities;
 using Unity.Rendering;
 using UnityEngine.Rendering;
 

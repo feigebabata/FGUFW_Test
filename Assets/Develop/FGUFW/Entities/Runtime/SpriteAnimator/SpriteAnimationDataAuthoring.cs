@@ -4,7 +4,7 @@ using Unity.Collections;
 using Unity.Mathematics;
 using Unity.Collections.LowLevel.Unsafe;
 
-namespace FGUFW.ECS_SpriteAnimator
+namespace FGUFW.Entities
 {
     [RequireComponent(typeof(SpriteRenderer))]
     public class SpriteAnimationDataAuthoring : MonoBehaviour

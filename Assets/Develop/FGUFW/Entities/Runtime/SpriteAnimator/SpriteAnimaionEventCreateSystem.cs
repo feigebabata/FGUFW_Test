@@ -7,7 +7,7 @@ using static Unity.Entities.SystemAPI;
 using System;
 using Unity.Jobs;
 
-namespace FGUFW.ECS_SpriteAnimator
+namespace FGUFW.Entities
 {
     [UpdateAfter(typeof(SpriteAnimaionPlaySystem))]
     [UpdateBefore(typeof(SpriteAnimationUpdateSystem))]

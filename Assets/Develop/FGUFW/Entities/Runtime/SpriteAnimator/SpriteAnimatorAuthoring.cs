@@ -3,7 +3,7 @@ using Unity.Entities;
 using Unity.Collections;
 using Unity.Mathematics;
 
-namespace FGUFW.ECS_SpriteAnimator
+namespace FGUFW.Entities
 {
     [RequireComponent(typeof(SpriteRenderer))]
     public class SpriteAnimatorAuthoring : MonoBehaviour

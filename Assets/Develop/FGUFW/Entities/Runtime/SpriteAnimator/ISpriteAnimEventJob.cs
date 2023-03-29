@@ -9,7 +9,7 @@ using Unity.Jobs;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Jobs.LowLevel.Unsafe;
 
-namespace FGUFW.ECS_SpriteAnimator
+namespace FGUFW.Entities
 {
     [JobProducerType(typeof(ISpriteAnimEventJobExtensions.SpriteAnimEventJobProcess<>))]
     public interface ISpriteAnimEventJob

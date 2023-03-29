@@ -7,13 +7,20 @@ using static Unity.Entities.SystemAPI;
 using System;
 using Unity.Jobs;
 
-namespace FGUFW.ECS_SpriteAnimator
+namespace FGUFW.Entities
 {
     [UpdateAfter(typeof(SpriteAnimaionEventCreateSystem))]
     [UpdateInGroup(typeof(SpriteAnimatorSystemGroup))]
     [BurstCompile]
     public partial struct SpriteAnimaionEventDestorySystem:ISystem
     {
+        [BurstCompile]
+        public void OnCreate(ref SystemState state)
+        {
+            EntityQuery eq = new EntityQueryBuilder(Allocator.Temp).WithAll<SpriteAnimEventsData>().Build(ref state);
+            state.RequireForUpdate(eq);
+        }
+
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {

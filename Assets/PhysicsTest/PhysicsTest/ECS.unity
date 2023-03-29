@@ -136,6 +136,7 @@ GameObject:
   - component: {fileID: 460268297}
   - component: {fileID: 460268296}
   - component: {fileID: 460268295}
+  - component: {fileID: 460268300}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -402,6 +403,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &460268300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 460268294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7b14345a45e0224d90217060ad6076f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FreezeRotation:
+    x: 1
+    y: 1
+    z: 1
 --- !u!1 &1742114443
 GameObject:
   m_ObjectHideFlags: 0
@@ -414,7 +431,6 @@ GameObject:
   - component: {fileID: 1742114446}
   - component: {fileID: 1742114445}
   - component: {fileID: 1742114444}
-  - component: {fileID: 1742114448}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -437,7 +453,7 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
@@ -502,26 +518,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1742114443}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -5.05, y: 0, z: -5.04}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1742114448
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1742114443}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1b3645ef0461e94daa21fb7cb60ff45, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Velocity:
-    x: 0
-    y: 0
-    z: 5

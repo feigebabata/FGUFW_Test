@@ -6,7 +6,7 @@ using static Unity.Entities.SystemAPI;
 using static Unity.Entities.SystemAPI.ManagedAPI;
 using Unity.Burst;
 
-namespace FGUFW.ECS_SpriteAnimator
+namespace FGUFW.Entities
 {
     [UpdateBefore(typeof(TransformSystemGroup))]
     /// <summary>
