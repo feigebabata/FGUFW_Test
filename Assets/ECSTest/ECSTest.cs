@@ -51,7 +51,7 @@ partial struct SpriteAnimEventSystem:ISystem
 
 
 [UpdateInGroup(typeof(FixedStepSimulationSystemGroup))]
-[UpdateBefore(typeof(ForceMovementSystem))]
+// [UpdateBefore(typeof(ForceMovementSystem))]
 partial struct ForceMovementControlSystem:ISystem
 {
     public void OnUpdate(ref SystemState state)
@@ -74,17 +74,17 @@ partial struct ForceMovementControlSystem:ISystem
             key.x += 10000;
         }
         
-        foreach (var (move,transform) in SystemAPI.Query<RefRW<ForceMovement>,WorldTransform>())
-        {
-            if(math.all(key==float3.zero))
-            {
-                if(!math.all(move.ValueRO.TargetPoint==transform.Position))move.ValueRW.TargetPoint = transform.Position;
-            }
-            else
-            {
-                if(!math.all(move.ValueRO.TargetPoint==key))move.ValueRW.TargetPoint = key;
-            }
-        }
+        // foreach (var (move,transform) in SystemAPI.Query<RefRW<ForceMovement>,WorldTransform>())
+        // {
+        //     if(math.all(key==float3.zero))
+        //     {
+        //         if(!math.all(move.ValueRO.TargetPoint==transform.Position))move.ValueRW.TargetPoint = transform.Position;
+        //     }
+        //     else
+        //     {
+        //         if(!math.all(move.ValueRO.TargetPoint==key))move.ValueRW.TargetPoint = key;
+        //     }
+        // }
 
 
     }

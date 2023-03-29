@@ -13,6 +13,7 @@ namespace FGUFW.Entities
 {
 
     [UpdateBefore(typeof(PhysicsSystemGroup))]
+    [UpdateInGroup(typeof(FixedStepSimulationSystemGroup))]
     [BurstCompile]
     partial struct RigidbodyConstraintsSystem:ISystem
     {

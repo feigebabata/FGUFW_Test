@@ -12,7 +12,7 @@ namespace FGUFW.Entities
     /// <summary>
     /// SpriteAnimator系统所在组
     /// </summary>
-    public class SpriteAnimatorSystemGroup : ComponentSystemGroup{}
+    public partial class SpriteAnimatorSystemGroup : ComponentSystemGroup{}
 
     
     [BurstCompile]

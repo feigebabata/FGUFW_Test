@@ -16,7 +16,7 @@ namespace FGUFW.Entities
     {
         public override void Bake(MaterialPivotAuthoring authoring)
         {
-            AddComponent(new MaterialPivot
+            AddComponent(GetEntity(TransformUsageFlags.Dynamic),new MaterialPivot
             {
                 Value = authoring.Value
             });

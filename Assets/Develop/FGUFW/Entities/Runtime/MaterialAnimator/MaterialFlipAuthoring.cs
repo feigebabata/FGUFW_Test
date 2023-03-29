@@ -16,7 +16,7 @@ namespace FGUFW.Entities
     {
         public override void Bake(MaterialFlipAuthoring authoring)
         {
-            AddComponent(new MaterialFlip
+            AddComponent(GetEntity(TransformUsageFlags.Dynamic),new MaterialFlip
             {
                 Value = authoring.Value
             });

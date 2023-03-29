@@ -22,7 +22,7 @@ namespace FGUFW.Entities
     {
         public override void Bake(ForceMovementAuthoring authoring)
         {
-            AddComponent(new ForceMovement
+            AddComponent(GetEntity(TransformUsageFlags.Dynamic),new ForceMovement
             {
                 Force = authoring.Force,
                 MaxVelocity = authoring.MaxVelocity

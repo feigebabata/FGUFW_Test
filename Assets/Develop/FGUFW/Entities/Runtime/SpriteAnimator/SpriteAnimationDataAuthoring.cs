@@ -21,11 +21,12 @@ namespace FGUFW.Entities
         public override void Bake(SpriteAnimationDataAuthoring authoring)
         {
             if(authoring.Frames==null || authoring.Frames.Length==0)return;
-            AddComponentObject(new SpriteAnimFrameData
+            var entity = GetEntity(TransformUsageFlags.Dynamic);
+            AddComponentObject(entity,new SpriteAnimFrameData
             {
                 Frames = authoring.Frames
             });
-            AddComponent(new SpriteAnimInfoData
+            AddComponent(entity,new SpriteAnimInfoData
             {
                 ID = authoring.AnimID,
                 Length = authoring.AnimTime,
@@ -39,7 +40,7 @@ namespace FGUFW.Entities
             {
                 events.Add(item);
             }
-            AddComponent(new SpriteAnimEventsData
+            AddComponent(entity,new SpriteAnimEventsData
             {
                 Events = events
             });

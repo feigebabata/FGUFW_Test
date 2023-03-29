@@ -16,7 +16,7 @@ namespace FGUFW.Entities
     {
         public override void Bake(MaterialSizeAuthoring authoring)
         {
-            AddComponent(new MaterialSize
+            AddComponent(GetEntity(TransformUsageFlags.Dynamic),new MaterialSize
             {
                 Value = authoring.Value
             });

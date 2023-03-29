@@ -20,7 +20,7 @@ namespace FGUFW.Entities
     {
         public override void Bake(RigidbodyConstraintsAuthoring authoring)
         {
-            AddComponent(new RigidbodyConstraints
+            AddComponent(GetEntity(TransformUsageFlags.Dynamic),new RigidbodyConstraints
             {
                 FreezeRotation = authoring.FreezeRotation
             });

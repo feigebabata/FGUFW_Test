@@ -12,7 +12,14 @@ namespace FGUFW.Entities
 {
     public class MaterialFlipbookAnimatorAuthoring : MonoBehaviour
     {
-        public AnimationData[] Anims;
+        public float Speed=1;
+        public AnimationDatas Anims;
+
+        [Serializable]
+        public class AnimationDatas : IComponentData
+        {
+            public AnimationData[] Anims;
+        }
         
         [Serializable]
         public class AnimationData
@@ -29,26 +36,27 @@ namespace FGUFW.Entities
     {
         public override void Bake(MaterialFlipbookAnimatorAuthoring authoring)
         {
-            AddComponent(new MaterialFlipbookAnimator
+            var entity = GetEntity(TransformUsageFlags.Dynamic);
+            AddComponent(entity,new MaterialFlipbookAnimator
             {
                 
             });
+            AddComponentObject(entity,authoring.Anims);
+            AddBuffer<MaterialFlipbookAnimationData>(entity);
         }
     }
 
     public struct MaterialFlipbookAnimator:IComponentData
     {
-        
+        public float Speed;
     }
 
-    public struct MaterialFlipbookAnimationData:IComponentData
+    public struct MaterialFlipbookAnimationData:IBufferElementData
     {
-        public float Value;
-    }
-
-    public struct FlipbookMaterialsSingleton:IComponentData
-    {
-        public NativeHashMap<int,BatchMaterialID> MaterialMap;
+        public BatchMaterialID MaterialID;
+        public int Start;
+        public int Length;
+        public float Time;
     }
 
 }

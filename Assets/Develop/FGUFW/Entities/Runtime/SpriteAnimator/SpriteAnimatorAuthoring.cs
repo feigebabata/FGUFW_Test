@@ -16,7 +16,7 @@ namespace FGUFW.Entities
     {
         public override void Bake(SpriteAnimatorAuthoring authoring)
         {
-            AddComponent(new SpriteAnimator
+            AddComponent(GetEntity(TransformUsageFlags.Dynamic),new SpriteAnimator
             {
                 Speed = authoring.Speed,
                 Time = authoring.StartTime

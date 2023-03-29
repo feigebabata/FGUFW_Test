@@ -20,7 +20,7 @@ namespace FGUFW.Entities
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
-            EntityQuery eq = new EntityQueryBuilder(Allocator.Temp).WithAll<ForceMovement,PhysicsVelocity,WorldTransform>().Build(ref state);
+            EntityQuery eq = new EntityQueryBuilder(Allocator.Temp).WithAll<ForceMovement,PhysicsVelocity,LocalTransform>().Build(ref state);
             state.RequireForUpdate(eq);
         }
 
@@ -40,7 +40,7 @@ namespace FGUFW.Entities
             [ReadOnly]
             public float DeltaTime;
 
-            void Execute(in ForceMovement forceMovement,ref PhysicsVelocity physicsVelocity,ref WorldTransform transform)
+            void Execute(in ForceMovement forceMovement,ref PhysicsVelocity physicsVelocity,ref LocalTransform transform)
             {
                 float space = math.distance(forceMovement.TargetPoint,transform.Position);
                 //已到达目的地则退出
