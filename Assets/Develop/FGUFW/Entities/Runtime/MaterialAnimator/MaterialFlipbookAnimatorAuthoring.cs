@@ -10,27 +10,13 @@ using UnityEngine.Rendering;
 
 namespace FGUFW.Entities
 {
+    public partial class MaterialFlipbookAnimatorSystemGroup : ComponentSystemGroup{}
+
     public class MaterialFlipbookAnimatorAuthoring : MonoBehaviour
     {
         public float Speed=1;
-        public AnimationDatas Anims;
-
-        [Serializable]
-        public class AnimationDatas : IComponentData
-        {
-            public AnimationData[] Anims;
-        }
-        
-        [Serializable]
-        public class AnimationData
-        {
-            public Material Mat;
-            public int Start;
-            public int Length;
-            public float Time;
-        }
+        public float Start;
     }
-
 
     public class MaterialFlipbookAnimatorBaker : Baker<MaterialFlipbookAnimatorAuthoring>
     {
@@ -39,24 +25,28 @@ namespace FGUFW.Entities
             var entity = GetEntity(TransformUsageFlags.Dynamic);
             AddComponent(entity,new MaterialFlipbookAnimator
             {
-                
+                Speed = authoring.Speed,
+                Time = authoring.Start,
             });
-            AddComponentObject(entity,authoring.Anims);
-            AddBuffer<MaterialFlipbookAnimationData>(entity);
         }
     }
 
     public struct MaterialFlipbookAnimator:IComponentData
     {
-        public float Speed;
+        public float Speed;//播放速度
+        public float Time;//当前时间 每帧叠加detalTime 切换动画时需要置为0
+        public int FrameIndex;//当前帧索引
+        public int PrevFrameIndex;//上一帧索引
+        public int EventCount;
     }
 
-    public struct MaterialFlipbookAnimationData:IBufferElementData
+    public struct MaterialFlipbookAnimationData:IComponentData
     {
         public BatchMaterialID MaterialID;
         public int Start;
         public int Length;
         public float Time;
+        public bool Loop;
     }
 
 }

@@ -9,63 +9,64 @@ using UnityEngine.Rendering;
 
 namespace FGUFW.Entities
 {
+    [UpdateInGroup(typeof(MaterialFlipbookAnimatorSystemGroup))]
     partial struct MaterialBakerSystem : ISystem
     {
-        public class FlipbookMaterialsSingleton:IComponentData
+        public class MaterialsSingleton:IComponentData
         {
             public Dictionary<Material,BatchMaterialID> Materials = new Dictionary<Material,BatchMaterialID>();
-            //EntitiesGraphicsSystem s;
         }
         
         public void OnCreate(ref SystemState state)
         {
             var ecb = new EntityCommandBuffer(Allocator.Temp);
-            ecb.AddComponent(ecb.CreateEntity(),new FlipbookMaterialsSingleton());
+            ecb.AddComponent(ecb.CreateEntity(),new MaterialsSingleton());
             ecb.Playback(state.EntityManager);
             ecb.Dispose();
         }
 
         public void OnUpdate(ref SystemState state)
         {
-            var singleton = SystemAPI.ManagedAPI.GetSingleton<FlipbookMaterialsSingleton>();
+            var singleton = SystemAPI.ManagedAPI.GetSingleton<MaterialsSingleton>();
             var ecb = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);
             var hybridRendererSystem = state.World.GetExistingSystemManaged<EntitiesGraphicsSystem>();
 
-            foreach (var (buffer,animDatas,entity) in SystemAPI.Query<DynamicBuffer<MaterialFlipbookAnimationData>,MaterialFlipbookAnimatorAuthoring.AnimationDatas>().WithEntityAccess())
+            foreach (var (anim,entity) in SystemAPI.Query<MaterialFlipbookAnimation>().WithEntityAccess())
             {
-                if(animDatas.Anims!=null && animDatas.Anims.Length>0)
+                BatchMaterialID materialID;
+                if(singleton.Materials.ContainsKey(anim.Mat))
                 {
-                    foreach (var item in animDatas.Anims)
-                    {
-                        BatchMaterialID materialID;
-                        if(singleton.Materials.ContainsKey(item.Mat))
-                        {
-                            materialID = singleton.Materials[item.Mat];
-                        }
-                        else
-                        {
-                            materialID = hybridRendererSystem.RegisterMaterial(item.Mat);
-                            singleton.Materials.Add(item.Mat,materialID);
-                        }
-
-                        buffer.Add(new MaterialFlipbookAnimationData
-                        {
-                            MaterialID = materialID,
-                            Start = item.Start,
-                            Length = item.Length,
-                            Time = item.Time,
-                        });
-                    }
+                    materialID = singleton.Materials[anim.Mat];
                 }
-                ecb.RemoveComponent<MaterialFlipbookAnimatorAuthoring.AnimationDatas>(entity);
+                else
+                {
+                    materialID = hybridRendererSystem.RegisterMaterial(anim.Mat);
+                    singleton.Materials.Add(anim.Mat,materialID);
+                }
 
+                ecb.AddComponent(entity,new MaterialFlipbookAnimationData
+                {
+                    MaterialID = materialID,
+                    Start = anim.StartFrame,
+                    Length = anim.FrameLength,
+                    Time = anim.Time,
+                    Loop = anim.Loop,
+                });
+                
+                ecb.RemoveComponent<MaterialFlipbookAnimation>(entity);
 
             }
         }
 
         public void OnDestroy(ref SystemState state)
         {
-
+            //系统销毁中不允许获取系统
+            // var singleton = SystemAPI.ManagedAPI.GetSingleton<FlipbookMaterialsSingleton>();
+            // var hybridRendererSystem = state.World.GetExistingSystemManaged<EntitiesGraphicsSystem>();
+            // foreach (var item in singleton.Materials)
+            // {
+            //     hybridRendererSystem.UnregisterMaterial(item.Value);
+            // }
         }
 
 
