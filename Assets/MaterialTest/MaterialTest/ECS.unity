@@ -189,6 +189,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 1
   Start: 0.2
+  StartFrame: 0
 --- !u!64 &11521916
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -342,6 +343,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 1
   Start: 0
+  StartFrame: 0
 --- !u!64 &41035636
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -495,6 +497,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 1
   Start: 0.6
+  StartFrame: 0
 --- !u!64 &177812019
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -648,6 +651,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 1
   Start: 0.5
+  StartFrame: 0
 --- !u!64 &239083684
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -885,6 +889,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 1
   Start: 0
+  StartFrame: 0
 --- !u!64 &653548164
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1038,6 +1043,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 1
   Start: 0
+  StartFrame: 0
 --- !u!64 &1063601964
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1191,6 +1197,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 1
   Start: 0.7
+  StartFrame: 0
 --- !u!64 &1098480768
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1344,6 +1351,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 1
   Start: 0.3
+  StartFrame: 0
 --- !u!64 &1130663292
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1497,6 +1505,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 1
   Start: 0
+  StartFrame: 0
 --- !u!64 &1160261297
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1650,6 +1659,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 1
   Start: 0
+  StartFrame: 0
 --- !u!64 &1163715482
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1803,6 +1813,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 1
   Start: 0
+  StartFrame: 0
 --- !u!64 &1192005493
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1956,6 +1967,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 1
   Start: 0.4
+  StartFrame: 0
 --- !u!64 &1232382603
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2056,7 +2068,6 @@ GameObject:
   - component: {fileID: 1301135905}
   - component: {fileID: 1301135904}
   - component: {fileID: 1301135903}
-  - component: {fileID: 1301135902}
   m_Layer: 0
   m_Name: Quad
   m_TagString: Untagged
@@ -2064,19 +2075,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1301135902
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1301135901}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59668238d65a306438185699df9c94e1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Value: 2.75
 --- !u!114 &1301135903
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2243,6 +2241,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 1
   Start: 0
+  StartFrame: 0
 --- !u!64 &1309996685
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2396,6 +2395,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 1
   Start: 0
+  StartFrame: 0
 --- !u!64 &1323632629
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2606,7 +2606,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Speed: 1
-  Start: 0.1
+  Start: 0
+  StartFrame: 0
 --- !u!114 &1333168442
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2650,8 +2651,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Events:
-  - FrameIndex: 0
-    FrameEvent: 0
+  - FrameIndex: 2
+    FrameEvent: 2
 --- !u!1 &1450319929
 GameObject:
   m_ObjectHideFlags: 0
@@ -2718,6 +2719,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 1
   Start: 0
+  StartFrame: 0
 --- !u!64 &1450319934
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2871,6 +2873,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 1
   Start: 0
+  StartFrame: 0
 --- !u!64 &1454130938
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -3024,6 +3027,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 1
   Start: 0
+  StartFrame: 0
 --- !u!64 &1646993080
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -3121,7 +3125,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1684566866}
   - component: {fileID: 1684566865}
-  - component: {fileID: 1684566867}
   m_Layer: 0
   m_Name: Square (1)
   m_TagString: Untagged
@@ -3196,19 +3199,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1684566867
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1684566863}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59668238d65a306438185699df9c94e1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Value: 2
 --- !u!1 &1691249238
 GameObject:
   m_ObjectHideFlags: 0
@@ -3275,6 +3265,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 1
   Start: 0
+  StartFrame: 0
 --- !u!64 &1691249243
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -3428,6 +3419,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 1
   Start: 0
+  StartFrame: 0
 --- !u!64 &1711834928
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -3581,6 +3573,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 1
   Start: 0
+  StartFrame: 0
 --- !u!64 &1820787139
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -3734,6 +3727,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 1
   Start: 0
+  StartFrame: 0
 --- !u!64 &1835769552
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -3887,6 +3881,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 1
   Start: 0
+  StartFrame: 0
 --- !u!64 &1896306076
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -4040,6 +4035,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Speed: 1
   Start: 0
+  StartFrame: 0
 --- !u!64 &1953538104
 MeshCollider:
   m_ObjectHideFlags: 0

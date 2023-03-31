@@ -14,7 +14,6 @@ namespace FGUFW.Entities
 
     [UpdateInGroup(typeof(MaterialFlipbookAnimatorSystemGroup))]
     [UpdateAfter(typeof(MaterialFlipbookAnimPlaySystem))]
-    [UpdateBefore(typeof(MaterialFlipbookAnimDestroySystem))]
     [BurstCompile]
     public partial struct MaterialFlipbookAnimEventCreateSystem : ISystem
     {

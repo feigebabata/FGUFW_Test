@@ -23,22 +23,22 @@ public class MaterialTest : MonoBehaviour
     
 }
 
-[UpdateInGroup(typeof(MaterialFlipbookAnimatorSystemGroup))]
-[UpdateBefore(typeof(MaterialFlipbookAnimDestroySystem))]
-[UpdateAfter(typeof(MaterialFlipbookAnimEventCreateSystem))]
+// [UpdateInGroup(typeof(MaterialFlipbookAnimatorSystemGroup))]
+// [UpdateBefore(typeof(MaterialFlipbookAnimDestroySystem))]
+[UpdateAfter(typeof(MaterialFlipbookAnimatorSystemGroup))]
 partial struct materialEventTestSystem:ISystem
 {
     public void OnUpdate(ref SystemState state)
     {
         var singleton = SystemAPI.GetSingleton<MaterialFlipbookAnimEventSingleton>();
-        state.Dependency = new materialEventTestJob{}.Schedule(singleton,state.Dependency);
+        state.Dependency = new MaterialEventTestJob{}.Schedule(singleton,state.Dependency);
     }
 
-    partial struct materialEventTestJob : IMaterialFlipbookAnimEventJob
+    partial struct MaterialEventTestJob : IMaterialFlipbookAnimEventJob
     {
         public void Execute(Entity entity, int frameEvent)
         {
-            // Debug.Log(frameEvent);
+            Debug.Log(frameEvent);
         }
     }
 }

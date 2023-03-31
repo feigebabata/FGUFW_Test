@@ -12,6 +12,7 @@ using Unity.Burst;
 namespace FGUFW.Entities
 {
     [UpdateInGroup(typeof(MaterialFlipbookAnimatorSystemGroup))]
+    [UpdateBefore(typeof(MaterialFlipbookAnimEventCreateSystem))]
     [BurstCompile]
     public partial struct MaterialFlipbookAnimDestroySystem : ISystem
     {
@@ -30,6 +31,7 @@ namespace FGUFW.Entities
             var singletonRW = SystemAPI.GetSingletonRW<MaterialFlipbookAnimEventSingleton>();
             if(singletonRW.ValueRO.Events.Length>0)
             {
+                // Debug.Log(singletonRW.ValueRO.Events.Length);
                 singletonRW.ValueRW.Events.Clear();
             }
 

@@ -16,9 +16,7 @@ namespace FGUFW.Entities
 {
 
     /// <summary>
-    /// 在 MaterialFlipbookAnimEventDestroySystem 之前
-    /// 在 MaterialFlipbookAnimEventCreateSystem 之后
-    /// 在 MaterialFlipbookAnimatorSystemGroup 组内
+    /// 在 MaterialFlipbookAnimatorSystemGroup 之后
     /// </summary>
     [JobProducerType(typeof(IMaterialFlipbookAnimEventJobExtensions.MaterialFlipbookAnimEventJobProcess<>))]
     public interface IMaterialFlipbookAnimEventJob
