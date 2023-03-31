@@ -12,7 +12,6 @@ using Unity.Burst;
 namespace FGUFW.Entities
 {
     [UpdateInGroup(typeof(MaterialFlipbookAnimatorSystemGroup))]
-    [UpdateAfter(typeof(MaterialFlipbookAnimEventCreateSystem))]
     [BurstCompile]
     public partial struct MaterialFlipbookAnimDestroySystem : ISystem
     {
