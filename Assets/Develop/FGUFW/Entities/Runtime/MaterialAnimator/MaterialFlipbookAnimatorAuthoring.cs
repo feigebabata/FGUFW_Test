@@ -16,6 +16,7 @@ namespace FGUFW.Entities
     {
         public float Speed=1;
         public float Start;
+        public int StartFrame;
     }
 
     public class MaterialFlipbookAnimatorBaker : Baker<MaterialFlipbookAnimatorAuthoring>
@@ -27,6 +28,7 @@ namespace FGUFW.Entities
             {
                 Speed = authoring.Speed,
                 Time = authoring.Start,
+                FrameIndex = authoring.StartFrame-1,
             });
         }
     }
