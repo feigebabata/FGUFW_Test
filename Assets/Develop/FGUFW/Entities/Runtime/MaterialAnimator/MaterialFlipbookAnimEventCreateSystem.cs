@@ -14,6 +14,7 @@ namespace FGUFW.Entities
 
     [UpdateInGroup(typeof(MaterialFlipbookAnimatorSystemGroup))]
     [UpdateAfter(typeof(MaterialFlipbookAnimPlaySystem))]
+    [UpdateBefore(typeof(MaterialFlipbookAnimDestroySystem))]
     [BurstCompile]
     public partial struct MaterialFlipbookAnimEventCreateSystem : ISystem
     {
@@ -23,7 +24,7 @@ namespace FGUFW.Entities
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
-            _eq = new EntityQueryBuilder(Allocator.Temp).WithAll<MaterialFlipbookAnimator>().Build(ref state);
+            _eq = new EntityQueryBuilder(Allocator.Temp).WithAll<MaterialFlipbookAnimUpdate,MaterialFlipbookAnimator>().Build(ref state);
             state.RequireForUpdate(_eq);
 
             var ecb = new EntityCommandBuffer(Allocator.Temp);
@@ -67,59 +68,35 @@ namespace FGUFW.Entities
         {
             public NativeList<MaterialFlipbookAnimEventCastData>.ParallelWriter PW;
 
-            void Execute(Entity entity,in DynamicBuffer<MaterialFlipbookAnimEventData> events,ref MaterialFlipbookAnimator animator)
+            void Execute(Entity entity,in MaterialFlipbookAnimUpdate animUpdate,in DynamicBuffer<MaterialFlipbookAnimEventData> events)
             {
-                if(animator.FrameIndex==animator.PrevFrameIndex)return;
-                if(animator.Speed==0)return;
-
+                int start = animUpdate.Start;
+                int length = animUpdate.FrameCount;
+                int end = animUpdate.Start+animUpdate.Length;
                 foreach (var eventData in events)
                 {
                     bool eventCast = false;
-                    if(animator.Speed>0)
+                    int eventIndex = eventData.FrameIndex;
+                    
+                    if(animUpdate.Length>0)
                     {
-                        if(animator.FrameIndex>animator.PrevFrameIndex)
-                        {
-                            if(eventData.FrameIndex>animator.PrevFrameIndex && eventData.FrameIndex<=animator.FrameIndex)
-                            {
-                                eventCast = true;
-                            }
-                        }
-                        else
-                        {
-                            if(eventData.FrameIndex>animator.PrevFrameIndex || eventData.FrameIndex<=animator.FrameIndex)
-                            {
-                                eventCast = true;
-                            }
-                        }
+                        if(eventIndex<start)eventIndex += length;
+                        eventCast = eventIndex>start && eventIndex<=end;
                     }
                     else
                     {
-                        if(animator.FrameIndex<animator.PrevFrameIndex)
-                        {
-                            if(eventData.FrameIndex<animator.PrevFrameIndex && eventData.FrameIndex>=animator.FrameIndex)
-                            {
-                                eventCast = true;
-                            }
-                        }
-                        else
-                        {
-                            if(eventData.FrameIndex<animator.PrevFrameIndex || eventData.FrameIndex>=animator.FrameIndex)
-                            {
-                                eventCast = true;
-                            }
-                        }
+                        if(eventIndex>start)eventIndex -= length;
+                        eventCast = eventIndex<start && eventIndex>=end;
                     }
 
                     if(eventCast)
                     {
-                        Debug.LogWarning($"{animator.FrameIndex} {animator.PrevFrameIndex}");
                         PW.AddNoResize(new MaterialFlipbookAnimEventCastData
                         {
                             Self = entity,
                             Event = eventData.FrameEvent,
                         });
                     }
-                    animator.PrevFrameIndex = animator.FrameIndex;
                 }
             }
 

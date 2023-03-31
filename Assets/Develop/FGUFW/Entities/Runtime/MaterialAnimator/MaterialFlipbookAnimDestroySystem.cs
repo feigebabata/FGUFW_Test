@@ -11,12 +11,19 @@ using Unity.Burst;
 
 namespace FGUFW.Entities
 {
-
     [UpdateInGroup(typeof(MaterialFlipbookAnimatorSystemGroup))]
     [UpdateAfter(typeof(MaterialFlipbookAnimEventCreateSystem))]
     [BurstCompile]
-    public partial struct MaterialFlipbookAnimEventDestroySystem : ISystem
+    public partial struct MaterialFlipbookAnimDestroySystem : ISystem
     {
+        private EntityQuery _updateEQ;
+
+        [BurstCompile]
+        public void OnCreate(ref SystemState state)
+        {
+            _updateEQ = new EntityQueryBuilder(Allocator.Temp).WithAll<MaterialFlipbookAnimUpdate>().Build(ref state);
+        }
+
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
@@ -26,6 +33,11 @@ namespace FGUFW.Entities
             {
                 singletonRW.ValueRW.Events.Clear();
             }
+
+            var ecb = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);
+            var entitys = _updateEQ.ToEntityArray(Allocator.Temp);
+            ecb.RemoveComponent<MaterialFlipbookAnimUpdate>(entitys);
+            entitys.Dispose();
         }
 
         [BurstCompile]
@@ -34,6 +46,7 @@ namespace FGUFW.Entities
             var singleton = SystemAPI.GetSingleton<MaterialFlipbookAnimEventSingleton>();
             singleton.Events.Dispose();
         }
+
 
     }
 }

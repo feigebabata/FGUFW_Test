@@ -9,7 +9,8 @@ public class MaterialTest : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        float v = -1.5f;
+        Debug.Log((int)v);
     }
 
     // Update is called once per frame
@@ -23,7 +24,7 @@ public class MaterialTest : MonoBehaviour
 }
 
 [UpdateInGroup(typeof(MaterialFlipbookAnimatorSystemGroup))]
-[UpdateBefore(typeof(MaterialFlipbookAnimEventDestroySystem))]
+[UpdateBefore(typeof(MaterialFlipbookAnimDestroySystem))]
 [UpdateAfter(typeof(MaterialFlipbookAnimEventCreateSystem))]
 partial struct materialEventTestSystem:ISystem
 {
@@ -37,7 +38,7 @@ partial struct materialEventTestSystem:ISystem
     {
         public void Execute(Entity entity, int frameEvent)
         {
-            Debug.Log(frameEvent);
+            // Debug.Log(frameEvent);
         }
     }
 }

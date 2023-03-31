@@ -36,7 +36,6 @@ namespace FGUFW.Entities
         public float Speed;//播放速度
         public float Time;//当前时间 每帧叠加detalTime 切换动画时需要置为0
         public int FrameIndex;//当前帧索引
-        public int PrevFrameIndex;//上一帧索引
         public int EventCount;
     }
 
