@@ -53,7 +53,7 @@ namespace FGUFW.Entities
                     Loop = anim.Loop,
                 });
                 
-                ecb.RemoveComponent<MaterialFlipbookAnimation>(entity);
+                ecb.RemoveComponent<MaterialFlipbookAnimationAuthoring>(entity);
 
             }
         }

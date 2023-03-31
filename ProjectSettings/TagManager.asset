@@ -11,17 +11,17 @@ TagManager:
   - 
   - Water
   - UI
+  - Player
+  - PlayerBullet
+  - Monster
+  - MonsterBullet
+  - Energy
+  - EnergyRing
+  - PropBox
   - 
+  - Land
+  - Trail
   - Mask
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
   - 
   - 
   - 
