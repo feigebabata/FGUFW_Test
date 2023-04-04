@@ -22,6 +22,4 @@ namespace RogueGamePlay
     {
         public float3 Orientation;
     }
-
-
 }
