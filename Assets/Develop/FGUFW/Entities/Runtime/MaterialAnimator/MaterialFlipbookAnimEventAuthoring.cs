@@ -10,6 +10,7 @@ using UnityEngine.Rendering;
 
 namespace FGUFW.Entities
 {
+    [AddComponentMenu("MaterialFlipbookAnim/Events")]
     public class MaterialFlipbookAnimEventAuthoring : MonoBehaviour
     {
         public MaterialFlipbookAnimEventData[] Events;

@@ -50,7 +50,7 @@ namespace FGUFW.Entities
                 ecb.RemoveComponent<MaterialFlipbookAnimation>(entity);
             }
 
-            foreach (var (anims,entity) in SystemAPI.Query<MaterialFlipbookAnimationsAuthoring>().WithEntityAccess())
+            foreach (var (anims,entity) in SystemAPI.Query<MaterialFlipbookAnimationsBakerData>().WithEntityAccess())
             {
                 var buffer = ecb.AddBuffer<MaterialFlipbookAnimations>(entity);
                 foreach (var item in anims.Animations)

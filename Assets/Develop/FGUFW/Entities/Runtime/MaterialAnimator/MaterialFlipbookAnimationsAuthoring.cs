@@ -11,8 +11,15 @@ using Unity.Collections.LowLevel.Unsafe;
 
 namespace FGUFW.Entities
 {
-    public class MaterialFlipbookAnimationsAuthoring : MonoBehaviour,IComponentData
+    [AddComponentMenu("MaterialFlipbookAnim/Animations")]
+    public class MaterialFlipbookAnimationsAuthoring : MonoBehaviour
     {
+        public MaterialFlipbookAnimationsBakerData.Animation[] Animations;
+
+    }
+
+    public class MaterialFlipbookAnimationsBakerData:IComponentData
+    {        
         public Animation[] Animations;
 
         [System.Serializable]
@@ -20,7 +27,7 @@ namespace FGUFW.Entities
         {
             public MaterialFlipbookAnimation Anim;
             public MaterialFlipbookAnimEventData[] Events;
-        }    
+        }  
     }
 
     public struct MaterialFlipbookAnimations:IBufferElementData
@@ -40,7 +47,10 @@ namespace FGUFW.Entities
         public override void Bake(MaterialFlipbookAnimationsAuthoring authoring)
         {
             var entity = GetEntity(TransformUsageFlags.Dynamic);
-            AddComponentObject(entity,authoring);
+            AddComponentObject(entity,new MaterialFlipbookAnimationsBakerData
+            {
+                Animations = authoring.Animations,
+            });
         }
     }
 

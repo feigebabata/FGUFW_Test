@@ -83,6 +83,7 @@ if (world.CastRay(rayInput, out RaycastHit rayResult))//射线检测
 state.Dependency = new TriggerGravityFactorJob
 {
 }.Schedule(SystemAPI.GetSingleton<SimulationSingleton>(), state.Dependency);
+
 //动态物理组件
 ComponentLookup<PhysicsVelocity> PhysicsVelocityData;
 PhysicsVelocityData.HasComponent(entity);
@@ -95,3 +96,11 @@ UnityObjectRef<>
 
 //job中修改材质字段 不能用于SpriteRenderer
 [MaterialProperty("_Scale")]
+
+//渲染 相机输出到RenderTexture
+RenderTexture在ECS中不能正常工作
+
+//材质注册和替换
+hybridRendererSystem = state.World.GetExistingSystemManaged<EntitiesGraphicsSystem>();
+materialID = hybridRendererSystem.RegisterMaterial(material);
+materialMeshInfo.MaterialID = materialID;

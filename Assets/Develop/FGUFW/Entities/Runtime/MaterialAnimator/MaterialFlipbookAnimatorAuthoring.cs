@@ -12,6 +12,7 @@ namespace FGUFW.Entities
 {
     public partial class MaterialFlipbookAnimatorSystemGroup : ComponentSystemGroup{}
 
+    [AddComponentMenu("MaterialFlipbookAnim/Animator")]
     public class MaterialFlipbookAnimatorAuthoring : MonoBehaviour
     {
         public float Speed=1;
