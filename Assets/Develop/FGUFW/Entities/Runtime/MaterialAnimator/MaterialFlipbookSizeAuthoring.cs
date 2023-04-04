@@ -7,9 +7,10 @@ using Unity.Mathematics;
 
 namespace FGUFW.Entities
 {
+    [AddComponentMenu("MaterialProperty/FlipbookSize")]
     public class MaterialFlipbookSizeAuthoring : MonoBehaviour
     {
-        public float2 Value;
+        public float2 Value = new float2(1,1);
     }
 
     public class MaterialFlipbookSizeBaker : Baker<MaterialFlipbookSizeAuthoring>

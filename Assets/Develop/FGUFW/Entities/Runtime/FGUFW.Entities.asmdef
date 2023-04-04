@@ -1,5 +1,5 @@
 {
-    "name": "FGUFW.ECS_SpriteAnimator",
+    "name": "FGUFW.Entities",
     "rootNamespace": "",
     "references": [
         "GUID:734d92eba21c94caba915361bd5ac177",

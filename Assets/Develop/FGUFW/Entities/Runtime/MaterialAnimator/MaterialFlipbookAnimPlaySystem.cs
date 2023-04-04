@@ -13,6 +13,7 @@ namespace FGUFW.Entities
 {
     struct MaterialFlipbookAnimUpdate : IComponentData
     {
+        public BatchMaterialID MaterialID;
         public int Start;
         public int Length;
         public int FrameCount;
@@ -21,7 +22,6 @@ namespace FGUFW.Entities
 
     [UpdateInGroup(typeof(MaterialFlipbookAnimatorSystemGroup))]
     [UpdateAfter(typeof(MaterialBakerSystem))]
-    [UpdateBefore(typeof(MaterialFlipbookAnimDestroySystem))]
     [BurstCompile]
     partial struct MaterialFlipbookAnimPlaySystem : ISystem
     {
@@ -66,6 +66,7 @@ namespace FGUFW.Entities
 
                 if(newFrameIndex!=animator.FrameIndex)
                 {
+                    // Debug.Log($"+{animData.Start}:{animator.FrameIndex}");
                     ECB.AddComponent(chunkInQueryIndex,entity,new MaterialFlipbookAnimUpdate
                     {
                         Start = animator.FrameIndex,

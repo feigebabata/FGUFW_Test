@@ -12,16 +12,24 @@ using Unity.Burst;
 namespace FGUFW.Entities
 {
     [UpdateInGroup(typeof(MaterialFlipbookAnimatorSystemGroup))]
-    [UpdateBefore(typeof(MaterialFlipbookAnimEventCreateSystem))]
     [BurstCompile]
     public partial struct MaterialFlipbookAnimDestroySystem : ISystem
     {
-        private EntityQuery _updateEQ;
+        private EntityQuery _updateEQ,_switchEQ;
 
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
             _updateEQ = new EntityQueryBuilder(Allocator.Temp).WithAll<MaterialFlipbookAnimUpdate>().Build(ref state);
+            _switchEQ = new EntityQueryBuilder(Allocator.Temp).WithAll<MaterialFlipbookAnimationSwitch>().Build(ref state);
+    
+            var ecb = new EntityCommandBuffer(Allocator.Temp);
+            ecb.AddComponent(ecb.CreateEntity(),new MaterialFlipbookAnimEventSingleton
+            {
+                Events = new NativeList<MaterialFlipbookAnimEventCastData>(64,Allocator.Persistent)
+            });
+            ecb.Playback(state.EntityManager);
+
         }
 
         [BurstCompile]
@@ -37,7 +45,17 @@ namespace FGUFW.Entities
 
             var ecb = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);
             var entitys = _updateEQ.ToEntityArray(Allocator.Temp);
-            ecb.RemoveComponent<MaterialFlipbookAnimUpdate>(entitys);
+            if(entitys.Length>0)
+            {
+                ecb.RemoveComponent<MaterialFlipbookAnimUpdate>(entitys);
+            }
+            entitys.Dispose();
+
+            entitys = _switchEQ.ToEntityArray(Allocator.Temp);
+            if(entitys.Length>0)
+            {
+                ecb.RemoveComponent<MaterialFlipbookAnimationSwitch>(entitys);
+            }
             entitys.Dispose();
         }
 

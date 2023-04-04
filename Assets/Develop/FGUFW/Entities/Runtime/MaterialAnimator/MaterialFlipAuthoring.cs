@@ -7,9 +7,10 @@ using Unity.Mathematics;
 
 namespace FGUFW.Entities
 {
+    [AddComponentMenu("MaterialProperty/Flip")]
     public class MaterialFlipAuthoring : MonoBehaviour
     {
-        public float Value;
+        public float Value=1;
     }
 
     public class MaterialFlipBaker : Baker<MaterialFlipAuthoring>

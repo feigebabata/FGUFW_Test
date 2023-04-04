@@ -18,6 +18,7 @@ namespace FGUFW.Entities
     [Serializable]
     public class MaterialFlipbookAnimation:IComponentData
     {
+        public int AnimationID;
         public Material Mat;
         public int StartFrame;
         public int FrameLength;

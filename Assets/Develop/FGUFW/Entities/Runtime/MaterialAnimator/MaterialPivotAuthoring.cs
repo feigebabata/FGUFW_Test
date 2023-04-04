@@ -7,9 +7,10 @@ using Unity.Mathematics;
 
 namespace FGUFW.Entities
 {
+    [AddComponentMenu("MaterialProperty/Pivot")]
     public class MaterialPivotAuthoring : MonoBehaviour
     {
-        public float2 Value;
+        public float2 Value = new float2(0.5f,0.5f);
     }
 
     public class MaterialPivotBaker : Baker<MaterialPivotAuthoring>

@@ -26,12 +26,6 @@ namespace FGUFW.Entities
             _eq = new EntityQueryBuilder(Allocator.Temp).WithAll<MaterialFlipbookAnimUpdate,MaterialFlipbookAnimator>().Build(ref state);
             state.RequireForUpdate(_eq);
 
-            var ecb = new EntityCommandBuffer(Allocator.Temp);
-            ecb.AddComponent(ecb.CreateEntity(),new MaterialFlipbookAnimEventSingleton
-            {
-                Events = new NativeList<MaterialFlipbookAnimEventCastData>(64,Allocator.Persistent)
-            });
-            ecb.Playback(state.EntityManager);
         }
 
         [BurstCompile]

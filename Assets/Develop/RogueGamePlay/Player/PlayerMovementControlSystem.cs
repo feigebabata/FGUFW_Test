@@ -20,7 +20,7 @@ namespace RogueGamePlay
         {
             var singletonRW = SystemAPI.GetSingletonRW<GamePlayEventSingleton>();
 
-            foreach (var (movementRW,controlRW,localTransform,entity) in SystemAPI.Query<RefRW<ForceMovement>,RefRW<PlayerMovementControl>,LocalTransform>().WithEntityAccess())
+            foreach (var (flipRW,movementRW,controlRW,localTransform,entity) in SystemAPI.Query<RefRW<MaterialFlip>,RefRW<ForceMovement>,RefRW<PlayerMovementControl>,LocalTransform>().WithEntityAccess())
             {
                 float3 orientation = float3.zero;
 
@@ -58,7 +58,23 @@ namespace RogueGamePlay
                     });
                 }
 
-                controlRW.ValueRW.Orientation = math.normalize(orientation);
+                if(math.all(orientation==float3.zero))
+                {
+                    controlRW.ValueRW.Orientation = float3.zero;
+                }
+                else
+                {
+                    controlRW.ValueRW.Orientation = math.normalize(orientation);
+
+                    if(orientation.x>0)
+                    {
+                        flipRW.ValueRW.Value = -1;
+                    }
+                    else
+                    {
+                        flipRW.ValueRW.Value = 1;
+                    }
+                }
 
                 movementRW.ValueRW.TargetPoint = localTransform.Position + orientation*100;
             }

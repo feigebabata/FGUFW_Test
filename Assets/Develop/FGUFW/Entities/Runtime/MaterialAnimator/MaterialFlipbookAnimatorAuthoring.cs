@@ -43,6 +43,7 @@ namespace FGUFW.Entities
 
     public struct MaterialFlipbookAnimationData:IComponentData
     {
+        public int AnimationID;
         public BatchMaterialID MaterialID;
         public int Start;
         public int Length;

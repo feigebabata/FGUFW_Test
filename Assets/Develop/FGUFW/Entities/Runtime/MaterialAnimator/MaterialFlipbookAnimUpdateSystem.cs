@@ -14,7 +14,6 @@ namespace FGUFW.Entities
 
     [UpdateInGroup(typeof(MaterialFlipbookAnimatorSystemGroup))]
     [UpdateAfter(typeof(MaterialFlipbookAnimPlaySystem))]
-    [UpdateBefore(typeof(MaterialFlipbookAnimDestroySystem))]
     [BurstCompile]
     partial struct MaterialFlipbookAnimUpdateSystem : ISystem
     {
@@ -36,9 +35,10 @@ namespace FGUFW.Entities
         [BurstCompile]
         partial struct AnimUpdateJob:IJobEntity
         {
-            void Execute(in MaterialFlipbookAnimUpdate animUpdate,ref MaterialFlipbookIndex flipbookIndex)
+            void Execute(in MaterialMeshInfo mmInfo,in MaterialFlipbookAnimUpdate animUpdate,ref MaterialFlipbookIndex flipbookIndex)
             {
                 flipbookIndex.Value = animUpdate.FlipbookIndex;
+                // Debug.Log($"{mmInfo.MaterialID.value}:{animUpdate.FlipbookIndex}");
             }
         }
     }
