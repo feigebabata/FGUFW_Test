@@ -1,0 +1,11 @@
+﻿RogueGamePlay.SkillEvent,enum,技能事件
+枚举名,枚举值,备注
+None,0,无
+SkillBegin,1,普攻开始
+SkillEnd,2,普攻结束
+SkillHit,3,普攻命中
+SkillKill,4,普攻击杀
+LastAttack,5,最后一发子弹
+FristAttack,6,第一发子弹
+ExpReceive,7,经验拾取
+SelfDeath,8,死亡

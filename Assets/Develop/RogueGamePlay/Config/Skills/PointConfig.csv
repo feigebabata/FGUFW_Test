@@ -1,0 +1,4 @@
+﻿RogueGamePlay.PointConfig,class,单点伤害配置
+int,float,string
+ID,Power,Prefab
+编号,攻击力,预制

@@ -38,7 +38,7 @@ namespace FGUFW.CSV
             {
                 var table = CsvHelper.Parse2(File.ReadAllText(path));
                 var savePath = path.Replace(Extension,".cs");
-                var csharptype = table[0,0];
+                var csharptype = table[0,1];
                 switch (csharptype)
                 {
                     case "class":

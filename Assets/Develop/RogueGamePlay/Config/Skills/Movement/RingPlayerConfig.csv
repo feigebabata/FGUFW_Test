@@ -1,0 +1,4 @@
+﻿RogueGamePlay.RingPlayerConfig,class,环绕玩家配置
+int,float,float
+ID,Velocity,Radius
+编号,速度,半径

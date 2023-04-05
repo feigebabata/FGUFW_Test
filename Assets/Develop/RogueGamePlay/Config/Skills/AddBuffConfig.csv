@@ -1,0 +1,4 @@
+﻿RogueGamePlay.AddBuffConfig,class,添加buff配置,,
+int,BuffType,string,float,float
+ID,Type,Prefab,Time,Value
+编号,Buff类型,预制,时间,值

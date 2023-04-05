@@ -1,0 +1,4 @@
+﻿RogueGamePlay.SkillConfig,class,技能配置,,
+SkillID,int,SkillEvent,SkillID,int
+ID,Name,TriggerEvent,TriggerSKill,SkillLayer
+技能ID,名称,触发事件,触发技能,技能运行层

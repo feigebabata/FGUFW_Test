@@ -1,0 +1,4 @@
+﻿RogueGamePlay.RandomByPlayerConfig,class,在玩家周围移动配置
+int,float,string
+ID,Velocity,Summary
+编号,速度,概要

@@ -1,0 +1,6 @@
+﻿RogueGamePlay.SkillID,enum,技能ID
+枚举名,枚举值,备注
+None,0,无
+Rifle,1,步枪
+Howitzer,2,榴弹
+Explode,3,爆炸

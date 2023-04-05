@@ -1,0 +1,4 @@
+﻿RogueGamePlay.ExplodeConfig,class,爆炸配置,
+int,float,string,float
+ID,Power,Prefab,Range
+编号,攻击力,预制,范围

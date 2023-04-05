@@ -1,0 +1,4 @@
+﻿RogueGamePlay.MoveToPlayerConfig,class,移动向玩家配置
+int,float,string
+ID,Velocity,Summary
+编号,速度,概要

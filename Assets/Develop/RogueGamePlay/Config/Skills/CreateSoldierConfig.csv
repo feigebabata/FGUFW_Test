@@ -1,0 +1,4 @@
+﻿RogueGamePlay.CreateSoldierConfig,class,创建士兵配置,
+int,int,int,float
+ID,SoldierID,Count,Interval
+编号,士兵ID,数量,间隔时间

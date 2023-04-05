@@ -1,0 +1,6 @@
+﻿RogueGamePlay.MovementType,enum,移动类型
+枚举名,枚举值,备注
+None,0,无
+MoveToPlayer,1,向玩家移动
+RingPlayer,2,环绕玩家
+RandomByPlayer,3,玩家周围随机

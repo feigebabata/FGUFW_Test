@@ -1,0 +1,4 @@
+﻿RogueGamePlay.SoldierConfig,class,士兵配置,,,
+int,int,float,Faction,string,int[]
+SoldierID,Name,HP,Faction,Prefab,Skills
+士兵ID,名称,生命值,阵营,预制,技能组

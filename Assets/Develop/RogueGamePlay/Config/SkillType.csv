@@ -1,0 +1,11 @@
+﻿RogueGamePlay.SkillType,enum,技能类型
+枚举名,枚举值,备注
+None,0,无
+Shoot,1,射击
+Bullet,2,子弹
+Explode,3,爆炸
+Point,4,单点伤害
+AddBuff,5,添加buff效果
+Movement,6,移动组件
+CreateSoldier,7,创建士兵
+AutoWeapon,8,自动兵器

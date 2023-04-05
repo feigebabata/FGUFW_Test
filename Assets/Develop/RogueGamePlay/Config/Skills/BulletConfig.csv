@@ -1,0 +1,4 @@
+﻿RogueGamePlay.BulletConfig,class,子弹配置,,,
+int,float,float,int,string,float
+ID,Power,Velocity,Pierce,Prefab,Time
+编号,攻击力,速度,穿透,预制,时间

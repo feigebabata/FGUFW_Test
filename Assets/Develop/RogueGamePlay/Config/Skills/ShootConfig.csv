@@ -1,0 +1,4 @@
+﻿RogueGamePlay.ShootConfig,class,射击配置,,,
+int,int,float,float,int,float
+ID,Count,Interval,Angle,BulletID,Reload
+编号,数量,发射间隔,夹角,子弹ID,换弹时间

@@ -1,0 +1,13 @@
+﻿RogueGamePlay.BuffType,enum,Buff类型
+枚举名,枚举值,备注
+None,0,无
+BulletPower,1,子弹攻击力
+BulletVelocity,2,子弹速度
+BulletPierce,3,子弹穿透
+BulletSize,4,子弹大小
+ExplodePower,5,爆炸攻击力
+ExplodeSize,6,爆炸大小
+ShootCount,7,发射数量
+ShootAngle,8,发射夹角
+ShootInterval,9,发射间隔时间
+ShootReload,10,换弹时间

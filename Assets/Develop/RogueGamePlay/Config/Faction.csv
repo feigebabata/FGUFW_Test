@@ -1,0 +1,5 @@
+﻿RogueGamePlay.Faction,enum,阵营
+枚举名,枚举值,备注
+None,0,无
+Player,1,玩家
+Monster,2,怪

@@ -1,0 +1,4 @@
+﻿RogueGamePlay.AutoWeaponConfig,class,自动武器配置,,
+int,float,string,int,MovementType
+ID,Power,Prefab,MoveID,MoveType
+编号,攻击力,预制,移动技能配置ID,移动技能

@@ -85,7 +85,7 @@ namespace |NAME_SPACE|
 ";
             var frist_type = table[typeLine,0];
             var frist_name = table[nameLine,0];
-            var nameSpaceArr = table[0,1].Split('.');
+            var nameSpaceArr = table[0,0].Split('.');
             var nameSpace = string.Join(".",nameSpaceArr,0,nameSpaceArr.Length-1);
             var className = nameSpaceArr[nameSpaceArr.Length-1];
             var classSummary = table[0,2];
@@ -135,7 +135,7 @@ namespace |NAME_SPACE|
 ");
             }
 
-            var nameSpaceArr = table[0,1].Split('.');
+            var nameSpaceArr = table[0,0].Split('.');
             var nameSpace = string.Join(".",nameSpaceArr,0,nameSpaceArr.Length-1);
             var className = nameSpaceArr[nameSpaceArr.Length-1];
             var classSummary = table[0,2];
