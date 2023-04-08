@@ -50,7 +50,7 @@ namespace RogueGamePlay
         public int Origin;
     }
 
-    public partial struct BuffPropertyAspect:IAspect
+    public readonly partial struct BuffPropertyAspect:IAspect
     {
         readonly RefRW<BuffProperty> _property;
         readonly DynamicBuffer<SKillBuff> _skillBuffs;
