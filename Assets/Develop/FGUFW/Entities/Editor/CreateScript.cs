@@ -39,7 +39,7 @@ namespace FGUFW.Entities
 using UnityEngine;
 using Unity.Mathematics;
 
-namespace NAME_SAPCE
+namespace RogueGamePlay
 {
     public class |CLASS_NAME|Authoring:MonoBehaviour
     {
@@ -94,7 +94,7 @@ using Unity.Collections;
 using Unity.Burst;
 using Unity.Transforms;
 
-namespace NAME_SPACE
+namespace RogueGamePlay
 {
     [BurstCompile]
     partial struct |CLASS_NAME| : ISystem
