@@ -16,13 +16,13 @@ namespace RogueGamePlay
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
-            EntityQuery eq = new EntityQueryBuilder(Allocator.Temp).WithAll<PlayerMovementControl>().Build(ref state);
+            EntityQuery eq = new EntityQueryBuilder(Allocator.Temp).WithAll<Player>().Build(ref state);
             state.RequireForUpdate(eq);
         }
 
         public void OnUpdate(ref SystemState state)
         {
-            var entity = SystemAPI.GetSingletonEntity<PlayerMovementControl>();
+            var entity = SystemAPI.GetSingletonEntity<Player>();
             var localTransform = SystemAPI.GetComponent<LocalTransform>(entity);
             
             foreach (var item in HybridUnityObject.I.ViewFollowItems)

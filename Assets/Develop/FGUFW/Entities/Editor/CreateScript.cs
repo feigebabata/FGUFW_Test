@@ -22,6 +22,173 @@ namespace FGUFW.Entities
             string createPath = EditorUtils.EditorUtils.GetSeleceFolderPath()+"/Component.cs";
             ProjectWindowUtil.StartNameEditingIfProjectWindowExists(0,ScriptableObject.CreateInstance<CreateComponentScript>(),createPath,null,null);
         }
+        
+        [MenuItem("Assets/Create/FGUFW/EventSystem",false,80)]
+        static void createEventSystem()
+        {
+            string createPath = EditorUtils.EditorUtils.GetSeleceFolderPath()+"/Event";
+            ProjectWindowUtil.StartNameEditingIfProjectWindowExists(0,ScriptableObject.CreateInstance<CreateEventSystem>(),createPath,null,null);
+        }
+
+        class CreateEventSystem : EndNameEditAction
+        {
+
+            public override void Action(int instanceId, string pathName, string resourceFile)
+            {
+                //创建资源
+                UnityEngine.Object obj = CreateScriptAssetFromTemplate(pathName, resourceFile);
+                ProjectWindowUtil.ShowCreatedAsset(obj);//高亮显示资源
+            }
+    
+            internal static UnityEngine.Object CreateScriptAssetFromTemplate(string filePath, string resourceFile)
+            {
+                var dirPath = filePath;
+                if(!Directory.Exists(dirPath))
+                {
+                    Directory.CreateDirectory(dirPath);
+                }
+                var className = Path.GetFileName(dirPath);
+                Debug.Log(className);
+                string iJobScriptText = 
+@"
+using Unity.Entities;
+using Unity.Collections;
+using Unity.Jobs.LowLevel.Unsafe;
+using Unity.Jobs;
+using Unity.Collections.LowLevel.Unsafe;
+using Unity.Burst;
+using System;
+
+namespace RogueGamePlay
+{
+
+    public struct |CLASS_NAME|Data
+    {
+
+    }
+
+    public struct |CLASS_NAME|Singleton:IComponentData
+    {
+        public NativeList<|CLASS_NAME|Data> Events;
+    }
+
+    /// <summary>
+    /// 在事件添加之后执行
+    /// </summary>
+    [JobProducerType(typeof(I|CLASS_NAME|JobExtensions.|CLASS_NAME|JobProcess<>))]
+    public interface I|CLASS_NAME|Job
+    {
+        void Execute(|CLASS_NAME|Data eventData);
+    }
+
+    public unsafe static class I|CLASS_NAME|JobExtensions
+    {
+        public static JobHandle Schedule<T>(this T jobData, |CLASS_NAME|Singleton singleton, JobHandle inputDeps)
+            where T : struct, I|CLASS_NAME|Job
+        {
+            if(singleton.Events.Length==0)
+            {
+                return inputDeps;
+            }
+            var data = new |CLASS_NAME|JobData<T>
+            {
+                UserJobData = jobData,
+                Events = singleton.Events
+            };
+            var jobReflectionData = |CLASS_NAME|JobProcess<T>.JobReflectionData.Data;
+            var parameters = new JobsUtility.JobScheduleParameters(UnsafeUtility.AddressOf(ref data),jobReflectionData,inputDeps,ScheduleMode.Single);
+            return JobsUtility.Schedule(ref parameters);
+        }
+
+        internal unsafe struct |CLASS_NAME|JobData<T> where T : struct
+        {
+            public T UserJobData;
+            public NativeList<|CLASS_NAME|Data> Events;
+        }
+
+        internal unsafe struct |CLASS_NAME|JobProcess<T> where T : struct, I|CLASS_NAME|Job
+        {
+            internal static readonly SharedStatic<IntPtr> JobReflectionData = SharedStatic<IntPtr>.GetOrCreate<|CLASS_NAME|JobProcess<T>>();
+
+            internal static void Initialize()
+            {
+                if (JobReflectionData.Data == IntPtr.Zero)
+                {
+                    JobReflectionData.Data = JobsUtility.CreateJobReflectionData(typeof(|CLASS_NAME|JobData<T>), typeof(T), (ExecuteJobFunction)Execute);
+                }
+                    
+            }
+
+            public delegate void ExecuteJobFunction(ref |CLASS_NAME|JobData<T> jobData);
+
+            public static void Execute(ref |CLASS_NAME|JobData<T> jobData)
+            {
+                foreach (var eventData in jobData.Events)
+                {
+                    jobData.UserJobData.Execute(eventData);
+                }
+            }
+        }        
+        
+        //自动执行
+        public static void EarlyJobInit<T>() where T : struct, I|CLASS_NAME|Job
+        {
+            |CLASS_NAME|JobProcess<T>.Initialize();
+        }
+
+    }
+}
+";              
+                var destroyScriptText = 
+@"using Unity.Entities;
+using Unity.Collections;
+using Unity.Burst;
+
+namespace RogueGamePlay
+{
+    /// <summary>
+    /// 在事件添加之前执行
+    /// </summary>
+    [BurstCompile]
+    public partial struct |CLASS_NAME|DestroySystem:ISystem
+    {
+        [BurstCompile]
+        public void OnCreate(ref SystemState state)
+        {
+            var ecb = new EntityCommandBuffer(Allocator.Temp);
+            ecb.AddComponent(ecb.CreateEntity(),new |CLASS_NAME|Singleton
+            {
+                Events = new NativeList<|CLASS_NAME|Data>(1024*1,Allocator.Persistent)
+            });
+            ecb.Playback(state.EntityManager);
+        }
+
+        [BurstCompile]
+        public void OnUpdate(ref SystemState state)
+        {
+            state.Dependency.Complete();
+            var singletonRW = SystemAPI.GetSingletonRW<|CLASS_NAME|Singleton>();
+            if(singletonRW.ValueRO.Events.Length>0)
+            {
+                singletonRW.ValueRW.Events.Clear();
+            }
+        }
+
+    }
+}
+";
+                iJobScriptText = iJobScriptText.Replace("|CLASS_NAME|",className);
+                destroyScriptText = destroyScriptText.Replace("|CLASS_NAME|",className);
+                var IjobPath = $"{dirPath}/I{className}Job.cs";
+                var destroyPath = $"{dirPath}/{className}DestroySystem.cs";
+                File.WriteAllText(IjobPath,iJobScriptText,Encoding.UTF8);
+                File.WriteAllText(destroyPath,destroyScriptText,Encoding.UTF8);
+                //刷新资源管理器
+                AssetDatabase.ImportAsset(filePath);
+                AssetDatabase.Refresh();
+                return AssetDatabase.LoadAssetAtPath(dirPath, typeof(UnityEngine.Object));
+            }
+        }
 
         class CreateComponentScript : EndNameEditAction
         {

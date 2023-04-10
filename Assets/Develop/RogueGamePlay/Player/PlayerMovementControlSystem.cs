@@ -12,7 +12,7 @@ namespace RogueGamePlay
     {
         public void OnCreate(ref SystemState state)
         {
-            EntityQuery eq = new EntityQueryBuilder(Allocator.Temp).WithAll<ForceMovement,PlayerMovementControl,LocalTransform>().Build(ref state);
+            EntityQuery eq = new EntityQueryBuilder(Allocator.Temp).WithAll<ForceMovement,PlayerMovementControl,Player,LocalTransform>().Build(ref state);
             state.RequireForUpdate(eq);
         }
 

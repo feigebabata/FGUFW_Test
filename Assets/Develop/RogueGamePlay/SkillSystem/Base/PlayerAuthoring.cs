@@ -6,6 +6,7 @@ namespace RogueGamePlay
 {
     public class PlayerAuthoring:MonoBehaviour
     {
+        public float HP;
     }
 
     class PlayerBaker : Baker<PlayerAuthoring>
@@ -14,11 +15,16 @@ namespace RogueGamePlay
         {
             AddComponent(GetEntity(TransformUsageFlags.Dynamic),new Player
             {
+                HP = authoring.HP,
             });
         }
     }
 
-    public struct Player:IComponentData
+    /// <summary>
+    /// 玩家
+    /// </summary>
+    public struct Player:IComponentData,IEnableableComponent
     {
+        public float HP;
     }
 }

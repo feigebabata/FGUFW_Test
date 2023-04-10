@@ -18,10 +18,14 @@ namespace NAME_SPACE
 
         public void OnUpdate(ref SystemState state)
         {
-            foreach (var (buffers,dbt,entity) in SystemAPI.Query<DynamicBuffer<TestBuffer>,DynamicBufferTest>().WithEntityAccess())
+            NativeList<int> ls = new NativeList<int>(Allocator.Temp);
+
+            for (int i = 0; i < 1000; i++)
             {
-                Debug.Log(entity);
+                ls.Add(i);
             }
+            Debug.Log(ls.Length);
+            ls.Dispose();
         }
     }
 }

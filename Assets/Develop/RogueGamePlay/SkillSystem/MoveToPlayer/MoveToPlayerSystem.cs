@@ -26,16 +26,21 @@ namespace RogueGamePlay
         {
             var entity = SystemAPI.GetSingletonEntity<Player>();
             var playerLT = SystemAPI.GetComponent<LocalTransform>(entity);
+            
             state.Dependency = new Job
             {
-            }.ScheduleParallel(state.Dependency);
+                Position = playerLT.Position,
+            }
+            .ScheduleParallel(state.Dependency);
         }
 
 
         [BurstCompile]
         partial struct Job:IJobEntity
         {
-            [ReadOnly]public float3 Position;
+            [ReadOnly]
+            public float3 Position;
+
             void Execute(in MoveToPlayer moveToPlayer,ref ForceMovement forceMovement)
             {
                 forceMovement.TargetPoint = Position;
