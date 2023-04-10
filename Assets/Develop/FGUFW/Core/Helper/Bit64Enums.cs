@@ -9,11 +9,11 @@ namespace FGUFW
     /// </summary>
     public struct Bit64Enums<E> where E:Enum
     {
-        private Int64 _bits;
+        private UInt64 _bits;
 
-        public Int64 Value => _bits;
+        public UInt64 Value => _bits;
 
-        public bool this[Int64 i]
+        public bool this[UInt64 i]
         {
             get
             {
@@ -36,30 +36,11 @@ namespace FGUFW
             }
         }
 
-        public bool this[E e]
-        {
-            get
-            {
-                return this[e.GetHashCode()];
-            }
-            set
-            {
-                this[e.GetHashCode()] = value;
-            }
-        }
 
-        public Bit64Enums(Int64 bits)
+
+        public Bit64Enums(UInt64 bits)
         {
             _bits = bits;
-        }
-
-        public Bit64Enums(IEnumerable<E> bits)
-        {
-            _bits = 0;
-            foreach (var item in bits)
-            {
-                this[item]=true;
-            }
         }
 
         public BitEnums<E> Pares(string text,char separator=',')
@@ -79,37 +60,12 @@ namespace FGUFW
             _bits = 0;
         }
 
-        public unsafe E[] ToArray()
-        {
-            if(_bits==0)return null;
-
-            var items = Enum.GetValues(typeof(E));
-            var indexs = stackalloc int[items.Length];
-            int length = 0;
-            for (int i = 0; i < items.Length; i++)
-            {
-                var item = (E)items.GetValue(i);
-                if(this[item])
-                {
-                    indexs[length++] = i;
-                }
-            }
-            var arr = new E[length];
-            for (int i = 0; i < length; i++)
-            {
-                arr[i] = (E)items.GetValue(indexs[i]);
-            }
-            return arr;
-        }
-
         public override string ToString()
         {
             if(_bits==0)return "0";
             StringBuilder sb = new StringBuilder();
-            var items = this.ToArray();
             sb.AppendLine(_bits.ToString());
             sb.AppendLine(_bits.ToBitString());
-            sb.Append(string.Join<E>(",",items));
             return sb.ToString();
         }
 

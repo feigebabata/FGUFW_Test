@@ -77,6 +77,10 @@ if (world.CastRay(rayInput, out RaycastHit rayResult))//射线检测
 {
     newPositionFrom = rayResult.Position;
 }
+
+CollisionFilter//物理碰撞层
+PhysicsMaterialTemplate//物理材质模板
+
 //物理系统之前
 [UpdateInGroup(typeof(FixedStepSimulationSystemGroup))]
 [UpdateBefore(typeof(PhysicsSystemGroup))] //同组之内设置先后才有效?

@@ -9,11 +9,11 @@ namespace FGUFW
     /// </summary>
     public struct BitEnums<E> where E:Enum
     {
-        private int _bits;
+        private uint _bits;
 
-        public int Value => _bits;
+        public uint Value => _bits;
 
-        public bool this[int i]
+        public bool this[uint i]
         {
             get
             {
@@ -40,15 +40,15 @@ namespace FGUFW
         {
             get
             {
-                return this[e.GetHashCode()];
+                return this[(uint)e.GetHashCode()];
             }
             set
             {
-                this[e.GetHashCode()] = value;
+                this[(uint)e.GetHashCode()] = value;
             }
         }
 
-        public BitEnums(int bits)
+        public BitEnums(uint bits)
         {
             _bits = bits;
         }
@@ -115,7 +115,7 @@ namespace FGUFW
 
         public override int GetHashCode()
         {
-            return _bits;
+            return (int)_bits;
         }
 
         public override bool Equals(object obj)

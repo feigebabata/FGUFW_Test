@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System.IO;
 using System.Text;
 using UnityEditor;
@@ -142,3 +143,4 @@ namespace RogueGamePlay
         }
     }
 }
+#endif

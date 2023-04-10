@@ -9,7 +9,7 @@ namespace FGUFW
         /// <summary>
         /// 包含
         /// </summary>
-        public static bool Contains(Int32 source,Int32 target)
+        public static bool Contains(UInt32 source,UInt32 target)
         {
             return (source&target) == target;
         }
@@ -17,7 +17,7 @@ namespace FGUFW
         /// <summary>
         /// 添加
         /// </summary>
-        public static Int32 Add(Int32 source,Int32 target)
+        public static UInt32 Add(UInt32 source,UInt32 target)
         {
             return source|target;
         }
@@ -25,7 +25,7 @@ namespace FGUFW
         /// <summary>
         /// 减去
         /// </summary>
-        public static Int32 Sub(Int32 source,Int32 target)
+        public static UInt32 Sub(UInt32 source,UInt32 target)
         {
             target = ~target;
             return source|target;
