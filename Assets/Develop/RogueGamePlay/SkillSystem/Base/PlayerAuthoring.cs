@@ -23,7 +23,7 @@ namespace RogueGamePlay
     /// <summary>
     /// 玩家
     /// </summary>
-    public struct Player:IComponentData,IEnableableComponent
+    public struct Player:IComponentData
     {
         public float HP;
     }

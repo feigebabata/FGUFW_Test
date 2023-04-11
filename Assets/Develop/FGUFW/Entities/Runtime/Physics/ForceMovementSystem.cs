@@ -40,9 +40,9 @@ namespace FGUFW.Entities
             [ReadOnly]
             public float DeltaTime;
 
-            void Execute(in ForceMovement forceMovement,ref PhysicsVelocity physicsVelocity,ref LocalTransform transform)
+            void Execute(in ForceMovement forceMovement,in ForceMovementTarget forceMovementTarget,ref PhysicsVelocity physicsVelocity,ref LocalTransform transform)
             {
-                float space = math.distance(forceMovement.TargetPoint,transform.Position);
+                float space = math.distance(forceMovementTarget.TargetPoint,transform.Position);
                 //已到达目的地则退出
                 if(space==0)
                 {
@@ -55,7 +55,7 @@ namespace FGUFW.Entities
 
                 float3 selfVelocity = physicsVelocity.Linear;
 
-                float3 targetDirection = math.normalize(forceMovement.TargetPoint-transform.Position);
+                float3 targetDirection = math.normalize(forceMovementTarget.TargetPoint-transform.Position);
                 // float3 selfDirection = math.normalize(selfVelocity);
 
                 //理想速度
@@ -79,10 +79,10 @@ namespace FGUFW.Entities
                 float moveSpace = math.length(selfVelocity*DeltaTime);
 
                 //如果当前帧移动会越过目标的 则代替物理系统位移
-                if(moveSpace>math.distance(transform.Position+selfVelocity*DeltaTime,forceMovement.TargetPoint))
+                if(moveSpace>math.distance(transform.Position+selfVelocity*DeltaTime,forceMovementTarget.TargetPoint))
                 {
                     selfVelocity = float3.zero;
-                    transform.Position = forceMovement.TargetPoint;
+                    transform.Position = forceMovementTarget.TargetPoint;
                 }
                 physicsVelocity.Linear = selfVelocity;
 

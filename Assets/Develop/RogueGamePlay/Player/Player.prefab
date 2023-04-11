@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 2743392904675562102}
   - component: {fileID: 1300429805070782899}
   - component: {fileID: 5486721674178938459}
+  - component: {fileID: 8503408380523353822}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -285,6 +286,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f029639903b069a4f9d48effae6d106c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HP: 0
+--- !u!114 &8503408380523353822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 304301291245772588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4acb4812e812aa84c93ea3406e2142a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Triggers: 256
+  ShootCount: 1
+  IntervalTime: 0.5
+  ShootAngle: 0
+  Attacker: {fileID: 5914597769931264382, guid: 818e9fe299722de4cb27bad8b906f4ce, type: 3}
+  ShootRound: 2
+  ReloadTime: 1
+  Direction: 0
 --- !u!1 &4054406533243158765
 GameObject:
   m_ObjectHideFlags: 0

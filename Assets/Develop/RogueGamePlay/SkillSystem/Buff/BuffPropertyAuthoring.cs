@@ -61,7 +61,6 @@ namespace RogueGamePlay
 
         public void Add(SKillBuff sKillBuff,float time)
         {
-            bool contains = false;
             for (int i = 0; i < _skillBuffs.Length; i++)
             {
                 var item = _skillBuffs.ElementAt(i);

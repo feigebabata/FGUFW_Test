@@ -10,34 +10,34 @@ namespace RogueGamePlay
         Everything = uint.MaxValue,
 
         /// <summary>
-        /// 普攻开始
+        /// 攻击体开始
         /// </summary>
-        SkillBegin = 1<<0,
+        AttackerBegin = 1<<0,
 
         /// <summary>
-        /// 普攻结束
+        /// 攻击体结束
         /// </summary>
-        SkillEnd = 1<<1,
+        AttackerEnd = 1<<1,
 
         /// <summary>
-        /// 普攻命中
+        /// 攻击命中
         /// </summary>
-        SkillHit = 1<<2,
+        AttackHit = 1<<2,
 
         /// <summary>
-        /// 普攻击杀
+        /// 攻击击杀
         /// </summary>
-        SkillKill = 1<<3,
+        AttackKill = 1<<3,
 
         /// <summary>
         /// 最后一发子弹
         /// </summary>
-        LastAttack = 1<<4,
+        LastShoot = 1<<4,
 
         /// <summary>
         /// 第一发子弹
         /// </summary>
-        FristAttack = 1<<5,
+        FristShoot = 1<<5,
 
         /// <summary>
         /// 经验拾取
@@ -48,6 +48,11 @@ namespace RogueGamePlay
         /// 死亡
         /// </summary>
         SelfDeath = 1<<7,
+
+        /// <summary>
+        /// 射击
+        /// </summary>
+        Shoot = 1<<8,
 
 
     }

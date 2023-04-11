@@ -1,22 +1,27 @@
 namespace RogueGamePlay
 {
-    public enum ShootDirectionType
+    public enum ShootDirectionType:int
     {
-        None,
-
         /// <summary>
         /// 瞄准
         /// </summary>
-        Aim,
+        Aim = 0,
 
         /// <summary>
         /// 逆瞄准
         /// </summary>
-        AimInverse,
+        AimInverse = 1,
 
         /// <summary>
         /// 最近的怪物
         /// </summary>
-        MonsterNear,
+        MonsterNear = 2,
+
+        /// <summary>
+        /// 玩家
+        /// </summary>
+        Player = 3,
+
+        Count = 4,
     }
 }

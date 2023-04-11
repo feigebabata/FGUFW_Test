@@ -45,7 +45,8 @@ namespace RogueGamePlay
         public float ShootAngle;
         public Entity Attacker;
         public int ShootRound;
-        public float ReloadTime; 
+        public float ReloadTime;
+        public float LastShootTime;
         public ShootDirectionType Direction;
     }
 }

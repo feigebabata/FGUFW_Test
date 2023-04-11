@@ -261,6 +261,7 @@ using Unity.Mathematics;
 using Unity.Collections;
 using Unity.Burst;
 using Unity.Transforms;
+using FGUFW.Entities;
 
 namespace RogueGamePlay
 {

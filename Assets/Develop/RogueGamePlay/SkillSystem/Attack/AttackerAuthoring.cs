@@ -10,7 +10,6 @@ namespace RogueGamePlay
         public float HitVelocity;
         public float Power;
         public float Time;
-        public float StartTime;
     }
 
     class AttackerBaker : Baker<AttackerAuthoring>
@@ -23,7 +22,6 @@ namespace RogueGamePlay
                 HitVelocity = authoring.HitVelocity,
                 Power = authoring.Power,
                 Time = authoring.Time,
-                StartTime = authoring.StartTime,
             });
         }
     }

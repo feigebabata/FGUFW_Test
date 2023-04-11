@@ -6,13 +6,17 @@ using Unity.Jobs;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Burst;
 using System;
+using Unity.Mathematics;
 
 namespace RogueGamePlay
 {
 
     public struct SkillEventData
     {
-
+        public SkillEvent Event;
+        public Entity Origin;
+        public Entity Target;
+        public float3 Position;
     }
 
     public struct SkillEventSingleton:IComponentData

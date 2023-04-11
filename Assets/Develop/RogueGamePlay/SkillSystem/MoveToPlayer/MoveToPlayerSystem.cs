@@ -41,7 +41,7 @@ namespace RogueGamePlay
             [ReadOnly]
             public float3 Position;
 
-            void Execute(in MoveToPlayer moveToPlayer,ref ForceMovement forceMovement)
+            void Execute(in MoveToPlayer moveToPlayer,ref ForceMovementTarget forceMovement)
             {
                 forceMovement.TargetPoint = Position;
             }

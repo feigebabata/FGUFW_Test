@@ -20,7 +20,7 @@ namespace RogueGamePlay
         {
             var singletonRW = SystemAPI.GetSingletonRW<GamePlayEventSingleton>();
 
-            foreach (var (flipRW,movementRW,controlRW,localTransform,entity) in SystemAPI.Query<RefRW<MaterialFlip>,RefRW<ForceMovement>,RefRW<PlayerMovementControl>,LocalTransform>().WithEntityAccess())
+            foreach (var (flipRW,movementRW,controlRW,localTransform,entity) in SystemAPI.Query<RefRW<MaterialFlip>,RefRW<ForceMovementTarget>,RefRW<PlayerMovementControl>,LocalTransform>().WithEntityAccess())
             {
                 float3 orientation = float3.zero;
 

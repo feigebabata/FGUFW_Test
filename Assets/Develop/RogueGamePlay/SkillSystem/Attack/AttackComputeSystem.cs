@@ -8,6 +8,8 @@ using Unity.Collections;
 using Unity.Burst;
 using Unity.Transforms;
 using Unity.Physics;
+using FGUFW.Entities;
+using Unity.Collections.LowLevel.Unsafe;
 
 namespace RogueGamePlay
 {
@@ -16,12 +18,16 @@ namespace RogueGamePlay
     {
         ComponentLookup<Monster> _monsters;
         ComponentLookup<Attacker> _attackers;
+        ComponentLookup<LocalTransform> _localTransforms;
+        ComponentLookup<PhysicsVelocity> _physicsVelocitys;
 
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
             _monsters = state.GetComponentLookup<Monster>(false);
             _attackers = state.GetComponentLookup<Attacker>(false);
+            _localTransforms = state.GetComponentLookup<LocalTransform>(false);
+            _physicsVelocitys = state.GetComponentLookup<PhysicsVelocity>(false);
 
             EntityQuery eq = new EntityQueryBuilder(Allocator.Temp).WithAll<Player>().Build(ref state);
             state.RequireForUpdate(eq);
@@ -32,6 +38,8 @@ namespace RogueGamePlay
         {
             _monsters.Update(ref state);
             _attackers.Update(ref state);
+            _localTransforms.Update(ref state);
+            _physicsVelocitys.Update(ref state);
 
             state.Dependency = new Job
             {
@@ -39,6 +47,9 @@ namespace RogueGamePlay
                 PlayerEntity = SystemAPI.GetSingletonEntity<Player>(),
                 Monsters = _monsters,
                 Attackers = _attackers,
+                SkillEventSingleton = SystemAPI.GetSingletonRW<SkillEventSingleton>(),
+                LocalTransforms = _localTransforms,
+                PhysicsVelocitys = _physicsVelocitys,
             }
             .Schedule(SystemAPI.GetSingleton<SimulationSingleton>(),state.Dependency);
         }
@@ -52,16 +63,22 @@ namespace RogueGamePlay
         [BurstCompile]
         partial struct Job : ITriggerEventsJob
         {
-            [ReadOnly]
             public ComponentLookup<Monster> Monsters;
 
-            [ReadOnly]
             public ComponentLookup<Attacker> Attackers;
 
-            [ReadOnly]
+            public ComponentLookup<LocalTransform> LocalTransforms;
+
+            public ComponentLookup<PhysicsVelocity> PhysicsVelocitys;
+
+            // [ReadOnly]
             public Entity PlayerEntity;
 
+            [NativeDisableUnsafePtrRestriction]
             public RefRW<Player> Player;
+
+            [NativeDisableUnsafePtrRestriction]
+            public RefRW<SkillEventSingleton> SkillEventSingleton;
 
             public void Execute(TriggerEvent triggerEvent)
             {
@@ -95,6 +112,20 @@ namespace RogueGamePlay
                 Player.ValueRW.HP = math.clamp(hp,0,float.MaxValue);
                 attacker.AttackCount--;
                 Attackers[attackerE] = attacker;
+
+                var hitPos = LocalTransforms[PlayerEntity].Position;
+                var hitVelocity = math.normalize(LocalTransforms[PlayerEntity].Position-LocalTransforms[attackerE].Position)*attacker.HitVelocity;
+                var physicsVelocity = PhysicsVelocitys[PlayerEntity];
+                physicsVelocity.Linear += hitVelocity;
+                PhysicsVelocitys[PlayerEntity] = physicsVelocity;
+                
+                SkillEventSingleton.ValueRW.Events.Add(new SkillEventData
+                {
+                    Event = SkillEvent.AttackHit,
+                    Origin = Entity.Null,
+                    Target = PlayerEntity,
+                    Position = hitPos,
+                });
             }
 
             void attackMonster(Entity attackerE,Entity monsterE)
@@ -106,6 +137,20 @@ namespace RogueGamePlay
                 Monsters[monsterE] = monster;
                 attacker.AttackCount--;
                 Attackers[attackerE] = attacker;
+
+                var hitPos = LocalTransforms[monsterE].Position;
+                var hitVelocity = math.normalize(LocalTransforms[monsterE].Position-LocalTransforms[attackerE].Position)*attacker.HitVelocity;
+                var physicsVelocity = PhysicsVelocitys[monsterE];
+                physicsVelocity.Linear += hitVelocity;
+                PhysicsVelocitys[monsterE] = physicsVelocity;
+
+                SkillEventSingleton.ValueRW.Events.Add(new SkillEventData
+                {
+                    Event = SkillEvent.AttackHit,
+                    Origin = Entity.Null,
+                    Target = monsterE,
+                    Position = LocalTransforms[monsterE].Position,
+                });
             }
 
         }

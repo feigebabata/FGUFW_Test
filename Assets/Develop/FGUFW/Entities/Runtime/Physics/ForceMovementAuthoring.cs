@@ -22,10 +22,14 @@ namespace FGUFW.Entities
     {
         public override void Bake(ForceMovementAuthoring authoring)
         {
-            AddComponent(GetEntity(TransformUsageFlags.Dynamic),new ForceMovement
+            var entity = GetEntity(TransformUsageFlags.Dynamic);
+            AddComponent(entity,new ForceMovement
             {
                 Force = authoring.Force,
                 MaxVelocity = authoring.MaxVelocity
+            });
+            AddComponent(entity,new ForceMovementTarget
+            {
             });
         }
     }
@@ -34,6 +38,10 @@ namespace FGUFW.Entities
     {
         public float Force;//动力 矫正当前速度的方向和大小
         public float MaxVelocity;//最大速度
+    }
+
+    public struct ForceMovementTarget:IComponentData
+    {
         public float3 TargetPoint;//目标方向
     }
 
