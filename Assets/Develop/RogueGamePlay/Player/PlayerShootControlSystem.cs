@@ -10,7 +10,7 @@ using Unity.Transforms;
 
 namespace RogueGamePlay
 {
-    public struct PlayerShootSingleton:IComponentData
+    public struct ShootDirectionSingleton:IComponentData
     {
         public NativeArray<float3> Points;
     }
@@ -30,7 +30,7 @@ namespace RogueGamePlay
             _eqMonster = new EntityQueryBuilder(Allocator.Temp).WithAll<Monster,LocalTransform>().Build(ref state);
 
             var ecb = new EntityCommandBuffer(Allocator.Temp);
-            ecb.AddComponent(ecb.CreateEntity(),new PlayerShootSingleton
+            ecb.AddComponent(ecb.CreateEntity(),new ShootDirectionSingleton
             {
                 Points = new NativeArray<float3>((int)ShootDirectionType.Count,Allocator.Persistent),
             });
@@ -39,7 +39,7 @@ namespace RogueGamePlay
 
         public void OnUpdate(ref SystemState state)
         {
-            var playerShootSingleton = SystemAPI.GetSingletonRW<PlayerShootSingleton>();
+            var playerShootSingleton = SystemAPI.GetSingletonRW<ShootDirectionSingleton>();
             var playerE = SystemAPI.GetSingletonEntity<Player>();
             var playerPos = SystemAPI.GetComponent<LocalTransform>(playerE).Position;
 

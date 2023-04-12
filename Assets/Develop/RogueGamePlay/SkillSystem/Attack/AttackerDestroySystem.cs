@@ -41,9 +41,9 @@ namespace RogueGamePlay
             [ReadOnly]
             public float Time;
 
-            void Execute([ChunkIndexInQuery] int chunkInQueryIndex,Entity entity,in Attacker attacker)
+            void Execute([ChunkIndexInQuery] int chunkInQueryIndex,Entity entity,in Attacker attacker,in StartTime startTime)
             {
-                if(attacker.AttackCount<=0 || attacker.StartTime+attacker.Time>Time)
+                if(attacker.AttackCount<=0 || startTime.Time+attacker.Time<Time)
                 {
                     ECB.DestroyEntity(chunkInQueryIndex,entity);
                 }

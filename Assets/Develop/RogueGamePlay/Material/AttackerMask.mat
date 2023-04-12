@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: BothCircle
-  m_Shader: {fileID: -6465566751694194690, guid: 2524d2c767f13f4468674a63a7e59df2, type: 3}
+  m_Name: AttackerMask
+  m_Shader: {fileID: -6465566751694194690, guid: 26ecfb46553201f4689a3c11c619bdbd, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -41,10 +41,13 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _QueueControl: 0
+    - _QueueOffset: 0
     - _Scale: 500
+    - _Size: 100
     m_Colors:
-    - _C1: {r: 0.25, g: 1, b: 0, a: 0}
-    - _C2: {r: 0.5, g: 0.5, b: 0, a: 0}
+    - _C1: {r: 1, g: 0.1, b: 0, a: 0}
+    - _C2: {r: 0.25, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &7323104387677609144
 MonoBehaviour:

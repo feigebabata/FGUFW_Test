@@ -1,6 +1,7 @@
 using System;
 using Unity.Mathematics;
 using UnityEngine;
+using Unity.Burst;
 
 namespace FGUFW
 {
@@ -379,6 +380,19 @@ namespace FGUFW
             if(l.y!=0 && r.y!=0)val.y=l.y/r.y;
             if(l.z!=0 && r.z!=0)val.z=l.z/r.z;
             return val;
+        }
+
+        /// <summary>
+        /// 射击夹角
+        /// </summary>
+        [BurstCompile]
+        public static float3 ShootAngle(float3 direction,float3 axis,float interval,int length,int index)
+        {
+            if(length<=1)return direction;
+            float angle = index*interval-interval*(length-1)/2;
+            var rotate = float4x4.AxisAngle(axis,math.radians(angle));
+            var dir = math.mul(new float4(direction,0),rotate);
+            return dir.xyz;
         }
 
     }

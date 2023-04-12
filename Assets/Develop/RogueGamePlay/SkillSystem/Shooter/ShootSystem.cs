@@ -10,6 +10,7 @@ using Unity.Transforms;
 using Unity.Physics;
 using FGUFW.Entities;
 using Unity.Collections.LowLevel.Unsafe;
+using FGUFW;
 
 namespace RogueGamePlay
 {
@@ -17,28 +18,34 @@ namespace RogueGamePlay
     [UpdateAfter(typeof(PlayerShootControlSystem))]
     partial struct ShootSystem : ISystem
     {
+        ComponentLookup<LocalTransform> _localTransforms;
+        BufferLookup<Shooter> _shooters;
+
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
             EntityQuery eq = new EntityQueryBuilder(Allocator.Temp).WithAll<Shooter>().Build(ref state);
             state.RequireForUpdate(eq);
+
+            _localTransforms = state.GetComponentLookup<LocalTransform>(true);
+            _shooters = state.GetBufferLookup<Shooter>(false);
         }
 
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            var playerE = SystemAPI.GetSingletonEntity<Player>();
-            var playerShooterRW = SystemAPI.GetComponentRW<Shooter>(playerE,false);
-            var playerLT = SystemAPI.GetComponent<LocalTransform>(playerE);
+            _localTransforms.Update(ref state);
+            _shooters.Update(ref state);
+
             var ecb = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);
-            var playerShootSingleton = SystemAPI.GetSingleton<PlayerShootSingleton>();
+            var playerShootSingleton = SystemAPI.GetSingleton<ShootDirectionSingleton>();
 
             state.Dependency = new ShootEventJob
             {
                 ECB = ecb,
-                PlayerShooter = playerShooterRW,
-                PlayerShootSingleton = playerShootSingleton,
-                PlayerLT = playerLT,
+                ShootDirection = playerShootSingleton,
+                Shooters = _shooters,
+                LocalTransforms = _localTransforms,
                 Time = (float)SystemAPI.Time.ElapsedTime,
             }
             .Schedule(SystemAPI.GetSingleton<SkillEventSingleton>(),state.Dependency);
@@ -51,44 +58,66 @@ namespace RogueGamePlay
             public EntityCommandBuffer ECB;
 
             [ReadOnly]
-            public PlayerShootSingleton PlayerShootSingleton;
+            public ShootDirectionSingleton ShootDirection;
 
-            [NativeDisableUnsafePtrRestriction]
-            public RefRW<Shooter> PlayerShooter;
+            // [NativeDisableUnsafePtrRestriction]
+            public BufferLookup<Shooter> Shooters;
 
-            public LocalTransform PlayerLT;
+            [ReadOnly]
+            public ComponentLookup<LocalTransform> LocalTransforms;
 
             public float Time;
 
             public void Execute(SkillEventData eventData)
             {
-                switch (eventData.Event)
-                {
-                    case SkillEvent.Shoot:
-                    {
-                        if(PlayerShooter.ValueRO.LastShootTime+PlayerShooter.ValueRO.IntervalTime<Time)
-                        {
-                            var attackerE = ECB.Instantiate(PlayerShooter.ValueRO.Attacker);
-                            var airPos = PlayerShootSingleton.Points[(int)PlayerShooter.ValueRO.Direction];
-                            var dir = new float3(1,0,0);
-                            if(!math.all(airPos==PlayerLT.Position))
-                            {
-                                dir = math.normalize(airPos-PlayerLT.Position);
-                            }
-                            
-                            ECB.SetComponent(attackerE,new ForceMovementTarget
-                            {
-                                TargetPoint = dir*10000,
-                            });
-                            ECB.SetComponent(attackerE,PlayerLT);
+                var entity = eventData.Origin;
+                if(!Shooters.HasBuffer(entity))return;
 
-                            PlayerShooter.ValueRW.LastShootTime = Time;
+                var startPoint = eventData.Position;
+                var shooters = Shooters[entity];
+                var localTransform = LocalTransforms[entity];
+
+                for (int i = 0; i < shooters.Length; i++)
+                {
+                    var shooter = shooters[i];
+                    if(new BitEnums<SkillEvent>((uint)shooter.Triggers)[(uint)eventData.Event])
+                    {
+                        if(shooter.LastShootTime+shooter.IntervalTime<Time)
+                        {
+                            var airPos = ShootDirection.Points[(int)shooter.Direction];
+                            var dir = new float3(1,0,0);
+                            if(!math.all(airPos==startPoint))
+                            {
+                                dir = math.normalize(airPos-startPoint);
+                            }
+
+                            var shootCount = shooter.ShootCount;
+                            var shootAngle = shooter.ShootAngle;
+                            
+                            for (int j = 0; j < shootCount; j++)
+                            {
+                                var d = VectorHelper.ShootAngle(dir,new float3(0,0,1),shootAngle,shootCount,j);
+                                var attackerE = ECB.Instantiate(shooter.Attacker);
+                                ECB.SetComponent(attackerE,new ForceMovementTarget
+                                {
+                                    TargetPoint = d*10000,
+                                });
+                                
+                                ECB.SetComponent(attackerE,localTransform);
+                                ECB.SetComponent(attackerE,new StartTime
+                                {
+                                    Time = Time,
+                                });
+
+                            }
+                            shooter.LastShootTime = Time;
+                            shooters[i] = shooter;
                         }
                     }
-                    break;
                 }
             }
         }
+
 
         [BurstCompile]
         partial struct AutoShootJob:IJobEntity

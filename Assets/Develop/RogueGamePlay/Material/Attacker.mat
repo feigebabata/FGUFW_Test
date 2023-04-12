@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Circle
+  m_Name: Attacker
   m_Shader: {fileID: -6465566751694194690, guid: 0cdfafc3692c15f42bc7c3d3af37a427, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -52,6 +52,7 @@ Material:
     m_Floats:
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Size: 100
-    m_Colors: []
+    - _Size: 30
+    m_Colors:
+    - _Color: {r: 0.6981132, g: 0.3457636, b: 0.3457636, a: 1}
   m_BuildTextureStacks: []

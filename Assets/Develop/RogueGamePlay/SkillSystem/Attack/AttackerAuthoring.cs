@@ -35,6 +35,5 @@ namespace RogueGamePlay
         public float HitVelocity;
         public float Power;
         public float Time;
-        public float StartTime;
     }
 }
