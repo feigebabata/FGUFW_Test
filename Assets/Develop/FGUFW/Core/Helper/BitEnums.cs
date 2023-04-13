@@ -36,6 +36,9 @@ namespace FGUFW
             }
         }
 
+        /// <summary>
+        /// 不能用于Burst
+        /// </summary>
         public bool this[E e]
         {
             get

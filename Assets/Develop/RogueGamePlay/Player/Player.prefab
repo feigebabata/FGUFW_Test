@@ -302,7 +302,7 @@ MonoBehaviour:
   Datas:
   - Triggers: 256
     ShootCount: 20
-    IntervalTime: 0.1
+    IntervalTime: 0.2
     ShootAngle: 10
     Attacker: {fileID: 5914597769931264382, guid: 818e9fe299722de4cb27bad8b906f4ce, type: 3}
     ShootRound: 0
@@ -310,7 +310,7 @@ MonoBehaviour:
     Direction: 0
   - Triggers: 256
     ShootCount: 1
-    IntervalTime: 0.1
+    IntervalTime: 0.2
     ShootAngle: 10
     Attacker: {fileID: 5914597769931264382, guid: 818e9fe299722de4cb27bad8b906f4ce, type: 3}
     ShootRound: 0
