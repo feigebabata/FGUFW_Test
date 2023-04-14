@@ -47,7 +47,7 @@ namespace RogueGamePlay
                 PlayerEntity = SystemAPI.GetSingletonEntity<Player>(),
                 Monsters = _monsters,
                 Attackers = _attackers,
-                SkillEventSingleton = SystemAPI.GetSingletonRW<SkillEventSingleton>(),
+                Events= SystemAPI.GetSingleton<SkillEventSingleton>().Events,
                 LocalTransforms = _localTransforms,
                 PhysicsVelocitys = _physicsVelocitys,
             }
@@ -71,14 +71,13 @@ namespace RogueGamePlay
 
             public ComponentLookup<PhysicsVelocity> PhysicsVelocitys;
 
-            // [ReadOnly]
             public Entity PlayerEntity;
 
             [NativeDisableUnsafePtrRestriction]
             public RefRW<Player> Player;
 
-            [NativeDisableUnsafePtrRestriction]
-            public RefRW<SkillEventSingleton> SkillEventSingleton;
+            // [NativeDisableUnsafePtrRestriction]
+            public NativeList<SkillEventData> Events;
 
             public void Execute(TriggerEvent triggerEvent)
             {
@@ -119,7 +118,7 @@ namespace RogueGamePlay
                 physicsVelocity.Linear += hitVelocity;
                 PhysicsVelocitys[PlayerEntity] = physicsVelocity;
                 
-                SkillEventSingleton.ValueRW.Events.Add(new SkillEventData
+                Events.Add(new SkillEventData
                 {
                     Event = SkillEvent.AttackHit,
                     Origin = Entity.Null,
@@ -144,7 +143,7 @@ namespace RogueGamePlay
                 physicsVelocity.Linear += hitVelocity;
                 PhysicsVelocitys[monsterE] = physicsVelocity;
 
-                SkillEventSingleton.ValueRW.Events.Add(new SkillEventData
+                Events.Add(new SkillEventData
                 {
                     Event = SkillEvent.AttackHit,
                     Origin = Entity.Null,

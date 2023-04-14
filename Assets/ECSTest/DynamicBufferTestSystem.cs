@@ -25,7 +25,7 @@ namespace NAME_SPACE
                 ls.Add(i);
             }
             // Debug.Log(ls.Length);
-            ls.Dispose();
+            // ls.Dispose();
         }
     }
 }

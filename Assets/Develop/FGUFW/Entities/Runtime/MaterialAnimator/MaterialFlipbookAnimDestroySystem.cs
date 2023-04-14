@@ -49,14 +49,12 @@ namespace FGUFW.Entities
             {
                 ecb.RemoveComponent<MaterialFlipbookAnimUpdate>(entitys);
             }
-            entitys.Dispose();
 
             entitys = _switchEQ.ToEntityArray(Allocator.Temp);
             if(entitys.Length>0)
             {
                 ecb.RemoveComponent<MaterialFlipbookAnimationSwitch>(entitys);
             }
-            entitys.Dispose();
         }
 
         [BurstCompile]

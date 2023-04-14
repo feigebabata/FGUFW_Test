@@ -257,21 +257,6 @@ namespace FGUFW
             return distance <= d;
         }
 
-        /// <summary>
-        /// 在圆内随机位置
-        /// </summary>
-        /// <param name="centerPoint"></param>
-        /// <param name="radius"></param>
-        /// <returns></returns>
-        public static Vector3 RandomInCircle(Vector3 centerPoint,float radius)
-        {
-            Vector3 dir = Vector3.zero;
-            dir.x = UnityEngine.Random.Range(-radius,radius);
-            dir.y = UnityEngine.Random.Range(-radius,radius);
-            dir = dir.normalized;
-            dir *= UnityEngine.Random.Range(0,radius);
-            return centerPoint + dir;
-        }
 
         /// <summary>
         /// Transform转Rect
@@ -393,6 +378,18 @@ namespace FGUFW
             var rotate = float4x4.AxisAngle(axis,math.radians(angle));
             var dir = math.mul(new float4(direction,0),rotate);
             return dir.xyz;
+        }
+
+        [BurstCompile]
+        public static float2 RandomInCircle(uint seed,float min,float max)
+        {
+            var random = new Unity.Mathematics.Random();
+            random.InitState(seed);
+            var point = new float2(random.NextFloat(min,max),0);
+            var rotate = float4x4.AxisAngle(new float3(0,0,1),random.NextFloat(0,math.PI));
+            point = math.mul(new float4(point,0,0),rotate).xy;
+            Debug.Log(point);
+            return point;
         }
 
     }

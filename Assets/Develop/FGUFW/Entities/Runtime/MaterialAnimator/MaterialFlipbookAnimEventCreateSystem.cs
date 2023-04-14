@@ -39,7 +39,6 @@ namespace FGUFW.Entities
             {
                 allEventCount += animator.EventCount;
             }
-            animators.Dispose();
 
             if(singletonRW.ValueRO.Events.Capacity<allEventCount)
             {

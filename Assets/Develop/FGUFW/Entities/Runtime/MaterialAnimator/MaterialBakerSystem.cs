@@ -24,7 +24,6 @@ namespace FGUFW.Entities
             var ecb = new EntityCommandBuffer(Allocator.Temp);
             ecb.AddComponent(ecb.CreateEntity(),new MaterialsSingleton());
             ecb.Playback(state.EntityManager);
-            ecb.Dispose();
         }
 
         public void OnUpdate(ref SystemState state)
