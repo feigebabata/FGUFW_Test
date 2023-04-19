@@ -15,17 +15,13 @@ namespace NAME_SPACE
     partial struct DynamicBufferTestSystem : ISystem
     {
 
-
         public void OnUpdate(ref SystemState state)
         {
-            NativeList<int> ls = new NativeList<int>(Allocator.Temp);
-
-            for (int i = 0; i < 1000; i++)
+            foreach (var (item,entity) in SystemAPI.Query<LocalTransform>().WithEntityAccess())
             {
-                ls.Add(i);
+                SystemAPI.SetComponentEnabled<DynamicBufferTest>(entity,false);
+                Debug.Log(item);
             }
-            // Debug.Log(ls.Length);
-            // ls.Dispose();
         }
     }
 }

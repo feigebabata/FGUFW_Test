@@ -20,7 +20,7 @@ namespace NAME_SAPCE
         }
     }
 
-    public struct DynamicBufferTest:IComponentData
+    public struct DynamicBufferTest:IComponentData,IEnableableComponent
     {
         public int Value;
     }
@@ -29,4 +29,30 @@ namespace NAME_SAPCE
     {
         public int Value;
     }
+
+
+
+
+    public struct Base_A:IComponentData
+    {
+        public int ID;
+    }
+
+    public interface IBase_B
+    {
+        int ID{get;set;}
+    }
+
+    //与Base_A组合使用
+    public struct SKill_A:IComponentData
+    {
+
+    }
+
+
+    public struct SKill_B : IComponentData, IBase_B
+    {
+        public int ID{get;set;}
+    }
+
 }
