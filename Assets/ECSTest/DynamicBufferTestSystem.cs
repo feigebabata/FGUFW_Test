@@ -14,14 +14,31 @@ namespace NAME_SPACE
     [BurstCompile]
     partial struct DynamicBufferTestSystem : ISystem
     {
+        private ComponentLookup<DynamicBufferTest> _compLockUp;
+        private EntityQuery _eq;
+        private Entity _entity;
+
+        public void OnCreate(ref SystemState state)
+        {
+            _compLockUp = state.GetComponentLookup<DynamicBufferTest>(false);
+            _eq = new EntityQueryBuilder(Allocator.Temp).WithAll<DynamicBufferTest>().Build(ref state);
+        }
 
         public void OnUpdate(ref SystemState state)
         {
-            foreach (var (item,entity) in SystemAPI.Query<LocalTransform>().WithEntityAccess())
-            {
-                SystemAPI.SetComponentEnabled<DynamicBufferTest>(entity,false);
-                Debug.Log(item);
-            }
+            // _compLockUp.Update(ref state);
+
+            // var comps = _eq.ToEntityArray(Allocator.Temp);
+            // Debug.Log(comps.Length);
+
+            // foreach (var (item,entity) in SystemAPI.Query<DynamicBufferTest>().WithEntityAccess())
+            // {
+            //     SystemAPI.SetComponentEnabled<DynamicBufferTest>(entity,false);
+            //     Debug.Log(item);
+            //     _entity = entity;
+            // }
+            // Debug.Log(_compLockUp[_entity]);
+
         }
     }
 }

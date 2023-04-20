@@ -69,7 +69,7 @@ namespace RogueGamePlay
                 pos.z = 0;
 
                 playerShootSingleton.ValueRW.Points[(int)ShootDirectionType.Aim] = pos;
-                playerShootSingleton.ValueRW.Points[(int)ShootDirectionType.AimInverse] = -pos;
+                playerShootSingleton.ValueRW.Points[(int)ShootDirectionType.AimInverse] = pos*-1;
 
                 var skillEventSingleton = SystemAPI.GetSingletonRW<SkillEventSingleton>();
                 skillEventSingleton.ValueRW.Events.Add(new SkillEventData
