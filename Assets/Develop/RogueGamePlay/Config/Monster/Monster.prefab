@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 563359408470188986}
   - component: {fileID: 8398587097456151216}
   - component: {fileID: 7178323740592836750}
-  - component: {fileID: 3666061585126972803}
+  - component: {fileID: 1541886475630334850}
   m_Layer: 8
   m_Name: Monster
   m_TagString: Untagged
@@ -249,9 +249,9 @@ MonoBehaviour:
     y: 0
     z: 0
   m_PrimitiveSize:
-    x: 100
-    y: 100
-    z: 100
+    x: 50
+    y: 50
+    z: 50
   m_PrimitiveOrientation:
     Value:
       x: -0
@@ -259,15 +259,15 @@ MonoBehaviour:
       z: 0
     RotationOrder: 4
   m_Capsule:
-    Height: 100
-    Radius: 50
+    Height: 50
+    Radius: 25
     Axis: 2
   m_Cylinder:
-    Height: 100
-    Radius: 50
+    Height: 50
+    Radius: 25
     Axis: 2
   m_CylinderSideCount: 20
-  m_SphereRadius: 50
+  m_SphereRadius: 25
   m_MinimumSkinnedVertexWeight: 0.1
   m_ConvexHullGenerationParameters:
     m_SimplificationTolerance: 0.015
@@ -403,7 +403,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HP: 10
---- !u!114 &3666061585126972803
+--- !u!114 &1541886475630334850
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -421,9 +421,9 @@ MonoBehaviour:
     y: 0
     z: 0
   m_PrimitiveSize:
-    x: 200
-    y: 200
-    z: 200
+    x: 60
+    y: 60
+    z: 60
   m_PrimitiveOrientation:
     Value:
       x: 0
@@ -431,15 +431,15 @@ MonoBehaviour:
       z: 0
     RotationOrder: 4
   m_Capsule:
-    Height: 200
-    Radius: 100
+    Height: 60
+    Radius: 30
     Axis: 2
   m_Cylinder:
-    Height: 200
-    Radius: 100
+    Height: 60
+    Radius: 30
     Axis: 2
   m_CylinderSideCount: 20
-  m_SphereRadius: 100
+  m_SphereRadius: 30
   m_MinimumSkinnedVertexWeight: 0.1
   m_ConvexHullGenerationParameters:
     m_SimplificationTolerance: 0.015
