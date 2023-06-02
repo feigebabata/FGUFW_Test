@@ -11,6 +11,8 @@ namespace FGUFW.CSV
     public static class Csv2Csharp
     {
         const string Extension = ".csv";
+
+        static string codeGenDirectory => $"{Application.dataPath}/CodeGen/CSV";
         
 
         [MenuItem("Assets/Csv2Csharp")]
@@ -20,6 +22,11 @@ namespace FGUFW.CSV
             if(selects==null)
             {
                 return;
+            }
+
+            if(!Directory.Exists(codeGenDirectory))
+            {
+                Directory.CreateDirectory(codeGenDirectory);
             }
 
             //筛选csv文件
@@ -37,7 +44,8 @@ namespace FGUFW.CSV
             foreach (var path in paths)
             {
                 var table = CsvHelper.Parse2(File.ReadAllText(path));
-                var savePath = path.Replace(Extension,".cs");
+                var name = Path.GetFileNameWithoutExtension(path);
+                var savePath = $"{codeGenDirectory}/{name}.cs";
                 var csharptype = table[0,1];
                 switch (csharptype)
                 {

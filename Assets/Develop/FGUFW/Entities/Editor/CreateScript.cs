@@ -9,25 +9,295 @@ namespace FGUFW.Entities
 {
     static class CreateScript
     {
-        [MenuItem("Assets/Create/FGUFW/ISystem Script",false,80)]
+        const string NAME_SPACE = "RogueGamePlay";
+
+        [MenuItem("Assets/Create/Entities Script/ISystem",false,80)]
         static void createSystem()
         {
             string createPath = EditorUtils.EditorUtils.GetSeleceFolderPath()+"/System.cs";
             ProjectWindowUtil.StartNameEditingIfProjectWindowExists(0,ScriptableObject.CreateInstance<CreateISystemScript>(),createPath,null,null);
         }
         
-        [MenuItem("Assets/Create/FGUFW/IComponentData Script",false,80)]
+        [MenuItem("Assets/Create/Entities Script/IComponentData",false,80)]
         static void createComponent()
         {
             string createPath = EditorUtils.EditorUtils.GetSeleceFolderPath()+"/Component.cs";
             ProjectWindowUtil.StartNameEditingIfProjectWindowExists(0,ScriptableObject.CreateInstance<CreateComponentScript>(),createPath,null,null);
         }
         
-        [MenuItem("Assets/Create/FGUFW/EventSystem",false,80)]
+        [MenuItem("Assets/Create/Entities Script/EventSystem",false,80)]
         static void createEventSystem()
         {
             string createPath = EditorUtils.EditorUtils.GetSeleceFolderPath()+"/Event";
             ProjectWindowUtil.StartNameEditingIfProjectWindowExists(0,ScriptableObject.CreateInstance<CreateEventSystem>(),createPath,null,null);
+        }
+        
+        [MenuItem("Assets/Create/Entities Script/ActivePart",false,80)]
+        static void createActivePartSystem()
+        {
+            string createPath = EditorUtils.EditorUtils.GetSeleceFolderPath()+"/Part";
+            ProjectWindowUtil.StartNameEditingIfProjectWindowExists(0,ScriptableObject.CreateInstance<CreateActivePartSystem>(),createPath,null,null);
+        }
+
+        class CreateActivePartSystem : EndNameEditAction
+        {
+
+            public override void Action(int instanceId, string pathName, string resourceFile)
+            {
+                //创建资源
+                UnityEngine.Object obj = CreateScriptAssetFromTemplate(pathName, resourceFile);
+                ProjectWindowUtil.ShowCreatedAsset(obj);//高亮显示资源
+            }
+    
+            internal static UnityEngine.Object CreateScriptAssetFromTemplate(string filePath, string resourceFile)
+            {
+                var dirPath = filePath;
+                if(!Directory.Exists(dirPath))
+                {
+                    Directory.CreateDirectory(dirPath);
+                }
+                var className = Path.GetFileName(dirPath);
+
+                var authoringScriptText = 
+@"using Unity.Entities;
+using UnityEngine;
+using Unity.Mathematics;
+using FGUFW.Entities;
+using FGUFW;
+
+namespace |NAME_SPACE|
+{
+    [DisallowMultipleComponent]
+    public class |CLASS_NAME|Authoring:MonoBehaviour
+    {
+    }
+
+    class |CLASS_NAME|Baker : Baker<|CLASS_NAME|Authoring>
+    {
+        public override void Bake(|CLASS_NAME|Authoring authoring)
+        {
+            var entity = GetEntity(authoring,TransformUsageFlags.Dynamic);
+            AddComponent(entity,new |CLASS_NAME|
+            {
+            });
+            AddComponent(entity,new |CLASS_NAME|Enable
+            {
+            });
+        }
+    }
+
+    public struct |CLASS_NAME|Enable : IPartActiveEnable{}
+
+    public struct |CLASS_NAME| : IPartActive
+    {
+        public int ActiveID => 0;
+
+        public int ActiveLayer => 0;
+
+        public int ActiveLevel => 0;
+        
+        public PartEnable PrevEnable{get;set;}
+        
+        public float SetEnableTime{get;set;}
+    }
+
+}
+
+";              
+                var enableScriptText = 
+@"using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using System;
+using Unity.Entities;
+using Unity.Mathematics;
+using Unity.Collections;
+using Unity.Burst;
+using Unity.Transforms;
+using FGUFW.Entities;
+using FGUFW;
+
+namespace |NAME_SPACE|
+{
+    [BurstCompile]
+    [UpdateInGroup(typeof(PartActiveEnableSystemGroup))]
+    partial struct |CLASS_NAME|EnableSystem : ISystem
+    {
+        [BurstCompile]
+        public void OnCreate(ref SystemState state)
+        {
+            EntityQuery eq = new EntityQueryBuilder(Allocator.Temp).WithAll<|CLASS_NAME|>().Build(ref state);
+            state.RequireForUpdate(eq);
+        }
+
+        [BurstCompile]
+        public void OnUpdate(ref SystemState state)
+        {
+            var ecb = SystemAPI.GetSingleton<PartActiveEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);
+            state.Dependency = new Job
+            {
+                ECBP = ecb.AsParallelWriter(),
+                Time = (float)SystemAPI.Time.ElapsedTime,
+            }
+            .ScheduleParallel(state.Dependency);
+        }
+
+        [BurstCompile]
+        partial struct Job:IJobEntity
+        {
+            public EntityCommandBuffer.ParallelWriter ECBP;
+            public float Time;
+
+            void Execute([ChunkIndexInQuery] int chunkInQueryIndex,Entity entity,in PartActive partActive,ref |CLASS_NAME| part)
+            {
+                var enable = partActive.IsActive(part.ActiveLayer,part.ActiveID);
+                if(enable!=part.PrevEnable)
+                {
+                    ECBP.SetComponentEnabled<|CLASS_NAME|Enable>(chunkInQueryIndex,entity,enable==PartEnable.Enabled);
+                    part.PrevEnable = enable;
+                    part.SetEnableTime = Time;
+                    if(enable==PartEnable.Enabled)
+                    {
+                        //onEnable
+
+                    }
+                    else
+                    {
+                        //onDisable
+
+                    }
+                }
+            }
+        }
+    }
+}
+
+";  
+                var checkScriptText = 
+@"using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using System;
+using Unity.Entities;
+using Unity.Mathematics;
+using Unity.Collections;
+using Unity.Burst;
+using Unity.Transforms;
+using FGUFW.Entities;
+using FGUFW;
+
+namespace |NAME_SPACE|
+{
+    [BurstCompile]
+    [UpdateInGroup(typeof(PartActiveCheckSystemGroup))]
+    partial struct |CLASS_NAME|CheckSystem : ISystem
+    {
+        [BurstCompile]
+        public void OnCreate(ref SystemState state)
+        {
+            EntityQuery eq = new EntityQueryBuilder(Allocator.Temp).WithAll<|CLASS_NAME|>().Build(ref state);
+            state.RequireForUpdate(eq);
+        }
+
+        [BurstCompile]
+        public void OnUpdate(ref SystemState state)
+        {
+            state.Dependency = new Job
+            {
+            }.ScheduleParallel(state.Dependency);
+        }
+
+
+        [BurstCompile]
+        partial struct Job:IJobEntity
+        {
+            void Execute(ref PartActive partActive,in |CLASS_NAME| part)
+            {
+                var enable = false;
+                if(enable)
+                {
+                    partActive.SetActive(part.ActiveLayer,part.ActiveID,part.ActiveLevel);
+                }
+            }
+        }
+    }
+}
+
+";  
+                var executeScriptText = 
+@"using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using System;
+using Unity.Entities;
+using Unity.Mathematics;
+using Unity.Collections;
+using Unity.Burst;
+using Unity.Transforms;
+using FGUFW.Entities;
+using FGUFW;
+
+namespace |NAME_SPACE|
+{
+    [BurstCompile]
+    partial struct |CLASS_NAME|ExecuteSystem : ISystem
+    {
+        [BurstCompile]
+        public void OnCreate(ref SystemState state)
+        {
+            EntityQuery eq = new EntityQueryBuilder(Allocator.Temp).WithAll<|CLASS_NAME|>().Build(ref state);
+            state.RequireForUpdate(eq);
+        }
+
+        [BurstCompile]
+        public void OnUpdate(ref SystemState state)
+        {
+            state.Dependency = new Job
+            {
+            }.ScheduleParallel(state.Dependency);
+        }
+
+        [BurstCompile]
+        partial struct Job:IJobEntity
+        {
+            void Execute
+            (
+                [ChunkIndexInQuery] int chunkInQueryIndex,
+                Entity entity,
+                ref |CLASS_NAME| part,
+                in |CLASS_NAME|Enable partEnable
+            )
+            {
+                
+            }
+        }
+    }
+}
+
+";
+                authoringScriptText = authoringScriptText.Replace("|CLASS_NAME|",className);
+                enableScriptText = enableScriptText.Replace("|CLASS_NAME|",className);
+                checkScriptText = checkScriptText.Replace("|CLASS_NAME|",className);
+                executeScriptText = executeScriptText.Replace("|CLASS_NAME|",className);
+                
+                authoringScriptText = authoringScriptText.Replace("|NAME_SPACE|",NAME_SPACE);
+                enableScriptText = enableScriptText.Replace("|NAME_SPACE|",NAME_SPACE);
+                checkScriptText = checkScriptText.Replace("|NAME_SPACE|",NAME_SPACE);
+                executeScriptText = executeScriptText.Replace("|NAME_SPACE|",NAME_SPACE);
+
+                var authoringPath = $"{dirPath}/I{className}Authoring.cs";
+                var enablePath = $"{dirPath}/{className}EnableSystem.cs";
+                var checkPath = $"{dirPath}/{className}CheckSystem.cs";
+                var executePath = $"{dirPath}/{className}ExecuteSystem.cs";
+                File.WriteAllText(authoringPath,authoringScriptText,Encoding.UTF8);
+                File.WriteAllText(enablePath,enableScriptText,Encoding.UTF8);
+                File.WriteAllText(checkPath,checkScriptText,Encoding.UTF8);
+                File.WriteAllText(executePath,executeScriptText,Encoding.UTF8);
+                //刷新资源管理器
+                AssetDatabase.ImportAsset(filePath);
+                AssetDatabase.Refresh();
+                return AssetDatabase.LoadAssetAtPath(dirPath, typeof(UnityEngine.Object));
+            }
         }
 
         class CreateEventSystem : EndNameEditAction
@@ -59,7 +329,7 @@ using Unity.Collections.LowLevel.Unsafe;
 using Unity.Burst;
 using System;
 
-namespace RogueGamePlay
+namespace |NAME_SPACE|
 {
 
     public struct |CLASS_NAME|Data
@@ -144,7 +414,7 @@ namespace RogueGamePlay
 using Unity.Collections;
 using Unity.Burst;
 
-namespace RogueGamePlay
+namespace |NAME_SPACE|
 {
     /// <summary>
     /// 在事件添加之前执行
@@ -179,6 +449,10 @@ namespace RogueGamePlay
 ";
                 iJobScriptText = iJobScriptText.Replace("|CLASS_NAME|",className);
                 destroyScriptText = destroyScriptText.Replace("|CLASS_NAME|",className);
+
+                iJobScriptText = iJobScriptText.Replace("|NAME_SPACE|",NAME_SPACE);
+                destroyScriptText = destroyScriptText.Replace("|NAME_SPACE|",NAME_SPACE);
+
                 var IjobPath = $"{dirPath}/I{className}Job.cs";
                 var destroyPath = $"{dirPath}/{className}DestroySystem.cs";
                 File.WriteAllText(IjobPath,iJobScriptText,Encoding.UTF8);
@@ -206,9 +480,12 @@ namespace RogueGamePlay
 @"using Unity.Entities;
 using UnityEngine;
 using Unity.Mathematics;
+using FGUFW.Entities;
+using FGUFW;
 
-namespace RogueGamePlay
+namespace |NAME_SPACE|
 {
+    [DisallowMultipleComponent]
     public class |CLASS_NAME|Authoring:MonoBehaviour
     {
     }
@@ -217,7 +494,8 @@ namespace RogueGamePlay
     {
         public override void Bake(|CLASS_NAME|Authoring authoring)
         {
-            AddComponent(GetEntity(TransformUsageFlags.Dynamic),new |CLASS_NAME|
+            var entity = GetEntity(authoring,TransformUsageFlags.Dynamic);
+            AddComponent(entity,new |CLASS_NAME|
             {
             });
         }
@@ -229,7 +507,11 @@ namespace RogueGamePlay
 }
 ";
                 var className = Path.GetFileName(filePath).Replace(".cs","");
+
                 scriptText = scriptText.Replace("|CLASS_NAME|",className);
+
+                scriptText = scriptText.Replace("|NAME_SPACE|",NAME_SPACE);
+
                 filePath = filePath.Replace($"{className}.cs",$"{className}Authoring.cs");
                 File.WriteAllText(filePath,scriptText,Encoding.UTF8);
                 //刷新资源管理器
@@ -262,8 +544,9 @@ using Unity.Collections;
 using Unity.Burst;
 using Unity.Transforms;
 using FGUFW.Entities;
+using FGUFW;
 
-namespace RogueGamePlay
+namespace |NAME_SPACE|
 {
     [BurstCompile]
     partial struct |CLASS_NAME| : ISystem
@@ -301,7 +584,11 @@ namespace RogueGamePlay
 }
 ";
                 var className = Path.GetFileName(filePath).Replace(".cs","");
+
                 scriptText = scriptText.Replace("|CLASS_NAME|",className);
+
+                scriptText = scriptText.Replace("|NAME_SPACE|",NAME_SPACE);
+
                 File.WriteAllText(filePath,scriptText,Encoding.UTF8);
                 //刷新资源管理器
                 AssetDatabase.ImportAsset(filePath);

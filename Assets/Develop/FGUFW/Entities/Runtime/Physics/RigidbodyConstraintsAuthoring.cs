@@ -11,6 +11,7 @@ using Unity.Physics.Systems;
 
 namespace FGUFW.Entities
 {
+    [DisallowMultipleComponent]
     public class RigidbodyConstraintsAuthoring : MonoBehaviour
     {
         public bool3 FreezeRotation;

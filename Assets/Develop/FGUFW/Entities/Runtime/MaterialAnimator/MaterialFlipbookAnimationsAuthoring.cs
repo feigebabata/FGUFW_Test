@@ -12,6 +12,7 @@ using Unity.Collections.LowLevel.Unsafe;
 namespace FGUFW.Entities
 {
     [AddComponentMenu("MaterialFlipbookAnim/Animations")]
+    [DisallowMultipleComponent]
     public class MaterialFlipbookAnimationsAuthoring : MonoBehaviour
     {
         public MaterialFlipbookAnimationsBakerData.Animation[] Animations;
@@ -26,19 +27,21 @@ namespace FGUFW.Entities
         public class Animation
         {
             public MaterialFlipbookAnimation Anim;
-            public MaterialFlipbookAnimEventData[] Events;
+            // public MaterialFlipbookAnimEventData[] Events;
         }  
     }
 
     public struct MaterialFlipbookAnimations:IBufferElementData
     {
         public MaterialFlipbookAnimationData Anim;
-        public UnsafeList<MaterialFlipbookAnimEventData> Events;
+        // public UnsafeList<MaterialFlipbookAnimEventData> Events;
     }
 
-    public struct MaterialFlipbookAnimationSwitch:IComponentData
+    public struct MaterialFlipbookAnimationSwitch:IComponentData,IEnableableComponent
     {
         public int AnimationID;
+        public bool Loop;
+        public float Speed;
     }
 
 
@@ -46,7 +49,7 @@ namespace FGUFW.Entities
     {
         public override void Bake(MaterialFlipbookAnimationsAuthoring authoring)
         {
-            var entity = GetEntity(TransformUsageFlags.Dynamic);
+            var entity = GetEntity(authoring,TransformUsageFlags.Dynamic);
             AddComponentObject(entity,new MaterialFlipbookAnimationsBakerData
             {
                 Animations = authoring.Animations,

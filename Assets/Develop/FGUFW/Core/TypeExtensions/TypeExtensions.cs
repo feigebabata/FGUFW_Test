@@ -130,5 +130,10 @@ namespace FGUFW
             All_MEMBER).GetValue(self);
         }
 
+        public static T Instance<T>(this Type self, params object[] args)
+        {
+            return (T)System.Activator.CreateInstance(self,args);
+        }
+
     }
 }

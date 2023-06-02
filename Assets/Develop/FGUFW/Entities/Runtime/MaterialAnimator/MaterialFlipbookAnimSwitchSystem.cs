@@ -8,6 +8,8 @@ using Unity.Collections;
 using UnityEngine.Rendering;
 using Unity.Burst;
 
+#pragma warning disable CS0282
+
 namespace FGUFW.Entities
 {
     [UpdateInGroup(typeof(MaterialFlipbookAnimatorSystemGroup))]
@@ -29,7 +31,7 @@ namespace FGUFW.Entities
             var ecb = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);
             state.Dependency = new AnimSwitchJob
             {
-                ECB = ecb.AsParallelWriter(),
+                ECBP = ecb.AsParallelWriter(),
             }
             .ScheduleParallel(state.Dependency);
             // state.Dependency.Complete();
@@ -37,12 +39,15 @@ namespace FGUFW.Entities
 
         partial struct AnimSwitchJob:IJobEntity
         {
-            public EntityCommandBuffer.ParallelWriter ECB;
+            public EntityCommandBuffer.ParallelWriter ECBP;
 
-            void Execute([ChunkIndexInQuery] int chunkInQueryIndex,ref MaterialFlipbookAnimatorAspect aspect,in MaterialFlipbookAnimationSwitch animSwitch)
+            void Execute([ChunkIndexInQuery] int chunkInQueryIndex,MaterialFlipbookAnimatorAspect aspect,in MaterialFlipbookAnimationSwitch animSwitch,in Entity entity)
             {
                 aspect.AnimationID = animSwitch.AnimationID;
-                ECB.RemoveComponent<MaterialFlipbookAnimationSwitch>(chunkInQueryIndex,aspect.Self);
+                aspect.Loop = animSwitch.Loop;
+                aspect.Speed = animSwitch.Speed;
+                
+                ECBP.SetComponentEnabled<MaterialFlipbookAnimationSwitch>(chunkInQueryIndex,entity,false);
             }
         }
 
@@ -54,7 +59,7 @@ namespace FGUFW.Entities
         readonly RefRW<MaterialFlipbookAnimator> _animator;
         readonly RefRW<MaterialFlipbookAnimationData> _animation;
         readonly DynamicBuffer<MaterialFlipbookAnimations> _animations;
-        readonly DynamicBuffer<MaterialFlipbookAnimEventData> _events;
+        // readonly DynamicBuffer<MaterialFlipbookAnimEventData> _events;
         readonly RefRW<MaterialMeshInfo> _mmInfo;
         readonly RefRW<MaterialFlipbookIndex> _mfIndex;
 
@@ -72,15 +77,15 @@ namespace FGUFW.Entities
                     {
                         _animation.ValueRW = item.Anim;
 
-                        _events.Clear();
-                        foreach (var eventData in item.Events)
-                        {
-                            _events.Add(eventData);
-                        }
+                        // _events.Clear();
+                        // foreach (var eventData in item.Events)
+                        // {
+                        //     _events.Add(eventData);
+                        // }
 
                         _animator.ValueRW.Time=0;
                         _animator.ValueRW.FrameIndex=-1;
-                        _animator.ValueRW.EventCount=_events.Length;
+                        // _animator.ValueRW.EventCount=_events.Length;
 
                         _mmInfo.ValueRW.MaterialID = item.Anim.MaterialID;
                         _mfIndex.ValueRW.Value = item.Anim.Start;
@@ -88,6 +93,30 @@ namespace FGUFW.Entities
                         return;
                     }
                 }
+            }
+        }
+
+        public bool Loop
+        {
+            get
+            {
+                return _animator.ValueRW.Loop;
+            }
+            set
+            {
+                _animator.ValueRW.Loop = value;
+            }
+        }
+
+        public float Speed
+        {
+            get
+            {
+                return _animator.ValueRW.Speed;
+            }
+            set
+            {
+                _animator.ValueRW.Speed = value;
             }
         }
 

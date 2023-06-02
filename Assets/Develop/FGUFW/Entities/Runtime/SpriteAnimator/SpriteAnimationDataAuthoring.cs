@@ -6,6 +6,7 @@
 
 // namespace FGUFW.Entities
 // {
+//     [DisallowMultipleComponent]
 //     [RequireComponent(typeof(SpriteRenderer))]
 //     public class SpriteAnimationDataAuthoring : MonoBehaviour
 //     {
@@ -21,7 +22,7 @@
 //         public override void Bake(SpriteAnimationDataAuthoring authoring)
 //         {
 //             if(authoring.Frames==null || authoring.Frames.Length==0)return;
-//             var entity = GetEntity(TransformUsageFlags.Dynamic);
+//             var entity = GetEntity(authoring,TransformUsageFlags.Dynamic);
 //             AddComponentObject(entity,new SpriteAnimFrameData
 //             {
 //                 Frames = authoring.Frames

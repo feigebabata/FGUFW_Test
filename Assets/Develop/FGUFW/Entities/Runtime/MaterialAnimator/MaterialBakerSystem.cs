@@ -43,7 +43,6 @@ namespace FGUFW.Entities
                     Start = anim.StartFrame,
                     Length = anim.FrameLength,
                     Time = anim.Time,
-                    Loop = anim.Loop,
                 });
                 
                 ecb.RemoveComponent<MaterialFlipbookAnimation>(entity);
@@ -62,15 +61,14 @@ namespace FGUFW.Entities
                         MaterialID = materialID,
                         Start = item.Anim.StartFrame,
                         Length = item.Anim.FrameLength,
-                        Loop = item.Anim.Loop,
                         Time = item.Anim.Time,
                     };
-                    var events = new UnsafeList<MaterialFlipbookAnimEventData>(item.Events.Length,Allocator.Persistent);
-                    foreach (var eventData in item.Events)
-                    {
-                        events.Add(eventData);
-                    }
-                    animConfig.Events = events;
+                    // var events = new UnsafeList<MaterialFlipbookAnimEventData>(item.Events.Length,Allocator.Persistent);
+                    // foreach (var eventData in item.Events)
+                    // {
+                    //     events.Add(eventData);
+                    // }
+                    // animConfig.Events = events;
                     buffer.Add(animConfig);
                 }
                 ecb.RemoveComponent<MaterialFlipbookAnimationsAuthoring>(entity);

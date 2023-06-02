@@ -8,6 +8,7 @@ using Unity.Mathematics;
 namespace FGUFW.Entities
 {
     [AddComponentMenu("MaterialProperty/Size")]
+    [DisallowMultipleComponent]
     public class MaterialSizeAuthoring : MonoBehaviour
     {
         public float2 Value = new float2(1,1);

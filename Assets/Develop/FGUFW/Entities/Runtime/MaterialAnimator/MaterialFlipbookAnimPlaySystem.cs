@@ -9,14 +9,16 @@ using Unity.Collections;
 using UnityEngine.Rendering;
 using Unity.Burst;
 
+#pragma warning disable CS0282
+
 namespace FGUFW.Entities
 {
-    struct MaterialFlipbookAnimUpdate : IComponentData
+    struct MaterialFlipbookAnimUpdate : IComponentData,IEnableableComponent
     {
-        public BatchMaterialID MaterialID;
-        public int Start;
-        public int Length;
-        public int FrameCount;
+        // public BatchMaterialID MaterialID;
+        // public int Start;
+        // public int Length;
+        // public int FrameCount;
         public int FlipbookIndex;
     }
 
@@ -56,10 +58,10 @@ namespace FGUFW.Entities
             void Execute([ChunkIndexInQuery] int chunkInQueryIndex,Entity entity,in MaterialFlipbookAnimationData animData,ref MaterialFlipbookAnimator animator)
             {
                 if(animator.Speed==0)return;
-                if(!animData.Loop && animator.FrameIndex>=animData.Length-1)return;
+                if(!animator.Loop && animator.FrameIndex>=animData.Length-1)return;
 
-                float frameTime = animData.Time/animData.Length;
-                float deltaTime = animator.Time - animator.FrameIndex*frameTime + DeltaTime*animator.Speed;
+                // float frameTime = animData.Time/animData.Length;
+                // float deltaTime = animator.Time - animator.FrameIndex*frameTime + DeltaTime*animator.Speed;
                 animator.Time = (animator.Time + DeltaTime*animator.Speed)%animData.Time;
 
                 int newFrameIndex = (int)math.clamp(animator.Time/animData.Time*animData.Length,0,animData.Length-1);
@@ -67,12 +69,13 @@ namespace FGUFW.Entities
                 if(newFrameIndex!=animator.FrameIndex)
                 {
                     // Debug.Log($"+{animData.Start}:{animator.FrameIndex}");
-                    ECB.AddComponent(chunkInQueryIndex,entity,new MaterialFlipbookAnimUpdate
+                    ECB.SetComponentEnabled<MaterialFlipbookAnimUpdate>(chunkInQueryIndex,entity,true);
+                    ECB.SetComponent(chunkInQueryIndex,entity,new MaterialFlipbookAnimUpdate
                     {
-                        Start = animator.FrameIndex,
-                        Length = (int)(deltaTime/frameTime),
+                        // Start = animator.FrameIndex,
+                        // Length = (int)(deltaTime/frameTime),
                         FlipbookIndex = animData.Start+newFrameIndex,
-                        FrameCount = animData.Length,
+                        // FrameCount = animData.Length,
                     });
                     animator.FrameIndex = newFrameIndex;
                 }

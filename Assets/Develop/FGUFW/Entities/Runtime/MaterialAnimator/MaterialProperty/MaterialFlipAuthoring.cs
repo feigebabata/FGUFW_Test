@@ -8,6 +8,7 @@ using Unity.Mathematics;
 namespace FGUFW.Entities
 {
     [AddComponentMenu("MaterialProperty/Flip")]
+    [DisallowMultipleComponent]
     public class MaterialFlipAuthoring : MonoBehaviour
     {
         public float Value=1;
@@ -27,6 +28,9 @@ namespace FGUFW.Entities
     [MaterialProperty("_Flip")]
     public struct MaterialFlip:IComponentData
     {
+        /// <summary>
+        /// 1:镜像,-1:不镜像
+        /// </summary>
         public float Value;
     }
 

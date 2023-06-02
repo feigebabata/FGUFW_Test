@@ -44,8 +44,6 @@ public struct SpriteRender:IComponentData
 }
 
 
-DynamicBuffer<T>//存储集合
-
 //组件合并 针对业务生成组件集Aspect 字段必须只读
 public readonly partial struct SpriteRenderAspect:IAspect
 {
@@ -110,3 +108,36 @@ RenderTexture在ECS中不能正常工作
 hybridRendererSystem = state.World.GetExistingSystemManaged<EntitiesGraphicsSystem>();
 materialID = hybridRendererSystem.RegisterMaterial(material);
 materialMeshInfo.MaterialID = materialID;
+
+//清理组件 销毁实体组件仍在 直到移除组件
+ICleanupComponentData
+
+//Query无法获取 用于替换频繁增删组件
+IEnableableComponent
+//忽略组件未激活
+var queryIgnoredEnableable = new EntityQueryBuilder(Allocator.Temp).WithAll<T>().WithOptions(EntityQueryOptions.IgnoreComponentEnabledState).Build(this);
+
+//标签组件 无字段组件不占内存
+
+//动态缓冲组件
+DynamicBuffer<T>
+
+//共享非托管只读数据
+BlobAsset BlobAssetReference
+//需要使用BlogBuilder来创建，并且用完要Dispose掉哦
+BlobBuilder blobBuilder = new BlobBuilder(Allocator.Temp);
+//为BlobAsset的顶级字段分配内存，并返回对其的引用
+ref AbilityDetail root = ref blobBuilder.ConstructRoot<AbilityDetail>();
+//为其中的数据赋值
+root.Damage = 10086;
+root.CoolDownTime = 10086;
+//BlobArray需要用特殊的手段来进行初始化，然后就可像普通数组一样来进行赋值了
+BlobBuilderArray<Buff> buffArray = blobBuilder.Allocate(ref root.HitBuffs, 3);
+buffArray[0] = new Buff();
+buffArray[1] = new Buff();
+buffArray[2] = new Buff();
+//最后一步创建BlobAsset的引用，注意这个东西用完后也是需要Dispose掉的
+BlobAssetReference<AbilityDetail> abilityDetailRef =
+    blobBuilder.CreateBlobAssetReference<AbilityDetail>(Allocator.Persistent);
+//完事
+blobBuilder.Dispose();

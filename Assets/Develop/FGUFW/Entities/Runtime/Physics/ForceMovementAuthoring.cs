@@ -12,6 +12,7 @@ using Unity.Physics.Systems;
 namespace FGUFW.Entities
 {
     
+    [DisallowMultipleComponent]
     public class ForceMovementAuthoring : MonoBehaviour
     {
         public float Force;//动力 矫正当前速度的方向和大小
@@ -22,7 +23,7 @@ namespace FGUFW.Entities
     {
         public override void Bake(ForceMovementAuthoring authoring)
         {
-            var entity = GetEntity(TransformUsageFlags.Dynamic);
+            var entity = GetEntity(authoring,TransformUsageFlags.Dynamic);
             AddComponent(entity,new ForceMovement
             {
                 Force = authoring.Force,

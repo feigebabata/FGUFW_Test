@@ -31,5 +31,13 @@ namespace FGUFW
             return source|target;
         }
 
+        /// <summary>
+        /// 交叉
+        /// </summary>
+        public static bool Overlap(UInt64 v1,UInt64 v2)
+        {
+            return (v1&v2) != 0;
+        }
+
     }
 }

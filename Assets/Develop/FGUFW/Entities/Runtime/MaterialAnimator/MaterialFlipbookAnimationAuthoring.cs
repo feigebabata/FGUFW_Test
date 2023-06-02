@@ -11,6 +11,7 @@ using UnityEngine.Rendering;
 namespace FGUFW.Entities
 {
     [AddComponentMenu("MaterialFlipbookAnim/Animation")]
+    [DisallowMultipleComponent]
     public class MaterialFlipbookAnimationAuthoring : MonoBehaviour
     {
         public MaterialFlipbookAnimation Animation;
@@ -24,14 +25,13 @@ namespace FGUFW.Entities
         public int StartFrame;
         public int FrameLength;
         public float Time;
-        public bool Loop;
     }
 
     class MaterialFlipbookAnimationBaker : Baker<MaterialFlipbookAnimationAuthoring>
     {
         public override void Bake(MaterialFlipbookAnimationAuthoring authoring)
         {
-            var entity = GetEntity(TransformUsageFlags.Dynamic);
+            var entity = GetEntity(authoring,TransformUsageFlags.Dynamic);
             AddComponentObject(entity,authoring.Animation);
         }
     }

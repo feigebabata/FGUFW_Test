@@ -8,6 +8,7 @@ using Unity.Mathematics;
 namespace FGUFW.Entities
 {
     [AddComponentMenu("MaterialProperty/FlipbookIndex")]
+    [DisallowMultipleComponent]
     public class MaterialFlipbookIndexAuthoring : MonoBehaviour
     {
         public float Value;

@@ -8,6 +8,7 @@ using System;
 using Unity.Collections;
 using UnityEngine.Rendering;
 using Unity.Burst;
+#pragma warning disable CS0282
 
 namespace FGUFW.Entities
 {
@@ -15,20 +16,19 @@ namespace FGUFW.Entities
     [BurstCompile]
     public partial struct MaterialFlipbookAnimDestroySystem : ISystem
     {
-        private EntityQuery _updateEQ,_switchEQ;
+        // private EntityQuery _switchEQ;
 
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
-            _updateEQ = new EntityQueryBuilder(Allocator.Temp).WithAll<MaterialFlipbookAnimUpdate>().Build(ref state);
-            _switchEQ = new EntityQueryBuilder(Allocator.Temp).WithAll<MaterialFlipbookAnimationSwitch>().Build(ref state);
+            // _switchEQ = new EntityQueryBuilder(Allocator.Temp).WithAll<MaterialFlipbookAnimationSwitch>().Build(ref state);
     
-            var ecb = new EntityCommandBuffer(Allocator.Temp);
-            ecb.AddComponent(ecb.CreateEntity(),new MaterialFlipbookAnimEventSingleton
-            {
-                Events = new NativeList<MaterialFlipbookAnimEventCastData>(64,Allocator.Persistent)
-            });
-            ecb.Playback(state.EntityManager);
+            // var ecb = new EntityCommandBuffer(Allocator.Temp);
+            // ecb.AddComponent(ecb.CreateEntity(),new MaterialFlipbookAnimEventSingleton
+            // {
+            //     Events = new NativeList<MaterialFlipbookAnimEventCastData>(64,Allocator.Persistent)
+            // });
+            // ecb.Playback(state.EntityManager);
 
         }
 
@@ -36,33 +36,68 @@ namespace FGUFW.Entities
         public void OnUpdate(ref SystemState state)
         {
             state.Dependency.Complete();
-            var singletonRW = SystemAPI.GetSingletonRW<MaterialFlipbookAnimEventSingleton>();
-            if(singletonRW.ValueRO.Events.Length>0)
-            {
-                // Debug.Log(singletonRW.ValueRO.Events.Length);
-                singletonRW.ValueRW.Events.Clear();
-            }
+            // var singletonRW = SystemAPI.GetSingletonRW<MaterialFlipbookAnimEventSingleton>();
+            // if(singletonRW.ValueRO.Events.Length>0)
+            // {
+            //     // Debug.Log(singletonRW.ValueRO.Events.Length);
+            //     singletonRW.ValueRW.Events.Clear();
+            // }
 
             var ecb = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);
-            var entitys = _updateEQ.ToEntityArray(Allocator.Temp);
-            if(entitys.Length>0)
-            {
-                ecb.RemoveComponent<MaterialFlipbookAnimUpdate>(entitys);
-            }
 
-            entitys = _switchEQ.ToEntityArray(Allocator.Temp);
-            if(entitys.Length>0)
+            // var entitys = _switchEQ.ToEntityArray(Allocator.Temp);
+            // if(entitys.Length>0)
+            // {
+            //     ecb.RemoveComponent<MaterialFlipbookAnimationSwitch>(entitys);
+            // }
+
+            state.Dependency = new Job1
             {
-                ecb.RemoveComponent<MaterialFlipbookAnimationSwitch>(entitys);
+                ECBP = ecb.AsParallelWriter(),
             }
+            .ScheduleParallel(state.Dependency);
+
+            // ecb = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>().CreateCommandBuffer(state.WorldUnmanaged);
+            // state.Dependency = new Job2
+            // {
+            //     ECBP = ecb.AsParallelWriter(),
+            // }
+            // .ScheduleParallel(state.Dependency);
         }
 
         [BurstCompile]
         public void OnDestroy(ref SystemState state)
         {
-            var singleton = SystemAPI.GetSingleton<MaterialFlipbookAnimEventSingleton>();
-            singleton.Events.Dispose();
+            // var singleton = SystemAPI.GetSingleton<MaterialFlipbookAnimEventSingleton>();
+            // singleton.Events.Dispose();
+            
         }
+
+        
+
+        [BurstCompile]
+        partial struct Job1:IJobEntity
+        {
+            public EntityCommandBuffer.ParallelWriter ECBP;
+
+            void Execute([ChunkIndexInQuery] int chunkInQueryIndex,Entity entity,in MaterialFlipbookAnimUpdate enable)
+            {
+                ECBP.SetComponentEnabled<MaterialFlipbookAnimUpdate>(chunkInQueryIndex,entity,false);
+            }
+        }
+
+        
+
+        // [BurstCompile]
+        // partial struct Job2:IJobEntity
+        // {
+        //     public EntityCommandBuffer.ParallelWriter ECBP;
+
+        //     void Execute([ChunkIndexInQuery] int chunkInQueryIndex,Entity entity,in MaterialFlipbookAnimationSwitch enable)
+        //     {
+        //         ECBP.SetComponentEnabled<MaterialFlipbookAnimationSwitch>(chunkInQueryIndex,entity,false);
+        //     }
+        // }
 
 
     }

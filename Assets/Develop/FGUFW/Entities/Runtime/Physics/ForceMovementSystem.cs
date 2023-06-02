@@ -8,6 +8,7 @@ using Unity.Collections;
 using Unity.Physics;
 using Unity.Transforms;
 using Unity.Physics.Systems;
+#pragma warning disable CS0282
 
 namespace FGUFW.Entities
 {

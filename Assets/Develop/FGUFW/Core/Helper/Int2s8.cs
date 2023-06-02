@@ -1,19 +1,20 @@
 using System;
+using Unity.Mathematics;
 
 namespace FGUFW
 {
-    public struct Ints8
+    public struct Int2s8
     {
-        public int V0;
-        public int V1;
-        public int V2;
-        public int V3;
-        public int V4;
-        public int V5;
-        public int V6;
-        public int V7;
+        public int2 V0;
+        public int2 V1;
+        public int2 V2;
+        public int2 V3;
+        public int2 V4;
+        public int2 V5;
+        public int2 V6;
+        public int2 V7;
 
-        public int this[int idx]
+        public int2 this[int idx]
         {
             get
             {
@@ -49,7 +50,10 @@ namespace FGUFW
                 {
                     return V7;
                 }
-                throw new IndexOutOfRangeException();
+                else
+                {
+                    throw new IndexOutOfRangeException();
+                }
             }
             set
             {
@@ -85,7 +89,10 @@ namespace FGUFW
                 {
                     V7=value;
                 }
-                throw new IndexOutOfRangeException();
+                else
+                {
+                    throw new IndexOutOfRangeException();
+                }
             }
         }
 

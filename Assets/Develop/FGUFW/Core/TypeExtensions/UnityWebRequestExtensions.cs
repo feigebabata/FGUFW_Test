@@ -19,7 +19,7 @@ namespace FGUFW
             complete?.Invoke(uwr.error);
         }
 
-        static async public Task<UnityWebRequestAsyncOperation> RequestAsync( this UnityWebRequest self)
+        public static async Task<UnityWebRequestAsyncOperation> RequestAsync( this UnityWebRequest self)
         {
             var request = self.SendWebRequest();
             while (!request.isDone)
@@ -28,5 +28,6 @@ namespace FGUFW
             }
             return request;
         }
+
     }
 }

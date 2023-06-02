@@ -149,7 +149,12 @@ namespace |NAME_SPACE|
         public static string CSVMembers(string[,] table,int typeLine=1,int nameLine=2,int summaryLine=3)
         {
             StringBuilder sb = new StringBuilder();
-            int length = table.GetLength(1);
+            int length = 0;
+            for (int i = 0; i < table.GetLength(typeLine); i++)
+            {
+                if(!string.IsNullOrEmpty(table[typeLine,i]))length++;
+            }
+
             for (int i = 0; i < length; i++)
             {
                 sb.AppendLine(@$"
@@ -165,7 +170,11 @@ namespace |NAME_SPACE|
         public static string CSVMemberSets(string[,] table,int typeLine=1,int nameLine=2)
         {
             StringBuilder sb = new StringBuilder();
-            int length = table.GetLength(1);
+            int length = 0;
+            for (int i = 0; i < table.GetLength(typeLine); i++)
+            {
+                if(!string.IsNullOrEmpty(table[typeLine,i]))length++;
+            }
             for (int i = 0; i < length; i++)
             {
                 var memberType = table[typeLine,i];

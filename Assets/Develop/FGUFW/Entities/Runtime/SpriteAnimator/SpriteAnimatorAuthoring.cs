@@ -5,6 +5,7 @@
 
 // namespace FGUFW.Entities
 // {
+//     [DisallowMultipleComponent]
 //     [RequireComponent(typeof(SpriteRenderer))]
 //     public class SpriteAnimatorAuthoring : MonoBehaviour
 //     {

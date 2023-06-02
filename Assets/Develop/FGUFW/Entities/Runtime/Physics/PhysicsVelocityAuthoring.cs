@@ -8,6 +8,7 @@ using Unity.Mathematics;
 namespace FGUFW.Entities
 {
 
+    [DisallowMultipleComponent]
     public class PhysicsVelocityAuthoring : MonoBehaviour
     {
         public float3 Linear;
