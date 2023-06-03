@@ -1,0 +1,10 @@
+简版ECS 在官方ECS完善前先用这个 
+主要是用JobSystem和Burst提升性能
+使用TransformAccessArray提高对Transform的处理速度
+使用对象池优化托管对象GC
+使用MaterialPropertyBlock和EnableGPUInstancing进行合批
+
+使用方式:
+1.继承实现自己的World
+2.创建ComponentGroup放在World中 初始化和销毁
+3.创建自己的ISystem 并在World构造函数中初始化
