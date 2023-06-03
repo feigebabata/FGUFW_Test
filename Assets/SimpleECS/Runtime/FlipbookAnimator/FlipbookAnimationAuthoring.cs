@@ -11,6 +11,8 @@ using FGUFW;
 
 namespace FGUFW.SimpleECS
 {
+    [AddComponentMenu("SimpleECS/FlipbookAnimation")]
+    [DisallowMultipleComponent]
     public class FlipbookAnimationAuthoring : MonoBehaviour,IAuthoring<FlipbookAnimation>
     {
         public int MatAnimID;

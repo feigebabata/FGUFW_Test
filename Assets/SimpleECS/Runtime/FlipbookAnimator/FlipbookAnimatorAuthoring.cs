@@ -11,6 +11,8 @@ using FGUFW;
 
 namespace FGUFW.SimpleECS
 {
+    [AddComponentMenu("SimpleECS/FlipbookAnimator")]
+    [DisallowMultipleComponent]
     public class FlipbookAnimatorAuthoring : MonoBehaviour,IAuthoring<FlipbookAnimator>
     {
         public float Speed=1;//播放速度
