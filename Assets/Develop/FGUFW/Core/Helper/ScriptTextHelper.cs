@@ -85,7 +85,77 @@ namespace |NAME_SPACE|
 ";
             var frist_type = table[typeLine,0];
             var frist_name = table[nameLine,0];
-            var nameSpaceArr = table[0,1].Split('.');
+            var nameSpaceArr = table[0,0].Split('.');
+            var nameSpace = string.Join(".",nameSpaceArr,0,nameSpaceArr.Length-1);
+            var className = nameSpaceArr[nameSpaceArr.Length-1];
+            var classSummary = table[0,2];
+            var members = CSVMembers(table,typeLine,nameLine,summaryLine);
+            var memberSets = CSVMemberSets(table,typeLine,nameLine);
+
+            script = script.Replace(NAME_SPACE,nameSpace);
+            script = script.Replace(CLASS_NAME,className);
+            script = script.Replace(CLASS_SUMMARY,classSummary);
+            script = script.Replace(FRIST_TYPE,frist_type);
+            script = script.Replace(FRIST_MEMBER,frist_name);
+            script = script.Replace(MEMBERS,members);
+            script = script.Replace(MEMBER_SETS,memberSets);
+
+            return script;
+        }
+        public static string Csv2CsharpStruct(string[,] table,int typeLine=1,int nameLine=2,int summaryLine=3)
+        {
+            string script = 
+@"using FGUFW;
+using System.Collections.Generic;
+using UnityEngine;
+using System;
+
+namespace |NAME_SPACE|
+{
+    /// <summary>
+    /// |CLASS_SUMMARY|
+    /// </summary>
+    [Serializable]
+    public struct |CLASS_NAME|
+    {
+|MEMBERS|
+
+        public |CLASS_NAME|(string[,] table,int lineIndex)
+        {
+|MEMBER_SETS|
+        }
+
+        public static |CLASS_NAME|[] ToArray(string csvText)
+        {
+            var table = CsvHelper.Parse2(csvText);
+            int length = table.GetLength(0)-4;
+            |CLASS_NAME|[] list = new |CLASS_NAME|[length];
+            for (int i = 0; i < length; i++)
+            {
+                list[i] = new |CLASS_NAME|(table,i+4);
+            }
+            return list;
+        }
+
+        public static Dictionary<|FRIST_TYPE|,|CLASS_NAME|> ToDict(string csvText)
+        {
+            var table = CsvHelper.Parse2(csvText);
+            int length = table.GetLength(0);
+            Dictionary<|FRIST_TYPE|,|CLASS_NAME|> dict = new Dictionary<|FRIST_TYPE|,|CLASS_NAME|>();
+            for (int i = 4; i < length; i++)
+            {
+                var data = new |CLASS_NAME|(table,i);
+                dict.Add(data.|FRIST_MEMBER|,data);
+            }
+            return dict;
+        }
+
+    }
+}
+";
+            var frist_type = table[typeLine,0];
+            var frist_name = table[nameLine,0];
+            var nameSpaceArr = table[0,0].Split('.');
             var nameSpace = string.Join(".",nameSpaceArr,0,nameSpaceArr.Length-1);
             var className = nameSpaceArr[nameSpaceArr.Length-1];
             var classSummary = table[0,2];
@@ -135,7 +205,7 @@ namespace |NAME_SPACE|
 ");
             }
 
-            var nameSpaceArr = table[0,1].Split('.');
+            var nameSpaceArr = table[0,0].Split('.');
             var nameSpace = string.Join(".",nameSpaceArr,0,nameSpaceArr.Length-1);
             var className = nameSpaceArr[nameSpaceArr.Length-1];
             var classSummary = table[0,2];
@@ -149,7 +219,12 @@ namespace |NAME_SPACE|
         public static string CSVMembers(string[,] table,int typeLine=1,int nameLine=2,int summaryLine=3)
         {
             StringBuilder sb = new StringBuilder();
-            int length = table.GetLength(1);
+            int length = 0;
+            for (int i = 0; i < table.GetLength(typeLine); i++)
+            {
+                if(!string.IsNullOrEmpty(table[typeLine,i]))length++;
+            }
+
             for (int i = 0; i < length; i++)
             {
                 sb.AppendLine(@$"
@@ -165,7 +240,11 @@ namespace |NAME_SPACE|
         public static string CSVMemberSets(string[,] table,int typeLine=1,int nameLine=2)
         {
             StringBuilder sb = new StringBuilder();
-            int length = table.GetLength(1);
+            int length = 0;
+            for (int i = 0; i < table.GetLength(typeLine); i++)
+            {
+                if(!string.IsNullOrEmpty(table[typeLine,i]))length++;
+            }
             for (int i = 0; i < length; i++)
             {
                 var memberType = table[typeLine,i];

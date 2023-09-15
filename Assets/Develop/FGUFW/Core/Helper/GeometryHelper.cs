@@ -30,7 +30,7 @@ namespace FGUFW
                 error = true;
                 for (int i = 0; i < polygon.Length; i++)
                 {
-                    //DO:切耳朵
+                    //切耳朵
                     if(polygon.CanCutConcaveAngle(i))
                     {
                         polygon.CutConvexAngle(i,triangles,ref triangleIndex);

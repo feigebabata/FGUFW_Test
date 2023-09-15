@@ -6,7 +6,7 @@ namespace FGUFW.GamePlay
 {
     public static class IPartExtensions
     {
-        public static async Task Creating(this IPart self,IPart parent)
+        public static async Task Create(this IPart self,IPart parent)
         {
             var task = self.OnCreating(parent);
             if(task!=null) await task;
@@ -15,7 +15,7 @@ namespace FGUFW.GamePlay
             {
                 foreach (var subPart in self.SubParts)
                 {
-                    task = subPart.Creating(self);
+                    task = subPart.Create(self);
                     if(task!=null) await task;
                 }
             }
@@ -24,7 +24,7 @@ namespace FGUFW.GamePlay
             tryAddCoroutine(self);
         }
 
-        public static async Task Destroying(this IPart self,IPart parent)
+        public static async Task Destroy(this IPart self,IPart parent)
         {
             tryRemoveUpdate(self);
             tryRemoveCoroutine(self);
@@ -33,7 +33,7 @@ namespace FGUFW.GamePlay
             {
                 foreach (var subPart in self.SubParts)
                 {
-                    task = subPart.Destroying(self);
+                    task = subPart.Destroy(self);
                     if(task!=null) await task;
                 }
             }

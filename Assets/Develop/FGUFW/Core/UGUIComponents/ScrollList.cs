@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 namespace FGUFW
 {
+    [DisallowMultipleComponent]
     public class ScrollList : MonoBehaviour
     {
         public ScrollRect Scroll;

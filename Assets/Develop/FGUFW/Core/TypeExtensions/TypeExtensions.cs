@@ -8,6 +8,7 @@ namespace FGUFW
     {
         private static Type[] reflectionNoneAges = new Type[0];
         private const BindingFlags All_MEMBER = BindingFlags.NonPublic|BindingFlags.Public|BindingFlags.Instance;
+        private const BindingFlags STATIC_MEMBER = BindingFlags.NonPublic|BindingFlags.Public|BindingFlags.Static;
 
         /// <summary>
         /// 比较数据结构公开字段是否一致
@@ -86,10 +87,6 @@ namespace FGUFW
         /// <summary>
         /// 反射调用函数
         /// </summary>
-        /// <param name="self"></param>
-        /// <param name="fun_name"></param>
-        /// <param name="ages"></param>
-        /// <returns></returns>
         public static object ReflectionInvoke(this object self,string fun_name,params object[] ages)
         {
             Type[] ageTypes = null;
@@ -117,6 +114,37 @@ namespace FGUFW
             return method?.Invoke(self,ages);
         }
 
+
+        /// <summary>
+        /// 反射调用函数
+        /// </summary>
+        public static object ReflectionInvoke(this Type self,string fun_name,params object[] ages)
+        {
+            Type[] ageTypes = null;
+            if(ages==null && ages.Length==0)
+            {
+                ageTypes = reflectionNoneAges;
+            }
+            else
+            {
+                ageTypes = new Type[ages.Length];
+                for (int i = 0; i < ages.Length; i++)
+                {
+                    ageTypes[i] = ages[i].GetType();
+                }
+            }
+            MethodInfo method = self.GetMethod
+            (
+                fun_name,
+                STATIC_MEMBER,
+                null,
+                CallingConventions.Any,
+                ageTypes,
+                null
+            );
+            return method?.Invoke(self,ages);
+        }
+
         /// <summary>
         /// 反射获取字段值
         /// </summary>
@@ -128,6 +156,11 @@ namespace FGUFW
         {
             return (T)self.GetType().GetField(field_name,
             All_MEMBER).GetValue(self);
+        }
+
+        public static T Instance<T>(this Type self, params object[] args)
+        {
+            return (T)System.Activator.CreateInstance(self,args);
         }
 
     }

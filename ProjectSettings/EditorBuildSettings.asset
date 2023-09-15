@@ -8,7 +8,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Test/NetTest/NetTest.unity
     guid: a83c09558c0be4c489f3e94910b8ba70
-  - enabled: 1
+  - enabled: 0
     path: Assets/Develop/GUNNAC/Battle.unity
     guid: 7caf435cce838494691488328dd4d0ae
   m_configObjects: {}

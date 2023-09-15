@@ -99,7 +99,7 @@ namespace FGUFW.FlowFieldPathfinding
         /// </summary>
         /// <param name="end"></param>
         /// <param name="landforms"></param>
-        public bool Flow(Vector3Int end,int landforms)
+        public bool Flow(Vector3Int end,uint landforms)
         {
             var grid_idx = GeometryHelper.SpaceCoord2Index(GridCount,end);
             if(grid_idx==-1)return false;
@@ -308,7 +308,7 @@ namespace FGUFW.FlowFieldPathfinding
 
     public struct Grid
     {
-        public Grid(int landform,float weight)
+        public Grid(uint landform,float weight)
         {
             Landform = landform;
             Weight = weight;
@@ -318,7 +318,7 @@ namespace FGUFW.FlowFieldPathfinding
         /// <summary>
         /// 地形 2的指数幂 0为无效值
         /// </summary>
-        public readonly int Landform;
+        public readonly uint Landform;
 
         /// <summary>
         /// 距离权重

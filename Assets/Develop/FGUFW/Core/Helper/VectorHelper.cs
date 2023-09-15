@@ -1,6 +1,7 @@
 using System;
 using Unity.Mathematics;
 using UnityEngine;
+using Unity.Burst;
 
 namespace FGUFW
 {
@@ -256,21 +257,6 @@ namespace FGUFW
             return distance <= d;
         }
 
-        /// <summary>
-        /// 在圆内随机位置
-        /// </summary>
-        /// <param name="centerPoint"></param>
-        /// <param name="radius"></param>
-        /// <returns></returns>
-        public static Vector3 RandomInCircle(Vector3 centerPoint,float radius)
-        {
-            Vector3 dir = Vector3.zero;
-            dir.x = UnityEngine.Random.Range(-radius,radius);
-            dir.y = UnityEngine.Random.Range(-radius,radius);
-            dir = dir.normalized;
-            dir *= UnityEngine.Random.Range(0,radius);
-            return centerPoint + dir;
-        }
 
         /// <summary>
         /// Transform转Rect
@@ -332,6 +318,19 @@ namespace FGUFW
         /// 乘法 各维度相乘
         /// </summary>
         /// <returns></returns>
+        public static Vector2 Multiply(Vector2 l,Vector2 r)
+        {
+            return new Vector2
+            (
+                l.x*r.x,
+                l.y*r.y
+            );
+        }
+
+        /// <summary>
+        /// 乘法 各维度相乘
+        /// </summary>
+        /// <returns></returns>
         public static Vector3 Multiply(Vector3 l,Vector3Int r)
         {
             return new Vector3
@@ -366,6 +365,31 @@ namespace FGUFW
             if(l.y!=0 && r.y!=0)val.y=l.y/r.y;
             if(l.z!=0 && r.z!=0)val.z=l.z/r.z;
             return val;
+        }
+
+        /// <summary>
+        /// 射击夹角
+        /// </summary>
+        [BurstCompile]
+        public static float3 ShootAngle(float3 direction,float3 axis,float interval,int length,int index)
+        {
+            if(length<=1)return direction;
+            float angle = index*interval-interval*(length-1)/2;
+            var rotate = float4x4.AxisAngle(axis,math.radians(angle));
+            var dir = math.mul(new float4(direction,0),rotate);
+            return dir.xyz;
+        }
+
+        [BurstCompile]
+        public static float2 RandomInCircle(uint seed,float min,float max)
+        {
+            var random = new Unity.Mathematics.Random();
+            random.InitState(seed);
+            var point = new float2(random.NextFloat(min,max),0);
+            var rotate = float4x4.AxisAngle(new float3(0,0,1),random.NextFloat(0,math.PI));
+            point = math.mul(new float4(point,0,0),rotate).xy;
+            Debug.Log(point);
+            return point;
         }
 
     }

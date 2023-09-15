@@ -21,7 +21,7 @@ public class FlowFielderTest : MonoBehaviour
         _space = new FGUFW.FlowFieldPathfinding.Space(GridCount,SpaceMin,SpaceMax);
         NodeRoot.For<Grid>(NodeRoot.childCount,(i,comp)=>
         {
-            _space[comp.transform.position] = new FGUFW.FlowFieldPathfinding.Grid((int)comp.Grid_Type,1);
+            _space[comp.transform.position] = new FGUFW.FlowFieldPathfinding.Grid((uint)comp.Grid_Type,1);
         });
 
         if(!_space.Flow(EndPoint.position,3))return;

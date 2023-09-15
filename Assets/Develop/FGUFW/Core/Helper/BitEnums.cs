@@ -11,6 +11,8 @@ namespace FGUFW
     {
         private int _bits;
 
+        public int Value => _bits;
+
         public bool this[int i]
         {
             get
@@ -34,15 +36,18 @@ namespace FGUFW
             }
         }
 
+        /// <summary>
+        /// 不能用于Burst
+        /// </summary>
         public bool this[E e]
         {
             get
             {
-                return this[e.GetHashCode()];
+                return this[(int)e.GetHashCode()];
             }
             set
             {
-                this[e.GetHashCode()] = value;
+                this[(int)e.GetHashCode()] = value;
             }
         }
 
@@ -113,7 +118,7 @@ namespace FGUFW
 
         public override int GetHashCode()
         {
-            return _bits;
+            return (int)_bits;
         }
 
         public override bool Equals(object obj)

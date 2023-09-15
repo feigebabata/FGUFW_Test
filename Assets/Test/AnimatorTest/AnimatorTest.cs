@@ -20,7 +20,7 @@ public class AnimatorTest : MonoBehaviour
         this.Animator.ReplaceClip(clip);
         enabled = false;
 
-        log();
+        // log();
     }
 
     void log()
