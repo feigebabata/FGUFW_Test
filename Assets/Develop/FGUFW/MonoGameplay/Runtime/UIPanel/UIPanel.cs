@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 
 namespace FGUFW.MonoGameplay
 {
+    [DisallowMultipleComponent]
     [RequireComponent(typeof(CanvasGroup))]
     public class UIPanel : MonoBehaviour
     {

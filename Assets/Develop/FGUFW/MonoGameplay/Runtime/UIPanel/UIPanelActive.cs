@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace FGUFW.MonoGameplay
 {
+    [DisallowMultipleComponent]
     [RequireComponent(typeof(UIPanel))]
     public class UIPanelActive : UIPanelEffect
     {       
