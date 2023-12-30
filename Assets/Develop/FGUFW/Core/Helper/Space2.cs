@@ -16,7 +16,7 @@ namespace FGUFW
     {
 
 
-        [BurstCompile]
+        // [BurstCompile]
         public static int IndexOf(float2 point,float2 spaceSize,int2 spaceMaxIndex,float2 spaceCenter)
         {
             int idx = -1;
@@ -35,7 +35,7 @@ namespace FGUFW
             return idx;
         }
 
-        [BurstCompile]
+        // [BurstCompile]
         private static int indexOf(float p,float length,int count)
         {
             int idx = -1;
