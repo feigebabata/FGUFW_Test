@@ -11,7 +11,7 @@ namespace MonoGameplayTest
         // Start is called before the first frame update
         async void Start()
         {
-            await Part.Create<MonoGameplayTestPlay>(default).Create(default);
+            await Part.Create<MonoGameplayTestPlay>(default).OnCreating(default);
         }
 
 

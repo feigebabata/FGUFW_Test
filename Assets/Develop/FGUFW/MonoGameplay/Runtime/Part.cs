@@ -2,21 +2,35 @@ using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using FGUFW;
 
 namespace FGUFW.MonoGameplay
 {
-    public abstract class Part : MonoBehaviour,IPartUpdate
+    public abstract class Part : MonoBehaviour,IPartUpdate,IPartPreload
     {
         public List<Part> SubParts = new List<Part>();
 
-        public virtual UniTask OnCreating(Part parent)
+        protected UIPanel _uiPanel;
+
+        public virtual async UniTask OnCreating(Part parent)
         {
-            return default;
+            foreach (var subPart in SubParts)
+            {
+                await subPart.OnCreating(this);
+            }
         }
 
-        public virtual UniTask OnDestroying(Part parent)
+        public virtual async UniTask OnDestroying(Part parent)
         {
-            return default;
+            foreach (var subPart in SubParts)
+            {
+                await subPart.OnDestroying(this);
+            }
+            if(_uiPanel)
+            {
+                Destroy(_uiPanel.gameObject);
+            }
+            SubParts.Clear();
         }
 
         public T GetPart<T>() where T : Part
@@ -36,35 +50,35 @@ namespace FGUFW.MonoGameplay
             SubParts.Add(Create<T>(this));
         }
 
-        public async UniTask Create(Part parent)
-        {
-            await OnCreating(parent);
-
-            foreach (var subPart in SubParts)
-            {
-                await subPart.Create(this);
-            }
-
-        }
-
-        public async UniTask Destroy(Part parent)
-        {
-            foreach (var subPart in SubParts)
-            {
-                await subPart.Destroy(this);
-            }
-
-            await OnDestroying(parent);
-
-            SubParts.Clear();
-        }
-
         public virtual void OnUpdate(in PlayFrameData playFrameData)
         {
             foreach (var item in SubParts)
             {
                 item.OnUpdate(in playFrameData);
             }
+        }
+
+        public async virtual UniTask OnPreload()
+        {
+            _uiPanel = await loadUIPanel();
+
+            foreach (var subPart in SubParts)
+            {
+                await subPart.OnPreload();
+            }
+        }
+
+        private async UniTask<UIPanel> loadUIPanel()
+        {
+            var uiPanelLoader = this.GetAttribute<UIPanelLoaderAttribute>();
+            if (uiPanelLoader != null)
+            {
+                var path = uiPanelLoader.PrefabPath;
+                var go = await AssetHelper.CopyAsync(path,null);
+                DontDestroyOnLoad(go);
+                return go.GetComponent<UIPanel>();
+            }
+            return default;
         }
 
         public static Part Create<T>(Part parent) where T : Part
@@ -75,6 +89,7 @@ namespace FGUFW.MonoGameplay
             part.transform.localPosition = Vector3.zero;
             return part;
         }
+        
 
     }
 

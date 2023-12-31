@@ -8,12 +8,13 @@ namespace MonoGameplayTest
 {
     public class MonoGameplayTestPlay : Play<MonoGameplayTestPlay>
     {
-        public override UniTask OnCreating(Part parent)
+        public override async UniTask OnCreating(Part parent)
         {
             AddPart<MonoGameplayTest1Part>();
             AddPart<MonoGameplayTest2Part>();
             
-            return base.OnCreating(parent);
+            // await UniTask.Delay(3000);
+            await base.OnCreating(parent);
         }
 
         public override UniTask OnDestroying(Part parent)

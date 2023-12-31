@@ -95,4 +95,13 @@ namespace FGUFW.MonoGameplay
         public abstract void Hide(UIPanel uIPanel);
     }
 
+    
+    // public static class PartExtensions
+    // {
+    //     public static async UniTask<UIPanel> LoadUIPanel( this Part self)
+    //     {
+
+    //     }
+    // }
+
 }

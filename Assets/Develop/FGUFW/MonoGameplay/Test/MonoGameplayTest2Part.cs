@@ -11,12 +11,13 @@ namespace MonoGameplayTest
     {
         private MonoGameplayTestPlay _play;
 
-        public override UniTask OnCreating(Part parent)
+        public override async UniTask OnCreating(Part parent)
         {
             _play = MonoGameplayTestPlay.I;
 
+            // await UniTask.Delay(3000);
             addListener();
-            return base.OnCreating(parent);
+            await base.OnCreating(parent);
         }
 
         public override UniTask OnDestroying(Part parent)

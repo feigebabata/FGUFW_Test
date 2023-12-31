@@ -163,5 +163,10 @@ namespace FGUFW
             return (T)System.Activator.CreateInstance(self,args);
         }
 
+        public static T GetAttribute<T>(this object self) where T:Attribute
+        {
+            return self.GetType().GetCustomAttribute<T>();
+        }
+
     }
 }

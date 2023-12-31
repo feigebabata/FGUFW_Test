@@ -17,22 +17,30 @@ namespace FGUFW.MonoGameplay
         private PlayFrameData _frameData;
         private float _playCreatedTime;
 
-        public override UniTask OnCreating(Part parent)
+        public override async UniTask OnCreating(Part parent)
         {
             I = (T)this;
             Messenger = new OrderedMessenger<Enum>();
+            DontDestroyOnLoad(this.gameObject);
+
+            await base.OnCreating(parent);
+
+            Debug.Log($"{this.GetType().Name} Create End.");
+
+            await OnPreload();
             FGUFW.PlayerLoopHelper.AddToLoop<UnityEngine.PlayerLoop.Update>(OnUpdate,this.GetType());
             _playCreatedTime = Time.time;
-            DontDestroyOnLoad(this.gameObject);
-            return default;
+
+            Debug.Log($"{this.GetType().Name} Preload End.");
         }
 
-        public override UniTask OnDestroying(Part parent)
+        public override async UniTask OnDestroying(Part parent)
         {
             FGUFW.PlayerLoopHelper.RemoveToLoop<UnityEngine.PlayerLoop.Update>(OnUpdate);
+            await base.OnDestroying(parent);
+            
             Messenger = null;
             I = null;
-            return default;
         }
 
 
