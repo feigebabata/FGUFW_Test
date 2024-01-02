@@ -3,18 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using Lean;
 using RVO;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Assertions.Comparers;
 // using UnityEngine.Experimental.UIElements;
 using Random = System.Random;
-using Vector2 = RVO.Vector2;
+// using float2 = RVO.float2;
 
 public class GameMainManager : SingletonBehaviour<GameMainManager>
 {
     public GameObject agentPrefab;
 
-    [HideInInspector] public Vector2 mousePosition;
+    [HideInInspector] public float2 mousePosition;
 
     private Plane m_hPlane = new Plane(Vector3.up, Vector3.zero);
     private Dictionary<int, GameAgent> m_agentMap = new Dictionary<int, GameAgent>();
@@ -23,7 +24,7 @@ public class GameMainManager : SingletonBehaviour<GameMainManager>
     void Start()
     {
         Simulator.Instance.setTimeStep(0.25f);
-        Simulator.Instance.setAgentDefaults(15.0f, 10, 5.0f, 5.0f, 2.0f, 2.0f, new Vector2(0.0f, 0.0f));
+        Simulator.Instance.setAgentDefaults(15.0f, 10, 5.0f, 5.0f, 2.0f, 2.0f, new float2(0.0f, 0.0f));
 
         // add in awake
         Simulator.Instance.processObstacles();
@@ -37,8 +38,8 @@ public class GameMainManager : SingletonBehaviour<GameMainManager>
         if (m_hPlane.Raycast(mouseRay, out rayDistance))
             position = mouseRay.GetPoint(rayDistance);
 
-        mousePosition.x_ = position.x;
-        mousePosition.y_ = position.z;
+        mousePosition.x = position.x;
+        mousePosition.y = position.z;
     }
 
     void DeleteAgent()
@@ -58,7 +59,7 @@ public class GameMainManager : SingletonBehaviour<GameMainManager>
         int sid = Simulator.Instance.addAgent(mousePosition);
         if (sid >= 0)
         {
-            GameObject go = LeanPool.Spawn(agentPrefab, new Vector3(mousePosition.x(), 0, mousePosition.y()), Quaternion.identity);
+            GameObject go = LeanPool.Spawn(agentPrefab, new Vector3(mousePosition.x, 0, mousePosition.y), Quaternion.identity);
             GameAgent ga = go.GetComponent<GameAgent>();
             Assert.IsNotNull(ga);
             ga.sid = sid;

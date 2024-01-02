@@ -10,17 +10,24 @@ namespace FGUFW
         public ushort Item{get;private set;}
         public IntId4_4(int value)
         {
+            if(!IsId(value))
+            {
+                throw new System.Exception($"value:{value}必须大于1000_0000且小于1_0000_0000");
+            }
             Value = value;
-            if(value>9999_9999)
+            Group = (ushort)(value/1_0000);
+            Item = (ushort)(value-Group*1_0000);
+        }
+
+        public IntId4_4(string value)
+        {
+            if(!IsId(value))
             {
-                Group = 0;
-                Item = 0;
+                throw new System.Exception($"value:{value}必须为8位正整数组成");
             }
-            else
-            {
-                Group = (ushort)(value/1_0000);
-                Item = (ushort)(value-Group*1_0000);
-            }
+            Value = int.Parse(value);
+            Group = (ushort)(Value/1_0000);
+            Item = (ushort)(Value-Group*1_0000);
         }
 
         public static implicit operator int(IntId4_4 exists)
@@ -31,6 +38,27 @@ namespace FGUFW
         public static implicit operator IntId4_4(int exists)
         {
             return new IntId4_4(exists);
+        }
+
+        public static bool IsId(float val)
+        {
+            return val%1f==0 && val>1000_0000 && val<1_0000_0000;
+        }
+
+        public static bool IsId(int val)
+        {
+            return val>1000_0000 && val<1_0000_0000;
+        }
+
+        public static bool IsId(string val)
+        {
+            if(val==null || val.Length!=8)return false;
+            return int.TryParse(val,out _);
+        }
+
+        public override string ToString()
+        {
+            return $"{Group:D4}{Item:D4}";
         }
 
     }

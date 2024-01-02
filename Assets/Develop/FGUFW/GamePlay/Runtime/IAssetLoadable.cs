@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using FGUFW;
 using UnityEngine;
+using UnityEngine.ResourceManagement.ResourceProviders;
 
 namespace FGUFW.GamePlay
 {
@@ -12,12 +13,12 @@ namespace FGUFW.GamePlay
 
     public static class IAssetLoadableExtensions
     {
-        public static GameObject Instantiate(this IAssetLoadable self,string path,Transform parent)
+        public static GameObject Copy(this IAssetLoadable self,string path,Transform parent)
         {
             return AssetHelper.Copy(path,parent);
         }
 
-        public static Task<GameObject> InstantiateAsync(this IAssetLoadable self,string path,Transform parent)
+        public static Task<GameObject> CopyAsync(this IAssetLoadable self,string path,Transform parent)
         {
             return AssetHelper.CopyAsync(path,parent);
         }
@@ -30,6 +31,16 @@ namespace FGUFW.GamePlay
         public static Task<T> LoadAssetAsync<T>(this IAssetLoadable self,string path)
         {
             return AssetHelper.LoadAsync<T>(path);
+        }
+
+        public static SceneInstance LoadScene(this IAssetLoadable self,string path)
+        {
+            return AssetHelper.LoadScene(path);
+        }
+
+        public static Task LoadSceneAsync(this IAssetLoadable self,string path)
+        {
+            return AssetHelper.LoadSceneAsync(path);
         }
     }
 }

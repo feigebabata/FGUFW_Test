@@ -30,7 +30,7 @@ namespace FGUFW
             }
         }
 
-        protected void execute(ref CONTEXT context)
+        public virtual void Execute(ref CONTEXT context)
         {
             foreach (var pipe in _pipes)
             {

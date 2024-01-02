@@ -1,0 +1,41 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEditor;
+using Unity.VisualScripting;
+
+namespace FGUFW.Flipbook.Editor
+{
+    [CustomEditor(typeof(SpriteFlipbookAnim))]
+    public class SpriteFlipbookAnimEditor : UnityEditor.Editor
+    {
+        private SpriteFlipbookAnim _target;
+
+        private void OnEnable() 
+        {
+            _target = target as SpriteFlipbookAnim;
+            _target.Apply();
+        }
+
+        public override void OnInspectorGUI()
+        {
+            base.OnInspectorGUI();
+
+            if(GUILayout.Button("初始化"))
+            {
+                _target.transform.localScale = Vector3.one;
+
+                if(!_target.Render.sprite.IsUnityNull())
+                {
+                    var flipboolSize = _target.FlipbookSize;
+                    var textureHeight = _target.Render.sprite.texture.height;
+                    var scale = _target.Render.sprite.pixelsPerUnit;
+                    _target.SizeHeight = textureHeight/scale/flipboolSize.y;
+                }
+
+            }
+            _target.Apply();
+        }
+
+    }
+}

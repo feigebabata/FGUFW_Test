@@ -6,28 +6,43 @@ namespace FGUFW.GamePlay
 {
     public static class IPartExtensions
     {
+        /// <summary>
+        /// 主动创建
+        /// </summary>
         public static async Task Create(this IPart self,IPart parent)
         {
-            var task = self.OnCreating(parent);
-            if(task!=null) await task;
-
-            if(self.SubParts!=null)
-            {
-                foreach (var subPart in self.SubParts)
-                {
-                    task = subPart.Create(self);
-                    if(task!=null) await task;
-                }
-            }
-
             tryAddUpdate(self);
             tryAddCoroutine(self);
+
+            // try
+            // {
+                var task = self.OnCreating(parent);
+                if(task!=null) await task;
+
+                if(self.SubParts!=null)
+                {
+                    foreach (var subPart in self.SubParts)
+                    {
+                        task = subPart.Create(self);
+                        if(task!=null) await task;
+                    }
+                }
+            // }
+            // catch (System.Exception ex)
+            // {
+            //     UnityEngine.Debug.LogError(ex);
+            // }
+
         }
 
+        /// <summary>
+        /// 主动释放
+        /// </summary>
         public static async Task Destroy(this IPart self,IPart parent)
         {
             tryRemoveUpdate(self);
             tryRemoveCoroutine(self);
+            
             Task task = null;
             if(self.SubParts!=null)
             {
@@ -57,23 +72,23 @@ namespace FGUFW.GamePlay
                     return (T)self.SubParts[i];
                 }
             }
-            return default(T);
+            return default;
         }
 
         private static void tryAddUpdate(IPart self)
         {
-            if(self is IUpdate)
+            if(self is IUpdateable)
             {
-                var iUpdate = self as IUpdate;
+                var iUpdate = self as IUpdateable;
                 iUpdate.AddUpdateToPlayerLoop();
             }
         }
 
         private static void tryRemoveUpdate(IPart self)
         {
-            if(self is IUpdate)
+            if(self is IUpdateable)
             {
-                var iUpdate = self as IUpdate;
+                var iUpdate = self as IUpdateable;
                 iUpdate.RemoveUpdateToPlayerLoop();
             }
         }

@@ -2,9 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using RVO;
+using Unity.Mathematics;
 using UnityEngine;
 using Random = System.Random;
-using Vector2 = RVO.Vector2;
+// using float2 = RVO.float2;
 
 public class GameAgent : MonoBehaviour
 {
@@ -22,20 +23,20 @@ public class GameAgent : MonoBehaviour
     {
         if (sid >= 0)
         {
-            Vector2 pos = Simulator.Instance.getAgentPosition(sid);
-            Vector2 vel = Simulator.Instance.getAgentPrefVelocity(sid);
-            transform.position = new Vector3(pos.x(), transform.position.y, pos.y());
-            if (Math.Abs(vel.x()) > 0.01f && Math.Abs(vel.y()) > 0.01f)
-                transform.forward = new Vector3(vel.x(), 0, vel.y()).normalized;
+            float2 pos = Simulator.Instance.getAgentPosition(sid);
+            float2 vel = Simulator.Instance.getAgentPrefVelocity(sid);
+            transform.position = new Vector3(pos.x, transform.position.y, pos.y);
+            if (Math.Abs(vel.x) > 0.01f && Math.Abs(vel.y) > 0.01f)
+                transform.forward = new Vector3(vel.x, 0, vel.y).normalized;
         }
 
         if (!Input.GetMouseButton(1))
         {
-            Simulator.Instance.setAgentPrefVelocity(sid, new Vector2(0, 0));
+            Simulator.Instance.setAgentPrefVelocity(sid, new float2(0, 0));
             return;
         }
 
-        Vector2 goalVector = GameMainManager.Instance.mousePosition - Simulator.Instance.getAgentPosition(sid);
+        float2 goalVector = GameMainManager.Instance.mousePosition - Simulator.Instance.getAgentPosition(sid);
         if (RVOMath.absSq(goalVector) > 1.0f)
         {
             goalVector = RVOMath.normalize(goalVector);
@@ -49,6 +50,6 @@ public class GameAgent : MonoBehaviour
 
         Simulator.Instance.setAgentPrefVelocity(sid, Simulator.Instance.getAgentPrefVelocity(sid) +
                                                      dist*
-                                                     new Vector2((float) Math.Cos(angle), (float) Math.Sin(angle)));
+                                                     new float2((float) Math.Cos(angle), (float) Math.Sin(angle)));
     }
 }

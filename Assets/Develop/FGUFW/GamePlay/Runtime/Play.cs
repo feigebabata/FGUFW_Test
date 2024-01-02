@@ -16,6 +16,7 @@ namespace FGUFW.GamePlay
         {
             I = (T)this;
             Messenger = new OrderedMessenger<Enum>();
+            UnityEngine.Application.quitting += onAppQuiting;
             return null;
         }
 
@@ -23,7 +24,15 @@ namespace FGUFW.GamePlay
         {
             Messenger = null;
             I = null;
+            UnityEngine.Application.quitting -= onAppQuiting;
             return null;
+        }
+
+        private async void onAppQuiting()
+        {
+            #if UNITY_EDITOR
+            await I.Destroy(null);
+            #endif
         }
 
         

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace FGUFW
 {
@@ -8,10 +9,17 @@ namespace FGUFW
     /// 无序列表 避免移除时后面整体向前复制,但打乱了顺序
     /// </summary>
     /// <typeparam name="T"></typeparam>
+    [Serializable]
     public sealed class UnorderedList<T>:IDisposable
     {
         private const int EXPAND = 1024;
 
+        
+        [SerializeField]
+        private int _count;
+        public int Count=>_count;
+
+        [SerializeField]
         private T[] _items;
 
         private int _capacity;
@@ -40,8 +48,6 @@ namespace FGUFW
             }
         }
 
-        private int _count;
-        public int Count=>_count;
 
         public UnorderedList(int capacity=4)
         {
@@ -53,6 +59,11 @@ namespace FGUFW
             _items = collection;
             _capacity = collection.Length;
             _count = _capacity;
+        }
+
+        public static UnorderedList<T> Copy(T[] collection)
+        {
+            return new UnorderedList<T>(collection.Copy(collection.Length));
         }
 
         private void ensureCapacity() 
@@ -123,12 +134,24 @@ namespace FGUFW
             RemoveAt(index);
         }
 
+        public void RemoveAll(Predicate<T> match)
+        {
+            for (int i = 0; i < Count; i++)
+            {
+                if(match(this[i]))
+                {
+                    RemoveAt(i);
+                    i--;
+                }
+            }
+        }
+
         public bool RemoveAt(int index)
         {
             if(index<0 || index>=_count) return false;
+            _count--;
             var lastObj = _items[_count];
             _items[index] = lastObj;
-            _count--;
             return true;
         }
 
@@ -188,6 +211,18 @@ namespace FGUFW
             Clear();
             if(_capacity==0)return;
             Array.Clear(_items,0,_capacity);
+        }
+
+        public void ReplaceAllData(T[] array)
+        {
+            Clear();
+            if(array!=null)
+            {
+                foreach (var item in array)
+                {
+                    Add(item);
+                }
+            }
         }
 
         public struct SortComparer<K> : IComparer<K>

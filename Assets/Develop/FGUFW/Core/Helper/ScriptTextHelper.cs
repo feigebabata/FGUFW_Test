@@ -83,10 +83,65 @@ namespace |NAME_SPACE|
     }
 }
 ";
+
+
+            string globalScript = 
+@"using FGUFW;
+using System.Collections.Generic;
+using UnityEngine;
+using System;
+
+
+/// <summary>
+/// |CLASS_SUMMARY|
+/// </summary>
+[Serializable]
+public class |CLASS_NAME|
+{
+|MEMBERS|
+
+    public |CLASS_NAME|(string[,] table,int lineIndex)
+    {
+|MEMBER_SETS|
+    }
+
+    public static |CLASS_NAME|[] ToArray(string csvText)
+    {
+        var table = CsvHelper.Parse2(csvText);
+        int length = table.GetLength(0)-4;
+        |CLASS_NAME|[] list = new |CLASS_NAME|[length];
+        for (int i = 0; i < length; i++)
+        {
+            list[i] = new |CLASS_NAME|(table,i+4);
+        }
+        return list;
+    }
+
+    public static Dictionary<|FRIST_TYPE|,|CLASS_NAME|> ToDict(string csvText)
+    {
+        var table = CsvHelper.Parse2(csvText);
+        int length = table.GetLength(0);
+        Dictionary<|FRIST_TYPE|,|CLASS_NAME|> dict = new Dictionary<|FRIST_TYPE|,|CLASS_NAME|>();
+        for (int i = 4; i < length; i++)
+        {
+            var data = new |CLASS_NAME|(table,i);
+            dict.Add(data.|FRIST_MEMBER|,data);
+        }
+        return dict;
+    }
+
+}
+
+";
             var frist_type = table[typeLine,0];
             var frist_name = table[nameLine,0];
             var nameSpaceArr = table[0,0].Split('.');
             var nameSpace = string.Join(".",nameSpaceArr,0,nameSpaceArr.Length-1);
+
+            if(string.IsNullOrEmpty(nameSpace))
+            {
+                script = globalScript;
+            }
             var className = nameSpaceArr[nameSpaceArr.Length-1];
             var classSummary = table[0,2];
             var members = CSVMembers(table,typeLine,nameLine,summaryLine);
@@ -153,10 +208,66 @@ namespace |NAME_SPACE|
     }
 }
 ";
+
+
+            string globalScript = 
+@"using FGUFW;
+using System.Collections.Generic;
+using UnityEngine;
+using System;
+
+
+/// <summary>
+/// |CLASS_SUMMARY|
+/// </summary>
+[Serializable]
+public struct |CLASS_NAME|
+{
+|MEMBERS|
+
+    public |CLASS_NAME|(string[,] table,int lineIndex)
+    {
+|MEMBER_SETS|
+    }
+
+    public static |CLASS_NAME|[] ToArray(string csvText)
+    {
+        var table = CsvHelper.Parse2(csvText);
+        int length = table.GetLength(0)-4;
+        |CLASS_NAME|[] list = new |CLASS_NAME|[length];
+        for (int i = 0; i < length; i++)
+        {
+            list[i] = new |CLASS_NAME|(table,i+4);
+        }
+        return list;
+    }
+
+    public static Dictionary<|FRIST_TYPE|,|CLASS_NAME|> ToDict(string csvText)
+    {
+        var table = CsvHelper.Parse2(csvText);
+        int length = table.GetLength(0);
+        Dictionary<|FRIST_TYPE|,|CLASS_NAME|> dict = new Dictionary<|FRIST_TYPE|,|CLASS_NAME|>();
+        for (int i = 4; i < length; i++)
+        {
+            var data = new |CLASS_NAME|(table,i);
+            dict.Add(data.|FRIST_MEMBER|,data);
+        }
+        return dict;
+    }
+
+}
+
+";
+
             var frist_type = table[typeLine,0];
             var frist_name = table[nameLine,0];
             var nameSpaceArr = table[0,0].Split('.');
             var nameSpace = string.Join(".",nameSpaceArr,0,nameSpaceArr.Length-1);
+
+            if(string.IsNullOrEmpty(nameSpace))
+            {
+                script = globalScript;
+            }
             var className = nameSpaceArr[nameSpaceArr.Length-1];
             var classSummary = table[0,2];
             var members = CSVMembers(table,typeLine,nameLine,summaryLine);
@@ -193,6 +304,19 @@ namespace |NAME_SPACE|
     }
 }
 ";
+
+
+            string globalScript = 
+@"
+/// <summary>
+/// |CLASS_SUMMARY|
+/// </summary>
+public enum |CLASS_NAME|
+{
+|MEMBERS|
+}
+
+";
             StringBuilder sb = new StringBuilder();
             int length = table.GetLength(0);
             for (int i = 2; i < length; i++)
@@ -207,6 +331,10 @@ namespace |NAME_SPACE|
 
             var nameSpaceArr = table[0,0].Split('.');
             var nameSpace = string.Join(".",nameSpaceArr,0,nameSpaceArr.Length-1);
+            if(string.IsNullOrEmpty(nameSpace))
+            {
+                script = globalScript;
+            }
             var className = nameSpaceArr[nameSpaceArr.Length-1];
             var classSummary = table[0,2];
             script = script.Replace(MEMBERS,sb.ToString());
@@ -260,6 +388,7 @@ namespace |NAME_SPACE|
                         case "string":
                         case "Vector2":
                         case "Vector3":
+                        case "Color":
                             memberSet = $"            {memberName}=ScriptTextHelper.Parse_{memberType}(table[lineIndex,{i}]);";
                         break;
                         default:
@@ -278,6 +407,7 @@ namespace |NAME_SPACE|
                         case "string":
                         case "Vector2":
                         case "Vector3":
+                        case "Color":
                             memberSet = $"            {memberName}=ScriptTextHelper.Parse_{memberType}s(table[lineIndex,{i}]);";
                         break;
                         default:
@@ -341,6 +471,15 @@ namespace |NAME_SPACE|
                 return val;
             }
             return VectorHelper.Parse(memberText);
+        }
+
+        public static Color Parse_Color(string memberText)
+        {
+            if(string.IsNullOrEmpty(memberText))
+            {
+                return Color.white;
+            }
+            return memberText.ToColor();
         }
 
         //------------------------------------------------------------------------
@@ -468,6 +607,25 @@ namespace |NAME_SPACE|
                 for (int i = 0; i < length; i++)
                 {
                     vals[i] = VectorHelper.Parse(arr[i]);
+                }
+                return vals;
+            }
+        }
+
+        public static Color[] Parse_Colors(string memberText)
+        {
+            if(string.IsNullOrEmpty(memberText))
+            {
+                return null;
+            }
+            else
+            {
+                var arr = memberText.Split('\n');
+                int length = arr.Length;
+                var vals = new Color[length];
+                for (int i = 0; i < length; i++)
+                {
+                    vals[i] = Parse_Color(arr[i]);
                 }
                 return vals;
             }

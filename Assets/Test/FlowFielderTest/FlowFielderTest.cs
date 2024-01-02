@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using FGUFW;
 using FGUFW.FlowFieldPathfinding;
+using Unity.Collections;
+using Unity.Mathematics;
 
 public class FlowFielderTest : MonoBehaviour
 {
@@ -35,6 +37,7 @@ public class FlowFielderTest : MonoBehaviour
         {
             StartCoroutine(pathMove(item));
         }
+
     }
 
 

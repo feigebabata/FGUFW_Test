@@ -183,6 +183,22 @@ namespace FGUFW
             return angle%360;
         }
 
+        public static bool AngleInRange(float angle,Vector2 range)
+        {
+            if(range==Vector2.zero)return true;
+
+            float min = range.x;
+            float max = range.y;
+            if(min<max)
+            {
+                return angle>=min && angle<max;
+            }
+            else
+            {
+                return (angle>=min && angle<360) || (angle>=0 && angle<max);
+            }
+        }
+
         /// <summary>
         /// 点到线的距离
         /// </summary>

@@ -33,6 +33,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using Unity.Mathematics;
 
 namespace RVO
 {
@@ -80,7 +81,7 @@ namespace RVO
                 for (int index = start_; index < end_; ++index)
                 {
                     Simulator.Instance.agents_[index].computeNeighbors();
-                    Simulator.Instance.agents_[index].computeNewVelocity();
+                    Simulator.Instance.agents_[index].computeNewVelocity(Simulator.Instance.agents_[index].obstacleNeighbors_);
                 }
                 doneEvent_.Set();
             }
@@ -157,7 +158,7 @@ namespace RVO
          * <param name="position">The two-dimensional starting position of this
          * agent.</param>
          */
-        public int addAgent(Vector2 position)
+        public int addAgent(float2 position)
         {
             if (defaultAgent_ == null)
             {
@@ -238,7 +239,7 @@ namespace RVO
          * <param name="velocity">The initial two-dimensional linear velocity of
          * this agent.</param>
          */
-        public int addAgent(Vector2 position, float neighborDist, int maxNeighbors, float timeHorizon, float timeHorizonObst, float radius, float maxSpeed, Vector2 velocity)
+        public int addAgent(float2 position, float neighborDist, int maxNeighbors, float timeHorizon, float timeHorizonObst, float radius, float maxSpeed, float2 velocity)
         {
             Agent agent = new Agent();
             agent.id_ = s_totalID;
@@ -269,7 +270,7 @@ namespace RVO
          * the environment, the vertices should be listed in clockwise order.
          * </remarks>
          */
-        public int addObstacle(IList<Vector2> vertices)
+        public int addObstacle(IList<float2> vertices)
         {
             if (vertices.Count < 2)
             {
@@ -367,7 +368,8 @@ namespace RVO
             for (int block = 0; block < workers_.Length; ++block)
             {
                 doneEvents_[block].Reset();
-                ThreadPool.QueueUserWorkItem(workers_[block].step);
+                // ThreadPool.QueueUserWorkItem(workers_[block].step);
+                workers_[block].step(null);
             }
 
             WaitHandle.WaitAll(doneEvents_);
@@ -396,10 +398,10 @@ namespace RVO
          * <param name="neighborNo">The number of the agent neighbor to be
          * retrieved.</param>
          */
-        public int getAgentAgentNeighbor(int agentNo, int neighborNo)
-        {
-            return agents_[agentNo2indexDict_[agentNo]].agentNeighbors_[neighborNo].Value.id_;
-        }
+        // public int getAgentAgentNeighbor(int agentNo, int neighborNo)
+        // {
+        //     return agents_[agentNo2indexDict_[agentNo]].agentNeighbors_[neighborNo].Value.id_;
+        // }
 
         /**
          * <summary>Returns the maximum neighbor count of a specified agent.
@@ -410,10 +412,10 @@ namespace RVO
          * <param name="agentNo">The number of the agent whose maximum neighbor
          * count is to be retrieved.</param>
          */
-        public int getAgentMaxNeighbors(int agentNo)
-        {
-            return agents_[agentNo2indexDict_[agentNo]].maxNeighbors_;
-        }
+        // public int getAgentMaxNeighbors(int agentNo)
+        // {
+        //     return agents_[agentNo2indexDict_[agentNo]].maxNeighbors_;
+        // }
 
         /**
          * <summary>Returns the maximum speed of a specified agent.</summary>
@@ -503,10 +505,10 @@ namespace RVO
          * permissible velocities with respect to that ORCA constraint.
          * </remarks>
          */
-        public IList<Line> getAgentOrcaLines(int agentNo)
-        {
-            return agents_[agentNo2indexDict_[agentNo]].orcaLines_;
-        }
+        // public IList<float4> getAgentOrcaLines(int agentNo)
+        // {
+        //     return agents_[agentNo2indexDict_[agentNo]].orcaLines_;
+        // }
 
         /**
          * <summary>Returns the two-dimensional position of a specified agent.
@@ -518,7 +520,7 @@ namespace RVO
          * <param name="agentNo">The number of the agent whose two-dimensional
          * position is to be retrieved.</param>
          */
-        public Vector2 getAgentPosition(int agentNo)
+        public float2 getAgentPosition(int agentNo)
         {
             return agents_[agentNo2indexDict_[agentNo]].position_;
         }
@@ -533,7 +535,7 @@ namespace RVO
          * <param name="agentNo">The number of the agent whose two-dimensional
          * preferred velocity is to be retrieved.</param>
          */
-        public Vector2 getAgentPrefVelocity(int agentNo)
+        public float2 getAgentPrefVelocity(int agentNo)
         {
             return agents_[agentNo2indexDict_[agentNo]].prefVelocity_;
         }
@@ -589,7 +591,7 @@ namespace RVO
          * <param name="agentNo">The number of the agent whose two-dimensional
          * linear velocity is to be retrieved.</param>
          */
-        public Vector2 getAgentVelocity(int agentNo)
+        public float2 getAgentVelocity(int agentNo)
         {
             return agents_[agentNo2indexDict_[agentNo]].velocity_;
         }
@@ -646,7 +648,7 @@ namespace RVO
          * <param name="vertexNo">The number of the obstacle vertex to be
          * retrieved.</param>
          */
-        public Vector2 getObstacleVertex(int vertexNo)
+        public float2 getObstacleVertex(int vertexNo)
         {
             return obstacles_[vertexNo].point_;
         }
@@ -717,12 +719,12 @@ namespace RVO
          * the two points and the obstacles in order for the points to be
          * mutually visible (optional). Must be non-negative.</param>
          */
-        public bool queryVisibility(Vector2 point1, Vector2 point2, float radius)
+        public bool queryVisibility(float2 point1, float2 point2, float radius)
         {
             return kdTree_.queryVisibility(point1, point2, radius);
         }
 
-        public int queryNearAgent(Vector2 point, float radius)
+        public int queryNearAgent(float2 point, float radius)
         {
             if (getNumAgents() == 0)
                 return -1;
@@ -761,7 +763,7 @@ namespace RVO
          * <param name="velocity">The default initial two-dimensional linear
          * velocity of a new agent.</param>
          */
-        public void setAgentDefaults(float neighborDist, int maxNeighbors, float timeHorizon, float timeHorizonObst, float radius, float maxSpeed, Vector2 velocity)
+        public void setAgentDefaults(float neighborDist, int maxNeighbors, float timeHorizon, float timeHorizonObst, float radius, float maxSpeed, float2 velocity)
         {
             if (defaultAgent_ == null)
             {
@@ -827,7 +829,7 @@ namespace RVO
          * <param name="position">The replacement of the two-dimensional
          * position.</param>
          */
-        public void setAgentPosition(int agentNo, Vector2 position)
+        public void setAgentPosition(int agentNo, float2 position)
         {
             agents_[agentNo2indexDict_[agentNo]].position_ = position;
         }
@@ -841,7 +843,7 @@ namespace RVO
          * <param name="prefVelocity">The replacement of the two-dimensional
          * preferred velocity.</param>
          */
-        public void setAgentPrefVelocity(int agentNo, Vector2 prefVelocity)
+        public void setAgentPrefVelocity(int agentNo, float2 prefVelocity)
         {
             agents_[agentNo2indexDict_[agentNo]].prefVelocity_ = prefVelocity;
         }
@@ -896,7 +898,7 @@ namespace RVO
          * <param name="velocity">The replacement two-dimensional linear
          * velocity.</param>
          */
-        public void setAgentVelocity(int agentNo, Vector2 velocity)
+        public void setAgentVelocity(int agentNo, float2 velocity)
         {
             agents_[agentNo2indexDict_[agentNo]].velocity_ = velocity;
         }

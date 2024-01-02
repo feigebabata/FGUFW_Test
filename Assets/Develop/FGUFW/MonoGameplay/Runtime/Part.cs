@@ -31,6 +31,7 @@ namespace FGUFW.MonoGameplay
                 Destroy(_uiPanel.gameObject);
             }
             SubParts.Clear();
+            Destroy(gameObject);
         }
 
         public T GetPart<T>() where T : Part
@@ -45,9 +46,11 @@ namespace FGUFW.MonoGameplay
             return default;
         }
 
-        public void AddPart<T>() where T : Part
+        public T AddPart<T>() where T : Part
         {
-            SubParts.Add(Create<T>(this));
+            var part = Create<T>(this);
+            SubParts.Add(part);
+            return part;
         }
 
         public virtual void OnUpdate(in PlayFrameData playFrameData)
@@ -81,10 +84,11 @@ namespace FGUFW.MonoGameplay
             return default;
         }
 
-        public static Part Create<T>(Part parent) where T : Part
+        public static T Create<T>(Part parent) where T : Part
         {
             Transform tp = parent==default?null:parent.transform;
             var part = new GameObject(typeof(T).Name).AddComponent<T>();
+            DontDestroyOnLoad(part.gameObject);
             part.transform.parent = tp;
             part.transform.localPosition = Vector3.zero;
             return part;

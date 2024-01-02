@@ -40,17 +40,18 @@
 
 using System;
 using System.Collections.Generic;
+using Unity.Mathematics;
 
 namespace RVO
 {
     class Circle
     {
         /* Store the goals of the agents. */
-        IList<Vector2> goals;
+        IList<float2> goals;
 
         Circle()
         {
-            goals = new List<Vector2>();
+            goals = new List<float2>();
         }
 
         void setupScenario()
@@ -62,7 +63,7 @@ namespace RVO
              * Specify the default parameters for agents that are subsequently
              * added.
              */
-            Simulator.Instance.setAgentDefaults(15.0f, 10, 10.0f, 10.0f, 1.5f, 2.0f, new Vector2(0.0f, 0.0f));
+            Simulator.Instance.setAgentDefaults(15.0f, 10, 10.0f, 10.0f, 1.5f, 2.0f, new float2(0.0f, 0.0f));
 
             /*
              * Add agents, specifying their start position, and store their
@@ -71,7 +72,7 @@ namespace RVO
             for (int i = 0; i < 250; ++i)
             {
                 Simulator.Instance.addAgent(200.0f *
-                    new Vector2((float)Math.Cos(i * 2.0f * Math.PI / 250.0f),
+                    new float2((float)Math.Cos(i * 2.0f * Math.PI / 250.0f),
                         (float)Math.Sin(i * 2.0f * Math.PI / 250.0f)));
                 goals.Add(-Simulator.Instance.getAgentPosition(i));
             }
@@ -101,7 +102,7 @@ namespace RVO
              */
             for (int i = 0; i < Simulator.Instance.getNumAgents(); ++i)
             {
-                Vector2 goalVector = goals[i] - Simulator.Instance.getAgentPosition(i);
+                float2 goalVector = goals[i] - Simulator.Instance.getAgentPosition(i);
 
                 if (RVOMath.absSq(goalVector) > 1.0f)
                 {

@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using RVO;
+using Unity.Mathematics;
 using UnityEngine;
-using Vector2 = RVO.Vector2;
+// using float2 = RVO.float2;
 
 public class ObstacleCollect : MonoBehaviour
 {
@@ -20,11 +21,11 @@ public class ObstacleCollect : MonoBehaviour
             float maxZ = boxColliders[i].transform.position.z +
                          boxColliders[i].size.z*boxColliders[i].transform.lossyScale.z*0.5f;
 
-            IList<Vector2> obstacle = new List<Vector2>();
-            obstacle.Add(new Vector2(maxX, maxZ));
-            obstacle.Add(new Vector2(minX, maxZ));
-            obstacle.Add(new Vector2(minX, minZ));
-            obstacle.Add(new Vector2(maxX, minZ));
+            IList<float2> obstacle = new List<float2>();
+            obstacle.Add(new float2(maxX, maxZ));
+            obstacle.Add(new float2(minX, maxZ));
+            obstacle.Add(new float2(minX, minZ));
+            obstacle.Add(new float2(maxX, minZ));
             Simulator.Instance.addObstacle(obstacle);
         }
     }

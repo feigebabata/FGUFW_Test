@@ -9,7 +9,7 @@ namespace FGUFW.GamePlay
 {
     static class CreateScript
     {
-        const string NAME_SPACE = "RogueGamePlay";
+        const string NAME_SPACE = "RoguePlay";
 
         [MenuItem("Assets/Create/GamePlay/Play",false,80)]
         static void createPlay()
@@ -46,15 +46,16 @@ namespace |NAME_SPACE|
         {
             await AssetHelper.LoadSceneAsync(null);
             //code
-            SubParts.Add(new GameEnter());
+            SubParts.Add(null);
+            
             _ = base.OnCreating(parent);
         }
 
         public override Task OnDestroying(IPart parent)
         {
-            return base.OnDestroying(parent);
             //code
 
+            return base.OnDestroying(parent);
         }
 
     }
@@ -79,7 +80,7 @@ namespace |NAME_SPACE|
         static void createPart()
         {
             string createPath = EditorUtils.EditorUtils.GetSeleceFolderPath()+"/Part.cs";
-            ProjectWindowUtil.StartNameEditingIfProjectWindowExists(0,ScriptableObject.CreateInstance<CreatePlayScript>(),createPath,null,null);
+            ProjectWindowUtil.StartNameEditingIfProjectWindowExists(0,ScriptableObject.CreateInstance<CreatePartScript>(),createPath,null,null);
         }
 
         class CreatePartScript : EndNameEditAction
