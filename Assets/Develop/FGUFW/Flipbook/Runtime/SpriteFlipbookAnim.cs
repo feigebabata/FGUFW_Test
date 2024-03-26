@@ -37,7 +37,12 @@ namespace FGUFW.Flipbook
             }
         }
 
+        #if UNITY_EDITOR
+        public bool EditorAutoApple = false;
+        #endif
+
         public bool StartFristFrame = true;
+        public bool Loop = true;
         public float SizeHeight = 1f;
         public Vector2 Pivot = new Vector2(0.5f,0.5f);
         public Vector2Int FlipbookSize = new Vector2Int(1,1);
@@ -69,11 +74,12 @@ namespace FGUFW.Flipbook
         public void Apply()
         {
             Render.GetPropertyBlock(PropertyBlock);
+            var size = Vector2.one;
             if(!Render.sprite.IsUnityNull())
             {
                 var girdSize = new Vector2(Render.sprite.texture.width/FlipbookSize.x,Render.sprite.texture.height/FlipbookSize.y);
                 PropertyBlock.SetTexture(PropertyName.MainTex,Render.sprite.texture);
-                var size = new Vector2(girdSize.x*SizeHeight/girdSize.y,SizeHeight);
+                size = new Vector2(girdSize.x*SizeHeight/girdSize.y,SizeHeight);
                 Render.size = size;
             }
 
@@ -85,6 +91,8 @@ namespace FGUFW.Flipbook
             PropertyBlock.SetFloat(PropertyName.Start,Start);
             PropertyBlock.SetFloat(PropertyName.Length,Length);
             PropertyBlock.SetFloat(PropertyName.OffsetTime,OffsetTime);
+            PropertyBlock.SetFloat(PropertyName.Loop,Loop?1:0);
+            PropertyBlock.SetVector(PropertyName.ClipSize,new Vector4(size.x,size.y));
             Render.SetPropertyBlock(PropertyBlock);
 
         }
@@ -98,6 +106,8 @@ namespace FGUFW.Flipbook
             public readonly int Start;
             public readonly int Length;
             public readonly int OffsetTime;
+            public readonly int Loop;
+            public readonly int ClipSize;
 
             public SpritePropertyName()
             {
@@ -108,6 +118,8 @@ namespace FGUFW.Flipbook
                 Start = Shader.PropertyToID("_Start");
                 Length = Shader.PropertyToID("_Length");
                 OffsetTime = Shader.PropertyToID("_OffsetTime");
+                Loop = Shader.PropertyToID("_Loop");
+                ClipSize = Shader.PropertyToID("_ClipSize");
             }
         }
 

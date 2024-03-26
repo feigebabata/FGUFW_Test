@@ -1,3 +1,5 @@
+
+#if UNITY_EDITOR
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,26 +7,71 @@ using UnityEditor;
 using UnityEngine.UIElements;
 using System;
 using UnityEditor.UIElements;
+using System.IO;
 
 namespace FGUFW.MonoGameplay
 {
-    [FilePath("ProjectSettings/MonoGameplaySettings.asset", FilePathAttribute.Location.ProjectFolder)]
-    public class MonoGameplaySettings : ScriptableSingleton<MonoGameplaySettings>
+    // [Serializable]
+    // [FilePath("ProjectSettings/MonoGameplaySettings.asset", FilePathAttribute.Location.ProjectFolder)]
+    // public class MonoGameplaySettings : ScriptableSingleton<MonoGameplaySettings>
+    // {
+    //     [SerializeField]
+    //     public string NameSpace = "TestSpace";
+
+        
+    //     [SerializeField]
+    //     public string PlayName = "TestPlay";
+
+
+    //     internal void Save() { Save(true); }
+    //     private void OnDisable() { Save(); }
+    //     internal SerializedObject GetSerializedObject() { return new SerializedObject(this); }
+    // }
+
+    [Serializable]
+    public class MonoGameplaySettings
     {
         public string NameSpace = "TestSpace";
+
         public string PlayName = "TestPlay";
 
+        public static string FilePath => Application.dataPath.Replace("Assets","ProjectSettings/MonoGameplaySettings.json");
 
-        internal void Save() { Save(true); }
-        private void OnDisable() { Save(); }
-        internal SerializedObject GetSerializedObject() { return new SerializedObject(this); }
+
+        public void Save()
+        {
+            File.WriteAllText(FilePath,JsonUtility.ToJson(this,true));
+        }
+
+        public static MonoGameplaySettings Load()
+        {
+            if(File.Exists(FilePath))
+            {
+                return JsonUtility.FromJson<MonoGameplaySettings>(File.ReadAllText(FilePath));
+            }
+            var data = new MonoGameplaySettings();
+            File.WriteAllText(FilePath,JsonUtility.ToJson(data));
+            return data;
+        }
+
+        
     }
 
     public class MonoGameplaySettingsProvider : SettingsProvider
     {
-        private SerializedObject _serializedObject;
-        private SerializedProperty _nameSpace;
-        private SerializedProperty _playName;
+        private static MonoGameplaySettings _settingData;
+        public static MonoGameplaySettings SettingData
+        {
+            get
+            {
+                if(_settingData==null)
+                {
+                    _settingData = MonoGameplaySettings.Load();
+                }
+                return _settingData;
+            }
+        }
+
 
         public MonoGameplaySettingsProvider(string path, SettingsScope scopes, IEnumerable<string> keywords = null) : base(path, scopes, keywords)
         {
@@ -32,26 +79,21 @@ namespace FGUFW.MonoGameplay
 
         public override void OnActivate(string searchContext, VisualElement rootElement)
         {
-            MonoGameplaySettings.instance.Save();
-            _serializedObject = MonoGameplaySettings.instance.GetSerializedObject();
-            _nameSpace = _serializedObject.FindProperty("NameSpace");
-            _playName = _serializedObject.FindProperty("PlayName");
+            
         }
 
         public override void OnGUI(string searchContext)
         {
-            _serializedObject.Update();
             EditorGUI.BeginChangeCheck();
 
             // EditorGUILayout.LabelField("MonoGameplay", EditorStyles.boldLabel);
 
-            _nameSpace.stringValue = EditorGUILayout.TextField("NameSpace",_nameSpace.stringValue);
-            _playName.stringValue = EditorGUILayout.TextField("PlayName",_playName.stringValue);
+            SettingData.NameSpace = EditorGUILayout.TextField("NameSpace",SettingData.NameSpace);
+            SettingData.PlayName = EditorGUILayout.TextField("PlayName",SettingData.PlayName);
 
             if (EditorGUI.EndChangeCheck())
             {
-                _serializedObject.ApplyModifiedProperties();
-                MonoGameplaySettings.instance.Save();
+               SettingData.Save();
             }
         }
 
@@ -68,3 +110,4 @@ namespace FGUFW.MonoGameplay
 }
 
 
+#endif

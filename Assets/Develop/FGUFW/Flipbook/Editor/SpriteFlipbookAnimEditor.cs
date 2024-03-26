@@ -34,7 +34,28 @@ namespace FGUFW.Flipbook.Editor
                 }
 
             }
-            _target.Apply();
+
+            // if(EditorApplication.isPlaying)
+            // {
+            //     if(GUILayout.Button("Apply"))
+            //     {
+            //         _target.Apply();
+            //     }
+            // }
+            // else
+            // {
+            //     _target.Apply();
+            // }
+
+            if(_target.EditorAutoApple)
+            {
+                _target.Apply();
+            }
+
+            if(GUILayout.Button("Apply"))
+            {
+                _target.Apply();
+            }
         }
 
     }

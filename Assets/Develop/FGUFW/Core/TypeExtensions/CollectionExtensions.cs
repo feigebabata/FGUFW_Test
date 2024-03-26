@@ -114,7 +114,73 @@ namespace FGUFW
             return array;
         }
 
+        public static void RemoveAtSwapBack<T>(this List<T> self,int index)
+        {
+            int backIndex = self.Count-1;
+            self[index] = self[backIndex];
+            self.RemoveAt(backIndex);
+        }
 
+        public static void RemoveSwapBack<T>(this List<T> self,T item)
+        {
+            int index = self.IndexOf(item);
+            if(index==-1)return;
+            int backIndex = self.Count-1;
+            self[index] = self[backIndex];
+            self.RemoveAt(backIndex);
+        }
+
+        public static void RemoveSwapBack<T>(this List<T> self,Predicate<T> match)
+        {
+            int index = self.FindIndex(match);
+            if(index==-1)return;
+            int backIndex = self.Count-1;
+            self[index] = self[backIndex];
+            self.RemoveAt(backIndex);
+        }
+
+        public static void RemoveAllSwapBack<T>(this List<T> self,Predicate<T> match)
+        {
+            int length = self.Count;
+            for (int i = 0; i < length; i++)
+            {
+                int index = self.FindIndex(match);
+                if(index==-1)return;
+                int backIndex = self.Count-1;
+                self[index] = self[backIndex];
+                self.RemoveAt(backIndex);       
+            }
+        }
+
+        public static void ReplaceAllData<T>(this List<T> self,T[] array)
+        {
+            int length = array==null?0:array.Length;
+
+            for (int i = self.Count; i > length; i--)
+            {
+                self.RemoveAt(i-1);
+            }
+
+            for (int i = 0; i < length; i++)
+            {
+                if(i<self.Count)
+                {
+                    self[i] = array[i];
+                }
+                else
+                {
+                    self.Add(array[i]);
+                }
+            }
+        }
+
+        public static void Clean<T>(this List<T> self)
+        {
+            for (int i = self.Count-1; i >= 0; i--)
+            {
+                self.RemoveAt(i);
+            }
+        }
 
     }
 }

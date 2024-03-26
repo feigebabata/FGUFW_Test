@@ -1,3 +1,5 @@
+#define FIXED_UPDATE
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -28,8 +30,13 @@ namespace FGUFW.MonoGameplay
             Debug.Log($"{this.GetType().Name} Create End.");
 
             await OnPreload();
-            FGUFW.PlayerLoopHelper.AddToLoop<UnityEngine.PlayerLoop.Update>(OnUpdate,this.GetType());
-            _playCreatedTime = Time.time;
+            #if FIXED_UPDATE
+                FGUFW.PlayerLoopHelper.AddToLoop<UnityEngine.PlayerLoop.FixedUpdate>(OnUpdate,this.GetType());
+                _playCreatedTime = Time.fixedTime;
+            #else
+                FGUFW.PlayerLoopHelper.AddToLoop<UnityEngine.PlayerLoop.Update>(OnUpdate,this.GetType());
+                _playCreatedTime = Time.time;
+            #endif
 
             Debug.Log($"{this.GetType().Name} Preload End.");
 
@@ -39,20 +46,26 @@ namespace FGUFW.MonoGameplay
 
         public override async UniTask OnDestroying(Part parent)
         {
-            FGUFW.PlayerLoopHelper.RemoveToLoop<UnityEngine.PlayerLoop.Update>(OnUpdate);
+            #if FIXED_UPDATE
+                FGUFW.PlayerLoopHelper.RemoveToLoop<UnityEngine.PlayerLoop.FixedUpdate>(OnUpdate);
+            #else
+                FGUFW.PlayerLoopHelper.RemoveToLoop<UnityEngine.PlayerLoop.Update>(OnUpdate);
+            #endif
             await base.OnDestroying(parent);
             
             UnityEngine.Application.quitting -= onAppQuiting;
             Messenger = null;
             I = null;
+
+            Debug.Log($"{this.GetType().Name} Destroy End.");
         }
 
 
         private void OnUpdate()
         {
             _frameData.Index++;
-            _frameData.DeltaTime = Time.deltaTime;
-            _frameData.WorldTime = Time.time - _playCreatedTime;
+            _frameData.DeltaTime = Time.fixedDeltaTime;
+            _frameData.WorldTime = Time.fixedTime - _playCreatedTime;
             OnUpdate(in _frameData);
         }
 

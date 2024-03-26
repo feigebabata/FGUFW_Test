@@ -1,195 +1,78 @@
+#define SHOW
+
 using System;
 using System.Collections;
-using System.Text;
+using System.Collections.Generic;
 
 namespace FGUFW
 {
-    /// <summary>
-    /// 整型表
-    /// </summary>
-    public sealed class TableInt<V>
+    [Serializable]
+    public class Table<TKey,TValue>:IEnumerable<KeyValuePair<TKey, TValue>>
     {
-        public struct Entry
+#if UNITY_EDITOR && SHOW
+        [Serializable]
+        public struct ItemData
         {
-            public int Key;
-            public int Next;
-            public V Value;
+            public TKey Key;
+            public TValue Value;
         }
 
-        private const int LINK_MAX_LENGTH = 128;
+        public List<ItemData> Items = new List<ItemData>();
+#endif
+        private Dictionary<TKey,TValue> _dict = new Dictionary<TKey, TValue>();
 
-        private int[] _links;
-        private Entry[] _entrys;
-        private int _count;
-
-        public int Count => _count;
-
-        public V this[int key]
+        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
-            get => getVal(key);
-            set => setVal(key,value);
+            return _dict.GetEnumerator();
         }
 
-        private TableInt(){}
-
-        public TableInt(int capacity=3)
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            init(Math.Max(capacity,3));
+            return _dict.GetEnumerator();
         }
 
-        public override string ToString()
+        public TValue this[TKey key]
         {
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < _count; i++)
+            get
             {
-                sb.AppendLine($"{_entrys[i].Key} : {_entrys[i].Value}");
+                return _dict[key];
             }
-            return sb.ToString();
-        }
-
-        private void init(int capacity)
-        {
-            var length = TableHelper.GetPrime(capacity);
-            _links = new int[length];
-            for (int i = 0; i < length; i++)_links[i]=-1;
-
-            _entrys = new Entry[length];
-        }
-
-        private void setVal(int key, V value)
-        {
-            var entry = new Entry
+            set
             {
-                Key = key,
-                Value =value,
-                Next =-1
-            };
-
-            int linkIdx = key.RoundIndex(_links.Length);
-            int linkLength = 0;
-            int idx = -1;
-
-            for (int i = _links[linkIdx]; i >=0 ; i = _entrys[i].Next)
-            {
-                linkLength++;
-                if(_entrys[i].Key==key)
-                {
-                    idx = i;
-                    break;
-                }
-            }
-
-            if(idx==-1)
-            {
-                entry.Next = _links[linkIdx];
-                _links[linkIdx] = _count;
-                _entrys[_count] = entry;
-                _count++;
-            }
-            else
-            {
-                _entrys[idx].Value = value;
-            }
-
-            if(linkLength>LINK_MAX_LENGTH || _count>=_entrys.Length)
-            {
-                expandCapacity();
+                _dict[key] = value;
             }
         }
 
-        private void expandCapacity()
+        public void Add(TKey key, TValue value)
         {
-            var length = TableHelper.GetPrime(_entrys.Length*2);
-            _links = new int[length];
-            for (int i = 0; i < length; i++)_links[i]=-1;
-            var newEntrys = new Entry[length];
-            Array.Copy(_entrys,newEntrys,_count);
-            for (int i = 0; i < _count; i++)
-            {
-                int linkIdx = newEntrys[i].Key.RoundIndex(length);
-                newEntrys[i].Next = _links[linkIdx];
-                _links[linkIdx] = i;
-            }
-            _entrys = newEntrys;
-        }
+            _dict.Add(key,value);
 
-        private V getVal(int key)
-        {
-            int index = findEntry(key);
-            if(index==-1)
-            {
-                throw new Exception($"找不到key:{key}");
-            }
-            return _entrys[index].Value;
-        }
-
-        private int findEntry(int key)
-        {
-            var linkIdx = key.RoundIndex(_links.Length);
-            for (int i = _links[linkIdx]; i >=0 ; i = _entrys[i].Next)
-            {
-                if(_entrys[i].Key==key)return i;
-            }
-            return -1;
-        }
-
-        public bool Remove(int key)
-        {
-            var linkIdx = key.RoundIndex(_links.Length);
-            for (int i = _links[linkIdx],prev=-1; i >=0 ;prev=i, i = _entrys[i].Next)
-            {
-                if(_entrys[i].Key==key)
-                {
-                    if(prev==-1)
-                    {
-                        _links[linkIdx]=_entrys[i].Next;
-                    }
-                    else
-                    {
-                        _entrys[prev].Next=_entrys[i].Next;
-                    }
-                    _count--;
-
-                    //最后一个元素替换被删除的 没有使用空闲链表的方案
-                    key = _entrys[_count].Key;
-                    linkIdx = key.RoundIndex(_links.Length);
-                    _entrys[i] = _entrys[_count];
-                    for (int j = _links[linkIdx],prev_j=-1; j >=0 ;prev_j =j, j = _entrys[j].Next)
-                    {
-                        if(_entrys[j].Key==key)
-                        {
-                            if(prev_j==-1)
-                            {
-                                _links[linkIdx] = i;
-                            }
-                            else
-                            {
-                                _entrys[prev_j].Next = i;
-                            }
-                        }
-                    }
-                    return true;
-                }   
-            }
-            return false;
+            #if UNITY_EDITOR && SHOW
+            Items.Add(new ItemData{Key=key,Value=value});
+            #endif
         }
 
         public void Clear()
         {
-            int length = _links.Length;
-            for (int i = 0; i < length; i++)_links[i]=-1;
-            _count=0;
+            _dict.Clear();
+
+            #if UNITY_EDITOR && SHOW
+            Items.Clear();
+            #endif
         }
 
-        public void Foreach(Action<int,V> callback)
+        public bool ContainsKey(TKey key)
         {
-            if(callback==null)return;
-            for (int i = 0; i < _count; i++)
-            {
-                var entry = _entrys[i];
-                callback(entry.Key,entry.Value);
-            }
+            return _dict.ContainsKey(key);
         }
 
+        public bool Remove(TKey key)
+        {
+            #if UNITY_EDITOR && SHOW
+            Items.RemoveSwapBack(item=>item.Key.Equals(key));
+            #endif
+
+            return _dict.Remove(key);
+        }
     }
 }

@@ -51,11 +51,11 @@ namespace |NAME_SPACE|
                 var className = Path.GetFileName(filePath).Replace(".cs","");
                 scriptText = scriptText.Replace("|CLASS_NAME|",className);
 
-                MonoGameplaySettings.instance.NameSpace = className.Replace("Play","");
-                MonoGameplaySettings.instance.PlayName = className;
-                MonoGameplaySettings.instance.Save();
+                MonoGameplaySettingsProvider.SettingData.NameSpace = className.Replace("Play","");
+                MonoGameplaySettingsProvider.SettingData.PlayName = className;
+                MonoGameplaySettingsProvider.SettingData.Save();
 
-                scriptText = scriptText.Replace("|NAME_SPACE|",MonoGameplaySettings.instance.NameSpace);
+                scriptText = scriptText.Replace("|NAME_SPACE|",MonoGameplaySettingsProvider.SettingData.NameSpace);
 
                 return scriptText;
             };
@@ -115,8 +115,8 @@ namespace |NAME_SPACE|
 
                 var className = Path.GetFileName(filePath).Replace(".cs","");
                 scriptText = scriptText.Replace("|CLASS_NAME|",className);
-                scriptText = scriptText.Replace("|NAME_SPACE|",MonoGameplaySettings.instance.NameSpace);
-                scriptText = scriptText.Replace("|PLAY_NAME|",MonoGameplaySettings.instance.PlayName);
+                scriptText = scriptText.Replace("|NAME_SPACE|",MonoGameplaySettingsProvider.SettingData.NameSpace);
+                scriptText = scriptText.Replace("|PLAY_NAME|",MonoGameplaySettingsProvider.SettingData.PlayName);
 
                 return scriptText;
             };

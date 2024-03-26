@@ -67,7 +67,7 @@ namespace FGUFW
             transform.rotation = rotation;
         }
 
-        public static void Foreach<V>(this Transform transform,IEnumerable list,Action<Transform,V> callback)
+        public static void Foreach<VALUE>(this Transform transform,IEnumerable list,Action<Transform,VALUE> callback)
         {
             int idx = 0;
             if(list!=null)
@@ -76,7 +76,7 @@ namespace FGUFW
                 while (enumerator.MoveNext())
                 {
                     Transform item_t = transform.GetOrCreateChild(idx);
-                    callback?.Invoke(item_t,(V)enumerator.Current);
+                    callback?.Invoke(item_t,(VALUE)enumerator.Current);
                     item_t.gameObject.SetActive(true);
                     idx++;
                 }
@@ -87,7 +87,7 @@ namespace FGUFW
             }
         }
 
-        public static void Foreach<T,V>(this Transform transform,IEnumerable list,Action<T,V> callback)
+        public static void Foreach<COMP,VALUE>(this Transform transform,IEnumerable list,Action<COMP,VALUE> callback)
         {
             int idx = 0;
             if(list!=null)
@@ -96,7 +96,7 @@ namespace FGUFW
                 while (enumerator.MoveNext())
                 {
                     Transform item_t = transform.GetOrCreateChild(idx);
-                    callback?.Invoke(item_t.GetComponent<T>(),(V)enumerator.Current);
+                    callback?.Invoke(item_t.GetComponent<COMP>(),(VALUE)enumerator.Current);
                     item_t.gameObject.SetActive(true);
                     idx++;
                 }

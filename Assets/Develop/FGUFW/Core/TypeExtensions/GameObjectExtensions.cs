@@ -11,5 +11,11 @@ namespace FGUFW
         {
             return GameObject.Instantiate(self,parent);
         }
+
+        
+        public static bool IsNull(this UnityEngine.Object self)
+        {
+            return self==null || !(self is UnityEngine.Object);
+        }
     }
 }

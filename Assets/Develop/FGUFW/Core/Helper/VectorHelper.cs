@@ -407,6 +407,30 @@ namespace FGUFW
             Debug.Log(point);
             return point;
         }
+        
+        /// <summary>
+        /// 扇形排布向量 旋转
+        /// </summary>
+        /// <returns></returns>
+        public static Vector3 FanVectorAngle(Vector3 dir,Vector3 normal,float count,float idx,float angle)
+        {
+            
+            angle *= idx - (count-1)/2;
+            
+            dir = Quaternion.AngleAxis(angle,normal)*dir;
+            return dir;
+        }
+        
+        /// <summary>
+        /// 扇形排布向量 横向偏移
+        /// </summary>
+        /// <returns></returns>
+        public static Vector3 FanVectorOffset(Vector3 point,Vector3 dir,Vector3 normal,float count,float idx,float offset)
+        {
+            offset *= idx-(count-1)/2;
+            var offsetDir = Vector3.Cross(dir,normal);
+            return point+offsetDir*offset;
+        }
 
     }
 }

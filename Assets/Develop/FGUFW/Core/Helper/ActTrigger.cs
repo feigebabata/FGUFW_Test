@@ -1,142 +1,57 @@
-using System;
-using System.Collections.Generic;
+// using System;
+// using System.Collections.Generic;
 
-namespace FGUFW
-{
-    // public class ActTrigger
-    // {
-    //     /// <summary>
-    //     /// 当前状态
-    //     /// </summary>
-    //     public ActTriggerState State;
+// namespace FGUFW
+// {
 
-    //     /// <summary>
-    //     /// 所在层
-    //     /// </summary>
-    //     public int BodyLayer;
+//     [Serializable]
+//     public class ActTrigger<KEY>
+//     {
+//         /// <summary>
+//         /// 触发条件
+//         /// </summary>
+//         public List<IRequire> Requires = new List<IRequire>();
 
-    //     /// <summary>
-    //     /// 层等级
-    //     /// </summary>
-    //     public int LayerLevel;
+//         /// <summary>
+//         /// 目标
+//         /// </summary>
+//         public int Target;
 
-    //     /// <summary>
-    //     /// 监听事件
-    //     /// </summary>
-    //     public int ListenerKeys;
-
-    //     /// <summary>
-    //     /// 命时间
-    //     /// </summary>
-    //     public int LifeTime;
-
-    //     /// <summary>
-    //     /// 命次数
-    //     /// </summary>
-    //     public int LifeCount;
-
-    //     /// <summary>
-    //     /// 使用cd
-    //     /// </summary>
-    //     public float CastCD;
-
-    //     /// <summary>
-    //     /// 触发概率
-    //     /// </summary>
-    //     public float CastProb;
-
-    //     /// <summary>
-    //     /// 自定义限定规则
-    //     /// </summary>
-    //     public TextRulesMatch CastRule;
-
-    //     /// <summary>
-    //     /// 触发换弹次数
-    //     /// </summary>
-    //     public int ReloadCount;
-
-    //     /// <summary>
-    //     /// 触发换弹时间
-    //     /// </summary>
-    //     public float ReloadTime;
-
-    //     /// <summary>
-    //     /// 换弹cd
-    //     /// </summary>
-    //     public int ReloadCd;
-
-    //     /// <summary>
-    //     /// 释放目标
-    //     /// </summary>
-    //     public int CastTarget;
-
-    //     /// <summary>
-    //     /// 释放功能
-    //     /// </summary>
-    //     public UnorderedList<int> CastAct;
-
-
-    //     public enum ActTriggerState
-    //     {
-    //         None,
-    //         Creating,
-    //         Destriying,
-    //         Ready,
-    //         CastWaiting,
-    //         Casting,
-    //         ReloadWaiting,
-    //     }
-
-    // }
-
-    [Serializable]
-    public class ActTrigger<KEY>
-    {
-        /// <summary>
-        /// 触发条件
-        /// </summary>
-        public UnorderedList<IRequire> Requires = new UnorderedList<IRequire>();
-
-        /// <summary>
-        /// 目标
-        /// </summary>
-        public int Target;
-
-        /// <summary>
-        /// 行为
-        /// </summary>
-        public UnorderedList<int> Acts = new UnorderedList<int>();
+//         /// <summary>
+//         /// 行为
+//         /// </summary>
+//         public List<int> Acts = new List<int>();
         
 
-        public bool MatchRequire(KEY k)
-        {
-            int length = Requires.Count;
-            for (int i = 0; i < length; i++)
-            {
-                if(!Requires[i].Match(k))
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
+//         public bool MatchRequire(KEY k)
+//         {
+//             int length = Requires.Count;
+//             for (int i = 0; i < length; i++)
+//             {
+//                 if(!Requires[i].Match(k))
+//                 {
+//                     return false;
+//                 }
+//             }
+//             return true;
+//         }
 
-        /// <summary>
-        /// 触发条件接口
-        /// </summary>
-        public interface IRequire
-        {
-            bool Match(in KEY key);
-        }
+//         /// <summary>
+//         /// 触发条件接口
+//         /// </summary>
+//         public interface IRequire
+//         {
+//             bool Match(in KEY key);
+//         }
 
-        public interface IOnTriggerAct
-        {
-            void OnTriggerAct(float worldTime);
-        }
-    }
+//         public interface IOnTriggerAct
+//         {
+//             void OnTriggerAct(float worldTime);
+//         }
+//     }
 
 
-}
+// }
 
 /*
 行为触发器:

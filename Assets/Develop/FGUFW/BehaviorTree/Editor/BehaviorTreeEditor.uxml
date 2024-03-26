@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <uie:Toolbar style="flex-direction: row; flex-wrap: wrap-reverse; height: 22px; align-items: auto; display: flex; visibility: visible; opacity: 1;">
+        <ui:Button text="Save" display-tooltip-when-elided="true" name="Save" style="font-size: 13px; width: 60px;" />
+        <ui:Label display-tooltip-when-elided="true" name="AssetName" text="未选择BehaviorTree文件" style="flex-direction: row-reverse; flex-wrap: wrap; -unity-text-align: middle-left; white-space: normal; flex-shrink: 0; flex-grow: 1; color: rgb(255, 247, 0); -unity-font-style: bold; font-size: 16px;" />
+    </uie:Toolbar>
+    <FGUFW.BehaviorTree.Editor.BehaviorTreeView focusable="true" style="flex-grow: 1;" />
+</ui:UXML>

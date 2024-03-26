@@ -8,6 +8,7 @@ namespace FGUFW
         public ushort Group{get;private set;}
 
         public ushort Item{get;private set;}
+
         public IntId4_4(int value)
         {
             if(!IsId(value))
@@ -17,6 +18,17 @@ namespace FGUFW
             Value = value;
             Group = (ushort)(value/1_0000);
             Item = (ushort)(value-Group*1_0000);
+        }
+        
+        public IntId4_4(int group,int item)
+        {
+            Value = group*1_0000+item;
+            if(!IsId(Value))
+            {
+                throw new System.Exception($"value:{Value}必须大于1000_0000且小于1_0000_0000");
+            }
+            Group = (ushort)group;
+            Item = (ushort)item;
         }
 
         public IntId4_4(string value)
