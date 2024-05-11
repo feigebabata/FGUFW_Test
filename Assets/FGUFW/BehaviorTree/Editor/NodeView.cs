@@ -11,7 +11,7 @@ namespace FGUFW.BehaviorTree.Editor
 {
     public class NodeView : Node
     {
-        public Port In,Out;
+        // public Port In,Out;
 
         public BehaviorTreeNodeBase Data;
         private bool _viewNodeActive;
@@ -162,6 +162,19 @@ namespace FGUFW.BehaviorTree.Editor
             //     Out.portName = "Out";
             //     outputContainer.Add(Out);
             // }
+
+            foreach (var item in node.Nexts)
+            {
+                var next = InstantiatePort(Orientation.Horizontal,Direction.Input,Port.Capacity.Multi,item.Type);
+                next.portName = item.Name;
+                this.inputContainer.Add(next);
+            }
+            foreach (var item in node.Nexts)
+            {
+                var next = InstantiatePort(Orientation.Horizontal,Direction.Output,Port.Capacity.Multi,item.Type);
+                next.portName = item.Name;
+                this.outputContainer.Add(next);
+            }
 
         }
 

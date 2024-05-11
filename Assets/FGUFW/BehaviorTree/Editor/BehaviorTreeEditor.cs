@@ -25,7 +25,7 @@ namespace FGUFW.BehaviorTree.Editor
             return false;
         }
 
-        [MenuItem("FGBBT/行为树编辑器")]
+        [MenuItem("Window/行为树编辑器")]
         public static void OpenWindow()
         {
             BehaviorTreeEditor wnd = GetWindow<BehaviorTreeEditor>();
