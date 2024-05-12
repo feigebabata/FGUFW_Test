@@ -11,6 +11,11 @@ namespace FGUFW
 {
     public static class ULog
     {
+        /// <summary>
+        /// 开启日志写入
+        /// </summary>
+        public const string Conditional_Log = "ULog";
+        
         public const int MAX_LOG_FILE_COUNT = 16;
         public const string LOG_BEGIN = "---LogBegin";
         public const string LOG_END = "---LogEnd";
@@ -21,19 +26,19 @@ namespace FGUFW
         private static StringBuilder _msgBuilder = new StringBuilder();
 
 
-        [System.Diagnostics.Conditional("ULog")]
+        [System.Diagnostics.Conditional(Conditional_Log)]
         public static void log(this MonoBehaviour mb,object obj)
         {
             Debug.Log(obj);
         }
 
-        [System.Diagnostics.Conditional("ULog")]
+        [System.Diagnostics.Conditional(Conditional_Log)]
         public static void logWarning(this MonoBehaviour mb,object obj)
         {
             Debug.LogWarning(obj);
         }
 
-        [System.Diagnostics.Conditional("ULog")]
+        [System.Diagnostics.Conditional(Conditional_Log)]
         public static void logError(this MonoBehaviour mb,object obj)
         {
             Debug.LogError(obj);
@@ -46,12 +51,13 @@ namespace FGUFW
         /// <param name="mb"></param>
         /// <param name="b"></param>
         /// <param name="msg"></param>
-        [System.Diagnostics.Conditional("ULog")]
+        [System.Diagnostics.Conditional(Conditional_Log)]
         public static void assert(this MonoBehaviour mb,bool b,string msg)
         {
             Assert.IsTrue(b,msg);
         }
 
+        [System.Diagnostics.Conditional(Conditional_Log)]
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSplashScreen)]
         private static void runtimeInit()
         {
@@ -101,6 +107,9 @@ namespace FGUFW
 
             _logFile.Flush();
             _logFile.Close();
+
+            Application.logMessageReceivedThreaded -= onLogReceive;
+            Application.quitting -= onAppQuit;
         }
 
         private static string getLogFileName()
@@ -110,6 +119,11 @@ namespace FGUFW
 
         private static void onLogReceive(string condition, string stackTrace, LogType type)
         {
+            
+#if ULog_IgnoreLogWrite
+            if( type== LogType.Log)return; //忽略普通日志
+#endif
+
             _msgBuilder.Clear();
 
             _msgBuilder.AppendLine(condition);

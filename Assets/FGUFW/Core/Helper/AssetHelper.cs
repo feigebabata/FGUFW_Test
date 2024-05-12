@@ -5,6 +5,8 @@ using UnityEngine.AddressableAssets;
 using System;
 using System.Threading.Tasks;
 using UnityEngine.ResourceManagement.ResourceProviders;
+using UnityEngine.SceneManagement;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace FGUFW
 {
@@ -51,11 +53,14 @@ namespace FGUFW
             return Addressables.LoadSceneAsync(path).WaitForCompletion();
         }
 
-        public static IEnumerator Copy(GameObject go, string path,Transform parent)
+        public static IEnumerator LoadScene(string path,LoadSceneMode loadSceneMode= LoadSceneMode.Single)
         {
-            var loader = Addressables.InstantiateAsync(path,parent);
-            yield return loader;
-            go = loader.Result;
+            yield return Addressables.LoadSceneAsync(path,loadSceneMode);
+        }
+
+        public static AsyncOperationHandle<GameObject> CopyAsynchronous(string path,Transform parent)
+        {
+            return Addressables.InstantiateAsync(path,parent);
         }
     }
 

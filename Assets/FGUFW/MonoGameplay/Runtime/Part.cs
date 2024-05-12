@@ -62,7 +62,7 @@ namespace FGUFW.MonoGameplay
 
         public virtual IEnumerator OnPreload()
         {
-            yield return loadUIPanel(_uiPanel);
+            yield return loadUIPanel();
 
             foreach (var subPart in SubParts)
             {
@@ -70,16 +70,17 @@ namespace FGUFW.MonoGameplay
             }
         }
 
-        private IEnumerator loadUIPanel(UIPanel panel)
+        private IEnumerator loadUIPanel()
         {
             var uiPanelLoader = this.GetAttribute<UIPanelLoaderAttribute>();
             if (uiPanelLoader != null)
             {
                 var path = uiPanelLoader.PrefabPath;
-                GameObject go = default;
-                yield return AssetHelper.Copy(go,path,null);
+                var loader = AssetHelper.CopyAsynchronous(path,null);
+                yield return loader;
+                GameObject go = loader.Result;
                 DontDestroyOnLoad(go);
-                panel = go.GetComponent<UIPanel>();
+                _uiPanel = go.GetComponent<UIPanel>();
             }
         }
 

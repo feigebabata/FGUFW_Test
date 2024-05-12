@@ -21,7 +21,10 @@ MonoBehaviour:
     m_Address: Assets/Develop/FGUFW/MonoGameplay/Test/MonoGameplayTestUIPanel.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dff82bee2b718884e9f801ba3349275d
+    m_Address: Assets/Test/AnimatorTest/move.anim
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 131ea9dd658793a4b81cc3c13ee3f004, type: 2}
   m_SchemaSet:

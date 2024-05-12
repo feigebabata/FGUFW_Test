@@ -11,4 +11,5 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Develop/GUNNAC/Battle.unity
     guid: 7caf435cce838494691488328dd4d0ae
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: aaa3e9d866c05764485bd50f4f2bdfcd, type: 2}
