@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace FGUFW.MonoGameplay
@@ -10,9 +9,8 @@ namespace FGUFW.MonoGameplay
     public class UIPanelActive : UIPanelEffect
     {       
 
-        public override async void Hide(UIPanel uIPanel)
+        public override void Hide(UIPanel uIPanel)
         {
-            if(uIPanel.KeepTime>0)await UniTask.Delay((int)(uIPanel.KeepTime*1000));
             uIPanel.gameObject.SetActive(false);
         }
 

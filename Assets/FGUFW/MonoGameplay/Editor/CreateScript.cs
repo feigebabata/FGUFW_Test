@@ -23,7 +23,6 @@ namespace FGUFW.MonoGameplay
                 var scriptText = 
 @"using System.Collections;
 using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
 using FGUFW.MonoGameplay;
 using UnityEngine;
 
@@ -31,17 +30,17 @@ namespace |NAME_SPACE|
 {
     public class |CLASS_NAME| : Play<|CLASS_NAME|>
     {
-        public override UniTask OnCreating(Part parent)
+        public override IEnumerator OnCreating(Part play,Part parent)
         {
             //AddPart<MonoGameplayTestPart>();
             
-            return base.OnCreating(parent);
+            yield return base.OnCreating(this,this);
         }
 
-        public override UniTask OnDestroying(Part parent)
+        public override IEnumerator OnDestroying(Part parent)
         {
 
-            return base.OnDestroying(parent);
+            yield return base.OnDestroying(parent);
         }
     }
 }
@@ -72,7 +71,6 @@ namespace |NAME_SPACE|
                 var scriptText = 
 @"using System.Collections;
 using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
 using FGUFW.MonoGameplay;
 using UnityEngine;
 
@@ -83,19 +81,18 @@ namespace |NAME_SPACE|
     {
         private |PLAY_NAME| _play;
 
-        public override UniTask OnCreating(Part parent)
+        public override IEnumerator OnCreating(Part play,Part parent)
         {
-            _play = |PLAY_NAME|.I;
-
+            _play = play as |PLAY_NAME|;
             addListener();
-            return base.OnCreating(parent);
+            yield return base.OnCreating(parent);
         }
 
-        public override UniTask OnDestroying(Part parent)
+        public override IEnumerator OnDestroying(Part parent)
         {
 
             removeListener();
-            return base.OnDestroying(parent);
+            yield return base.OnDestroying(parent);
         }
 
         private void addListener()

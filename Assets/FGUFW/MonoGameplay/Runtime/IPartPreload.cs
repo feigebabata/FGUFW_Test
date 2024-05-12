@@ -1,9 +1,9 @@
-using Cysharp.Threading.Tasks;
+using System.Collections;
 
 namespace FGUFW.MonoGameplay
 {
     public interface IPartPreload
     {
-        UniTask OnPreload();
+        IEnumerator OnPreload();
     }
 }

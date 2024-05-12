@@ -3,16 +3,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
 using FGUFW;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 
 namespace FGUFW.MonoGameplay
 {
     public abstract class Play<T>:Part where T:Play<T>
     {
-        public static T I;
         public IOrderedMessenger<Enum> Messenger;
 
         [SerializeField]
@@ -20,60 +17,57 @@ namespace FGUFW.MonoGameplay
         public PlayFrameData FrameData=>_frameData;
         private float _playCreatedTime;
 
-        public override async UniTask OnCreating(Part parent)
+        public override IEnumerator OnCreating(Part play,Part parent)
         {
-            I = (T)this;
             Messenger = new OrderedMessenger<Enum>();
 
-            await base.OnCreating(parent);
-
+            yield return base.OnCreating(this,this);
             Debug.Log($"{this.GetType().Name} Create End.");
 
-            await OnPreload();
-            #if FIXED_UPDATE
-                FGUFW.PlayerLoopHelper.AddToLoop<UnityEngine.PlayerLoop.FixedUpdate>(OnUpdate,this.GetType());
-                _playCreatedTime = Time.fixedTime;
-            #else
-                FGUFW.PlayerLoopHelper.AddToLoop<UnityEngine.PlayerLoop.Update>(OnUpdate,this.GetType());
-                _playCreatedTime = Time.time;
-            #endif
-
+            yield return OnPreload();
             Debug.Log($"{this.GetType().Name} Preload End.");
-
-            
-            UnityEngine.Application.quitting += onAppQuiting;
+#if FIXED_UPDATE
+                _playCreatedTime = Time.fixedTime;
+#else
+                _playCreatedTime = Time.time;
+#endif
         }
 
-        public override async UniTask OnDestroying(Part parent)
+        public override IEnumerator OnDestroying(Part parent)
         {
-            #if FIXED_UPDATE
-                FGUFW.PlayerLoopHelper.RemoveToLoop<UnityEngine.PlayerLoop.FixedUpdate>(OnUpdate);
-            #else
-                FGUFW.PlayerLoopHelper.RemoveToLoop<UnityEngine.PlayerLoop.Update>(OnUpdate);
-            #endif
-            await base.OnDestroying(parent);
+            yield return base.OnDestroying(parent);
             
-            UnityEngine.Application.quitting -= onAppQuiting;
             Messenger = null;
-            I = null;
 
             Debug.Log($"{this.GetType().Name} Destroy End.");
         }
 
+#if FIXED_UPDATE
+        /// <summary>
+        /// This function is called every fixed framerate frame, if the MonoBehaviour is enabled.
+        /// </summary>
+        void FixedUpdate()
+        {
+            _frameData.DeltaTime = Time.fixedDeltaTime;
+            _frameData.WorldTime = Time.fixedTime - _playCreatedTime;
+            OnUpdate();
+        }
+#else
+        /// <summary>
+        /// Update is called every frame, if the MonoBehaviour is enabled.
+        /// </summary>
+        void Update()
+        {
+            _frameData.DeltaTime = Time.deltaTime;
+            _frameData.WorldTime = Time.time - _playCreatedTime;
+            OnUpdate();
+        }
+#endif
 
         private void OnUpdate()
         {
             _frameData.Index++;
-            _frameData.DeltaTime = Time.fixedDeltaTime;
-            _frameData.WorldTime = Time.fixedTime - _playCreatedTime;
             OnUpdate(in _frameData);
-        }
-
-        private async void onAppQuiting()
-        {
-            #if UNITY_EDITOR
-            await I.OnDestroying(default);
-            #endif
         }
 
     }

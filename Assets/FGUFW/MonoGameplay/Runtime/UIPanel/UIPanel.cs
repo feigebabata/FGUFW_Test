@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -24,7 +23,7 @@ namespace FGUFW.MonoGameplay
             Canvas = GetComponent<CanvasGroup>();
         }
 
-        public virtual UniTask Show()
+        public virtual IEnumerator Show()
         {
             if(_progressUpdate!=null)
             {
@@ -37,14 +36,7 @@ namespace FGUFW.MonoGameplay
                 item.Show(this);
             }
 
-            if(KeepTime<=0)
-            {
-                return default;
-            }
-            else
-            {
-                return UniTask.Delay((int)(KeepTime*1000));
-            }
+            yield return _progressUpdate;
         }
 
         private IEnumerator progressUpdate()
@@ -63,27 +55,20 @@ namespace FGUFW.MonoGameplay
             Canvas.interactable = true;
         }
 
-        public virtual UniTask Hide()
+        public IEnumerator Hide()
         {
             if(_progressUpdate!=null)
             {
                 StopCoroutine(_progressUpdate);
             }
             _progressUpdate = StartCoroutine(progressUpdate());
+            yield return _progressUpdate;
 
             foreach (var item in _uiPanelEffects)
             {
                 item.Hide(this);
             }
 
-            if(KeepTime<=0)
-            {
-                return default;
-            }
-            else
-            {
-                return UniTask.Delay((int)(KeepTime*1000));
-            }
         }
 
     }
@@ -95,13 +80,5 @@ namespace FGUFW.MonoGameplay
         public abstract void Hide(UIPanel uIPanel);
     }
 
-    
-    // public static class PartExtensions
-    // {
-    //     public static async UniTask<UIPanel> LoadUIPanel( this Part self)
-    //     {
-
-    //     }
-    // }
 
 }

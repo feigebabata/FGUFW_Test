@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
 using UnityEngine;
 using FGUFW;
 
@@ -12,19 +11,19 @@ namespace FGUFW.MonoGameplay
 
         protected UIPanel _uiPanel;
 
-        public virtual async UniTask OnCreating(Part parent)
+        public virtual IEnumerator OnCreating(Part play,Part parent)
         {
             foreach (var subPart in SubParts)
             {
-                await subPart.OnCreating(this);
+                yield return subPart.OnCreating(play,this);
             }
         }
 
-        public virtual async UniTask OnDestroying(Part parent)
+        public virtual IEnumerator OnDestroying(Part parent)
         {
             foreach (var subPart in SubParts)
             {
-                await subPart.OnDestroying(this);
+                yield return subPart.OnDestroying(this);
             }
             if(_uiPanel)
             {
@@ -61,27 +60,27 @@ namespace FGUFW.MonoGameplay
             }
         }
 
-        public async virtual UniTask OnPreload()
+        public virtual IEnumerator OnPreload()
         {
-            _uiPanel = await loadUIPanel();
+            yield return loadUIPanel(_uiPanel);
 
             foreach (var subPart in SubParts)
             {
-                await subPart.OnPreload();
+                yield return subPart.OnPreload();
             }
         }
 
-        private async UniTask<UIPanel> loadUIPanel()
+        private IEnumerator loadUIPanel(UIPanel panel)
         {
             var uiPanelLoader = this.GetAttribute<UIPanelLoaderAttribute>();
             if (uiPanelLoader != null)
             {
                 var path = uiPanelLoader.PrefabPath;
-                var go = await AssetHelper.CopyAsync(path,null);
+                GameObject go = default;
+                yield return AssetHelper.Copy(go,path,null);
                 DontDestroyOnLoad(go);
-                return go.GetComponent<UIPanel>();
+                panel = go.GetComponent<UIPanel>();
             }
-            return default;
         }
 
         public static T Create<T>(Part parent) where T : Part

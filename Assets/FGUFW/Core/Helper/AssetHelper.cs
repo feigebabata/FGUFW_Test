@@ -51,6 +51,12 @@ namespace FGUFW
             return Addressables.LoadSceneAsync(path).WaitForCompletion();
         }
 
+        public static IEnumerator Copy(GameObject go, string path,Transform parent)
+        {
+            var loader = Addressables.InstantiateAsync(path,parent);
+            yield return loader;
+            go = loader.Result;
+        }
     }
 
 
