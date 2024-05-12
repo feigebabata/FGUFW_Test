@@ -33,9 +33,9 @@ namespace FGUFW.MonoGameplay
 #endif
         }
 
-        public override IEnumerator OnDestroying(Part parent)
+        protected override void OnDestroy()
         {
-            yield return base.OnDestroying(parent);
+            base.OnDestroy();
             
             Messenger = null;
 

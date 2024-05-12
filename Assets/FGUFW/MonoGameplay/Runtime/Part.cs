@@ -19,18 +19,16 @@ namespace FGUFW.MonoGameplay
             }
         }
 
-        public virtual IEnumerator OnDestroying(Part parent)
+        /// <summary>
+        /// This function is called when the MonoBehaviour will be destroyed.
+        /// </summary>
+        protected virtual void OnDestroy()
         {
-            foreach (var subPart in SubParts)
-            {
-                yield return subPart.OnDestroying(this);
-            }
             if(_uiPanel)
             {
                 Destroy(_uiPanel.gameObject);
             }
             SubParts.Clear();
-            Destroy(gameObject);
         }
 
         public T GetPart<T>() where T : Part
