@@ -56,8 +56,7 @@ unity框架mono分支 回归unity引擎原始的味道
 ## Gameplay
 
   控制游戏业务逻辑的部分 配合[Visual Scripting][VisualScripting]更加灵活  
-  Play之间彼此独立 唯有GlobalPlay共存 提供Loading等功能
-  继承MonoBe
+  Play之间彼此独立 唯有GlobalPlay共存 提供Loading等功能  
 
   - Play : 负责大的功能模块 例:游戏大厅/战斗场景
   - Part : Play中具体的功能模块 例:设置/排行榜/商店/刷怪/成就 
@@ -102,6 +101,12 @@ unity框架mono分支 回归unity引擎原始的味道
   - Native容器需要主动释放 不然会报错
 ***
 
+##  MonoBehaviour生命周期
+  - Awake/Start/Update/FixedUpdate都是无序执行
+  - OnDestroy深度优先 最外层无序 子节点从上往下
+
+***
+
 ## 编码风格
   - 为减少代码的量 方便维护会对常用功能进行封装
   - 各个语言库其实就是官方封装好的功能集
@@ -113,7 +118,7 @@ unity框架mono分支 回归unity引擎原始的味道
 
 ***
 
-[返回顶部](#fgufw)
+[返回顶部](#fgufwmono)
 
 
 [Extensions]: https://learn.microsoft.com/zh-cn/dotnet/csharp/programming-guide/classes-and-structs/extension-methods
