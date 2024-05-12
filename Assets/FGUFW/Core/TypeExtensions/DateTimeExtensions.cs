@@ -32,5 +32,11 @@ namespace FGUFW
             long delta = self.Ticks - prevTick;
             return delta/10000;
         }
+
+        public static string SecondTickName(this DateTime dateTime)
+        {
+            return DateTime.Now.ToString("yyyyMMddHHmmss");
+        }
+
     }
 }
