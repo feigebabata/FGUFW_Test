@@ -24,6 +24,7 @@ unity框架mono分支 回归unity引擎原始的味道
   - [管线](#管线)
   - [JobSystem](#jobsystem)
   - [MonoBehaviour生命周期](#monobehaviour生命周期)
+    - [嵌套结构](#嵌套结构)
   - [编码风格](#编码风格)
   
 ***
@@ -108,6 +109,8 @@ unity框架mono分支 回归unity引擎原始的味道
      - 目标点/方向
      - 目标Id
      - 触发范围内目标
+     - 生命时间
+     - 生命次数
   
   ### 游戏对象属性
    - 生命周期状态
@@ -171,7 +174,7 @@ unity框架mono分支 回归unity引擎原始的味道
 ***
 
 ##  MonoBehaviour生命周期
-
+  ### 嵌套结构
   - Awake/Start/Update/FixedUpdate都是无序执行
   - OnDestroy深度优先 最外层无序 子节点从上往下
 
