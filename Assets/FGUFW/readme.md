@@ -25,6 +25,7 @@ unity框架mono分支 回归unity引擎原始的味道
   - [JobSystem](#jobsystem)
   - [MonoBehaviour生命周期](#monobehaviour生命周期)
     - [嵌套结构](#嵌套结构)
+  - [VisualScripting](#visualscripting)
   - [编码风格](#编码风格)
   
 ***
@@ -175,8 +176,20 @@ unity框架mono分支 回归unity引擎原始的味道
 
 ##  MonoBehaviour生命周期
   ### 嵌套结构
+
   - Awake/Start/Update/FixedUpdate都是无序执行
   - OnDestroy深度优先 最外层无序 子节点从上往下
+
+***
+
+## VisualScripting
+
+  1. ScriptMachine.graph(FlowGraph) 脚本图类型
+  2. FlowGraph.units 图中节点
+  3. FlowGraph.variables Graph变量
+  4. ScriptMachine.enabled 可以控制事件的触发 包括自定义事件
+  
+  - 没用长节点 长时节点功能需要在每帧实现
 
 ***
 
