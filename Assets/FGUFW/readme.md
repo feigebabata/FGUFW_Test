@@ -17,6 +17,7 @@ unity框架mono分支 回归unity引擎原始的味道
   - [热更新](#热更新)
   - [JobSystem](#jobsystem)
   - [MonoBehaviour生命周期](#monobehaviour生命周期)
+  - [异步等待](#异步等待)
   - [编码风格](#编码风格)
 ***
 
@@ -114,6 +115,12 @@ unity框架mono分支 回归unity引擎原始的味道
 ##  MonoBehaviour生命周期
   - Awake/Start/Update/FixedUpdate都是无序执行
   - OnDestroy深度优先 最外层无序 子节点从上往下
+
+***
+
+##  异步等待
+  - 使用yield return代替await 协程的中断更加方便
+  - 将异步操作封装成协程使用 
 
 ***
 
