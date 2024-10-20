@@ -17,10 +17,6 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: f8285980927b0614896da664586a5d9f
   m_SerializeEntries:
-  - m_GUID: db91658dc48f47b45863e7686d7c484a
-    m_Address: Assets/Develop/FGUFW/MonoGameplay/Test/MonoGameplayTestUIPanel.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
   - m_GUID: dff82bee2b718884e9f801ba3349275d
     m_Address: Assets/Test/AnimatorTest/move.anim
     m_ReadOnly: 0
