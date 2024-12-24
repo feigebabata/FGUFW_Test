@@ -81,7 +81,7 @@
    - 面向数据开发技术栈,目前限制只能在值类型和自定义的数据容器使用
    - JobSystem: 多线程利用方案 旨在一帧内把同类问题并行处理掉
    - BurstCompiler: 编译优化方案,利用LLVM,SIMD等技术提升效率
-   - ECS: 组件按Archertype存储 提高缓存命中率
+   - ECS: 组件按Archertype(SOA)存储 提高缓存命中率
 
   ### AssetBundle
    - Resources是从一个缺省打包进程序包的AssetBundle加载资源的
