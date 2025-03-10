@@ -12,7 +12,7 @@ namespace FGUFW
 			{
 				if (instance == null)
 				{
-					instance = GameObject.FindObjectOfType(typeof(T)) as T;
+					instance = GameObject.FindFirstObjectByType(typeof(T)) as T;
 					if (instance == null)
 					{
 						GameObject go = new GameObject(typeof(T).Name);

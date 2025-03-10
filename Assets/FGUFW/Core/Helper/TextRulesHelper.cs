@@ -37,6 +37,8 @@ namespace FGUFW
         public const char Code_Variate = '#';
         public const char Code_Split = ',';
         //---------------------------------------------
+        public const char Code_Remainder = '%';
+        //---------------------------------------------
         public const char Code_Multiply = '*';
         public const char Code_Divide = '/';
         //---------------------------------------------
@@ -57,6 +59,7 @@ namespace FGUFW
             code==Code_In ||
             code==Code_Out ||
             code==Code_And ||
+            code==Code_Remainder ||
             code==Code_Or ;
         }
 
@@ -168,6 +171,7 @@ namespace FGUFW
             code==Code_Add ||
             code==Code_Subtract ||
             code==Code_Multiply ||
+            code==Code_Remainder ||
             code==Code_Divide ;
         }
 
@@ -202,6 +206,7 @@ namespace FGUFW
 
                 if(c==Code_Multiply)return i;
                 if(c==Code_Divide)return i;
+                if(c==Code_Remainder)return i;
             }
             return -1;
         }
@@ -489,7 +494,7 @@ namespace FGUFW
                     _value = text.ToFloat();
                 }
             }
-            else if(TextRulesHelper.FindValueCodeL3(text,0)!=-1)//+-
+            else if(TextRulesHelper.FindValueCodeL3(text,0)!=-1)// +-
             {
                 Children = new List<TextRuleValueGet>();
                 Rule = new List<char>();
@@ -512,7 +517,7 @@ namespace FGUFW
                     }
                 }
             }
-            else if(TextRulesHelper.FindValueCodeL2(text,0)!=-1)//*/
+            else if(TextRulesHelper.FindValueCodeL2(text,0)!=-1)// */%
             {
                 Children = new List<TextRuleValueGet>();
                 Rule = new List<char>();
@@ -570,6 +575,9 @@ namespace FGUFW
                         case TextRulesHelper.Code_Divide:
                             val /= childVal;
                         break;
+                        case TextRulesHelper.Code_Remainder:
+                            val %= childVal;
+                        break;
                     }
                 }
             }
@@ -593,3 +601,32 @@ namespace FGUFW
 
 
 }
+/*
+文本规则说明文档:
+
+符号:
+    ( :域起始
+    ) :域结束
+    = :判断 等于
+    ≠ :判断 不等于
+    > :判断 大于
+    ≥ :判断 大于等于
+    < :判断 小于
+    ≤ :判断 小于等于
+    ∈ :判断 在集合内
+    ∉ :判断 不在集合内
+    & :判断复合 并且
+    | :判断复合 或者
+    # :变量前缀
+    , :集合分隔符
+    % :计算 取余
+    * :计算 乘
+    / :计算 除
+    + :计算 加
+    - :计算 减
+示例:
+    域: (1+2)*3=9 , 1+2*3=7
+    集合: 1∈1,2,3,4 , #手机号∈110,120,119 
+    变量: #金币>1 , #年龄<#未成年年龄
+    取余: 3%2=1 , 4%2=0
+*/

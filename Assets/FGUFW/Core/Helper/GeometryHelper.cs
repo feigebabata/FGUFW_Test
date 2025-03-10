@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using Unity.Mathematics;
+using System.Collections.Generic;
 
 namespace FGUFW
 {
@@ -372,6 +373,189 @@ namespace FGUFW
             return new Vector3Int(coord_x,coord_y,coord_z);
         }
 
+#region 六边形
+/*
+尖朝上的六边形 
+xz坐标系
+
+*/
+        public const float RADIUS_OUT2INN = 0.866025404f;
+
+        /// <summary>
+        /// 生成六边形
+        /// </summary>
+        /// <param name="center">中心点</param>
+        /// <param name="outRadius">外径</param>
+        /// <param name="vectorsCache">顶点缓存 length=6</param>
+        public static void GenerateHex(Vector3 center,float outRadius,Vector3[] vectorsCache)
+        {
+            const int length = 6;
+            if(vectorsCache?.Length!=length)return;
+
+            for (int i = 0; i < length; i++)
+            {
+                float angle = i * 60f * Mathf.Deg2Rad;
+                vectorsCache[i] = center + new Vector3(outRadius * Mathf.Sin(angle),center.y,outRadius * Mathf.Cos(angle));
+            }
+        }
+
+        /// <summary>
+        /// 局部坐标转六边形索引
+        /// </summary>
+        /// <param name="pointInHexLocalPosition"></param>
+        /// <param name="outRadius"></param>
+        /// <returns></returns>
+        public static Vector3Int PointInHexIndex(Vector3 pointInHexLocalPosition,float outRadius)
+        {
+            float innRadius = outRadius*RADIUS_OUT2INN;
+
+            float point_x = pointInHexLocalPosition.x;
+            float point_y = pointInHexLocalPosition.z;
+
+            float index_x = point_x / (innRadius*2);
+            float index_y = -index_x;
+
+            float offset = point_y / (outRadius*3);
+            index_x -= offset;
+            index_y -= offset;
+
+            int iX = Mathf.RoundToInt(index_x);
+            int iY = Mathf.RoundToInt(index_y);
+            int iZ = Mathf.RoundToInt(-index_x-index_y);
+
+            if(iX+iY+iZ != 0)
+            {
+                // Debug.LogWarning($"{iX},{iY},{iZ}");
+                float dX = Mathf.Abs(index_x-iX);
+                float dY = Mathf.Abs(index_y-iY);
+                float dZ = Mathf.Abs(-(index_x+index_y-iZ));
+
+                if(dX>dY && dX>dZ)
+                {
+                    iX = -(iY + iZ);
+                }
+                else if(dZ>dY)
+                {
+                    iZ = -(iX + iY);
+                }
+                // Debug.LogWarning($"{iX},{iY},{iZ}");
+            }
+            
+            return new Vector3Int(iX,iY,iZ);
+        }
+
+        /// <summary>
+        /// 六边形索引转局部坐标
+        /// </summary>
+        /// <param name="hexIndex"></param>
+        /// <param name="outRadius"></param>
+        /// <returns></returns>
+        public static Vector3 HexIndexLocalPosition(Vector3Int hexIndex,float outRadius)
+        {
+            float innRadius = outRadius*RADIUS_OUT2INN;
+
+            float space_x = innRadius*2;
+            float space_y = outRadius*1.5f;
+
+            float pz = hexIndex.z*space_y;
+            float px = hexIndex.z*innRadius + hexIndex.x*space_x;
+
+            return new Vector3(px,0,pz);
+        }
+
+        /// <summary>
+        /// 生成蜂窝结构
+        /// </summary>
+        /// <param name="radius"></param>
+        /// <param name="hexIndexsCache"></param>
+        public static void GenerateCellularHexIndex(int radius,List<Vector3Int> hexIndexsCache)
+        {
+            // int count = radius*2-1;
+            // for (int i = 0; i < radius-1; i++)
+            // {
+            //     count += (radius+i)*2;
+            // }
+
+            hexIndexsCache.Clean();
+
+            hexIndexsCache.Add(new Vector3Int(0,0,0));
+
+            for (int r = 2; r <= radius; r++)
+            {
+                //从左上顺时针生成
+                Vector3Int idx = default;
+                idx.x = 0;
+                idx.z = r-1;
+                idx.y = -idx.z;
+
+                hexIndexsCache.Add(idx);
+                    
+                for (int i = 1; i < r; i++)
+                {
+                    idx.x += 1;
+                    idx.z -= 1;
+                    hexIndexsCache.Add(idx);
+                }
+                for (int i = 1; i < r; i++)
+                {
+                    idx.z -= 1;
+                    idx.y += 1;
+                    hexIndexsCache.Add(idx);
+                }
+                for (int i = 1; i < r; i++)
+                {
+                    idx.x -= 1;
+                    idx.y += 1;
+                    hexIndexsCache.Add(idx);
+                }
+                for (int i = 1; i < r; i++)
+                {
+                    idx.x -= 1;
+                    idx.z += 1;
+                    hexIndexsCache.Add(idx);
+                }
+                for (int i = 1; i < r; i++)
+                {
+                    idx.z += 1;
+                    idx.y -= 1;
+                    hexIndexsCache.Add(idx);
+                }
+                for (int i = 1; i < r-1; i++)
+                {
+                    idx.x += 1;
+                    idx.y -= 1;
+                    hexIndexsCache.Add(idx);
+                }
+
+            }
+
+        }
+
+        /// <summary>
+        /// 获取周围六个邻居坐标
+        /// </summary>
+        /// <param name="center"></param>
+        /// <param name="idxCache"></param>
+        public static void GetHexNear(Vector3Int center,Vector3Int[] idxCache)
+        {
+            if(idxCache?.Length!=6)return;
+
+            idxCache[0] = new Vector3Int(center.x,center.y-1,center.z+1);
+            idxCache[1] = new Vector3Int(center.x+1,center.y-1,center.z);
+            idxCache[2] = new Vector3Int(center.x+1,center.y,center.z-1);
+            idxCache[3] = new Vector3Int(center.x,center.y+1,center.z-1);
+            idxCache[4] = new Vector3Int(center.x-1,center.y+1,center.z);
+            idxCache[5] = new Vector3Int(center.x-1,center.y,center.z+1);
+        }
+
+#endregion
     
     }
 }
+
+/*
+1:1
+2:7
+3:19
+4:37
+*/
