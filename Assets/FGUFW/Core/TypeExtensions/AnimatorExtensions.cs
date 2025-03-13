@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections;
+using UnityEditor;
+using UnityEngine.Playables;
 
 namespace FGUFW
 {
@@ -19,6 +21,11 @@ namespace FGUFW
             }
             var clipName = clip.name;
             overrideController[clipName] = clip;
+        }
+
+        public static void PlayClip(this Animator self,AnimationClip clip)
+        {
+            AnimationPlayableUtilities.PlayClip(self,clip,out _);
         }
         
     }
