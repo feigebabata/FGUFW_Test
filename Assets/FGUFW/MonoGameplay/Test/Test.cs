@@ -4,6 +4,8 @@ using FGUFW;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
+using static FGUsing;
+
 public class Test : MonoBehaviour
 {
 
@@ -17,7 +19,9 @@ public class Test : MonoBehaviour
     {
         AnimationClip animationClip = default;
         yield return loadAsset("Assets/Test/AnimatorTest/move.anim",animationClip);
-        Debug.Log(animationClip);
+        // var i = range(0,1);
+        // log(animationClip);
+
     }
 
     IEnumerator loadAsset<T>(string key,T asset) where T: UnityEngine.Object

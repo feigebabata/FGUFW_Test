@@ -43,14 +43,13 @@ namespace FGUFW
             return Addressables.InstantiateAsync(path,parent).WaitForCompletion();
         }
 
-        public static Task LoadSceneAsync(string path)
-        {
-            return Addressables.LoadSceneAsync(path).Task;
-        }
-
         public static SceneInstance LoadScene(string path)
         {
             return Addressables.LoadSceneAsync(path).WaitForCompletion();
+        }
+        public static AsyncOperationHandle<SceneInstance> LoadSceneAsync(string path)
+        {
+            return Addressables.LoadSceneAsync(path);
         }
 
         public static IEnumerator LoadScene(string path,LoadSceneMode loadSceneMode= LoadSceneMode.Single)
@@ -58,10 +57,6 @@ namespace FGUFW
             yield return Addressables.LoadSceneAsync(path,loadSceneMode);
         }
 
-        public static AsyncOperationHandle<GameObject> CopyAsynchronous(string path,Transform parent)
-        {
-            return Addressables.InstantiateAsync(path,parent);
-        }
     }
 
 

@@ -16,7 +16,7 @@ namespace FGUFW
         /// </summary>
         public const string Conditional_Log = "ULog";
         
-        public const int MAX_LOG_FILE_COUNT = 16;
+        public const int MAX_LOG_FILE_COUNT = 32;
         public const string LOG_BEGIN = "---LogBegin";
         public const string LOG_END = "---LogEnd";
         public const string LOG_SPLIT = "--- --- ---";
@@ -26,36 +26,36 @@ namespace FGUFW
         private static StringBuilder _msgBuilder = new StringBuilder();
 
 
-        [System.Diagnostics.Conditional(Conditional_Log)]
-        public static void log(this MonoBehaviour mb,object obj)
-        {
-            Debug.Log(obj);
-        }
+        // [System.Diagnostics.Conditional(Conditional_Log)]
+        // public static void log(this MonoBehaviour mb,object obj)
+        // {
+        //     Debug.Log(obj);
+        // }
 
-        [System.Diagnostics.Conditional(Conditional_Log)]
-        public static void logWarning(this MonoBehaviour mb,object obj)
-        {
-            Debug.LogWarning(obj);
-        }
+        // [System.Diagnostics.Conditional(Conditional_Log)]
+        // public static void logWarning(this MonoBehaviour mb,object obj)
+        // {
+        //     Debug.LogWarning(obj);
+        // }
 
-        [System.Diagnostics.Conditional(Conditional_Log)]
-        public static void logError(this MonoBehaviour mb,object obj)
-        {
-            Debug.LogError(obj);
+        // [System.Diagnostics.Conditional(Conditional_Log)]
+        // public static void logError(this MonoBehaviour mb,object obj)
+        // {
+        //     Debug.LogError(obj);
             
-        }
+        // }
 
-        /// <summary>
-        /// 需要宏 UNITY_ASSERTIONS 开启
-        /// </summary>
-        /// <param name="mb"></param>
-        /// <param name="b"></param>
-        /// <param name="msg"></param>
-        [System.Diagnostics.Conditional(Conditional_Log)]
-        public static void assert(this MonoBehaviour mb,bool b,string msg)
-        {
-            Assert.IsTrue(b,msg);
-        }
+        // /// <summary>
+        // /// 需要宏 UNITY_ASSERTIONS 开启
+        // /// </summary>
+        // /// <param name="mb"></param>
+        // /// <param name="b"></param>
+        // /// <param name="msg"></param>
+        // [System.Diagnostics.Conditional(Conditional_Log)]
+        // public static void assert(this MonoBehaviour mb,bool b,string msg)
+        // {
+        //     Assert.IsTrue(b,msg);
+        // }
 
         [System.Diagnostics.Conditional(Conditional_Log)]
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSplashScreen)]
@@ -138,3 +138,37 @@ namespace FGUFW
     }
     
 }
+
+// public static partial class FGUsing
+// {
+//     [System.Diagnostics.Conditional(FGUFW.ULog.Conditional_Log)]
+//     public static void log(object obj)
+//     {
+//         Debug.Log(obj);
+//     }
+
+//     [System.Diagnostics.Conditional(FGUFW.ULog.Conditional_Log)]
+//     public static void logWarning(object obj)
+//     {
+//         Debug.LogWarning(obj);
+//     }
+
+//     [System.Diagnostics.Conditional(FGUFW.ULog.Conditional_Log)]
+//     public static void logError(object obj)
+//     {
+//         Debug.LogError(obj);
+        
+//     }
+
+//     /// <summary>
+//     /// 需要宏 UNITY_ASSERTIONS 开启
+//     /// </summary>
+//     /// <param name="mb"></param>
+//     /// <param name="b"></param>
+//     /// <param name="msg"></param>
+//     [System.Diagnostics.Conditional(FGUFW.ULog.Conditional_Log)]
+//     public static void assert(this MonoBehaviour mb,bool b,string msg)
+//     {
+//         Assert.IsTrue(b,msg);
+//     }
+// }

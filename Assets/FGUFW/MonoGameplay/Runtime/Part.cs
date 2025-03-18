@@ -74,7 +74,7 @@ namespace FGUFW.MonoGameplay
             if (uiPanelLoader != null)
             {
                 var path = uiPanelLoader.PrefabPath;
-                var loader = AssetHelper.CopyAsynchronous(path,null);
+                var loader = AssetHelper.CopyAsync(path,null);
                 yield return loader;
                 GameObject go = loader.Result;
                 DontDestroyOnLoad(go);

@@ -35,10 +35,10 @@ namespace FGUFW
             return float.Parse(text,NumberStyles.AllowThousands | NumberStyles.Float,NumberFormat);
         }
 
-        public static T FromJson<T>(this string text)
-        {
-            return JsonUtility.FromJson<T>(text);
-        }
+        // public static T FromJson<T>(this string text)
+        // {
+        //     return JsonUtility.FromJson<T>(text);
+        // }
 
         public static Color ToColor(this string self)
         {

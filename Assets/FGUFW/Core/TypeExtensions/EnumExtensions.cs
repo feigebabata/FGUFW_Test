@@ -22,7 +22,7 @@ namespace FGUFW
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <returns></returns>
-		public static string[] GetNamesArr<T>()
+		public static string[] GetNames<T>()
 		{
 			return Enum.GetNames(typeof(T));
 		}
@@ -37,7 +37,7 @@ namespace FGUFW
 
 			Dictionary<string, int> resultList = new Dictionary<string, int>();
 			Type type = typeof(T);
-			var strList = GetNamesArr<T>().ToList();
+			var strList = GetNames<T>().ToList();
 			foreach (string key in strList)
 			{
 				string val = Enum.Format(type, Enum.Parse(type, key), "d");
@@ -51,7 +51,7 @@ namespace FGUFW
 		/// </summary>
 		/// <typeparam name="TEnum"></typeparam>
 		/// <returns></returns>
-		public static Dictionary<string, int> GetDic<TEnum>()
+		public static Dictionary<string, int> GetKVs<TEnum>()
 		{
 			Dictionary<string, int> dic = new Dictionary<string, int>();
 			Type t = typeof(TEnum);
@@ -71,7 +71,7 @@ namespace FGUFW
         /// <returns></returns>
 		public static bool ContainsValue<T>(int v)
 		{
-			var dic = GetDic<T>();
+			var dic = GetKVs<T>();
 			var flag = dic.ContainsValue(v);
 			return flag;
 		}
