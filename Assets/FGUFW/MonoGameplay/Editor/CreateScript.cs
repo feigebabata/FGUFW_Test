@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using FGUFW;
-using FGUFW.EditorUtils;
+using FGUFW.EditorUtils.Editor;
 using UnityEditor;
 using UnityEngine;
 
@@ -16,7 +16,7 @@ namespace FGUFW.MonoGameplay
         [MenuItem("Assets/Create/MonoGameplay/Play",false,80)]
         static void createPlay()
         {
-            string createPath = FGUFW.EditorUtils.EditorUtils.GetSeleceFolderPath()+"/Play.cs";
+            string createPath = EditorUtil.GetSeleceFolderPath()+"/Play.cs";
             var endNameEditAction = ScriptableObject.CreateInstance<CreateScriptHelper>();
             endNameEditAction.Callback = (filePath)=>
             {
@@ -65,7 +65,7 @@ namespace |NAME_SPACE|
         [MenuItem("Assets/Create/MonoGameplay/Part",false,80)]
         static void createPart()
         {
-            string createPath = FGUFW.EditorUtils.EditorUtils.GetSeleceFolderPath()+"/Part.cs";
+            string createPath = EditorUtil.GetSeleceFolderPath()+"/Part.cs";
             var endNameEditAction = ScriptableObject.CreateInstance<CreateScriptHelper>();
             endNameEditAction.Callback = (filePath)=>
             {

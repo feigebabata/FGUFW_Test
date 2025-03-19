@@ -1,6 +1,7 @@
 #if UNITY_EDITOR
 using System.IO;
 using System.Text;
+using FGUFW.EditorUtils.Editor;
 using UnityEditor;
 using UnityEditor.ProjectWindowCallback;
 using UnityEngine;
@@ -13,7 +14,7 @@ namespace FGUFW.CSV
         [MenuItem("Assets/Create/CSV/enum",false,80)]
         static void createEnum()
         {
-            string createPath = EditorUtils.EditorUtils.GetSeleceFolderPath()+"/Type.csv";
+            string createPath = EditorUtil.GetSeleceFolderPath()+"/Type.csv";
             ProjectWindowUtil.StartNameEditingIfProjectWindowExists(0,ScriptableObject.CreateInstance<CreateEnum>(),createPath,null,null);
         }
 
@@ -51,7 +52,7 @@ None,0,无
         [MenuItem("Assets/Create/CSV/class",false,80)]
         static void createClass()
         {
-            string createPath = EditorUtils.EditorUtils.GetSeleceFolderPath()+"/Config.csv";
+            string createPath = EditorUtil.GetSeleceFolderPath()+"/Config.csv";
             ProjectWindowUtil.StartNameEditingIfProjectWindowExists(0,ScriptableObject.CreateInstance<CreateClass>(),createPath,null,null);
         }
 
@@ -93,7 +94,7 @@ ID,名称,概要
         [MenuItem("Assets/Create/CSV/struct",false,80)]
         static void createStruct()
         {
-            string createPath = EditorUtils.EditorUtils.GetSeleceFolderPath()+"/Config.csv";
+            string createPath = EditorUtil.GetSeleceFolderPath()+"/Config.csv";
             ProjectWindowUtil.StartNameEditingIfProjectWindowExists(0,ScriptableObject.CreateInstance<CreateStruct>(),createPath,null,null);
         }
 

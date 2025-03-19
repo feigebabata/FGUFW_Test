@@ -4,7 +4,7 @@ using FGUFW;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
-using static FGUsing;
+// using static FGUFW.FGUsing;
 
 public class Test : MonoBehaviour
 {

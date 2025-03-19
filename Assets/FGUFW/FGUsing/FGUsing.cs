@@ -66,7 +66,7 @@ public static class FGUsing
         return AssetHelper.Load<T>(path);
     }
 
-    public static System.Threading.Tasks.Task<T> loadAsync<T>(string path)
+    public static UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<T> loadAsync<T>(string path)
     {
         return AssetHelper.LoadAsync<T>(path);
     }
@@ -76,7 +76,7 @@ public static class FGUsing
         return AssetHelper.Copy(path,parent);
     }
 
-    public static System.Threading.Tasks.Task<GameObject> copyAsync<T>(string path,Transform parent=default)
+    public static UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<GameObject> copyAsync(string path,Transform parent=default)
     {
         return AssetHelper.CopyAsync(path,parent);
     }
@@ -100,5 +100,24 @@ public static class FGUsing
     }
 
 #endregion
+
+#region LitJson
+    public static GameObject createGO(string name=default,Transform parent=default)
+    {
+        var go = new GameObject(name);
+        go.transform.SetParent(parent,false);
+        return go;
+    }
+
+    public static T createGO<T>(string name=default,Transform parent=default) where T:Component
+    {
+        var go = new GameObject(name);
+        go.transform.SetParent(parent,false);
+        var a = go.AddComponent<T>();
+        return a;
+    }
+
+#endregion
+
 
 }

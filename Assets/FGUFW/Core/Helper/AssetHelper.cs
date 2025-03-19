@@ -13,14 +13,14 @@ namespace FGUFW
     public static class AssetHelper
     {
 
-        public static Task<T> LoadAsync<T>(string path)
+        public static AsyncOperationHandle<T> LoadAsync<T>(string path)
         {
-            return Addressables.LoadAssetAsync<T>(path).Task;
+            return Addressables.LoadAssetAsync<T>(path);
         }
 
-        public static Task<IList<T>> LoadsAsync<T>(string path,Action<T> callback=null)
+        public static AsyncOperationHandle<IList<T>> LoadsAsync<T>(string path,Action<T> callback=null)
         {
-            return Addressables.LoadAssetsAsync<T>(path,callback).Task;
+            return Addressables.LoadAssetsAsync<T>(path,callback);
         }
 
         public static T Load<T>(string path)
@@ -33,9 +33,9 @@ namespace FGUFW
             return Addressables.LoadAssetsAsync<T>(path,null).WaitForCompletion();
         }
 
-        public static Task<GameObject> CopyAsync(string path,Transform parent)
+        public static AsyncOperationHandle<GameObject> CopyAsync(string path,Transform parent)
         {
-            return Addressables.InstantiateAsync(path,parent).Task;
+            return Addressables.InstantiateAsync(path,parent);
         }
 
         public static GameObject Copy(string path,Transform parent)
@@ -52,10 +52,6 @@ namespace FGUFW
             return Addressables.LoadSceneAsync(path);
         }
 
-        public static IEnumerator LoadScene(string path,LoadSceneMode loadSceneMode= LoadSceneMode.Single)
-        {
-            yield return Addressables.LoadSceneAsync(path,loadSceneMode);
-        }
 
     }
 

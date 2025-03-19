@@ -1,10 +1,8 @@
 {
-    "name": "FGUFW.MonoGameplay",
+    "name": "ULog",
     "rootNamespace": "",
     "references": [
-        "GUID:559fbe227f95568448fca764eab257dd",
-        "GUID:84651a3751eca9349aac36a66bba901b",
-        "GUID:8b4bfc7c2659db444a659729699bde61"
+        "GUID:559fbe227f95568448fca764eab257dd"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

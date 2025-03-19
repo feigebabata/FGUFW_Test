@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using FGUFW;
+using static FGUsing;
 
 namespace FGUFW.MonoGameplay
 {
@@ -74,7 +74,7 @@ namespace FGUFW.MonoGameplay
             if (uiPanelLoader != null)
             {
                 var path = uiPanelLoader.PrefabPath;
-                var loader = AssetHelper.CopyAsync(path,null);
+                var loader = copyAsync(path,null);
                 yield return loader;
                 GameObject go = loader.Result;
                 DontDestroyOnLoad(go);

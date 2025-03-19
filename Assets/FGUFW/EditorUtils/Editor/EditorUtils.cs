@@ -7,10 +7,11 @@ using System.IO;
 using FGUFW.Platform;
 using FGUFW;
 using System;
+using UnityEditor.Build;
 
-namespace FGUFW.EditorUtils
+namespace FGUFW.EditorUtils.Editor
 {
-    public static class EditorUtils
+    public static class EditorUtil
     {
         public const string META = ".meta";
         public static string[] GetAllAssetPath(string dirPath)
@@ -69,52 +70,41 @@ namespace FGUFW.EditorUtils
             return buildTargetGroup;
         }
 
-        public static void ScriptingDefineSymbols_Add(string define)
+        public static NamedBuildTarget GetCurrentNamedBuildTarget()
         {
-            var buildTargetGroup = GetCurrentBuildTargetGroup();
-            string[] defines = null;
-            PlayerSettings.GetScriptingDefineSymbolsForGroup(buildTargetGroup,out defines);
-            bool contains = defines!=null && Array.IndexOf<string>(defines,define)!=-1;
-            if(!contains)
-            {
-                var newDefines = new string[defines.Length+1];
-                Array.Copy(defines,newDefines,defines.Length);
-                newDefines[newDefines.Length-1]=define;
-                PlayerSettings.SetScriptingDefineSymbolsForGroup(buildTargetGroup,newDefines);
-            }
+            var target = EditorUserBuildSettings.activeBuildTarget;
+            var group = BuildPipeline.GetBuildTargetGroup(target);
+            return NamedBuildTarget.FromBuildTargetGroup(group);
+        }
+        
+        /// <summary>
+        /// 获取当前宏配置
+        /// </summary>
+        /// <returns></returns>
+        public static string[] GetScriptingDefineSymbols()
+        {
+            string[] defines;
+
+            var namedBuildTarget = GetCurrentNamedBuildTarget();
+            PlayerSettings.GetScriptingDefineSymbols(namedBuildTarget,out defines);
+
+            return defines;
         }
 
-        public static void ScriptingDefineSymbols_Remove(string define)
+        /// <summary>
+        /// 设置当前宏配置
+        /// </summary>
+        /// <param name="defines"></param>
+        public static void SetScriptingDefineSymbols(string[] defines)
         {
-            var buildTargetGroup = GetCurrentBuildTargetGroup();
-            string[] defines = null;
-            PlayerSettings.GetScriptingDefineSymbolsForGroup(buildTargetGroup,out defines);
-            bool contains = defines!=null && Array.IndexOf<string>(defines,define)!=-1;
-            if(contains)
-            {
-                var newDefines = new string[defines.Length-1];
-                for (int i = 0,newIdx=0; i < defines.Length; i++)
-                {
-                    if(defines[i]!=define)
-                    {
-                        newDefines[newIdx++]=defines[i];
-                    }
-                }
-                
-                PlayerSettings.SetScriptingDefineSymbolsForGroup(buildTargetGroup,newDefines);
-            }
+            var namedBuildTarget = GetCurrentNamedBuildTarget();
+            PlayerSettings.SetScriptingDefineSymbols(namedBuildTarget,defines);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+
+            // EditorUtility.DisplayDialog("修改当前宏配置","记得按ctrl+s保存修改到配置文件!","关闭");
+            // PlayerSettings.asset
         }
-
-        public static bool ScriptingDefineSymbols_Contains(string define)
-        {
-            var buildTargetGroup = GetCurrentBuildTargetGroup();
-            string[] defines = null;
-            PlayerSettings.GetScriptingDefineSymbolsForGroup(buildTargetGroup,out defines);
-            bool contains = defines!=null && Array.IndexOf<string>(defines,define)!=-1;
-            return contains;
-        }
-
-
     }
 }
 #endif
