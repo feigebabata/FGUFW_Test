@@ -6,7 +6,7 @@ unity框架mono分支 回归unity引擎原始的味道
 利用editor强大的运行时调试功能
 
 ***
-![FGUFW.km](./~readmeImg/FGUFW.png)
+![FGUFW.km](./readmeImg~/FGUFW.png)
 
 ## 目录
   - [文件路径规划](#文件路径规划)
