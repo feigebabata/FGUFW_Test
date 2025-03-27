@@ -1,6 +1,9 @@
 using System;
+using System.Collections;
 using System.IO;
 using System.Text;
+using UnityEngine;
+using UnityEngine.Networking;
 
 namespace FGUFW
 {
@@ -79,6 +82,70 @@ namespace FGUFW
                 throw new Exception("非预期的byte格式");
             }
             return true;
+        }
+
+        public static void LocalWrite(string localPath,byte[] data)
+        {
+            var path = Path.Combine(Application.persistentDataPath,localPath);
+            var directoryPath = Path.GetDirectoryName(path);
+            if(!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+
+            File.WriteAllBytes(path,data);
+
+        }
+
+        public static void LocalWrite(string localPath,string text)
+        {
+            var path = Path.Combine(Application.persistentDataPath,localPath);
+            var directoryPath = Path.GetDirectoryName(path);
+            if(!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+
+            File.WriteAllText(path,text);
+
+        }
+
+        public static byte[] LocaRead(string localPath)
+        {
+            var path = Path.Combine(Application.persistentDataPath,localPath);
+            
+            if(File.Exists(path))
+            {
+                return File.ReadAllBytes(path);
+            }
+
+            return default;
+
+        }
+
+        public static string LocaReadText(string localPath)
+        {
+            var path = Path.Combine(Application.persistentDataPath,localPath);
+            
+            if(File.Exists(path))
+            {
+                return File.ReadAllText(path);
+            }
+
+            return default;
+
+        }
+
+        public static IEnumerator LoadStreaming(string localPath,Action<string,DownloadHandler> callback)
+        {
+            var path = Path.Combine(Application.streamingAssetsPath,localPath);
+            var uri = new Uri(path);
+            using (var uwr = UnityWebRequest.Get(uri))
+            {
+                uwr.downloadHandler = new DownloadHandlerBuffer();
+                yield return uwr.SendWebRequest();
+                callback(uwr.error,uwr.downloadHandler);
+            }
         }
         
     }

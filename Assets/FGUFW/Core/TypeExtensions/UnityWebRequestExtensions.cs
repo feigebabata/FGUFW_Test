@@ -10,9 +10,9 @@ namespace FGUFW
 {
     public static class UnityWebRequestExtensions
     {
-        public static IEnumerator StreamingCopy(string originPath,string savePath,Action<string> complete)
+        public static IEnumerator StreamingCopy(string localPath,string savePath,Action<string> complete)
         {
-            var url = new Uri(Path.Combine(Application.streamingAssetsPath,originPath));
+            var url = new Uri(Path.Combine(Application.streamingAssetsPath,localPath));
             UnityWebRequest uwr = new UnityWebRequest(url);
             uwr.downloadHandler = new DownloadHandlerFile(savePath);
             yield return uwr.SendWebRequest();
