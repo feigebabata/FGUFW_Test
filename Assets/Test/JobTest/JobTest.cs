@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.Jobs;
 using UnityEngine;
 using Unity.Collections;
+using UnityEngine.Jobs;
 
 public class JobTest : MonoBehaviour
 {
@@ -17,6 +18,8 @@ public class JobTest : MonoBehaviour
         var jobHandle = job.Schedule(100,100);
         jobHandle.Complete();
         array.Dispose();
+
+        
     }
 
     // Update is called once per frame
