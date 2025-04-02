@@ -87,27 +87,14 @@ namespace FGUFW
         public static void LocalWrite(string localPath,byte[] data)
         {
             var path = Path.Combine(Application.persistentDataPath,localPath);
-            var directoryPath = Path.GetDirectoryName(path);
-            if(!Directory.Exists(directoryPath))
-            {
-                Directory.CreateDirectory(directoryPath);
-            }
-
-            File.WriteAllBytes(path,data);
-
+            
+            Write(path,data);
         }
 
         public static void LocalWrite(string localPath,string text)
         {
             var path = Path.Combine(Application.persistentDataPath,localPath);
-            var directoryPath = Path.GetDirectoryName(path);
-            if(!Directory.Exists(directoryPath))
-            {
-                Directory.CreateDirectory(directoryPath);
-            }
-
-            File.WriteAllText(path,text);
-
+            Write(path,text);
         }
 
         public static byte[] LocaRead(string localPath)
@@ -121,6 +108,28 @@ namespace FGUFW
 
             return default;
 
+        }
+
+        public static void Write(string path,byte[] data)
+        {
+            var directoryPath = Path.GetDirectoryName(path);
+            if(!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+
+            File.WriteAllBytes(path,data);
+        }
+
+        public static void Write(string path,string text)
+        {
+            var directoryPath = Path.GetDirectoryName(path);
+            if(!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+
+            File.WriteAllText(path,text);
         }
 
         public static string LocaReadText(string localPath)

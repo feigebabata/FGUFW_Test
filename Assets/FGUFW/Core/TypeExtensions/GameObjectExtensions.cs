@@ -12,6 +12,11 @@ namespace FGUFW
             return GameObject.Instantiate(self,parent);
         }
 
+        public static T Copy<T>(this GameObject self,Transform parent) where T:Component
+        {
+            return GameObject.Instantiate(self,parent).GetComponent<T>();
+        }
+
         
         public static bool IsNull(this UnityEngine.Object self)
         {

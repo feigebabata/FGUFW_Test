@@ -91,12 +91,13 @@ public static class FGUsing
 #region LitJson
     public static string toJson(object obj)
     {
-        return LitJson.JsonMapper.ToJson(obj);
+        if(obj==default)return default;
+        return JsonUtility.ToJson(obj,true);
     }
     
     public static T json2Object<T>(string json)
     {
-        return LitJson.JsonMapper.ToObject<T>(json);
+        return JsonUtility.FromJson<T>(json);
     }
 
 #endregion

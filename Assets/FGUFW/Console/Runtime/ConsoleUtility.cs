@@ -28,6 +28,8 @@ namespace FGUFW.Console
         [RuntimeInitializeOnLoadMethod]
         private static void onRuntimeInitialize()
         {
+            commandDatas.Clear();
+
             foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
                 foreach (var type in assembly.GetTypes())

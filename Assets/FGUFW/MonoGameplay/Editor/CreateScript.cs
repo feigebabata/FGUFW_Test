@@ -38,10 +38,9 @@ namespace |NAME_SPACE|
             yield return base.OnCreating(this,this);
         }
 
-        public override IEnumerator OnDestroying(Part parent)
+        protected override void OnDestroy()
         {
-
-            yield return base.OnDestroying(parent);
+            base.OnDestroy();
         }
     }
 }
@@ -87,14 +86,13 @@ namespace |NAME_SPACE|
         {
             _play = play as |PLAY_NAME|;
             addListener();
-            yield return base.OnCreating(parent);
+            yield return base.OnCreating(play,parent);
         }
 
-        public override IEnumerator OnDestroying(Part parent)
+        protected override void OnDestroy()
         {
-
             removeListener();
-            yield return base.OnDestroying(parent);
+            base.OnDestroy();
         }
 
         private void addListener()
