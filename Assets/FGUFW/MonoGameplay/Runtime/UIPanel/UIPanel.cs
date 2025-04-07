@@ -12,7 +12,12 @@ namespace FGUFW.MonoGameplay
     {
         public float KeepTime;
         public float Progress;
-        public CanvasGroup Canvas;
+        public CanvasGroup Group;
+        public Canvas Canvas;
+
+        /// <summary>
+        /// canvas下层 缩放用
+        /// </summary>
         public Transform Trans;
         private UIPanelEffect[] _uiPanelEffects;
         private Coroutine _progressUpdate;
@@ -20,16 +25,19 @@ namespace FGUFW.MonoGameplay
         void Awake()
         {
             _uiPanelEffects = GetComponents<UIPanelEffect>();
-            Canvas = GetComponent<CanvasGroup>();
+            Group = GetComponent<CanvasGroup>();
+            Canvas = GetComponent<Canvas>();
         }
 
-        public virtual IEnumerator Show()
+        public virtual IEnumerator Show(MonoBehaviour play)
         {
+            this.Canvas.enabled = true;
+            
             if(_progressUpdate!=null)
             {
-                StopCoroutine(_progressUpdate);
+                play.StopCoroutine(_progressUpdate);
             }
-            _progressUpdate = StartCoroutine(progressUpdate());
+            _progressUpdate = play.StartCoroutine(progressUpdate());
 
             foreach (var item in _uiPanelEffects)
             {
@@ -41,7 +49,7 @@ namespace FGUFW.MonoGameplay
 
         private IEnumerator progressUpdate()
         {
-            Canvas.interactable = false;
+            Group.interactable = false;
             Progress = 0;
             float startTime = Time.time;
             while (Time.time<startTime+KeepTime)
@@ -52,16 +60,16 @@ namespace FGUFW.MonoGameplay
             Progress = 1;
             _progressUpdate = null;
 
-            Canvas.interactable = true;
+            Group.interactable = true;
         }
 
-        public IEnumerator Hide()
+        public IEnumerator Hide(MonoBehaviour play)
         {
             if(_progressUpdate!=null)
             {
-                StopCoroutine(_progressUpdate);
+                play.StopCoroutine(_progressUpdate);
             }
-            _progressUpdate = StartCoroutine(progressUpdate());
+            _progressUpdate = play.StartCoroutine(progressUpdate());
             yield return _progressUpdate;
 
             foreach (var item in _uiPanelEffects)

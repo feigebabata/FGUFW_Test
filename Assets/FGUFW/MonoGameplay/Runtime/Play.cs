@@ -33,14 +33,20 @@ namespace FGUFW.MonoGameplay
 #endif
         }
 
-        protected override void OnDestroy()
+        protected override void OnDispose()
         {
-            base.OnDestroy();
+            base.OnDispose();
             
             Messenger = null;
 
             Debug.Log($"{this.GetType().Name} Destroy End.");
         }
+
+        public void Destroy()
+        {
+            OnDispose();
+        }
+
 
 #if FIXED_UPDATE
         /// <summary>

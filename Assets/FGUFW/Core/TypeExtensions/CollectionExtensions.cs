@@ -182,5 +182,13 @@ namespace FGUFW
             }
         }
 
+        public static void Set<K,V>(this Dictionary<K,V> self,K key,V value)
+        {
+            if(!self.TryAdd(key,value))
+            {
+                self[key] = value;
+            }
+        }
+
     }
 }

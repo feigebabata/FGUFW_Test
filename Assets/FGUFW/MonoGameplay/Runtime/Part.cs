@@ -22,7 +22,7 @@ namespace FGUFW.MonoGameplay
         /// <summary>
         /// This function is called when the MonoBehaviour will be destroyed.
         /// </summary>
-        protected virtual void OnDestroy()
+        protected virtual void OnDispose()
         {
             if(_uiPanel)
             {
@@ -79,6 +79,7 @@ namespace FGUFW.MonoGameplay
                 GameObject go = loader.Result;
                 DontDestroyOnLoad(go);
                 _uiPanel = go.GetComponent<UIPanel>();
+
             }
         }
 

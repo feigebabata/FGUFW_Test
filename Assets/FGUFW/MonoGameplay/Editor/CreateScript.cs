@@ -25,6 +25,7 @@ namespace FGUFW.MonoGameplay
 using System.Collections.Generic;
 using FGUFW.MonoGameplay;
 using UnityEngine;
+using FGUFW;
 using static FGUsing;
 
 namespace |NAME_SPACE|
@@ -73,6 +74,7 @@ namespace |NAME_SPACE|
 using System.Collections.Generic;
 using FGUFW.MonoGameplay;
 using UnityEngine;
+using FGUFW;
 using static FGUsing;
 
 namespace |NAME_SPACE|

@@ -1,4 +1,5 @@
 using FGUFW;
+using LitJson;
 using UnityEngine;
 
 public static class FGUsing
@@ -92,17 +93,19 @@ public static class FGUsing
     public static string toJson(object obj)
     {
         if(obj==default)return default;
-        return JsonUtility.ToJson(obj,true);
+        return JsonMapper.ToJson(obj);
+        // return JsonUtility.ToJson(obj,true);
     }
     
     public static T json2Object<T>(string json)
     {
-        return JsonUtility.FromJson<T>(json);
+        // return JsonUtility.FromJson<T>(json);
+        return JsonMapper.ToObject<T>(json);
     }
 
 #endregion
 
-#region LitJson
+#region GameObject
     public static GameObject createGO(string name=default,Transform parent=default)
     {
         var go = new GameObject(name);

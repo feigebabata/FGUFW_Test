@@ -28,10 +28,10 @@ namespace FGUFW.MonoGameplay
         {
             while (uIPanel.Progress<=1)
             {
-                uIPanel.Canvas.alpha = alphaCurve.Evaluate(uIPanel.Progress);
+                uIPanel.Group.alpha = alphaCurve.Evaluate(uIPanel.Progress);
                 yield return null;
             }
-            uIPanel.Canvas.alpha = alphaCurve.Evaluate(1);
+            uIPanel.Group.alpha = alphaCurve.Evaluate(1);
             _setCanvasAlpha = null;
         }
 
