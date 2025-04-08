@@ -61,7 +61,9 @@ namespace FGUFW.EditorUtils.Editor
         [MenuItem("文件夹/程序持续存储文件夹")]
         static void openDir()
         {
+            #if UNITY_EDITOR_WIN
             WinPlatform.OpenExplorer(Application.persistentDataPath);
+            #endif
         }
 
         public static BuildTargetGroup GetCurrentBuildTargetGroup()

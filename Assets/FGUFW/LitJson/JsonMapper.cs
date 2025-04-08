@@ -12,7 +12,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
@@ -248,13 +247,20 @@ namespace LitJson
 
         private static void AddTypeProperties (Type type)
         {
-            if (type_properties.ContainsKey (type))return;          
+            if (type_properties.ContainsKey (type))return;  
 
             IList<PropertyMetadata> props = new List<PropertyMetadata> ();
+
+            // if(type==typeof(UnityEngine.Vector2))
+            // {
+            //     int i = 0;
+            // }
 
             foreach (PropertyInfo p_info in type.GetProperties (BindingFlags.Instance | BindingFlags.Public)) 
             {
                 if (p_info.Name == "Item")continue;
+
+                if(type.IsValueType && p_info.PropertyType==type)continue; //阻止结构体递归
                     
                 PropertyMetadata p_data = new PropertyMetadata ();
                 p_data.Info = p_info;
@@ -262,8 +268,10 @@ namespace LitJson
                 props.Add (p_data);
             }
 
-            foreach (FieldInfo f_info in type.GetFields ()) 
+            foreach (FieldInfo f_info in type.GetFields (BindingFlags.Instance | BindingFlags.Public  | BindingFlags.NonPublic)) 
             {
+                if(type.IsValueType && f_info.FieldType==type)continue; //阻止结构体递归
+
                 PropertyMetadata p_data = new PropertyMetadata ();
                 p_data.Info = f_info;
                 p_data.IsField = true;
@@ -723,7 +731,8 @@ namespace LitJson
                 return;
             }
 
-            if (obj is IJsonWrapper) {
+            if (obj is IJsonWrapper) 
+            {
                 if (writer_is_private)
                     writer.TextWriter.Write (((IJsonWrapper) obj).ToJson ());
                 else

@@ -94,6 +94,8 @@ namespace FGUFW.MonoGameplay
             if (EditorGUI.EndChangeCheck())
             {
                SettingData.Save();
+               EditorSettings.projectGenerationRootNamespace = SettingData.NameSpace;
+               
             }
         }
 

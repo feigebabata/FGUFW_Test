@@ -134,7 +134,7 @@ namespace FGUFW.Platform
             return path;
         }
 
-        [Conditional("UNITY_STANDALONE_WIN")]
+        // [Conditional("UNITY_STANDALONE_WIN")]
         public static void OpenExplorer(string path)
         {
             path = path.Replace('/','\\');

@@ -135,6 +135,15 @@ namespace FGUFW
             }
         }
 
+        public static void For<T>(this Transform transform,Action<int,T> callback)
+        {
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                Transform item_t = transform.GetChild(i);
+                callback(i,item_t.GetComponent<T>());
+            }
+        }
+
         public static string FullPath(this Transform t)
         {
             StringBuilder s = new StringBuilder();
@@ -192,5 +201,26 @@ namespace FGUFW
             }
             return t.GetChild(index).GetComponent<T>();
         }
+
+        public static Transform First(this Transform self)
+        {
+            if(self.childCount>0)
+            {
+                return self.GetChild(0);
+            }
+            return default;
+        }
+
+        public static Transform Last(this Transform self)
+        {
+            if(self.childCount>0)
+            {
+                return self.GetChild(self.childCount-1);
+            }
+            return default;
+        }
+
+
+
     }
 }

@@ -43,6 +43,10 @@ public static class FGUsing
     {
         return RandomExtensions.range(min,max);
     }
+    public static int range(int min=0,int max=1)
+    {
+        return RandomExtensions.range(min,max);
+    }
 
     public static Vector2 range2(float min=0,float max=1)
     {
