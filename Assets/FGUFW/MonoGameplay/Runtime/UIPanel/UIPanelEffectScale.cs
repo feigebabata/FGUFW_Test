@@ -12,13 +12,13 @@ namespace FGUFW.MonoGameplay
         public AnimationCurve HideCurve;
         private Coroutine _setCanvasScale;
 
-        void Awake()
-        {
-            if(GetComponent<Canvas>().renderMode != RenderMode.WorldSpace)
-            {
-                Debug.LogError("UIPanelEffectScale需要Canvas渲染模式为WorldSpace!");
-            }
-        }
+        // void Awake()
+        // {
+        //     if(GetComponent<Canvas>().renderMode != RenderMode.WorldSpace)
+        //     {
+        //         Debug.LogError("UIPanelEffectScale需要Canvas渲染模式为WorldSpace!");
+        //     }
+        // }
 
         public override void Hide(UIPanel uIPanel)
         {
@@ -34,7 +34,7 @@ namespace FGUFW.MonoGameplay
 
         IEnumerator setCanvasScale(UIPanel uIPanel,AnimationCurve alphaCurve)
         {
-            while (uIPanel.Progress<=1)
+            while (uIPanel.Progress<1)
             {
                 uIPanel.Trans.localScale = alphaCurve.Evaluate(uIPanel.Progress)*Vector3.one;
                 yield return null;

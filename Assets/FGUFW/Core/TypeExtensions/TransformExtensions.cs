@@ -24,7 +24,7 @@ namespace FGUFW
             {
                 float t = (Time.time-startTime)/time;
                 transform.position = Vector3.Lerp(transform.position,endPos,t);
-                yield return null;
+                yield return default;
             }
             transform.position = endPos;
         }
@@ -36,7 +36,7 @@ namespace FGUFW
             {
                 float t = (Time.time-startTime)/time;
                 transform.localPosition = Vector3.Lerp(transform.localPosition,endPos,t);
-                yield return null;
+                yield return default;
             }
             transform.localPosition = endPos;
         }
@@ -49,7 +49,7 @@ namespace FGUFW
             {
                 float t = (Time.time-startTime)/time;
                 transform.localRotation = Quaternion.Lerp(transform.localRotation,rotation,t);
-                yield return null;
+                yield return default;
             }
             transform.localRotation = rotation;
         }
@@ -62,7 +62,7 @@ namespace FGUFW
             {
                 float t = (Time.time-startTime)/time;
                 transform.rotation = Quaternion.Lerp(transform.rotation,rotation,t);
-                yield return null;
+                yield return default;
             }
             transform.rotation = rotation;
         }
@@ -220,7 +220,66 @@ namespace FGUFW
             return default;
         }
 
+        public static void ToList(this Transform self,List<Transform> cache)
+        {
+            cache.Clean();
+            foreach (Transform item in self)
+            {
+                cache.Add(item);
+            }
+        }
 
+        public static void SetChilidsParent(this Transform self,Transform parent,bool worldStay=true)
+        {
+            while (self.childCount>0)
+            {
+                self.GetChild(0).SetParent(parent,worldStay);
+            }
+        }
+
+        static List<Transform> destroyChildsCache = new List<Transform>();
+        public static void DestroyChilds(this Transform self)
+        {
+            destroyChildsCache.Clean();
+
+            foreach (Transform item in self)
+            {
+                destroyChildsCache.Add(item);
+            }
+
+            foreach (var item in destroyChildsCache)
+            {
+                GameObject.Destroy(item.gameObject);
+            }
+        }
+
+        public static void DestroyChilds(this Transform self,Predicate<Transform> match)
+        {
+            destroyChildsCache.Clean();
+
+            foreach (Transform item in self)
+            {
+                destroyChildsCache.Add(item);
+            }
+
+            foreach (var item in destroyChildsCache)
+            {
+                if(match(item))
+                {
+                    GameObject.Destroy(item.gameObject);
+                }
+            }
+        }
+
+        public static T Find<T>(this Transform self,Predicate<T> match) where T:Component
+        {
+            foreach (Transform item in self)
+            {
+                T comp = item.GetComponent<T>();
+                if(comp!=default && match(comp)) return comp;
+            }
+            return default;
+        }
 
     }
 }

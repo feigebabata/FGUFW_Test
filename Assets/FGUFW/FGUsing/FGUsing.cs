@@ -1,3 +1,4 @@
+using System.Collections;
 using FGUFW;
 using LitJson;
 using UnityEngine;
@@ -26,7 +27,7 @@ public static class FGUsing
     }
 
     /// <summary>
-    /// 需要宏 UNITY_ASSERTIONS 开启
+    /// 否定时抛异常  需要宏 UNITY_ASSERTIONS 开启
     /// </summary>
     /// <param name="mb"></param>
     /// <param name="b"></param>
@@ -123,6 +124,14 @@ public static class FGUsing
         go.transform.SetParent(parent,false);
         var a = go.AddComponent<T>();
         return a;
+    }
+
+#endregion
+
+#region Coroutine
+    public static WaitForSeconds delayY(float time)
+    {
+       return new WaitForSeconds(time);
     }
 
 #endregion

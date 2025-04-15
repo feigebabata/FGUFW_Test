@@ -83,5 +83,20 @@ namespace FGUFW
 		// 	}
 		// }
 
+		public static Coroutine Start(this IEnumerator self,MonoBehaviour mb)
+		{
+			return mb.StartCoroutine(self);
+		}
+
+		public static void Stop(this Coroutine self,MonoBehaviour mb)
+		{
+			mb.StopCoroutine(self);
+		}
+
+        public static Coroutine Start(this IEnumerator self,ref CoroutineGroup cg)
+        {
+            return cg.Start(self);
+        }
+
     }    
 }

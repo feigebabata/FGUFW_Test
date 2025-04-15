@@ -39,9 +39,9 @@ namespace |NAME_SPACE|
             yield return base.OnCreating(this,this);
         }
 
-        protected override void OnDestroy()
+        protected override void OnDispose()
         {
-            base.OnDestroy();
+            base.OnDispose();
         }
     }
 }
@@ -91,10 +91,10 @@ namespace |NAME_SPACE|
             yield return base.OnCreating(play,parent);
         }
 
-        protected override void OnDestroy()
+        protected override void OnDispose()
         {
             removeListener();
-            base.OnDestroy();
+            base.OnDispose();
         }
 
         private void addListener()

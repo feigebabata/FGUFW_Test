@@ -190,5 +190,15 @@ namespace FGUFW
             }
         }
 
+        public static void MoveTo<T>(this List<T> self,List<T> ls)
+        {
+            ls.Clean();
+            foreach (var item in self)
+            {
+                ls.Add(item);
+            }
+            self.Clean();
+        } 
+
     }
 }

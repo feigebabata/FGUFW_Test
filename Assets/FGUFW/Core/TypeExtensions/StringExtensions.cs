@@ -51,6 +51,11 @@ namespace FGUFW
         {
             return (T)Enum.Parse(typeof(T),self);
         }
+        
+        public static bool IsNull(this string self)
+        {
+            return string.IsNullOrEmpty(self);
+        }
 
     }
 }
