@@ -54,6 +54,11 @@ namespace FGUFW
 
             }
         }
+
+        public static T Comp<T>(this Component self)
+        {
+            return self.GetComponent<T>();
+        }
         
     }
 }

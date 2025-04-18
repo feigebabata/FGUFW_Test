@@ -7,7 +7,13 @@ namespace FGUFW
     {
         private RectTransform _rectTransform;
 
-        void Start()
+        void Awake()
+        {
+            _rectTransform = GetComponent<RectTransform>();
+            ApplySafeArea();
+        }
+
+        void Reset()
         {
             _rectTransform = GetComponent<RectTransform>();
             ApplySafeArea();
