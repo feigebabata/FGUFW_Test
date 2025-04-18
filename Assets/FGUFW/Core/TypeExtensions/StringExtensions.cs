@@ -22,11 +22,13 @@ namespace FGUFW
 
         public static int ToInt32(this string text)
         {
+            if(text.IsNull())return default;
             return int.Parse(text);
         }
         
         public static float ToFloat(this string text)
         {
+            if(text.IsNull())return default;
             return float.Parse(text,NumberFormat);
         }
         
@@ -55,6 +57,48 @@ namespace FGUFW
         public static bool IsNull(this string self)
         {
             return string.IsNullOrEmpty(self);
+        }
+        
+        /// <summary>
+        /// 折叠
+        /// </summary>
+        /// <param name="self"></param>
+        /// <returns></returns>
+        public static string Fold(this string self,int maxLength)
+        {
+            if(self.Length>maxLength)
+            {
+                return self.Substring(0,maxLength) + "...";
+            }
+            return self;
+        }
+
+        /// <summary>
+        /// 相似度
+        /// </summary>
+        public static float Similarity(this string self, string target)
+        {
+            // 完全相等
+            if (self == target) return 1.0f;
+            
+            // 忽略大小写相等
+            if (string.Equals(self, target, StringComparison.OrdinalIgnoreCase)) 
+                return 0.8f;
+
+            // 动态计算包含比例
+            float maxScore = 0;
+            if (!string.IsNullOrEmpty(self) && !string.IsNullOrEmpty(target))
+            {
+                // 检查str1是否包含str2
+                if (self.IndexOf(target, StringComparison.OrdinalIgnoreCase) >= 0)
+                    maxScore = Mathf.Max(maxScore, (float)target.Length / Math.Max(self.Length, target.Length) * 0.6f);
+                
+                // 检查str2是否包含str1
+                if (target.IndexOf(self, StringComparison.OrdinalIgnoreCase) >= 0)
+                    maxScore = Mathf.Max(maxScore, (float)self.Length / Math.Max(self.Length, target.Length) * 0.6f);
+            }
+            
+            return maxScore > 0f ? maxScore : 0.0f;
         }
 
     }

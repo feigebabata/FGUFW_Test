@@ -15,7 +15,7 @@ namespace FGUFW.MonoGameplay
         [SerializeField]
         private PlayFrameData _frameData;
         public PlayFrameData FrameData=>_frameData;
-        private float _playCreatedTime;
+        private float _playCreatedTime = -1;
 
         public override IEnumerator OnCreating(Part play,Part parent)
         {
@@ -54,6 +54,8 @@ namespace FGUFW.MonoGameplay
         /// </summary>
         void FixedUpdate()
         {
+            if(_playCreatedTime==-1)return;
+
             _frameData.DeltaTime = Time.fixedDeltaTime;
             _frameData.WorldTime = Time.fixedTime - _playCreatedTime;
             OnUpdate();
@@ -64,6 +66,8 @@ namespace FGUFW.MonoGameplay
         /// </summary>
         void Update()
         {
+            if(_playCreatedTime==-1)return;
+            
             _frameData.DeltaTime = Time.deltaTime;
             _frameData.WorldTime = Time.time - _playCreatedTime;
             OnUpdate();
