@@ -281,5 +281,39 @@ namespace FGUFW
             return default;
         }
 
+        public static void FindSimilar(this Transform self,string targetName,List<Transform> targetCache,List<float> similarValues)
+        {
+            for (int i = 0; i < self.childCount; i++)
+            {
+                var item = self.GetChild(i);
+                var similarVal = targetName.Similarity(item.name);
+                if(similarVal>0)
+                {
+                    var insertIdx = -1;
+                    for (int j = 0; j < similarValues.Count; j++)
+                    {
+                        if(similarVal>similarValues[j])
+                        {
+                            insertIdx = j;
+                            break;
+                        }
+                    }
+
+                    if(insertIdx==-1)
+                    {
+                        targetCache.Add(item);
+                        similarValues.Add(similarVal);
+                    }
+                    else
+                    {
+                        targetCache.Insert(insertIdx,item);
+                        similarValues.Insert(insertIdx,similarVal);
+                    }
+
+                    item.FindSimilar(targetName,targetCache,similarValues);
+                }
+            }
+        }
+
     }
 }

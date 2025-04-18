@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
 
 namespace FGUFW
@@ -16,19 +15,10 @@ namespace FGUFW
         /// </summary>
         void Reset()
         {
-            var type = this.GetType();
-            var fields = type.GetFields(BindingFlags.Public|BindingFlags.Instance);
-            var compType = typeof(Component);
-
-            foreach (var field in fields)
-            {
-                var fieldType = field.FieldType;
-                if(fieldType.IsSubclassOf(compType))
-                // var name = field.Name;
-
-                Debug.Log($"{fieldType} , {name}");
-            }
+            this.AutoRefField();
         }
+        
+
     }
 
 }

@@ -7,7 +7,10 @@ using UnityEngine.UI;
 public class GetTest : AutoRefComponent
 {
     public Canvas MainCanvas;
-    public Button Click;
+    public Button Close;
 
     public Slider Rate; 
+
+    public GameObject list;
+    public Transform ListObj;
 }
