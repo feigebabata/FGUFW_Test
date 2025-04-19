@@ -92,6 +92,16 @@ namespace FGUFW.MonoGameplay
             part.transform.localPosition = Vector3.zero;
             return part;
         }
+
+        public void ShowPanel()
+        {
+            _uiPanel.Show(this).Start(this);
+        }
+
+        public void HidePanel()
+        {
+            _uiPanel.Hide(this).Start(this);
+        }
         
 
     }

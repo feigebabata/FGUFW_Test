@@ -29,15 +29,15 @@ namespace FGUFW.MonoGameplay
             Canvas = GetComponent<Canvas>();
         }
 
-        public virtual IEnumerator Show(MonoBehaviour play)
+        public virtual IEnumerator Show(MonoBehaviour mb)
         {
             this.Canvas.enabled = true;
             
             if(_progressUpdate!=null)
             {
-                play.StopCoroutine(_progressUpdate);
+                mb.StopCoroutine(_progressUpdate);
             }
-            _progressUpdate = play.StartCoroutine(progressUpdate());
+            _progressUpdate = mb.StartCoroutine(progressUpdate());
 
             foreach (var item in _uiPanelEffects)
             {
@@ -63,13 +63,13 @@ namespace FGUFW.MonoGameplay
             Group.interactable = true;
         }
 
-        public IEnumerator Hide(MonoBehaviour play)
+        public IEnumerator Hide(MonoBehaviour mb)
         {
             if(_progressUpdate!=null)
             {
-                play.StopCoroutine(_progressUpdate);
+                mb.StopCoroutine(_progressUpdate);
             }
-            _progressUpdate = play.StartCoroutine(progressUpdate());
+            _progressUpdate = mb.StartCoroutine(progressUpdate());
             yield return _progressUpdate;
 
             foreach (var item in _uiPanelEffects)
