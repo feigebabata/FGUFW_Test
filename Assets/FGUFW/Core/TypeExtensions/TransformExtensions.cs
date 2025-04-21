@@ -310,8 +310,8 @@ namespace FGUFW
                         similarValues.Insert(insertIdx,similarVal);
                     }
 
-                    item.FindSimilar(targetName,targetCache,similarValues);
                 }
+                item.FindSimilar(targetName,targetCache,similarValues);
             }
         }
 

@@ -83,7 +83,9 @@ namespace FGUFW
             
             // 忽略大小写相等
             if (string.Equals(self, target, StringComparison.OrdinalIgnoreCase)) 
-                return 0.8f;
+            {
+                return Mathf.Lerp(0.8f,0.5f,Mathf.Abs(self.Length-target.Length)/(float)Mathf.Min(self.Length,target.Length));
+            }
 
             // 动态计算包含比例
             float maxScore = 0;
@@ -91,14 +93,15 @@ namespace FGUFW
             {
                 // 检查str1是否包含str2
                 if (self.IndexOf(target, StringComparison.OrdinalIgnoreCase) >= 0)
-                    maxScore = Mathf.Max(maxScore, (float)target.Length / Math.Max(self.Length, target.Length) * 0.6f);
+                    maxScore = Mathf.Max(maxScore, (float)target.Length / Math.Max(self.Length, target.Length) * 0.5f);
                 
                 // 检查str2是否包含str1
                 if (target.IndexOf(self, StringComparison.OrdinalIgnoreCase) >= 0)
-                    maxScore = Mathf.Max(maxScore, (float)self.Length / Math.Max(self.Length, target.Length) * 0.6f);
+                    maxScore = Mathf.Max(maxScore, (float)self.Length / Math.Max(self.Length, target.Length) * 0.5f);
             }
             
-            return maxScore > 0f ? maxScore : 0.0f;
+            return maxScore;
+
         }
 
     }

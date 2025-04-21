@@ -153,7 +153,7 @@ namespace |NAME_SPACE|
     public class |CLASS_NAME| : Part
     {
         private |PLAY_NAME| _play;
-        //private |CLASS_NAME|PanelComps _panelComps
+        //private |CLASS_NAME|PanelComps _panelComps;
 
         public override IEnumerator OnCreating(Part play,Part parent)
         {
@@ -176,12 +176,12 @@ namespace |NAME_SPACE|
 
         private void addListener()
         {
-
+            //_panelComps.TryAddAllBtnListener(this);
         }
 
         private void removeListener()
         {
-            
+            //_panelComps.TryRemoveAllBtnListener();
         }
 
     }

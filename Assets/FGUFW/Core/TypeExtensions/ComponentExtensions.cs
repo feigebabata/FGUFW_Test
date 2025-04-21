@@ -37,6 +37,7 @@ namespace FGUFW
                         if(comp!=default)
                         {
                             field.SetValue(self,comp);
+                            break;
                         }
                     }
                 }
