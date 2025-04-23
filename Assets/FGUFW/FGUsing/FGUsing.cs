@@ -136,5 +136,15 @@ public static class FGUsing
 
 #endregion
 
+#region Editor
+    public static void pauseEditor()
+    {
+       #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPaused = true;
+       #endif
+    }
+
+#endregion
+
 
 }

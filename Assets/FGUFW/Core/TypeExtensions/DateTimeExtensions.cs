@@ -38,5 +38,11 @@ namespace FGUFW
             return DateTime.Now.ToString("yyyyMMddHHmmss");
         }
 
+        public static DateTime ToDate(this string self)
+        {
+            if(self.IsNull()) return DateTime.Now;
+            return DateTime.Parse(self);
+        }
+
     }
 }
