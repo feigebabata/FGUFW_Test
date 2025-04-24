@@ -19,17 +19,29 @@ namespace FGUFW.ExcelUtils
         {
             var path = ctx.assetPath;
 
-            // var exten = Path.GetExtension(path);
-            // if(exten==".xlsx")
-            // {
-            //     Debug.LogWarning(path);
-            // }
-
-            // if(exten!=".xls" && exten!=".xlsx")return;
-
+            if(!Path.GetFileNameWithoutExtension(path).EndsWith("EC"))return;
             
+            Excel execl = default;
+            try
+            {
+                execl = new Excel(path);
+            }
+            catch (System.Exception)
+            {
+                return;
+            }
 
-            GenerateExcelCsharpCode.GenerateCsharpCode(path);
+            GenerateExcelCsharpCode.GenerateCsharpCode(execl,path);
+            ExcelCsharpToJson.ToJson(execl,path);
+
+            execl.Dispose();
+            EditorApplication.delayCall += delayRefresh;
+        }
+
+        static void delayRefresh()
+        {
+            EditorApplication.delayCall -= delayRefresh;
+            AssetDatabase.Refresh();
         }
 
     }

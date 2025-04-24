@@ -63,6 +63,11 @@ public static class FGUsing
     {
         return RandomExtensions.rangec(min,max);
     }
+
+    public static int rangeIndex(params float[] props)
+    {
+        return RandomExtensions.rangeIndex(props);
+    }
 #endregion
 
 #region AssetHelper

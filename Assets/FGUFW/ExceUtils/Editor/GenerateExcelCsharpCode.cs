@@ -12,38 +12,17 @@ namespace FGUFW.ExcelUtils
 {
     public static class GenerateExcelCsharpCode
     {
-        //[MenuItem("Assets/Create/GenerateCsharpCode",true)]
-        static bool checkGenerateCsharpCode()
-        {
-            var path = AssetDatabase.GetAssetPath(Selection.activeObject);
-            if(path.IsNull())return false;
 
-            var exten = Path.GetExtension(path);
 
-            if(exten==".xls" || exten==".xlsx")return true;
-
-            return false;
-        }
-
-        //[MenuItem("Assets/Create/GenerateCsharpCode",false,80)]
-        static void generateCsharpCode()
-        {
-            var path = Application.dataPath.Replace("Assets",AssetDatabase.GetAssetPath(Selection.activeObject));
-            GenerateCsharpCode(path);
-
-        }
-
-        public static void GenerateCsharpCode(string path)
+        public static void GenerateCsharpCode(Excel excel,string path)
         {
 
             var configClass = new StringBuilder();
 
-            var execl = new Excel(path);
-
             var className = Path.GetFileNameWithoutExtension(path);
             var directory = Path.GetDirectoryName(path);
 
-            foreach (var sheet in execl)
+            foreach (var sheet in excel)
             {
                 setConfigText(sheet,configClass);
             }
@@ -64,7 +43,6 @@ namespace ExcelConfig
 }
 ";
 
-            execl.Dispose();
             scriptText = scriptText.Replace("|CLASS_NAME|",className);
             scriptText = scriptText.Replace("|CONFIG_CLASS|",configClass.ToString());
             var scriptPath = Path.Combine(directory,$"{className}.cs");
@@ -74,13 +52,6 @@ namespace ExcelConfig
 
             // AssetDatabase.Refresh();
 
-            EditorApplication.delayCall += delayRefresh;
-        }
-
-        static void delayRefresh()
-        {
-            EditorApplication.delayCall -= delayRefresh;
-            AssetDatabase.Refresh();
         }
 
         static void setConfigText(ISheet sheet,StringBuilder configTexts)

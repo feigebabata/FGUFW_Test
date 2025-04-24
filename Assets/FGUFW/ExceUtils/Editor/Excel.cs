@@ -13,6 +13,8 @@ namespace FGUFW.ExcelUtils
     {
         IWorkbook _workbook;
 
+        public int SheetCount => _workbook.NumberOfSheets;
+
         private Excel(){}
 
         public Excel(string excelPath)
@@ -44,6 +46,14 @@ namespace FGUFW.ExcelUtils
             get
             {
                 return _workbook.GetSheet(name);
+            }
+        }
+
+        public ISheet this[int index]
+        {
+            get
+            {
+                return _workbook.GetSheetAt(index);
             }
         }
 
