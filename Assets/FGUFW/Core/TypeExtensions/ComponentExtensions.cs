@@ -60,6 +60,31 @@ namespace FGUFW
         {
             return self.GetComponent<T>();
         }
+
+        public static Transform GetChild(this Component self,int childIndex)
+        {
+            return self.transform.GetChild(childIndex);
+        }
+
+        public static T GetChild<T>(this Component self,int childIndex)
+        {
+            return self.transform.GetChild(childIndex).GetComponent<T>();
+        }
+
+        public static void SetActive(this Component self,bool b)
+        {
+            self.gameObject.SetActive(b);
+        }
+
+        public static void Destroy(this Component self)
+        {
+            GameObject.Destroy(self);
+        }
+
+        public static void DestroyGObj(this Component self)
+        {
+            GameObject.Destroy(self.gameObject);
+        }
         
     }
 }

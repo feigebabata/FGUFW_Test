@@ -106,6 +106,23 @@ namespace FGUFW.EditorUtils.Editor
 
             // EditorUtility.DisplayDialog("修改当前宏配置","记得按ctrl+s保存修改到配置文件!","关闭");
             // PlayerSettings.asset
+        }    
+        
+        
+        [MenuItem("EditorUtils/截屏")]
+        public static void Capture()
+        {
+            var fileName = DateTime.Now.ToString("yyyyMMdd_HHmmss")+".png";
+            var directory = Path.Combine(Path.GetDirectoryName(Application.dataPath),"Captures");
+            var path = Path.Combine(directory,fileName);
+            
+            if(!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+            ScreenCapture.CaptureScreenshot(path);
+
+            Debug.Log($"保存到:{path}");
         }
     }
 }

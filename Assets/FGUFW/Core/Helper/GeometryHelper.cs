@@ -540,12 +540,25 @@ xz坐标系
         {
             if(idxCache?.Length!=6)return;
 
-            idxCache[0] = new Vector3Int(center.x,center.y-1,center.z+1);
-            idxCache[1] = new Vector3Int(center.x+1,center.y-1,center.z);
-            idxCache[2] = new Vector3Int(center.x+1,center.y,center.z-1);
-            idxCache[3] = new Vector3Int(center.x,center.y+1,center.z-1);
-            idxCache[4] = new Vector3Int(center.x-1,center.y+1,center.z);
-            idxCache[5] = new Vector3Int(center.x-1,center.y,center.z+1);
+            for (int i = 0; i < 6; i++)
+            {
+                idxCache[i] = GetHexSideIndex(center,i);
+            }
+        }
+
+        //从左上顺时针
+        public static Vector3Int GetHexSideIndex(Vector3Int center,int index)
+        {
+            switch (index)
+            {
+                case 0: return center + new Vector3Int(0,-1,1);
+                case 1: return center + new Vector3Int(1,-1,0);
+                case 2: return center + new Vector3Int(1,0,-1);
+                case 3: return center + new Vector3Int(0,1,-1);
+                case 4: return center + new Vector3Int(-1,1,0);
+                case 5: return center + new Vector3Int(-1,0,1);
+            }
+            return center;
         }
 
 #endregion

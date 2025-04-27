@@ -31,5 +31,10 @@ namespace FGUFW
         {
             return self==null || !(self is UnityEngine.Object);
         }
+
+        public static Transform GetChild(this GameObject self,int childIndex)
+        {
+            return self.transform.GetChild(childIndex);
+        }
     }
 }
