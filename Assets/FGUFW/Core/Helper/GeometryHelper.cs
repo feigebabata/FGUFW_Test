@@ -379,7 +379,7 @@ namespace FGUFW
 xz坐标系
 
 */
-        public const float RADIUS_OUT2INN = 0.866025404f;
+        public const float HEX_RADIUS_OUT2INN = 0.866025404f;
 
         /// <summary>
         /// 生成六边形
@@ -407,7 +407,7 @@ xz坐标系
         /// <returns></returns>
         public static Vector3Int PointInHexIndex(Vector3 pointInHexLocalPosition,float outRadius)
         {
-            float innRadius = outRadius*RADIUS_OUT2INN;
+            float innRadius = outRadius*HEX_RADIUS_OUT2INN;
 
             float point_x = pointInHexLocalPosition.x;
             float point_y = pointInHexLocalPosition.z;
@@ -452,7 +452,7 @@ xz坐标系
         /// <returns></returns>
         public static Vector3 HexIndexLocalPosition(Vector3Int hexIndex,float outRadius)
         {
-            float innRadius = outRadius*RADIUS_OUT2INN;
+            float innRadius = outRadius*HEX_RADIUS_OUT2INN;
 
             float space_x = innRadius*2;
             float space_y = outRadius*1.5f;

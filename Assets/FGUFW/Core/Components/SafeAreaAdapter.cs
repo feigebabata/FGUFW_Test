@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 namespace FGUFW
 {
@@ -26,6 +27,7 @@ namespace FGUFW
 
             // 转换为屏幕宽高比例
             Vector2 screenSize = new Vector2(Screen.width, Screen.height);
+
             Vector2 anchorMin = safeArea.position / screenSize;
             Vector2 anchorMax = (safeArea.position + safeArea.size) / screenSize;
 
