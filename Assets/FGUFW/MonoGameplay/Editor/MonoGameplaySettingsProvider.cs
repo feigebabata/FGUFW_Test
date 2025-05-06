@@ -9,7 +9,7 @@ using System;
 using UnityEditor.UIElements;
 using System.IO;
 
-namespace FGUFW.MonoGameplay
+namespace FGUFW.MonoGameplay.Editor
 {
     // [Serializable]
     // [FilePath("ProjectSettings/MonoGameplaySettings.asset", FilePathAttribute.Location.ProjectFolder)]

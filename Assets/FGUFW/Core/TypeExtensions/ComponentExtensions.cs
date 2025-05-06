@@ -61,6 +61,11 @@ namespace FGUFW
             return self.GetComponent<T>();
         }
 
+        public static T Comp<T>(this GameObject self)
+        {
+            return self.GetComponent<T>();
+        }
+
         public static Transform GetChild(this Component self,int childIndex)
         {
             return self.transform.GetChild(childIndex);

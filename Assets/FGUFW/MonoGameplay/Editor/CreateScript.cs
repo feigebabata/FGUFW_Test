@@ -10,7 +10,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-namespace FGUFW.MonoGameplay
+namespace FGUFW.MonoGameplay.Editor
 {
 
     public static class CreateScript

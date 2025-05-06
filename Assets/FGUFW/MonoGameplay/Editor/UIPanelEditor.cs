@@ -1,10 +1,10 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace FGUFW.MonoGameplay
+namespace FGUFW.MonoGameplay.Editor
 {
     [CustomEditor(typeof(UIPanel))]
-    public class UIPanelEditor : Editor
+    public class UIPanelEditor : UnityEditor.Editor
     {
         private UIPanel _target;
         private SerializedProperty _alphaCurve;
