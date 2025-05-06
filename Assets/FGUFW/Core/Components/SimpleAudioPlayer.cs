@@ -95,8 +95,8 @@ namespace FGUFW
 
         public void PlayBGM(AudioClip clip)
         {
-            if(BGMPause) return;
             _bgmAudioSource.clip = clip;
+            if(BGMPause) return;
             _bgmAudioSource.Play();
         }
 

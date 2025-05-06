@@ -200,9 +200,6 @@ namespace |NAME_SPACE|
                 canvas.renderMode = RenderMode.ScreenSpaceOverlay;
                 var canvasGroup = panelGO.AddComponent<CanvasGroup>();
                 panelGO.AddComponent<GraphicRaycaster>();
-                var uiPanel = panelGO.AddComponent<UIPanel>();
-                uiPanel.Canvas = canvas;
-                uiPanel.Group = canvasGroup;
 
                 var canvasScaler = panelGO.AddComponent<CanvasScaler>();
                 canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
@@ -211,9 +208,6 @@ namespace |NAME_SPACE|
                 var safeAreaGO = new GameObject("SafeArea");
                 safeAreaGO.transform.SetParent(panelGO.transform);
                 safeAreaGO.AddComponent<SafeAreaAdapter>();
-
-                uiPanel.Trans = safeAreaGO.transform;
-
 
                 PrefabUtility.SaveAsPrefabAsset(panelGO,Path.Combine(folderPath,$"{className}Panel.prefab"));
                 GameObject.DestroyImmediate(panelGO);
