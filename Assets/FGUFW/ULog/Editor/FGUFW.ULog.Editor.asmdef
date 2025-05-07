@@ -1,12 +1,14 @@
 {
-    "name": "FGUFW.MonoGameplay.Editor",
+    "name": "FGUFW.ULog.Editor",
     "rootNamespace": "",
     "references": [
         "GUID:2763510ebba59ca40ba7c37e3587ae57",
-        "GUID:559fbe227f95568448fca764eab257dd",
-        "GUID:990ea1e6d30eaf74998e8227b8252928"
+        "GUID:873517794c3815245b0da942aa679147",
+        "GUID:559fbe227f95568448fca764eab257dd"
     ],
-    "includePlatforms": ["Editor"],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

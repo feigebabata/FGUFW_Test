@@ -1,5 +1,3 @@
-#if UNITY_EDITOR
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,7 +6,7 @@ using UnityEditor;
 using UnityEditor.ProjectWindowCallback;
 using UnityEngine;
 
-namespace FGUFW
+namespace FGUFW.EditorUtils.Editor
 {
     public class CreateScriptHelper : EndNameEditAction
     {
@@ -40,5 +38,3 @@ namespace FGUFW
         }
     }
 }
-
-#endif

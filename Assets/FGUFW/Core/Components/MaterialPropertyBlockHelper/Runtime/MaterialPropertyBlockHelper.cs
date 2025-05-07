@@ -56,11 +56,11 @@ namespace FGUFW.Flipbook
 
 
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         [Header("----------------------")]
         [Header("修改参数后自动应用 可能会导致卡顿!")]
         public bool EditorAutoApple = false;
-        #endif
+#endif
 
         private void Reset() 
         {
