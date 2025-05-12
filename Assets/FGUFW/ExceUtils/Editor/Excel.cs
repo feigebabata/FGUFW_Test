@@ -20,8 +20,8 @@ namespace FGUFW.ExcelUtils
         public Excel(string excelPath)
         {
             // 判断 Excel 格式
-            try
-            {
+            // try
+            // {
                 using (FileStream stream = new FileStream(excelPath, FileMode.Open, FileAccess.Read))
                 {
                     if (excelPath.EndsWith(".xls"))
@@ -33,11 +33,11 @@ namespace FGUFW.ExcelUtils
                         _workbook = new XSSFWorkbook(stream);
                     }
                 }
-            }
-            catch (System.Exception ex)
-            {
-                Debug.LogError(ex.Message);
-            }
+            // }
+            // catch (System.Exception ex)
+            // {
+            //     Debug.LogError(ex.Message);
+            // }
 
         }
 

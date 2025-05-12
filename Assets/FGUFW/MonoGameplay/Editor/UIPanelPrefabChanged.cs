@@ -12,6 +12,8 @@ namespace FGUFW.MonoGameplay.Editor
 */
     public static class UIPanelPrefabChanged
     {
+        private static string _gObjPath;
+
         [InitializeOnLoadMethod]
         static void initialized()
         {
@@ -29,11 +31,27 @@ namespace FGUFW.MonoGameplay.Editor
             var gObj = stage.prefabContentsRoot;
             if(gObj.Comp<UIPanel>() == default) return;
 
+            _gObjPath = stage.assetPath;
+
+            gObj = AssetDatabase.LoadAssetAtPath<GameObject>(_gObjPath);
+
             var canvas = gObj.Comp<Canvas>();
             canvas.enabled = false;
             EditorUtility.SetDirty(canvas);
+            EditorUtility.SetDirty(gObj);
             AssetDatabase.SaveAssetIfDirty(gObj);
+
+        
+            // EditorApplication.delayCall += delayCall;
         }
+
+        // private static void delayCall()
+        // {
+        //     EditorApplication.delayCall -= delayCall;
+            
+            
+
+        // }
 
         private static void prefabStageOpened(PrefabStage stage)
         {

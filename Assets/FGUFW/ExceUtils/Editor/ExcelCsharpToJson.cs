@@ -16,13 +16,22 @@ namespace FGUFW.ExcelUtils
     {
         public static void ToJson(Excel excel,string path)
         {
+            var name = Path.GetFileNameWithoutExtension(path);
             var jsonBuilder = new StringBuilder();
 
             jsonBuilder.Append('{'); 
             for (int i = 0; i < excel.SheetCount; i++)
             {
                 var sheet = excel[i];
-                sheetToJson(sheet,jsonBuilder);
+                
+                try
+                {
+                    sheetToJson(sheet,jsonBuilder);
+                }
+                catch (System.Exception ex)
+                {
+                    Debug.LogError($"ExcelCsharpToJson:{name}.{sheet.SheetName} \n{ex.Message}\n{ex.StackTrace}");
+                }
                 
                 if(i<excel.SheetCount-1)
                 {
@@ -33,7 +42,6 @@ namespace FGUFW.ExcelUtils
 
             var directory = Path.Combine(Application.dataPath,"ECJsonData");
 
-            var name = Path.GetFileNameWithoutExtension(path);
 
             if(!Directory.Exists(directory))
             {
@@ -54,15 +62,24 @@ namespace FGUFW.ExcelUtils
             var collection = firstRow.GetCell(1)?.ToString();
             if(collection.IsNull())return;
 
-            jsonBuilder.Append($"\"{sheet.SheetName}\":");
+            jsonBuilder.Append($"\"{sheet.SheetName}s\":");
 
             //第三行字段类型
             var types = sheet.GetRow(2);
             //第四行字段名
             var names = sheet.GetRow(3);
 
-            int maxRowIdx = sheet.LastRowNum;
-            int maxCellIdx = types.LastCellNum;
+            int maxRowIdx = sheet.LastRowNum+1;
+            int maxCellIdx = sheet.GetRow(1).LastCellNum;
+            
+            //过滤有效列 type列为空则忽略
+            var cellIdxs = new List<int>(maxCellIdx);
+            for (int ci = 0; ci < maxCellIdx; ci++)
+            {
+                var tVar = types.GetCell(ci);
+                if(tVar==default)continue;
+                cellIdxs.Add(ci);
+            }
 
             if(collection == "List")
             {
@@ -73,11 +90,13 @@ namespace FGUFW.ExcelUtils
                     var row = sheet.GetRow(ri);
                     
                     jsonBuilder.Append('{');
-                    for (int ci = 0; ci < maxCellIdx; ci++)
+
+                    for (int i = 0; i < cellIdxs.Count; i++)
                     {
+                        var ci = cellIdxs[i];
                         jsonBuilder.Append($"\"{names.GetCell(ci)}\":");
-                        jsonBuilder.Append(getValueByType(types.GetCell(ci).ToString(),row.GetCell(ci).ToString()));
-                        if(ci<maxCellIdx-1)
+                        jsonBuilder.Append(getValueByType(types.GetCell(ci).ToString(),row.GetCell(ci)?.ToString()));
+                        if(i<cellIdxs.Count-1)
                         {
                             jsonBuilder.Append(',');
                         }
@@ -103,12 +122,13 @@ namespace FGUFW.ExcelUtils
                     jsonBuilder.Append($"\"{row.GetCell(0)}\":");
                     
                     jsonBuilder.Append('{');
-                    for (int ci = 0; ci < maxCellIdx; ci++)
+                    for (int i = 0; i < cellIdxs.Count; i++)
                     {
-                        Debug.Log($"{sheet.SheetName} {ri} {ci}");
+                        var ci = cellIdxs[i];
+
                         jsonBuilder.Append($"\"{names.GetCell(ci)}\":");
                         jsonBuilder.Append(getValueByType(types.GetCell(ci).ToString(),row.GetCell(ci)?.ToString()));
-                        if(ci<maxCellIdx-1)
+                        if(i<cellIdxs.Count-1)
                         {
                             jsonBuilder.Append(',');
                         }

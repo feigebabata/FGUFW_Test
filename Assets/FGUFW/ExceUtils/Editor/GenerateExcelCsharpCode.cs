@@ -96,12 +96,17 @@ namespace ExcelConfig
             var types = sheet.GetRow(2);
             //第四行字段名
             var names = sheet.GetRow(3);
+            int maxCellIdx = sheet.GetRow(1).LastCellNum;
 
             StringBuilder menbers = new StringBuilder();
-            for (int i = 0; i < types.LastCellNum; i++)
+            for (int i = 0; i < maxCellIdx; i++)
             {
+                //过滤有效列 type列为空则忽略
+                var tVar = types.GetCell(i);
+                if(tVar==default)continue;
+
                 menbers.AppendLine(
-@$"            public {types.GetCell(i)} {names.GetCell(i)};"
+@$"            public {tVar} {names.GetCell(i)};"
 );
             }
 

@@ -26,7 +26,7 @@ namespace FGUFW.ExcelUtils
             {
                 execl = new Excel(path);
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
                 return;
             }
@@ -36,6 +36,7 @@ namespace FGUFW.ExcelUtils
 
             execl.Dispose();
             EditorApplication.delayCall += delayRefresh;
+            Debug.Log($"已生成配置:{path}");
         }
 
         static void delayRefresh()

@@ -200,6 +200,7 @@ namespace |NAME_SPACE|
                 canvas.renderMode = RenderMode.ScreenSpaceOverlay;
                 var canvasGroup = panelGO.AddComponent<CanvasGroup>();
                 panelGO.AddComponent<GraphicRaycaster>();
+                panelGO.AddComponent<UIPanel>();
 
                 var canvasScaler = panelGO.AddComponent<CanvasScaler>();
                 canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
