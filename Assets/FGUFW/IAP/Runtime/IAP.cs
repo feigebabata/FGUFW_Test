@@ -10,7 +10,7 @@ using UnityEngine.Purchasing.Extension;
 namespace FGUFW.IAPs
 {
 /*
-1.在内购初始化前初始化GameServer不确定
+1.在内购初始化前初始化GameServer 不确定
 2.初始化GameServer必须链接到你的ProjectID(Unity账号关联的项目)
 3.内购支持谷歌,亚马逊应用商店,三星,苹果,微软商店
 */

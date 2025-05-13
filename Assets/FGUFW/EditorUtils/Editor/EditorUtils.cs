@@ -13,6 +13,7 @@ namespace FGUFW.EditorUtils.Editor
     public static class EditorUtil
     {
         public const string META = ".meta";
+
         public static string[] GetAllAssetPath(string dirPath)
         {
             var dir = Application.dataPath.Replace("Assets",dirPath);
@@ -57,13 +58,6 @@ namespace FGUFW.EditorUtils.Editor
         //     Debug.Log(path);
         // }
 
-        [MenuItem("文件夹/程序持续存储文件夹")]
-        static void openDir()
-        {
-            #if UNITY_EDITOR_WIN
-            WinPlatform.OpenExplorer(Application.persistentDataPath);
-            #endif
-        }
 
         public static BuildTargetGroup GetCurrentBuildTargetGroup()
         {

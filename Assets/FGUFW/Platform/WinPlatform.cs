@@ -145,5 +145,24 @@ namespace FGUFW.Platform
         }
 
         #endregion
+
+        #region 鼠标位置
+        [DllImport("user32.dll")]
+        private static extern bool GetCursorPos(out POINT lpPoint);
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct POINT
+        {
+            public int X;
+            public int Y;
+        }
+
+        public static Vector2 GetScreenMousePosition()
+        {
+            POINT point;
+            GetCursorPos(out point);
+            return new Vector2(point.X, point.Y);
+        }
+        #endregion
     }
 }

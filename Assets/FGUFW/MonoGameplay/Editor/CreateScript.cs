@@ -15,7 +15,9 @@ namespace FGUFW.MonoGameplay.Editor
 
     public static class CreateScript
     {
-        [MenuItem("Assets/Create/MonoGameplay/Play",false,80)]
+        const int MENU_ORDER = 10;
+
+        [MenuItem("Assets/Create/MonoGameplay/Play",false,MENU_ORDER)]
         static void createPlay()
         {
             string createPath = EditorUtil.GetSeleceFolderPath()+"/Play.cs";
@@ -64,7 +66,7 @@ namespace |NAME_SPACE|
             ProjectWindowUtil.StartNameEditingIfProjectWindowExists(0,endNameEditAction,createPath,null,null);
         }
 
-        [MenuItem("Assets/Create/MonoGameplay/Part",false,80)]
+        [MenuItem("Assets/Create/MonoGameplay/Part",false,MENU_ORDER)]
         static void createPart()
         {
             string createPath = EditorUtil.GetSeleceFolderPath()+"/Part.cs";
@@ -124,7 +126,7 @@ namespace |NAME_SPACE|
             ProjectWindowUtil.StartNameEditingIfProjectWindowExists(0,endNameEditAction,createPath,null,null);
         }
 
-        [MenuItem("Assets/Create/MonoGameplay/PartFolder",false,80)]
+        [MenuItem("Assets/Create/MonoGameplay/PartFolder",false,MENU_ORDER)]
         static void createPartFolder()
         {
 

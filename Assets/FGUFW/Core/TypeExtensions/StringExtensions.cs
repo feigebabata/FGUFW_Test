@@ -104,5 +104,10 @@ namespace FGUFW
 
         }
 
+        public static string ts(this object self)
+        {
+            return self.ToString();
+        }
+
     }
 }
