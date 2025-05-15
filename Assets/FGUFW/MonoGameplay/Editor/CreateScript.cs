@@ -152,7 +152,7 @@ using static FGUsing;
 namespace |NAME_SPACE|
 {
     [UIPanelLoader("""")]
-    public class |CLASS_NAME| : Part
+    public partial class |CLASS_NAME| : Part
     {
         private |PLAY_NAME| _play;
         //private |CLASS_NAME|PanelComps _panelComps;
@@ -196,6 +196,48 @@ namespace |NAME_SPACE|
                 scriptText = scriptText.Replace("|NAME_SPACE|",MonoGameplaySettingsProvider.SettingData.NameSpace);
                 scriptText = scriptText.Replace("|PLAY_NAME|",MonoGameplaySettingsProvider.SettingData.PlayName);
                 File.WriteAllText(Path.Combine(folderPath,className+".cs"),scriptText);
+
+                scriptText = 
+@"using System;
+using System.Collections;
+using System.Collections.Generic;
+using FGUFW.MonoGameplay;
+using UnityEngine;
+
+namespace |NAME_SPACE|
+{
+    public partial class |CLASS_NAME| : IPartConfig
+    {
+        [Serializable]
+        public class Config
+        {
+            
+        }
+
+        public Config SelfConfig = new Config();        
+        public object PartConfig 
+        { 
+            get
+            {
+                return SelfConfig;
+            }
+            set
+            {
+                SelfConfig = value as Config;
+            }
+        }
+
+        public Type GetPartConfigType()
+        {
+            return typeof(Config);
+        }
+    }
+}
+";
+                scriptText = scriptText.Replace("|CLASS_NAME|",className);
+                scriptText = scriptText.Replace("|NAME_SPACE|",MonoGameplaySettingsProvider.SettingData.NameSpace);
+                File.WriteAllText(Path.Combine(folderPath,className+"Config.cs"),scriptText);
+
 
                 var panelGO = new GameObject($"{className}Panel");
                 var canvas = panelGO.AddComponent<Canvas>();

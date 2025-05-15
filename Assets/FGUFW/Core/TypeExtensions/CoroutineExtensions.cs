@@ -11,12 +11,12 @@ namespace FGUFW
 		/// </summary>
 		/// <param name="self"></param>
 		/// <returns></returns>
-		public static Coroutine Start(this IEnumerator self)
+		public static Coroutine StartGCS(this IEnumerator self)
 		{
 			return GlobalCoroutineSystem.I.StartCoroutine(self);
 		}
 
-		public static void Stop(this Coroutine self)
+		public static void StopGCS(this Coroutine self)
 		{
 			GlobalCoroutineSystem.I.StopCoroutine(self);
 		}
