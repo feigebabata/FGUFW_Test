@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using LitJson;
 using UnityEngine;
-using static FGUsing;
 
 namespace FGUFW.MonoGameplay
 {
@@ -25,7 +24,7 @@ namespace FGUFW.MonoGameplay
         /// </summary>
         protected virtual void OnDispose()
         {
-            savePartConfig();
+            // savePartConfig();
 
             if(_uiPanel)
             {
@@ -92,7 +91,7 @@ namespace FGUFW.MonoGameplay
             if (uiPanelLoader != null)
             {
                 var path = uiPanelLoader.PrefabPath;
-                var loader = copyAsync(path,null);
+                var loader = AssetHelper.CopyAsync(path,null);
                 yield return loader;
                 GameObject go = loader.Result;
                 DontDestroyOnLoad(go);
@@ -142,13 +141,6 @@ namespace FGUFW.MonoGameplay
 
         }
 
-        protected void savePartConfig()
-        {
-            var partType = this.GetType();
-            if(! typeof(IPartConfig).IsAssignableFrom(partType) )return;
-
-            PartConfigUtility.Save();
-        }
 #endregion
 
     }

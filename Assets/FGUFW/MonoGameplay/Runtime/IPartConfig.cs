@@ -22,9 +22,9 @@ namespace FGUFW.MonoGameplay
         [RuntimeInitializeOnLoadMethod]
         static void initialize()
         {
-            filePath = Path.Combine(Application.persistentDataPath,"PartConfigs.json");
+            filePath = Path.Combine(Application.persistentDataPath, "PartConfigs.json");
 
-            if(File.Exists(filePath))
+            if (File.Exists(filePath))
             {
                 var json = File.ReadAllText(filePath);
                 partConfigJsonData = JsonMapper.ToObject(json);
@@ -33,6 +33,14 @@ namespace FGUFW.MonoGameplay
             {
                 partConfigJsonData = new JsonData();
             }
+
+            Application.quitting += quiting;
+        }
+
+        private static void quiting()
+        {
+            Application.quitting -= quiting;
+            Save();
         }
 
         public static JsonData GetPartConfigJsonData(Type type)

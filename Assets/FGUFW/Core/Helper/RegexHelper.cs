@@ -13,5 +13,16 @@ namespace FGUFW
         /// 非空结尾
         /// </summary>
         public const string END_NO_EMPTY = @"\S$";
+        
+        /// <summary>
+        /// 英文名
+        /// </summary>
+        public const string ENGINE_NAME = @"^[A-Z][a-zA-Z]*([ '-][a-zA-Z]+)*$";
+
+        /// <summary>
+        /// 美国电话号
+        /// </summary>
+        public const string ENGINE_PHONE_NUMBER = @"^(\+1\s?)?($[0-9]{3}$|[0-9]{3})[\s\-]?[0-9]{3}[\s\-]?[0-9]{4}$";
+
     }
 }

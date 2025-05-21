@@ -44,5 +44,10 @@ namespace FGUFW
             return DateTime.Parse(self);
         }
 
+        public static TimeSpan NowSpan(this DateTime self)
+        {
+            return DateTime.Now - self;
+        }
+
     }
 }

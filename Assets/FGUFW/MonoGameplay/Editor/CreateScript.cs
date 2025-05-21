@@ -155,7 +155,7 @@ namespace |NAME_SPACE|
     public partial class |CLASS_NAME| : Part
     {
         private |PLAY_NAME| _play;
-        //private |CLASS_NAME|PanelComps _panelComps;
+        private |CLASS_NAME|PanelComps _panelComps;
 
         public override IEnumerator OnCreating(Part play,Part parent)
         {
@@ -166,7 +166,7 @@ namespace |NAME_SPACE|
         public override IEnumerator OnPreload()
         {
             yield return base.OnPreload();
-            //_panelComps = _uiPanel.Comp<|CLASS_NAME|PanelComps>();
+            _panelComps = _uiPanel.Comp<|CLASS_NAME|PanelComps>();
             addListener();
         }
 
@@ -178,12 +178,12 @@ namespace |NAME_SPACE|
 
         private void addListener()
         {
-            //_panelComps.TryAddAllBtnListener(this);
+            _panelComps.TryAddAllBtnListener(this);
         }
 
         private void removeListener()
         {
-            //_panelComps.TryRemoveAllBtnListener();
+            _panelComps.TryRemoveAllBtnListener();
         }
 
     }
@@ -238,6 +238,24 @@ namespace |NAME_SPACE|
                 scriptText = scriptText.Replace("|NAME_SPACE|",MonoGameplaySettingsProvider.SettingData.NameSpace);
                 File.WriteAllText(Path.Combine(folderPath,className+"Config.cs"),scriptText);
 
+
+                scriptText = 
+@"using FGUFW;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace |NAME_SPACE|
+{
+    public class |CLASS_NAME|PanelComps : AutoRefComponent
+    {
+    }
+}
+
+";
+                scriptText = scriptText.Replace("|CLASS_NAME|",className);
+                scriptText = scriptText.Replace("|NAME_SPACE|",MonoGameplaySettingsProvider.SettingData.NameSpace);
+                File.WriteAllText(Path.Combine(folderPath,className+"PanelComps.cs"),scriptText);
 
                 var panelGO = new GameObject($"{className}Panel");
                 var canvas = panelGO.AddComponent<Canvas>();

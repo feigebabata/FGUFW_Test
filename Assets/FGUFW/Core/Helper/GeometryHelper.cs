@@ -538,7 +538,7 @@ xz坐标系
         /// <param name="idxCache"></param>
         public static void GetHexNear(Vector3Int center,Vector3Int[] idxCache)
         {
-            if(idxCache?.Length!=6)return;
+            if(idxCache?.Length<6)return;
 
             for (int i = 0; i < 6; i++)
             {

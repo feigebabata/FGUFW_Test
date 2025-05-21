@@ -2,6 +2,7 @@ using System.Collections;
 using FGUFW;
 using LitJson;
 using UnityEngine;
+using FGUFW.MonoGameplay;
 
 public static class FGUsing
 {
@@ -147,6 +148,14 @@ public static class FGUsing
        #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPaused = true;
        #endif
+    }
+
+#endregion
+
+#region MonoGameplay
+    public static void savePartConfig()
+    {
+        PartConfigUtility.Save();
     }
 
 #endregion
