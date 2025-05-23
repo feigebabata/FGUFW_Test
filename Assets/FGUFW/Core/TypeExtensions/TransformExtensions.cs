@@ -17,54 +17,91 @@ namespace FGUFW
             return t.GetChild(index) as RectTransform;
         }
 
-        public static IEnumerator MoveWorld(this Transform transform,Vector3 endPos,float time)
+        public static IEnumerator MoveWorld(this Transform transform,Vector3 endPos,float time,AnimationCurve curve=default)
         {
             float startTime = Time.time;
-            while (Time.time-startTime<time)
+            var startPos = transform.position;
+            while (Time.time - startTime < time)
             {
-                float t = (Time.time-startTime)/time;
-                transform.position = Vector3.Lerp(transform.position,endPos,t);
+                float t = (Time.time - startTime) / time;
+                if (curve != default)
+                {
+                    t = curve.Evaluate(t);
+                }
+                transform.position = Vector3.LerpUnclamped(startPos, endPos, t);
                 yield return default;
             }
             transform.position = endPos;
         }
 
-        public static IEnumerator MoveLocal(this Transform transform,Vector3 endPos,float time)
+        public static IEnumerator MoveLocal(this Transform transform,Vector3 endPos,float time,AnimationCurve curve=default)
         {
             float startTime = Time.time;
+            var startPos = transform.localPosition;
             while (Time.time-startTime<time)
             {
                 float t = (Time.time-startTime)/time;
-                transform.localPosition = Vector3.Lerp(transform.localPosition,endPos,t);
+                if (curve != default)
+                {
+                    t = curve.Evaluate(t);
+                }
+                transform.localPosition = Vector3.LerpUnclamped(startPos,endPos,t);
                 yield return default;
             }
             transform.localPosition = endPos;
         }
 
-        public static IEnumerator RotateLocal(this Transform transform,Vector3 endAngle,float time)
+        public static IEnumerator ScaleLocal(this Transform transform,Vector3 endScale,float time,AnimationCurve curve=default)
         {
             float startTime = Time.time;
-            Quaternion rotation = Quaternion.Euler(endAngle);
-            while (Time.time-startTime<time)
+            var startScale = transform.localScale;
+            while (Time.time - startTime < time)
             {
-                float t = (Time.time-startTime)/time;
-                transform.localRotation = Quaternion.Lerp(transform.localRotation,rotation,t);
+                float t = (Time.time - startTime) / time;
+                if (curve != default)
+                {
+                    t = curve.Evaluate(t);
+                }
+                transform.localScale = Vector3.LerpUnclamped(startScale, endScale, t);
                 yield return default;
             }
-            transform.localRotation = rotation;
+            transform.localScale = endScale;
         }
 
-        public static IEnumerator RotateWorld(this Transform transform,Vector3 endAngle,float time)
+        public static IEnumerator RotateLocal(this Transform transform,Vector3 endAngle,float time,AnimationCurve curve=default)
         {
             float startTime = Time.time;
-            Quaternion rotation = Quaternion.Euler(endAngle);
+            Quaternion endQ = Quaternion.Euler(endAngle);
+            var startQ = transform.localRotation;
+            while (Time.time - startTime < time)
+            {
+                float t = (Time.time - startTime) / time;
+                if (curve != default)
+                {
+                    t = curve.Evaluate(t);
+                }
+                transform.localRotation = Quaternion.LerpUnclamped(startQ, endQ, t);
+                yield return default;
+            }
+            transform.localRotation = endQ;
+        }
+
+        public static IEnumerator RotateWorld(this Transform transform,Vector3 endAngle,float time,AnimationCurve curve=default)
+        {
+            float startTime = Time.time;
+            Quaternion endQ = Quaternion.Euler(endAngle);
+            var startQ = transform.rotation;
             while (Time.time-startTime<time)
             {
                 float t = (Time.time-startTime)/time;
-                transform.rotation = Quaternion.Lerp(transform.rotation,rotation,t);
+                if (curve != default)
+                {
+                    t = curve.Evaluate(t);
+                }
+                transform.rotation = Quaternion.LerpUnclamped(startQ,endQ,t);
                 yield return default;
             }
-            transform.rotation = rotation;
+            transform.rotation = endQ;
         }
 
         public static void Foreach<VALUE>(this Transform transform,IEnumerable list,Action<Transform,VALUE> callback)
