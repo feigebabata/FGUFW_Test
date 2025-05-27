@@ -26,7 +26,7 @@ namespace FGUFW.ExcelUtils
             {
                 execl = new Excel(path);
             }
-            catch (System.Exception ex)
+            catch (System.Exception)
             {
                 return;
             }

@@ -5,7 +5,7 @@ namespace FGUFW
 {
     public static class DateTimeExtensions
     {
-        private static long prevTick=-1;
+        private static long prevTick = -1;
         private static DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
         public static long UnixMilliseconds(this DateTime dateTime)
@@ -28,9 +28,9 @@ namespace FGUFW
         /// <returns></returns>
         public static long GetRecordTime(this DateTime self)
         {
-            if(prevTick==-1)throw new Exception("未调用SetRecord");
+            if (prevTick == -1) throw new Exception("未调用SetRecord");
             long delta = self.Ticks - prevTick;
-            return delta/10000;
+            return delta / 10000;
         }
 
         public static string SecondTickName(this DateTime dateTime)
@@ -40,13 +40,18 @@ namespace FGUFW
 
         public static DateTime ToDate(this string self)
         {
-            if(self.IsNull()) return DateTime.Now;
+            if (self.IsNull()) return DateTime.Now;
             return DateTime.Parse(self);
         }
 
         public static TimeSpan NowSpan(this DateTime self)
         {
             return DateTime.Now - self;
+        }
+
+        public static string Normal(this DateTime self)
+        {
+            return self.ToString("yyyy-MM-dd HH:mm:ss");
         }
 
     }

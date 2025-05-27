@@ -8,63 +8,63 @@ namespace FGUFW
     {
         public static T Random<T>(this List<T> self)
         {
-            if(self==null || self.Count==0)
+            if (self == null || self.Count == 0)
             {
                 return default(T);
             }
-            int idx = UnityEngine.Random.Range(0,self.Count);
+            int idx = UnityEngine.Random.Range(0, self.Count);
             return self[idx];
         }
 
         public static T Random<T>(this T[] self)
         {
-            if(self==null || self.Length==0)
+            if (self == null || self.Length == 0)
             {
                 return default(T);
             }
-            int idx = UnityEngine.Random.Range(0,self.Length);
+            int idx = UnityEngine.Random.Range(0, self.Length);
             return self[idx];
         }
 
-        public static int IndexOf<T>(this T[] self,T val,int startIndex=0)
+        public static int IndexOf<T>(this T[] self, T val, int startIndex = 0)
         {
-            if(self!=null)
+            if (self != null)
             {
-                return Array.IndexOf<T>(self,val,startIndex);
+                return Array.IndexOf<T>(self, val, startIndex);
             }
             return -1;
         }
 
-        public static int IndexOf<T>(this T[] self,Predicate<T> match,int startIndex=0,int length=0)
+        public static int IndexOf<T>(this T[] self, Predicate<T> match, int startIndex = 0, int length = 0)
         {
-            if(self!=null)
+            if (self != null)
             {
-                if(length==0)length = self.Length;
-                
+                if (length == 0) length = self.Length;
+
                 for (int i = startIndex; i < length; i++)
                 {
                     var t_obj = self[i];
-                    if(match(t_obj))return i;
+                    if (match(t_obj)) return i;
                 }
             }
             return -1;
         }
 
-        public static T Find<T>(this T[] self,Predicate<T> match)
+        public static T Find<T>(this T[] self, Predicate<T> match)
         {
-            if(self!=null)
+            if (self != null)
             {
                 int length = self.Length;
                 for (int i = 0; i < length; i++)
                 {
                     var t_obj = self[i];
-                    if(match(t_obj))return t_obj;
+                    if (match(t_obj)) return t_obj;
                 }
             }
             return default(T);
         }
 
-        
+
         /// <summary>
         /// 按权重随机
         /// </summary>
@@ -72,19 +72,19 @@ namespace FGUFW
         /// <param name="getWeight"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static T RandomByWeight<T>(this IEnumerable collection,Func<T,float> getWeight)
+        public static T RandomByWeight<T>(this IEnumerable collection, Func<T, float> getWeight)
         {
             float maxValue = 0;
             foreach (T item in collection)
             {
                 maxValue += getWeight(item);
             }
-            float val = UnityEngine.Random.Range(0,maxValue);
+            float val = UnityEngine.Random.Range(0, maxValue);
             float weight = 0;
             foreach (T item in collection)
             {
                 weight += getWeight(item);
-                if(val<weight)
+                if (val < weight)
                 {
                     return item;
                 }
@@ -92,18 +92,18 @@ namespace FGUFW
             return default(T);
         }
 
-        public static T[] Copy<T>(this T[] self,int length)
+        public static T[] Copy<T>(this T[] self, int length)
         {
-            if(self==null || self.Length==0)
+            if (self == null || self.Length == 0)
             {
                 return null;
             }
             T[] newArray = new T[length];
-            Array.Copy(self,newArray,length);
+            Array.Copy(self, newArray, length);
             return newArray;
         }
 
-        public static U[] To<T,U>(this T[] self,Func<T,U> convert)
+        public static U[] To<T, U>(this T[] self, Func<T, U> convert)
         {
             var length = self.Length;
             U[] array = new U[length];
@@ -114,56 +114,56 @@ namespace FGUFW
             return array;
         }
 
-        public static void RemoveAtSwapBack<T>(this List<T> self,int index)
+        public static void RemoveAtSwapBack<T>(this List<T> self, int index)
         {
-            int backIndex = self.Count-1;
+            int backIndex = self.Count - 1;
             self[index] = self[backIndex];
             self.RemoveAt(backIndex);
         }
 
-        public static void RemoveSwapBack<T>(this List<T> self,T item)
+        public static void RemoveSwapBack<T>(this List<T> self, T item)
         {
             int index = self.IndexOf(item);
-            if(index==-1)return;
-            int backIndex = self.Count-1;
+            if (index == -1) return;
+            int backIndex = self.Count - 1;
             self[index] = self[backIndex];
             self.RemoveAt(backIndex);
         }
 
-        public static void RemoveSwapBack<T>(this List<T> self,Predicate<T> match)
+        public static void RemoveSwapBack<T>(this List<T> self, Predicate<T> match)
         {
             int index = self.FindIndex(match);
-            if(index==-1)return;
-            int backIndex = self.Count-1;
+            if (index == -1) return;
+            int backIndex = self.Count - 1;
             self[index] = self[backIndex];
             self.RemoveAt(backIndex);
         }
 
-        public static void RemoveAllSwapBack<T>(this List<T> self,Predicate<T> match)
+        public static void RemoveAllSwapBack<T>(this List<T> self, Predicate<T> match)
         {
             int length = self.Count;
             for (int i = 0; i < length; i++)
             {
                 int index = self.FindIndex(match);
-                if(index==-1)return;
-                int backIndex = self.Count-1;
+                if (index == -1) return;
+                int backIndex = self.Count - 1;
                 self[index] = self[backIndex];
-                self.RemoveAt(backIndex);       
+                self.RemoveAt(backIndex);
             }
         }
 
-        public static void ReplaceAllData<T>(this List<T> self,T[] array)
+        public static void ReplaceAllData<T>(this List<T> self, T[] array)
         {
-            int length = array==null?0:array.Length;
+            int length = array == null ? 0 : array.Length;
 
             for (int i = self.Count; i > length; i--)
             {
-                self.RemoveAt(i-1);
+                self.RemoveAt(i - 1);
             }
 
             for (int i = 0; i < length; i++)
             {
-                if(i<self.Count)
+                if (i < self.Count)
                 {
                     self[i] = array[i];
                 }
@@ -176,21 +176,21 @@ namespace FGUFW
 
         public static void Clean<T>(this List<T> self)
         {
-            for (int i = self.Count-1; i >= 0; i--)
+            for (int i = self.Count - 1; i >= 0; i--)
             {
                 self.RemoveAt(i);
             }
         }
 
-        public static void Set<K,V>(this Dictionary<K,V> self,K key,V value)
+        public static void Set<K, V>(this Dictionary<K, V> self, K key, V value)
         {
-            if(!self.TryAdd(key,value))
+            if (!self.TryAdd(key, value))
             {
                 self[key] = value;
             }
         }
 
-        public static void MoveTo<T>(this List<T> self,List<T> ls)
+        public static void MoveTo<T>(this List<T> self, List<T> ls)
         {
             ls.Clean();
             foreach (var item in self)
@@ -198,7 +198,39 @@ namespace FGUFW
                 ls.Add(item);
             }
             self.Clean();
-        } 
+        }
+        
+        /// <summary>
+        /// 洗牌 打乱顺序 然后从头到尾就是一种随机不重复效果
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="self"></param>
+        public static void Shuffle<T>(this List<T> self)
+        {
+            for (int i = 0; i < self.Count; i++)
+            {
+                int idx = RandomExtensions.range(0, self.Count);
+                var temp = self[i];
+                self[i] = self[idx];
+                self[idx] = temp;
+            }
+        }
+        
+        /// <summary>
+        /// 洗牌 打乱顺序 然后从头到尾就是一种随机不重复效果
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="self"></param>
+        public static void Shuffle<T>(this T[] self)
+        {
+            for (int i = 0; i < self.Length; i++)
+            {
+                int idx = RandomExtensions.range(0, self.Length);
+                var temp = self[i];
+                self[i] = self[idx];
+                self[idx] = temp;
+            }
+        }
 
     }
 }

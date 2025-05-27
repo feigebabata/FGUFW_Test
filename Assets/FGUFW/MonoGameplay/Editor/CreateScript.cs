@@ -59,6 +59,8 @@ namespace |NAME_SPACE|
                 MonoGameplaySettingsProvider.SettingData.PlayName = className;
                 MonoGameplaySettingsProvider.SettingData.Save();
 
+                EditorSettings.projectGenerationRootNamespace = MonoGameplaySettingsProvider.SettingData.NameSpace;
+
                 scriptText = scriptText.Replace("|NAME_SPACE|",MonoGameplaySettingsProvider.SettingData.NameSpace);
 
                 return scriptText;

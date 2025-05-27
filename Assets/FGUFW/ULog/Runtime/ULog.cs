@@ -15,6 +15,7 @@ namespace FGUFW
         /// 开启日志写入
         /// </summary>
         public const string Conditional_Log = "ULog";
+        public const string Conditional_IgnoreLog = "ULog_IgnoreLogWrite";
         
         public const int MAX_LOG_FILE_COUNT = 32;
         public const string LOG_BEGIN = "---LogBegin";
@@ -22,6 +23,7 @@ namespace FGUFW
         public const string LOG_SPLIT = "--- --- ---";
 
         public static string SavePath{get;private set;}
+        public static string LogFileName{get;private set;}
         private static StreamWriter _logFile;
         private static StringBuilder _msgBuilder = new StringBuilder();
 
@@ -69,7 +71,9 @@ namespace FGUFW
 
             clearLogFile();
 
-            var filePath = $"{SavePath}/{getLogFileName()}";
+            LogFileName = getLogFileName();
+
+            var filePath = Path.Combine(SavePath,LogFileName);
 
             Application.logMessageReceivedThreaded -= onLogReceive;
             Application.logMessageReceivedThreaded += onLogReceive;
@@ -77,9 +81,30 @@ namespace FGUFW
             Application.quitting -= onAppQuit;
             Application.quitting += onAppQuit;
 
+            AppDomain.CurrentDomain.UnhandledException -= OnUnhandledException;
+            AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
+
             _logFile = File.CreateText(filePath);
             
             _logFile.WriteLine($"{LOG_BEGIN} {DateTime.Now.SecondTickName()}\n");
+        }
+
+        //崩溃 未捕获异常
+        private static void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            _msgBuilder.Clear();
+
+            var exception = (Exception)e.ExceptionObject;
+
+            _msgBuilder.AppendLine($"Crash {DateTime.Now.SecondTickName()}.{DateTime.Now.Millisecond}");
+            _msgBuilder.AppendLine();
+            _msgBuilder.AppendLine(exception.Message);
+            _msgBuilder.AppendLine();
+            _msgBuilder.AppendLine(exception.StackTrace);
+
+
+            File.WriteAllText(Path.Combine(SavePath, $"Crash{LogFileName}"),_msgBuilder.ts());
+
         }
 
         private static void clearLogFile()
@@ -110,6 +135,7 @@ namespace FGUFW
 
             Application.logMessageReceivedThreaded -= onLogReceive;
             Application.quitting -= onAppQuit;
+            AppDomain.CurrentDomain.UnhandledException -= OnUnhandledException;
         }
 
         private static string getLogFileName()
