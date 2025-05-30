@@ -45,7 +45,7 @@ namespace FGUFW
 			}
 			return resultList;
 		}
-		
+
 		/// <summary>
 		/// 将枚举转换成字典
 		/// </summary>
@@ -64,16 +64,21 @@ namespace FGUFW
 		}
 
 		/// <summary>
-        /// 是否包含值
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="v"></param>
-        /// <returns></returns>
+		/// 是否包含值
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="v"></param>
+		/// <returns></returns>
 		public static bool ContainsValue<T>(int v)
 		{
 			var dic = GetKVs<T>();
 			var flag = dic.ContainsValue(v);
 			return flag;
+		}
+
+		public static int ti(this Enum self)
+		{
+			return self.GetHashCode();
 		}
 
 	}

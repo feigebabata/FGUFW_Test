@@ -1,0 +1,60 @@
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace FGUFW.EditorUtils.Editor
+{
+    static class UGUIGameObjectCreate
+    {
+        [MenuItem("GameObject/UI/ImgBtn")]
+        static void createBtn()
+        {
+            var parent = Selection.activeGameObject?.transform;
+            if (parent == default) return;
+
+            var go = new GameObject("ImgBtn");
+            go.transform.SetParent(parent, false);
+            go.transform.localPosition = default;
+            go.AddComponent<Image>();
+            go.AddComponent<Button>();
+        }
+
+        [MenuItem("GameObject/UI/ScrollList")]
+        static void createsollder()
+        {
+            var parent = Selection.activeGameObject?.transform;
+            if (parent == default) return;
+
+            var go = new GameObject("ScrollList");
+            go.transform.SetParent(parent, false);
+            go.transform.localPosition = default;
+            go.AddComponent<Image>();
+            var scroll = go.AddComponent<ScrollRect>();
+            scroll.horizontal = false;
+            scroll.movementType = ScrollRect.MovementType.Clamped;
+
+            go.AddComponent<RectMask2D>();
+
+            var listGO = new GameObject("List");
+            listGO.transform.SetParent(go.transform, false);
+            var layoutGroup = listGO.AddComponent<VerticalLayoutGroup>();
+            layoutGroup.childAlignment = TextAnchor.UpperCenter;
+
+            var contentSize = listGO.AddComponent<ContentSizeFitter>();
+            contentSize.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+
+            var rt = listGO.transform.AsRT();
+            rt.anchorMin = new Vector2(0, 1);
+            rt.anchorMax = new Vector2(1, 1);
+
+            rt.offsetMin = default;
+            rt.offsetMax = default;
+
+            rt.pivot = new Vector2(0.5f, 1);
+
+            scroll.content = rt;
+
+        }
+    }
+
+}

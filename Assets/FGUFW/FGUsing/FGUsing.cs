@@ -139,6 +139,7 @@ public static class FGUsing
     {
        return new WaitForSeconds(time);
     }
+    
 
 #endregion
 
@@ -156,6 +157,21 @@ public static class FGUsing
     public static void savePartConfig()
     {
         PartConfigUtility.Save();
+    }
+
+#endregion
+
+
+
+#region Math
+    public static float clamp(float value, float min, float max)
+    {
+        return Mathf.Clamp(value,min,max);
+    }
+    
+    public static int clamp(int value, int min, int max)
+    {
+        return Mathf.Clamp(value, min, max);
     }
 
 #endregion

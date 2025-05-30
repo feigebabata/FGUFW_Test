@@ -86,6 +86,23 @@ namespace FGUFW
             transform.localRotation = endQ;
         }
 
+        public static IEnumerator RotateLoopLocal(this Transform self,Vector3 axis,float angle,float time,AnimationCurve curve=default)
+        {
+            float startTime = Time.time;
+            while (Time.time - startTime < time)
+            {
+                float t = (Time.time - startTime) / time;
+                if (curve != default)
+                {
+                    t = curve.Evaluate(t);
+                }
+                var a = Mathf.LerpUnclamped(0, angle, t);
+                self.localRotation = Quaternion.AngleAxis(a, axis);
+                yield return default;
+            }
+            self.localRotation = Quaternion.AngleAxis(angle, axis);
+        }
+
         public static IEnumerator RotateWorld(this Transform transform,Vector3 endAngle,float time,AnimationCurve curve=default)
         {
             float startTime = Time.time;

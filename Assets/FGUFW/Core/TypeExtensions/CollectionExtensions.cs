@@ -190,6 +190,14 @@ namespace FGUFW
             }
         }
 
+        public static V Get<K, V>(this Dictionary<K, V> self, K key)
+        {
+            V v = default;
+            self.TryGetValue(key, out v);
+
+            return v;
+        }
+
         public static void MoveTo<T>(this List<T> self, List<T> ls)
         {
             ls.Clean();

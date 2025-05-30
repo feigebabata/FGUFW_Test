@@ -268,7 +268,16 @@ namespace |NAME_SPACE|
 
                 var canvasScaler = panelGO.AddComponent<CanvasScaler>();
                 canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-                canvasScaler.referenceResolution = new Vector2(1080,1920);
+                canvasScaler.referenceResolution = MonoGameplaySettingsProvider.SettingData.PanelSize;
+
+                var mask = new GameObject("Mask").AddComponent<Image>();
+                mask.color = new Color32(0, 0, 0, 222);
+                mask.transform.SetParent(panelGO.transform);
+                var maskRT = mask.rectTransform;
+                maskRT.anchorMin = Vector2.zero;
+                maskRT.anchorMax = Vector2.one;
+                maskRT.offsetMin = Vector2.zero;
+                maskRT.offsetMax = Vector2.zero;
 
                 var safeAreaGO = new GameObject("SafeArea");
                 safeAreaGO.transform.SetParent(panelGO.transform);
