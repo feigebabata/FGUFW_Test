@@ -10,6 +10,8 @@ namespace FGUFW
         private int _lastIndex;
         private int _count;
 
+        public int Count => _count;
+
         private BucketQueue() { }
         public BucketQueue(int length)
         {

@@ -17,6 +17,8 @@ namespace FGUFW.EditorUtils.Editor
             go.transform.localPosition = default;
             go.AddComponent<Image>();
             go.AddComponent<Button>();
+
+            Selection.activeGameObject = go;
         }
 
         [MenuItem("GameObject/UI/ScrollList")]
@@ -53,6 +55,8 @@ namespace FGUFW.EditorUtils.Editor
             rt.pivot = new Vector2(0.5f, 1);
 
             scroll.content = rt;
+
+            Selection.activeGameObject = go;
 
         }
     }
