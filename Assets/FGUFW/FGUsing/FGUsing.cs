@@ -3,6 +3,7 @@ using FGUFW;
 using LitJson;
 using UnityEngine;
 using FGUFW.MonoGameplay;
+using System;
 
 public static class FGUsing
 {
@@ -112,6 +113,12 @@ public static class FGUsing
     {
         // return JsonUtility.FromJson<T>(json);
         return JsonMapper.ToObject<T>(json);
+    }
+    
+    public static object json2Object(string json,Type type)
+    {
+        // return JsonUtility.FromJson<T>(json);
+        return JsonMapper.ToObject(json,type);
     }
 
 #endregion
