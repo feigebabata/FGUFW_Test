@@ -6,7 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using static FGUsing;
 
-namespace FGUFW.EditorUtils.Editor
+namespace FGUFW.Editor
 {
     public static class OpenFolder
     {

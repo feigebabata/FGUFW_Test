@@ -4,8 +4,10 @@ using static FGUsing;
 
 namespace FGUFW.LocalConfig
 {
-    public abstract class LocalConfigSingleton : MonoSingleton<LocalConfigSingleton>
+    public abstract class LocalConfigSingleton<C> : MonoSingleton<LocalConfigSingleton<C>>
     {
+        public C ConfigData;
+
         private static string fileName;
         protected override void Init()
         {
@@ -42,32 +44,21 @@ namespace FGUFW.LocalConfig
 
             if (jsonText.IsNull())
             {
-                SetConfigData(default);
+                ConfigData = Activator.CreateInstance<C>();
+                Save();
             }
             else
             {
-                var type = GetConfigDataType();
-                var data = json2Object(jsonText, type);
-                SetConfigData(data);
+                ConfigData = json2Object<C>(jsonText);
             }
         }
 
         public void Save()
         {
-            var data = GetConfigData();
-            var jsonText = toJson(data);
+            var jsonText = toJson(ConfigData);
             FileHelper.LocalWrite(fileName, jsonText);
         }
 
-        protected abstract object GetConfigData();
-
-        /// <summary>
-        /// data==default 则自己初始化
-        /// </summary>
-        /// <param name="data"></param>
-        protected abstract void SetConfigData(object data);
-
-        protected abstract Type GetConfigDataType();
 
     }
 }

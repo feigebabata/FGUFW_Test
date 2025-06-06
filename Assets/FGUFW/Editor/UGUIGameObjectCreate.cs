@@ -2,7 +2,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace FGUFW.EditorUtils.Editor
+namespace FGUFW.Editor
 {
     static class UGUIGameObjectCreate
     {

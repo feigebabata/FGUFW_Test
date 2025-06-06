@@ -111,7 +111,7 @@ namespace FGUFW.ExcelUtils
 
                 jsonBuilder.Append(']');
             }
-            else if(collection == "Dictionary")
+            else if(collection == "Table")
             {
                 jsonBuilder.Append('{');
 

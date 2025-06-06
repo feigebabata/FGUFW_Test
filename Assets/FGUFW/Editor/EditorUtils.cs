@@ -8,7 +8,7 @@ using FGUFW;
 using System;
 using UnityEditor.Build;
 
-namespace FGUFW.EditorUtils.Editor
+namespace FGUFW.Editor
 {
     public static class EditorUtil
     {

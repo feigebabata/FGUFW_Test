@@ -6,7 +6,7 @@ using UnityEditor;
 using UnityEditor.ProjectWindowCallback;
 using UnityEngine;
 
-namespace FGUFW.EditorUtils.Editor
+namespace FGUFW.Editor
 {
     public class CreateScriptHelper : EndNameEditAction
     {

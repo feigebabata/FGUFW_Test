@@ -1,6 +1,6 @@
 // using System.Linq;
 // using FGUFW;
-// using FGUFW.EditorUtils.Editor;
+// using FGUFW.Editor;
 // using UnityEditor;
 
 // static class ConditionalMenuTemplate

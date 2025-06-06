@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace FGUFW.EditorUtils.Editor
+namespace FGUFW.Editor
 {
 
     public static class RemoveMissingComp

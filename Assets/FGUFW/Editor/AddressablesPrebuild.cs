@@ -15,7 +15,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEditor.AddressableAssets.Build;
 using System.Linq;
 
-namespace FGUFW.EditorUtils.Editor
+namespace FGUFW.Editor
 {
     public class AddressablesPrebuild : IPreprocessBuildWithReport//IPostprocessBuildWithReport
     {

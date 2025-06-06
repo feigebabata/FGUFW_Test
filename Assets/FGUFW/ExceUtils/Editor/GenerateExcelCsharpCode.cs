@@ -31,9 +31,12 @@ string scriptText =
 @"using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using FGUFW;
+using System;
 
 namespace ExcelConfig
 {
+    [Serializable]
     public class |CLASS_NAME|
     {
 
@@ -72,17 +75,19 @@ namespace ExcelConfig
                 scriptText = 
 @"
         public List<|CLASS_NAME|> |CLASS_NAME|s;
+        [Serializable]
         public class |CLASS_NAME|
         {
 |MENBERS|
         }
 ";    
             }
-            else if(collection == "Dictionary")
+            else if(collection == "Table")
             {
                 scriptText = 
 @"
-        public Dictionary<|KEY|,|CLASS_NAME|> |CLASS_NAME|s;
+        public Table<|KEY|,|CLASS_NAME|> |CLASS_NAME|s;
+        [Serializable]
         public class |CLASS_NAME|
         {
 |MENBERS|

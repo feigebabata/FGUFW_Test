@@ -1,10 +1,10 @@
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.Build;
-using FGUFW.EditorUtils.Editor;
+using FGUFW.Editor;
 using System.Linq;
 
-namespace FGUFW.EditorUtils.Editor
+namespace FGUFW.Editor
 {
     public static class TestSDS
     {
