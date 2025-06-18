@@ -10,6 +10,8 @@ namespace FGUFW.MonoGameplay
 {
     public abstract class Play<T>:Part where T:Play<T>
     {
+        public static T P;
+
         public IOrderedMessenger<Enum> Messenger;
 
         [SerializeField]
@@ -19,6 +21,7 @@ namespace FGUFW.MonoGameplay
 
         public override IEnumerator OnCreating(Part play,Part parent)
         {
+            P = this as T;
             Messenger = new OrderedMessenger<Enum>();
 
             yield return base.OnCreating(this,this);

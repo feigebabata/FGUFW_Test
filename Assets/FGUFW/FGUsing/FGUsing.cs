@@ -139,6 +139,19 @@ public static class FGUsing
         return a;
     }
 
+    public static GameObject findGO(string name)
+    {
+        return GameObject.Find(name);
+    }
+
+    public static T findGO<T>(string name)
+    {
+        var go = GameObject.Find(name);
+        if (go == default) return default;
+
+        return go.GetComponent<T>();
+    }
+
 #endregion
 
 #region Coroutine

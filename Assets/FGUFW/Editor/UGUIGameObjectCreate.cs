@@ -6,11 +6,16 @@ namespace FGUFW.Editor
 {
     static class UGUIGameObjectCreate
     {
+        [MenuItem("GameObject/UI/ImgBtn", validate = true)]
+        static bool checkCreateBtn()
+        {
+            return Selection.activeGameObject != default;
+        }
+
         [MenuItem("GameObject/UI/ImgBtn")]
         static void createBtn()
         {
-            var parent = Selection.activeGameObject?.transform;
-            if (parent == default) return;
+            var parent = Selection.activeGameObject.transform;
 
             var go = new GameObject("ImgBtn");
             go.transform.SetParent(parent, false);
@@ -21,11 +26,16 @@ namespace FGUFW.Editor
             Selection.activeGameObject = go;
         }
 
+        [MenuItem("GameObject/UI/ScrollList", validate = true)]
+        static bool checkCreatesollder()
+        {
+            return Selection.activeGameObject != default;
+        }
+
         [MenuItem("GameObject/UI/ScrollList")]
         static void createsollder()
         {
-            var parent = Selection.activeGameObject?.transform;
-            if (parent == default) return;
+            var parent = Selection.activeGameObject.transform;
 
             var go = new GameObject("ScrollList");
             go.transform.SetParent(parent, false);
