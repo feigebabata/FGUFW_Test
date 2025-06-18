@@ -154,8 +154,7 @@ namespace FGUFW
         /// <returns></returns>
         public static T ReflectionField<T>(this object self,string field_name)
         {
-            return (T)self.GetType().GetField(field_name,
-            All_MEMBER).GetValue(self);
+            return (T)self.GetType().GetField(field_name,All_MEMBER).GetValue(self);
         }
 
         public static T Instance<T>(this Type self, params object[] args)

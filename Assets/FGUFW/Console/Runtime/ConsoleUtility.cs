@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace FGUFW.Console
 {
@@ -24,10 +25,21 @@ namespace FGUFW.Console
 
         public static Func<string,string> OnAddDefCommandMsg,OnAddSetCommandMsg,OnAddInvokeResultMsg,OnAddInvokeFailMsg;
 
+        public static bool Initialized{get;private set;}
+
 
         [RuntimeInitializeOnLoadMethod]
         private static void onRuntimeInitialize()
         {
+            Initialized = false;
+            Task.Run(getAllCommand);
+        }
+
+        //避免在初始化完成前调用
+        static void getAllCommand()
+        {
+            commandDatas.Clear();
+
             foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
                 foreach (var type in assembly.GetTypes())
@@ -55,6 +67,8 @@ namespace FGUFW.Console
             }
 
             commandDataKeys = commandDatas.Keys.ToList();
+
+            Initialized = true;
         }
 
 

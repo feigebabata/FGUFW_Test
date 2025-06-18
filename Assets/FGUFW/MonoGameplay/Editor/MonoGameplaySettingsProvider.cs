@@ -1,5 +1,3 @@
-
-#if UNITY_EDITOR
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +7,7 @@ using System;
 using UnityEditor.UIElements;
 using System.IO;
 
-namespace FGUFW.MonoGameplay
+namespace FGUFW.MonoGameplay.Editor
 {
     // [Serializable]
     // [FilePath("ProjectSettings/MonoGameplaySettings.asset", FilePathAttribute.Location.ProjectFolder)]
@@ -32,10 +30,10 @@ namespace FGUFW.MonoGameplay
     public class MonoGameplaySettings
     {
         public string NameSpace = "TestSpace";
-
         public string PlayName = "TestPlay";
+        public Vector2 PanelSize = new Vector2(1920, 1080);
 
-        public static string FilePath => Application.dataPath.Replace("Assets","ProjectSettings/MonoGameplaySettings.json");
+        public static string FilePath => Application.dataPath.Replace("Assets", "ProjectSettings/MonoGameplaySettings.json");
 
 
         public void Save()
@@ -90,10 +88,13 @@ namespace FGUFW.MonoGameplay
 
             SettingData.NameSpace = EditorGUILayout.TextField("NameSpace",SettingData.NameSpace);
             SettingData.PlayName = EditorGUILayout.TextField("PlayName",SettingData.PlayName);
+            SettingData.PanelSize = EditorGUILayout.Vector2Field("PanelSize",SettingData.PanelSize);
 
             if (EditorGUI.EndChangeCheck())
             {
                SettingData.Save();
+               EditorSettings.projectGenerationRootNamespace = SettingData.NameSpace;
+               
             }
         }
 
@@ -108,6 +109,3 @@ namespace FGUFW.MonoGameplay
     
     }
 }
-
-
-#endif

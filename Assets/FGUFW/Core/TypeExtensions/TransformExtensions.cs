@@ -17,54 +17,108 @@ namespace FGUFW
             return t.GetChild(index) as RectTransform;
         }
 
-        public static IEnumerator MoveWorld(this Transform transform,Vector3 endPos,float time)
+        public static IEnumerator MoveWorld(this Transform transform,Vector3 endPos,float time,AnimationCurve curve=default)
         {
             float startTime = Time.time;
-            while (Time.time-startTime<time)
+            var startPos = transform.position;
+            while (Time.time - startTime < time)
             {
-                float t = (Time.time-startTime)/time;
-                transform.position = Vector3.Lerp(transform.position,endPos,t);
-                yield return null;
+                float t = (Time.time - startTime) / time;
+                if (curve != default)
+                {
+                    t = curve.Evaluate(t);
+                }
+                transform.position = Vector3.LerpUnclamped(startPos, endPos, t);
+                yield return default;
             }
             transform.position = endPos;
         }
 
-        public static IEnumerator MoveLocal(this Transform transform,Vector3 endPos,float time)
+        public static IEnumerator MoveLocal(this Transform transform,Vector3 endPos,float time,AnimationCurve curve=default)
         {
             float startTime = Time.time;
+            var startPos = transform.localPosition;
             while (Time.time-startTime<time)
             {
                 float t = (Time.time-startTime)/time;
-                transform.localPosition = Vector3.Lerp(transform.localPosition,endPos,t);
-                yield return null;
+                if (curve != default)
+                {
+                    t = curve.Evaluate(t);
+                }
+                transform.localPosition = Vector3.LerpUnclamped(startPos,endPos,t);
+                yield return default;
             }
             transform.localPosition = endPos;
         }
 
-        public static IEnumerator RotateLocal(this Transform transform,Vector3 endAngle,float time)
+        public static IEnumerator ScaleLocal(this Transform transform,Vector3 endScale,float time,AnimationCurve curve=default)
         {
             float startTime = Time.time;
-            Quaternion rotation = Quaternion.Euler(endAngle);
-            while (Time.time-startTime<time)
+            var startScale = transform.localScale;
+            while (Time.time - startTime < time)
             {
-                float t = (Time.time-startTime)/time;
-                transform.localRotation = Quaternion.Lerp(transform.localRotation,rotation,t);
-                yield return null;
+                float t = (Time.time - startTime) / time;
+                if (curve != default)
+                {
+                    t = curve.Evaluate(t);
+                }
+                transform.localScale = Vector3.LerpUnclamped(startScale, endScale, t);
+                yield return default;
             }
-            transform.localRotation = rotation;
+            transform.localScale = endScale;
         }
 
-        public static IEnumerator RotateWorld(this Transform transform,Vector3 endAngle,float time)
+        public static IEnumerator RotateLocal(this Transform transform,Vector3 endAngle,float time,AnimationCurve curve=default)
         {
             float startTime = Time.time;
-            Quaternion rotation = Quaternion.Euler(endAngle);
+            Quaternion endQ = Quaternion.Euler(endAngle);
+            var startQ = transform.localRotation;
+            while (Time.time - startTime < time)
+            {
+                float t = (Time.time - startTime) / time;
+                if (curve != default)
+                {
+                    t = curve.Evaluate(t);
+                }
+                transform.localRotation = Quaternion.LerpUnclamped(startQ, endQ, t);
+                yield return default;
+            }
+            transform.localRotation = endQ;
+        }
+
+        public static IEnumerator RotateLoopLocal(this Transform self,Vector3 axis,float angle,float time,AnimationCurve curve=default)
+        {
+            float startTime = Time.time;
+            while (Time.time - startTime < time)
+            {
+                float t = (Time.time - startTime) / time;
+                if (curve != default)
+                {
+                    t = curve.Evaluate(t);
+                }
+                var a = Mathf.LerpUnclamped(0, angle, t);
+                self.localRotation = Quaternion.AngleAxis(a, axis);
+                yield return default;
+            }
+            self.localRotation = Quaternion.AngleAxis(angle, axis);
+        }
+
+        public static IEnumerator RotateWorld(this Transform transform,Vector3 endAngle,float time,AnimationCurve curve=default)
+        {
+            float startTime = Time.time;
+            Quaternion endQ = Quaternion.Euler(endAngle);
+            var startQ = transform.rotation;
             while (Time.time-startTime<time)
             {
                 float t = (Time.time-startTime)/time;
-                transform.rotation = Quaternion.Lerp(transform.rotation,rotation,t);
-                yield return null;
+                if (curve != default)
+                {
+                    t = curve.Evaluate(t);
+                }
+                transform.rotation = Quaternion.LerpUnclamped(startQ,endQ,t);
+                yield return default;
             }
-            transform.rotation = rotation;
+            transform.rotation = endQ;
         }
 
         public static void Foreach<VALUE>(this Transform transform,IEnumerable list,Action<Transform,VALUE> callback)
@@ -135,6 +189,15 @@ namespace FGUFW
             }
         }
 
+        public static void For<T>(this Transform transform,Action<int,T> callback)
+        {
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                Transform item_t = transform.GetChild(i);
+                callback(i,item_t.GetComponent<T>());
+            }
+        }
+
         public static string FullPath(this Transform t)
         {
             StringBuilder s = new StringBuilder();
@@ -192,5 +255,119 @@ namespace FGUFW
             }
             return t.GetChild(index).GetComponent<T>();
         }
+
+        public static Transform First(this Transform self)
+        {
+            if(self.childCount>0)
+            {
+                return self.GetChild(0);
+            }
+            return default;
+        }
+
+        public static Transform Last(this Transform self)
+        {
+            if(self.childCount>0)
+            {
+                return self.GetChild(self.childCount-1);
+            }
+            return default;
+        }
+
+        public static void ToList(this Transform self,List<Transform> cache)
+        {
+            cache.Clean();
+            foreach (Transform item in self)
+            {
+                cache.Add(item);
+            }
+        }
+
+        public static void SetChilidsParent(this Transform self,Transform parent,bool worldStay=true)
+        {
+            while (self.childCount>0)
+            {
+                self.GetChild(0).SetParent(parent,worldStay);
+            }
+        }
+
+        static List<Transform> destroyChildsCache = new List<Transform>();
+        public static void DestroyChilds(this Transform self)
+        {
+            destroyChildsCache.Clean();
+
+            foreach (Transform item in self)
+            {
+                destroyChildsCache.Add(item);
+            }
+
+            foreach (var item in destroyChildsCache)
+            {
+                GameObject.Destroy(item.gameObject);
+            }
+        }
+
+        public static void DestroyChilds(this Transform self,Predicate<Transform> match)
+        {
+            destroyChildsCache.Clean();
+
+            foreach (Transform item in self)
+            {
+                destroyChildsCache.Add(item);
+            }
+
+            foreach (var item in destroyChildsCache)
+            {
+                if(match(item))
+                {
+                    GameObject.Destroy(item.gameObject);
+                }
+            }
+        }
+
+        public static T Find<T>(this Transform self,Predicate<T> match) where T:Component
+        {
+            foreach (Transform item in self)
+            {
+                T comp = item.GetComponent<T>();
+                if(comp!=default && match(comp)) return comp;
+            }
+            return default;
+        }
+
+        public static void FindSimilar(this Transform self,string targetName,List<Transform> targetCache,List<float> similarValues)
+        {
+            for (int i = 0; i < self.childCount; i++)
+            {
+                var item = self.GetChild(i);
+                var similarVal = targetName.Similarity(item.name);
+                if(similarVal>0)
+                {
+                    var insertIdx = -1;
+                    for (int j = 0; j < similarValues.Count; j++)
+                    {
+                        if(similarVal>similarValues[j])
+                        {
+                            insertIdx = j;
+                            break;
+                        }
+                    }
+
+                    if(insertIdx==-1)
+                    {
+                        targetCache.Add(item);
+                        similarValues.Add(similarVal);
+                    }
+                    else
+                    {
+                        targetCache.Insert(insertIdx,item);
+                        similarValues.Insert(insertIdx,similarVal);
+                    }
+
+                }
+                item.FindSimilar(targetName,targetCache,similarValues);
+            }
+        }
+
     }
 }

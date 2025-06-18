@@ -27,6 +27,22 @@ namespace FGUFW
         {
             AnimationPlayableUtilities.PlayClip(self,clip,out _);
         }
+
+        public static void PlayClip(this Animator self,string clipName)
+        {
+            AnimatorOverrideController overrideController = null;
+            if(self.runtimeAnimatorController is AnimatorOverrideController)
+            {
+                overrideController = self.runtimeAnimatorController as AnimatorOverrideController;
+            }
+            else
+            {
+                overrideController = new AnimatorOverrideController(self.runtimeAnimatorController);
+                self.runtimeAnimatorController = overrideController;
+            }
+            var clip = overrideController[clipName];
+            AnimationPlayableUtilities.PlayClip(self,clip,out _);
+        }
         
     }
 }

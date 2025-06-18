@@ -14,6 +14,8 @@ public class ErrorDebugGUI : MonoBehaviour
     /// </summary>
     void Awake()
     {
+        DontDestroyOnLoad(gameObject);
+        
         Application.logMessageReceived += onLogMessageReceived;
         enabled = false;
     }

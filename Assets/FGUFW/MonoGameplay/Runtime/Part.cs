@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using LitJson;
 using UnityEngine;
-using static FGUsing;
 
 namespace FGUFW.MonoGameplay
 {
@@ -22,8 +22,10 @@ namespace FGUFW.MonoGameplay
         /// <summary>
         /// This function is called when the MonoBehaviour will be destroyed.
         /// </summary>
-        protected virtual void OnDestroy()
+        protected virtual void OnDispose()
         {
+            // savePartConfig();
+
             if(_uiPanel)
             {
                 Destroy(_uiPanel.gameObject);
@@ -46,6 +48,7 @@ namespace FGUFW.MonoGameplay
         public T AddPart<T>() where T : Part
         {
             var part = Create<T>(this);
+
             SubParts.Add(part);
             return part;
         }
@@ -68,20 +71,6 @@ namespace FGUFW.MonoGameplay
             }
         }
 
-        private IEnumerator loadUIPanel()
-        {
-            var uiPanelLoader = this.GetAttribute<UIPanelLoaderAttribute>();
-            if (uiPanelLoader != null)
-            {
-                var path = uiPanelLoader.PrefabPath;
-                var loader = copyAsync(path,null);
-                yield return loader;
-                GameObject go = loader.Result;
-                DontDestroyOnLoad(go);
-                _uiPanel = go.GetComponent<UIPanel>();
-            }
-        }
-
         public static T Create<T>(Part parent) where T : Part
         {
             Transform tp = parent==default?null:parent.transform;
@@ -89,10 +78,70 @@ namespace FGUFW.MonoGameplay
             DontDestroyOnLoad(part.gameObject);
             part.transform.parent = tp;
             part.transform.localPosition = Vector3.zero;
+
+            loadPartConfig(part);
+
             return part;
         }
         
+#region UIPanel
+        private IEnumerator loadUIPanel()
+        {
+            var uiPanelLoader = this.GetAttribute<UIPanelLoaderAttribute>();
+            if (uiPanelLoader != null)
+            {
+                var path = uiPanelLoader.PrefabPath;
+                var loader = AssetHelper.CopyAsync(path,null);
+                yield return loader;
+                GameObject go = loader.Result;
+                DontDestroyOnLoad(go);
+                _uiPanel = go.GetComponent<UIPanel>();
+
+            }
+        }
+
+        public void ShowPanel()
+        {
+            _uiPanel.Show(this).Start(this);
+        }
+
+        public void HidePanel()
+        {
+            _uiPanel.Hide(this).Start(this);
+        }
+#endregion
+
+#region IPartConfig
+        static void loadPartConfig(Part self)
+        {
+            var partType = self.GetType();
+            if(! typeof(IPartConfig).IsAssignableFrom(partType) )return;
+            
+            IPartConfig part = self as IPartConfig;
+            var partConfigType = part.GetPartConfigType();
+
+            var partConfig = PartConfigUtility.Get(partConfigType);
+
+            if(partConfig==default)
+            {
+                var partConfigJsonData = PartConfigUtility.GetPartConfigJsonData(partConfigType);
+
+                if(partConfigJsonData!=default)
+                {
+                    partConfig = JsonMapper.ToObject(partConfigJsonData.ToJson(),partConfigType);
+                    part.PartConfig = partConfig;
+                }
+
+                PartConfigUtility.Set(part.PartConfig);
+            }
+            else
+            {
+                part.PartConfig = partConfig;
+            }
+
+        }
+
+#endregion
 
     }
-
 }

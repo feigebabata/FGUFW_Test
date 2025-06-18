@@ -1,78 +1,56 @@
-#define SHOW
-
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace FGUFW
 {
     [Serializable]
-    public class Table<TKey,TValue>:IEnumerable<KeyValuePair<TKey, TValue>>
+    public class Table<K, V> : Dictionary<K, V>, ISerializationCallbackReceiver
     {
-#if UNITY_EDITOR && SHOW
+#if UNITY_EDITOR
         [Serializable]
-        public struct ItemData
+        public class ItemData
         {
-            public TKey Key;
-            public TValue Value;
+            public K Key;
+            public V Value;
         }
 
+        [Header("ReadOnly")]
         public List<ItemData> Items = new List<ItemData>();
 #endif
-        private Dictionary<TKey,TValue> _dict = new Dictionary<TKey, TValue>();
 
-        public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
+        public Table(Dictionary<K, V> dict) : base(dict)
         {
-            return _dict.GetEnumerator();
+            
+        }
+        
+        public Table()
+        {
+
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
+        // 序列化前调用：将字典数据存入两个列表
+        public void OnBeforeSerialize()
         {
-            return _dict.GetEnumerator();
-        }
 
-        public TValue this[TKey key]
-        {
-            get
+#if UNITY_EDITOR
+            Items.Clean();
+            foreach (var (k, v) in this)
             {
-                return _dict[key];
+                Items.Add(new ItemData
+                {
+                    Key = k,
+                    Value = v,
+                });
             }
-            set
-            {
-                _dict[key] = value;
-            }
+#endif
         }
 
-        public void Add(TKey key, TValue value)
+        // 反序列化后调用：根据两个列表重建字典
+        public void OnAfterDeserialize()
         {
-            _dict.Add(key,value);
-
-            #if UNITY_EDITOR && SHOW
-            Items.Add(new ItemData{Key=key,Value=value});
-            #endif
-        }
-
-        public void Clear()
-        {
-            _dict.Clear();
-
-            #if UNITY_EDITOR && SHOW
-            Items.Clear();
-            #endif
-        }
-
-        public bool ContainsKey(TKey key)
-        {
-            return _dict.ContainsKey(key);
-        }
-
-        public bool Remove(TKey key)
-        {
-            #if UNITY_EDITOR && SHOW
-            Items.RemoveSwapBack(item=>item.Key.Equals(key));
-            #endif
-
-            return _dict.Remove(key);
+            // this.Clear();
+            
         }
     }
 }

@@ -29,6 +29,29 @@ namespace FGUFW
             return v3;
         }
 
+        /// <summary>
+        /// 根据权重随机
+        /// </summary>
+        /// <param name="props"></param>
+        /// <returns></returns>
+        public static int rangeIndex(params float[] props)
+        {
+            float max = 0;
+            foreach (var item in props)
+            {
+                max += item;
+            }
+            var v = range(0,max);
+            for (int i = 1; i < props.Length; i++)
+            {
+                if(v>=props[i-1] && v<props[i])
+                {
+                    return i;
+                }
+            }
+            return 0;
+        }
+
         public static int range(int min,int max)
         {
             return UnityEngine.Random.Range(min,max);

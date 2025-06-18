@@ -10,15 +10,18 @@ namespace FGUFW.MonoGameplay
 {
     public abstract class Play<T>:Part where T:Play<T>
     {
+        public static T P;
+
         public IOrderedMessenger<Enum> Messenger;
 
         [SerializeField]
         private PlayFrameData _frameData;
         public PlayFrameData FrameData=>_frameData;
-        private float _playCreatedTime;
+        private float _playCreatedTime = -1;
 
         public override IEnumerator OnCreating(Part play,Part parent)
         {
+            P = this as T;
             Messenger = new OrderedMessenger<Enum>();
 
             yield return base.OnCreating(this,this);
@@ -33,14 +36,20 @@ namespace FGUFW.MonoGameplay
 #endif
         }
 
-        protected override void OnDestroy()
+        protected override void OnDispose()
         {
-            base.OnDestroy();
+            base.OnDispose();
             
             Messenger = null;
 
             Debug.Log($"{this.GetType().Name} Destroy End.");
         }
+
+        public void Destroy()
+        {
+            OnDispose();
+        }
+
 
 #if FIXED_UPDATE
         /// <summary>
@@ -48,6 +57,8 @@ namespace FGUFW.MonoGameplay
         /// </summary>
         void FixedUpdate()
         {
+            if(_playCreatedTime==-1)return;
+
             _frameData.DeltaTime = Time.fixedDeltaTime;
             _frameData.WorldTime = Time.fixedTime - _playCreatedTime;
             OnUpdate();
@@ -58,6 +69,8 @@ namespace FGUFW.MonoGameplay
         /// </summary>
         void Update()
         {
+            if(_playCreatedTime==-1)return;
+            
             _frameData.DeltaTime = Time.deltaTime;
             _frameData.WorldTime = Time.time - _playCreatedTime;
             OnUpdate();

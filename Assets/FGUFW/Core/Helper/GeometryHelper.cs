@@ -379,7 +379,7 @@ namespace FGUFW
 xz坐标系
 
 */
-        public const float RADIUS_OUT2INN = 0.866025404f;
+        public const float HEX_RADIUS_OUT2INN = 0.866025404f;
 
         /// <summary>
         /// 生成六边形
@@ -407,7 +407,7 @@ xz坐标系
         /// <returns></returns>
         public static Vector3Int PointInHexIndex(Vector3 pointInHexLocalPosition,float outRadius)
         {
-            float innRadius = outRadius*RADIUS_OUT2INN;
+            float innRadius = outRadius*HEX_RADIUS_OUT2INN;
 
             float point_x = pointInHexLocalPosition.x;
             float point_y = pointInHexLocalPosition.z;
@@ -452,7 +452,7 @@ xz坐标系
         /// <returns></returns>
         public static Vector3 HexIndexLocalPosition(Vector3Int hexIndex,float outRadius)
         {
-            float innRadius = outRadius*RADIUS_OUT2INN;
+            float innRadius = outRadius*HEX_RADIUS_OUT2INN;
 
             float space_x = innRadius*2;
             float space_y = outRadius*1.5f;
@@ -538,14 +538,27 @@ xz坐标系
         /// <param name="idxCache"></param>
         public static void GetHexNear(Vector3Int center,Vector3Int[] idxCache)
         {
-            if(idxCache?.Length!=6)return;
+            if(idxCache?.Length<6)return;
 
-            idxCache[0] = new Vector3Int(center.x,center.y-1,center.z+1);
-            idxCache[1] = new Vector3Int(center.x+1,center.y-1,center.z);
-            idxCache[2] = new Vector3Int(center.x+1,center.y,center.z-1);
-            idxCache[3] = new Vector3Int(center.x,center.y+1,center.z-1);
-            idxCache[4] = new Vector3Int(center.x-1,center.y+1,center.z);
-            idxCache[5] = new Vector3Int(center.x-1,center.y,center.z+1);
+            for (int i = 0; i < 6; i++)
+            {
+                idxCache[i] = GetHexSideIndex(center,i);
+            }
+        }
+
+        //从左上顺时针
+        public static Vector3Int GetHexSideIndex(Vector3Int center,int index)
+        {
+            switch (index)
+            {
+                case 0: return center + new Vector3Int(0,-1,1);
+                case 1: return center + new Vector3Int(1,-1,0);
+                case 2: return center + new Vector3Int(1,0,-1);
+                case 3: return center + new Vector3Int(0,1,-1);
+                case 4: return center + new Vector3Int(-1,1,0);
+                case 5: return center + new Vector3Int(-1,0,1);
+            }
+            return center;
         }
 
 #endregion

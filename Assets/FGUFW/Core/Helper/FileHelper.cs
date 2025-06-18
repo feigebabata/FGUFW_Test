@@ -84,37 +84,24 @@ namespace FGUFW
             return true;
         }
 
-        public static void LocalWrite(string localPath,byte[] data)
+        public static void LocalWrite(string localPath, byte[] data)
         {
-            var path = Path.Combine(Application.persistentDataPath,localPath);
-            var directoryPath = Path.GetDirectoryName(path);
-            if(!Directory.Exists(directoryPath))
-            {
-                Directory.CreateDirectory(directoryPath);
-            }
+            var path = Path.Combine(Application.persistentDataPath, localPath);
 
-            File.WriteAllBytes(path,data);
-
+            Write(path, data);
         }
 
-        public static void LocalWrite(string localPath,string text)
+        public static void LocalWrite(string localPath, string text)
         {
-            var path = Path.Combine(Application.persistentDataPath,localPath);
-            var directoryPath = Path.GetDirectoryName(path);
-            if(!Directory.Exists(directoryPath))
-            {
-                Directory.CreateDirectory(directoryPath);
-            }
-
-            File.WriteAllText(path,text);
-
+            var path = Path.Combine(Application.persistentDataPath, localPath);
+            Write(path, text);
         }
 
         public static byte[] LocaRead(string localPath)
         {
-            var path = Path.Combine(Application.persistentDataPath,localPath);
-            
-            if(File.Exists(path))
+            var path = Path.Combine(Application.persistentDataPath, localPath);
+
+            if (File.Exists(path))
             {
                 return File.ReadAllBytes(path);
             }
@@ -123,11 +110,33 @@ namespace FGUFW
 
         }
 
+        public static void Write(string path, byte[] data)
+        {
+            var directoryPath = Path.GetDirectoryName(path);
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+
+            File.WriteAllBytes(path, data);
+        }
+
+        public static void Write(string path, string text)
+        {
+            var directoryPath = Path.GetDirectoryName(path);
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+
+            File.WriteAllText(path, text);
+        }
+
         public static string LocaReadText(string localPath)
         {
-            var path = Path.Combine(Application.persistentDataPath,localPath);
-            
-            if(File.Exists(path))
+            var path = Path.Combine(Application.persistentDataPath, localPath);
+
+            if (File.Exists(path))
             {
                 return File.ReadAllText(path);
             }
@@ -136,15 +145,36 @@ namespace FGUFW
 
         }
 
-        public static IEnumerator LoadStreaming(string localPath,Action<string,DownloadHandler> callback)
+        public static IEnumerator LoadStreaming(string localPath, Action<string, DownloadHandler> callback)
         {
-            var path = Path.Combine(Application.streamingAssetsPath,localPath);
+            var path = Path.Combine(Application.streamingAssetsPath, localPath);
             var uri = new Uri(path);
             using (var uwr = UnityWebRequest.Get(uri))
             {
                 uwr.downloadHandler = new DownloadHandlerBuffer();
                 yield return uwr.SendWebRequest();
-                callback(uwr.error,uwr.downloadHandler);
+                callback(uwr.error, uwr.downloadHandler);
+            }
+        }
+
+        public static void ClearDirectory(string folderPath)
+        {
+            if (Directory.Exists(folderPath))
+            {
+                // 删除所有文件
+                string[] files = Directory.GetFiles(folderPath);
+                foreach (string file in files)
+                {
+                    File.Delete(file);
+                }
+                
+                // 删除所有子目录
+                string[] directories = Directory.GetDirectories(folderPath);
+                foreach (string dir in directories)
+                {
+                    Directory.Delete(dir, true);
+                }
+                
             }
         }
         

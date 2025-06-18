@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Collections;
 
 namespace FGUFW.Console
 {
@@ -32,6 +33,12 @@ namespace FGUFW.Console
             _errorTextColorText = ColorUtility.ToHtmlStringRGB(_errorTextColor);
 
             onAddListener();
+        }
+
+        IEnumerator Start()
+        {
+            yield return new WaitWhile(()=>ConsoleUtility.Initialized);
+            onInputSubmit("help");
         }
 
         /// <summary>
