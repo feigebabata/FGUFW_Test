@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics;
+using UnityEngine;
 
 namespace FGUFW
 {
@@ -34,7 +34,14 @@ namespace FGUFW
                 else//常量
                 {
                     Variate = false;
-                    Value = text.ToFloat();
+                    try
+                    {
+                        Value = text.ToFloat();
+                    }
+                    catch (System.Exception)
+                    {
+                        Debug.LogError($"无法解析常量:{text.ToString()}");
+                    }
                 }
             }
             else if (TextRulesHelper.FindCodeOR(text, 0) != -1)// 或

@@ -70,6 +70,11 @@ public static class FGUsing
     {
         return RandomExtensions.rangeIndex(props);
     }
+
+    public static bool prob(float prob)
+    {
+        return range(0f, 1f) < prob;
+    }
 #endregion
 
 #region AssetHelper
