@@ -153,7 +153,7 @@ using static FGUsing;
 
 namespace |NAME_SPACE|
 {
-    [UIPanelLoader("""")]
+    [UIPanelLoader("""",(int)UIPanelSortOrder.Base)]
     public partial class |CLASS_NAME| : Part
     {
         private |PLAY_NAME| _play;
