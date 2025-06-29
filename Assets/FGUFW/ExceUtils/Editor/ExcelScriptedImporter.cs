@@ -36,7 +36,7 @@ namespace FGUFW.ExcelUtils
 
             execl.Dispose();
             EditorApplication.delayCall += delayRefresh;
-            Debug.Log($"已生成对应脚本和json文件:{path}");
+            Debug.Log($"已生成对应脚本和json文件:{path}".RichText(Color.green));
         }
 
         static void delayRefresh()

@@ -364,13 +364,13 @@ namespace FGUFW.Console
             switch (resultState)
             {
                 case InvokeCommandResult.NoneCommand:
-                    outMsg = "找不到指令;";
+                    outMsg = "找不到指令:";
                 break;
                 case InvokeCommandResult.InvokeError:
                     outMsg = $"执行命令失败:{msg}";
                 break;
                 case InvokeCommandResult.NoneTarget:
-                    outMsg = "找不到对象;";
+                    outMsg = "找不到对象:";
                 break;
             }
             var line = OnAddInvokeFailMsg?.Invoke(outMsg);

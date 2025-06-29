@@ -167,14 +167,52 @@ namespace FGUFW
                 {
                     File.Delete(file);
                 }
-                
+
                 // 删除所有子目录
                 string[] directories = Directory.GetDirectories(folderPath);
                 foreach (string dir in directories)
                 {
                     Directory.Delete(dir, true);
                 }
-                
+
+            }
+        }
+
+        public static void CopyFile(string form, string to)
+        {
+            var directoryPath = Path.GetDirectoryName(to);
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+
+            File.Copy(form, to, true);
+        }
+
+        public static void CopyDirectory(string from, string to)
+        {
+            // 获取源目录信息
+            var dir = new DirectoryInfo(from);
+            
+            // 检查源目录是否存在
+            if (!dir.Exists)
+                throw new DirectoryNotFoundException($"源目录不存在或无法找到: {from}");
+            
+            // 确保目标目录存在
+            Directory.CreateDirectory(to);
+            
+            // 获取源目录下的所有文件并拷贝
+            foreach (FileInfo file in dir.GetFiles())
+            {
+                string targetFilePath = Path.Combine(to, file.Name);
+                file.CopyTo(targetFilePath, true); // 覆盖已存在的文件
+            }
+            
+            // 递归拷贝子目录
+            foreach (DirectoryInfo subDir in dir.GetDirectories())
+            {
+                string newDestinationDir = Path.Combine(to, subDir.Name);
+                CopyDirectory(subDir.FullName, newDestinationDir);
             }
         }
         

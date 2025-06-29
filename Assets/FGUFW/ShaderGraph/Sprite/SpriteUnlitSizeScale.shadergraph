@@ -83,6 +83,20 @@
         {
             "m_OutputSlot": {
                 "m_Node": {
+                    "m_Id": "639668f16f594a09aaaa4e9c16b23786"
+                },
+                "m_SlotId": 7
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "ba3ebd90492645428fc55318b2985260"
+                },
+                "m_SlotId": 0
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
                     "m_Id": "723af4728dbf4844870df50e1e28b9b0"
                 },
                 "m_SlotId": 0
@@ -295,10 +309,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -674.9999389648438,
-            "y": 200.0,
+            "x": -716.9999389648438,
+            "y": -36.0000114440918,
             "width": 126.0,
-            "height": 33.999969482421878
+            "height": 34.00001907348633
         }
     },
     "m_Slots": [
@@ -517,7 +531,7 @@
         "tex2d"
     ],
     "m_Precision": 0,
-    "m_PreviewExpanded": true,
+    "m_PreviewExpanded": false,
     "m_DismissedVersion": 0,
     "m_PreviewMode": 0,
     "m_CustomColors": {
@@ -541,10 +555,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -883.9999389648438,
-            "y": 282.9999694824219,
+            "x": -719.0,
+            "y": 289.0,
             "width": 128.0,
-            "height": 34.00006103515625
+            "height": 34.0
         }
     },
     "m_Slots": [
@@ -680,10 +694,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -388.99993896484377,
-            "y": -150.99998474121095,
-            "width": 207.99998474121095,
-            "height": 302.0
+            "x": -525.9999389648438,
+            "y": -166.99998474121095,
+            "width": 130.0,
+            "height": 117.99999237060547
         }
     },
     "m_Slots": [
@@ -703,7 +717,7 @@
         "x"
     ],
     "m_Precision": 0,
-    "m_PreviewExpanded": true,
+    "m_PreviewExpanded": false,
     "m_DismissedVersion": 0,
     "m_PreviewMode": 0,
     "m_CustomColors": {
@@ -833,7 +847,7 @@
         "location"
     ],
     "m_Precision": 1,
-    "m_PreviewExpanded": true,
+    "m_PreviewExpanded": false,
     "m_DismissedVersion": 0,
     "m_PreviewMode": 2,
     "m_CustomColors": {

@@ -153,7 +153,7 @@ using static FGUsing;
 
 namespace |NAME_SPACE|
 {
-    [UIPanelLoader("""")]
+    [UIPanelLoader("""",(int)UIPanelSortOrder.Base)]
     public partial class |CLASS_NAME| : Part
     {
         private |PLAY_NAME| _play;
@@ -260,15 +260,18 @@ namespace |NAME_SPACE|
                 File.WriteAllText(Path.Combine(folderPath,className+"PanelComps.cs"),scriptText);
 
                 var panelGO = new GameObject($"{className}Panel");
+                
                 var canvas = panelGO.AddComponent<Canvas>();
                 canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+
                 var canvasGroup = panelGO.AddComponent<CanvasGroup>();
                 panelGO.AddComponent<GraphicRaycaster>();
-                panelGO.AddComponent<UIPanel>();
 
                 var canvasScaler = panelGO.AddComponent<CanvasScaler>();
                 canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
                 canvasScaler.referenceResolution = MonoGameplaySettingsProvider.SettingData.PanelSize;
+
+                panelGO.AddComponent<UIPanel>();
 
                 var mask = new GameObject("Mask").AddComponent<Image>();
                 mask.color = new Color32(0, 0, 0, 222);

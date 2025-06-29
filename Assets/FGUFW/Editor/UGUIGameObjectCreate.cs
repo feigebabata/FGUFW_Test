@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -25,6 +26,8 @@ namespace FGUFW.Editor
 
             Selection.activeGameObject = go;
         }
+
+
 
         [MenuItem("GameObject/UI/ScrollList", validate = true)]
         static bool checkCreatesollder()
@@ -69,6 +72,28 @@ namespace FGUFW.Editor
             Selection.activeGameObject = go;
 
         }
+
+
+        [MenuItem("GameObject/UI/Text_TMP", validate = true)]
+        static bool checkCreateText()
+        {
+            return Selection.activeGameObject != default;
+        }
+
+        [MenuItem("GameObject/UI/Text_TMP")]
+        static void createText()
+        {
+            var parent = Selection.activeGameObject.transform;
+
+            var go = new GameObject("Text");
+            go.transform.SetParent(parent, false);
+            go.transform.localPosition = default;
+            var text = go.AddComponent<TextMeshProUGUI>();
+            text.alignment = TextAlignmentOptions.Center;
+
+            Selection.activeGameObject = go;
+        }
+        
     }
 
 }
