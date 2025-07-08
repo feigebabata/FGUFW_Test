@@ -8,10 +8,13 @@ namespace FGUFW.MonoGameplay
         /// </summary>
         Base = 0,
 
+        Base2,
+
         /// <summary>
         /// 上层公共
         /// </summary>
         Upper,
+        Upper2,
 
         /// <summary>
         /// 弹出窗口
@@ -22,5 +25,6 @@ namespace FGUFW.MonoGameplay
         /// 弹出窗口二级
         /// </summary>
         Pop2,
+        Pop3,
     }
 }

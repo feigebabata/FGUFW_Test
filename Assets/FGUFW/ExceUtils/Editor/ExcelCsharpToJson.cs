@@ -169,6 +169,7 @@ namespace FGUFW.ExcelUtils
 
         static string getValueByType(string type, string value)
         {
+            type = type.Trim();
             switch (type)
             {
                 case "int":

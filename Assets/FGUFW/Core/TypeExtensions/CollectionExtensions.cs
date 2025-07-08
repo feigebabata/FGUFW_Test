@@ -207,7 +207,7 @@ namespace FGUFW
             }
             self.Clean();
         }
-        
+
         /// <summary>
         /// 洗牌 打乱顺序 然后从头到尾就是一种随机不重复效果
         /// </summary>
@@ -223,7 +223,7 @@ namespace FGUFW
                 self[idx] = temp;
             }
         }
-        
+
         /// <summary>
         /// 洗牌 打乱顺序 然后从头到尾就是一种随机不重复效果
         /// </summary>
@@ -238,6 +238,11 @@ namespace FGUFW
                 self[i] = self[idx];
                 self[idx] = temp;
             }
+        }
+
+        public static void Sort<T>(this T[] self, Comparison<T> comparison)
+        {
+            Array.Sort(self, comparison);
         }
 
     }

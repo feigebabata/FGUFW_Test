@@ -18,6 +18,19 @@ namespace FGUFW
             pos.x = x;
             self.anchoredPosition = pos;
         }
+        public static void SetSizeY(this RectTransform self, float y)
+        {
+            var sizeDelta = self.sizeDelta;
+            sizeDelta.y = y;
+            self.sizeDelta = sizeDelta;
+        }
+
+        public static void SetSizeX(this RectTransform self, float x)
+        {
+            var sizeDelta = self.sizeDelta;
+            sizeDelta.x = x;
+            self.sizeDelta = sizeDelta;
+        }
 
         public static void SetX(this Transform self, float x)
         {
