@@ -159,7 +159,7 @@ namespace FGUFW
 
         public static T Instance<T>(this Type self, params object[] args)
         {
-            return (T)System.Activator.CreateInstance(self,args);
+            return (T)Activator.CreateInstance(self,args);
         }
 
         public static T GetAttribute<T>(this object self) where T:Attribute

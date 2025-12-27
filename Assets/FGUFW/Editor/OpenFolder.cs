@@ -4,7 +4,6 @@ using System.IO;
 using FGUFW.Platform;
 using UnityEditor;
 using UnityEngine;
-using static FGUsing;
 
 namespace FGUFW.Editor
 {

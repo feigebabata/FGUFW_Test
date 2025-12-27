@@ -54,5 +54,11 @@ namespace FGUFW
         }
         
 
+        public static void Reaction(this GameObject self)
+        {
+            self.SetActive(false);
+            self.SetActive(true);
+        }
+
     }
 }

@@ -92,6 +92,45 @@ namespace FGUFW
             return default(T);
         }
 
+        public static T RandomByWeight<T>(this IEnumerable<T> collection, Func<T, float> getWeight)
+        {
+            float maxValue = 0;
+            foreach (T item in collection)
+            {
+                maxValue += getWeight(item);
+            }
+            float val = UnityEngine.Random.Range(0, maxValue);
+            float weight = 0;
+            foreach (T item in collection)
+            {
+                weight += getWeight(item);
+                if (val < weight)
+                {
+                    return item;
+                }
+            }
+            return default(T);
+        }
+
+        public static int RandomIndexByWeight(this IEnumerable<int> weights)
+        {
+            int index = -1;
+            float length = 0;
+            foreach (var item in weights)
+            {
+                length += item;
+            }
+            float val = UnityEngine.Random.Range(0,length);
+            foreach (var item in weights)
+            {
+                index++;
+                if(item==0)continue;
+                if(val<item)break;
+                val-=item;
+            }
+            return index;
+        }
+
         public static T[] Copy<T>(this T[] self, int length)
         {
             if (self == null || self.Length == 0)
@@ -198,6 +237,18 @@ namespace FGUFW
             return v;
         }
 
+        public static V GetOrNew<K, V>(this Dictionary<K, V> self, K key)
+        {
+            V v = default;
+            if(!self.TryGetValue(key, out v))
+            {
+                v = typeof(V).Instance<V>();
+                self.Add(key,v);
+            }
+
+            return v;
+        }
+
         public static void MoveTo<T>(this List<T> self, List<T> ls)
         {
             ls.Clean();
@@ -207,13 +258,13 @@ namespace FGUFW
             }
             self.Clean();
         }
-        
+
         /// <summary>
         /// 洗牌 打乱顺序 然后从头到尾就是一种随机不重复效果
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="self"></param>
-        public static void Shuffle<T>(this List<T> self)
+        public static void Shuffle2<T>(this List<T> self)
         {
             for (int i = 0; i < self.Count; i++)
             {
@@ -223,7 +274,7 @@ namespace FGUFW
                 self[idx] = temp;
             }
         }
-        
+
         /// <summary>
         /// 洗牌 打乱顺序 然后从头到尾就是一种随机不重复效果
         /// </summary>
@@ -238,6 +289,16 @@ namespace FGUFW
                 self[i] = self[idx];
                 self[idx] = temp;
             }
+        }
+
+        public static void Sort<T>(this T[] self, Comparison<T> comparison)
+        {
+            Array.Sort(self, comparison);
+        }
+
+        public static int LastIndex<T>(this T[] self)
+        {
+            return self.Length-1;
         }
 
     }

@@ -90,6 +90,18 @@ namespace FGUFW
         {
             GameObject.Destroy(self.gameObject);
         }
+
+#if UNITY_EDITOR
+
+        [MenuItem("CONTEXT/MonoBehaviour/AutoRefField")]
+        static void autoRefField(MenuCommand command)
+        {
+            var comp = (MonoBehaviour)command.context;
+            comp.AutoRefField();
+            EditorUtility.SetDirty(comp);
+        }
+
+#endif
         
     }
 }

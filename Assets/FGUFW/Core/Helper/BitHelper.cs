@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Unity.Mathematics;
 
 namespace FGUFW
 {
@@ -78,11 +77,11 @@ namespace FGUFW
         /// </summary>
         /// <param name="val"></param>
         /// <returns></returns>
-        public static int BitIndex(Int32 val)
-        {
-            if(val<=0)return -1;
-            return (int)math.log2(val);
-        }
+        // public static int BitIndex(Int32 val)
+        // {
+        //     if(val<=0)return -1;
+        //     return (int)math.log2(val);
+        // }
 
 
     }

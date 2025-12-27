@@ -8,7 +8,7 @@ using System;
 public static class FGUsing
 {
 
-#region ULog
+    #region ULog
     [System.Diagnostics.Conditional(ULog.Conditional_Log)]
     public static void log(object obj)
     {
@@ -25,7 +25,7 @@ public static class FGUsing
     public static void logError(object obj)
     {
         Debug.LogError(obj);
-        
+
     }
 
     /// <summary>
@@ -35,35 +35,35 @@ public static class FGUsing
     /// <param name="b"></param>
     /// <param name="msg"></param>
     [System.Diagnostics.Conditional(ULog.Conditional_Log)]
-    public static void assert(this MonoBehaviour mb,bool b,string msg)
+    public static void assert(this MonoBehaviour mb, bool b, string msg)
     {
-        UnityEngine.Assertions.Assert.IsTrue(b,msg);
+        UnityEngine.Assertions.Assert.IsTrue(b, msg);
     }
-#endregion
+    #endregion
 
-#region RandomExtensions
-    public static float range(float min=0,float max=1)
+    #region RandomExtensions
+    public static float range(float min = 0, float max = 1)
     {
-        return RandomExtensions.range(min,max);
+        return RandomExtensions.range(min, max);
     }
-    public static int range(int min=0,int max=1)
+    public static int range(int min = 0, int max = 1)
     {
-        return RandomExtensions.range(min,max);
-    }
-
-    public static Vector2 range2(float min=0,float max=1)
-    {
-        return RandomExtensions.range2(min,max);
+        return RandomExtensions.range(min, max);
     }
 
-    public static Vector3 range3(float min=0,float max=1)
+    public static Vector2 range2(float min = 0, float max = 1)
     {
-        return RandomExtensions.range3(min,max);
+        return RandomExtensions.range2(min, max);
     }
 
-    public static Color rangec(float min=0,float max=1)
+    public static Vector3 range3(float min = 0, float max = 1)
     {
-        return RandomExtensions.rangec(min,max);
+        return RandomExtensions.range3(min, max);
+    }
+
+    public static Color rangec(float min = 0, float max = 1)
+    {
+        return RandomExtensions.rangec(min, max);
     }
 
     public static int rangeIndex(params float[] props)
@@ -75,9 +75,9 @@ public static class FGUsing
     {
         return range(0f, 1f) < prob;
     }
-#endregion
+    #endregion
 
-#region AssetHelper
+    #region AssetHelper
 
     public static T load<T>(string path)
     {
@@ -89,14 +89,14 @@ public static class FGUsing
         return AssetHelper.LoadAsync<T>(path);
     }
 
-    public static GameObject copy(string path,Transform parent=default)
+    public static GameObject copy(string path, Transform parent = default)
     {
-        return AssetHelper.Copy(path,parent);
+        return AssetHelper.Copy(path, parent);
     }
 
-    public static UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<GameObject> copyAsync(string path,Transform parent=default)
+    public static UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<GameObject> copyAsync(string path, Transform parent = default)
     {
-        return AssetHelper.CopyAsync(path,parent);
+        return AssetHelper.CopyAsync(path, parent);
     }
 
     public static UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<UnityEngine.ResourceManagement.ResourceProviders.SceneInstance> loadSceneAsync(string path)
@@ -104,42 +104,42 @@ public static class FGUsing
         return AssetHelper.LoadSceneAsync(path);
     }
 
-#endregion
+    #endregion
 
-#region LitJson
+    #region LitJson
     public static string toJson(object obj)
     {
-        if(obj==default)return default;
+        if (obj == default) return default;
         return JsonMapper.ToJson(obj);
         // return JsonUtility.ToJson(obj,true);
     }
-    
+
     public static T json2Object<T>(string json)
     {
         // return JsonUtility.FromJson<T>(json);
         return JsonMapper.ToObject<T>(json);
     }
-    
-    public static object json2Object(string json,Type type)
+
+    public static object json2Object(string json, Type type)
     {
         // return JsonUtility.FromJson<T>(json);
-        return JsonMapper.ToObject(json,type);
+        return JsonMapper.ToObject(json, type);
     }
 
-#endregion
+    #endregion
 
-#region GameObject
-    public static GameObject createGO(string name=default,Transform parent=default)
+    #region GameObject
+    public static GameObject createGO(string name = default, Transform parent = default)
     {
         var go = new GameObject(name);
-        go.transform.SetParent(parent,false);
+        go.transform.SetParent(parent, false);
         return go;
     }
 
-    public static T createGO<T>(string name=default,Transform parent=default) where T:Component
+    public static T createGO<T>(string name = default, Transform parent = default) where T : Component
     {
         var go = new GameObject(name);
-        go.transform.SetParent(parent,false);
+        go.transform.SetParent(parent, false);
         var a = go.AddComponent<T>();
         return a;
     }
@@ -157,46 +157,56 @@ public static class FGUsing
         return go.GetComponent<T>();
     }
 
-#endregion
+    #endregion
 
-#region Coroutine
+    #region Coroutine
     public static WaitForSeconds delayY(float time)
     {
-       return new WaitForSeconds(time);
+        return new WaitForSeconds(time);
     }
-    
 
-#endregion
 
-#region Editor
+    #endregion
+
+    #region Editor
     public static void pauseEditor()
     {
-       #if UNITY_EDITOR
+#if UNITY_EDITOR
         UnityEditor.EditorApplication.isPaused = true;
-       #endif
+#endif
     }
 
-#endregion
+    #endregion
 
-#region MonoGameplay
+    #region MonoGameplay
     public static void savePartConfig()
     {
         PartConfigUtility.Save();
     }
 
-#endregion
+    #endregion
 
 
 
-#region Math
+    #region Math
     public static float clamp(float value, float min, float max)
     {
-        return Mathf.Clamp(value,min,max);
+        return Mathf.Clamp(value, min, max);
     }
-    
+
     public static int clamp(int value, int min, int max)
     {
         return Mathf.Clamp(value, min, max);
+    }
+
+    public static int count(params bool[] bools)
+    {
+        int num =0;
+        foreach (var b in bools)
+        {
+            if (b) num++;
+        }
+        return num;
     }
 
 #endregion

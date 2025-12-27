@@ -37,7 +37,7 @@ namespace FGUFW.Console
 
         IEnumerator Start()
         {
-            yield return new WaitWhile(()=>!ConsoleUtility.Initialized);
+            yield return new WaitWhile(()=>ConsoleUtility.Initialized);
             onInputSubmit("help");
         }
 

@@ -2330,5 +2330,6 @@ namespace FGUFW
         public const char U32FD = '㋽';
         public const char U32FE = '㋾';
         public const char U337F = '㍿';
+
     }
 }

@@ -5,7 +5,7 @@ using UnityEditor;
 namespace FGUFW
 {
     [CustomEditor(typeof(AnimatorPlayHelper))]
-    public class AnimatorPlayHelperEditor : Editor
+    public class AnimatorPlayHelperEditor : UnityEditor.Editor
     {
         private Animator _animator;
         private AnimatorPlayHelper _animatorPlayHelper;

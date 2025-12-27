@@ -22,6 +22,9 @@ namespace FGUFW.MonoGameplay
         [HideInInspector]
         public Vector2 MoveVector;
 
+        [HideInInspector]
+        public string SortOrder;
+
         CanvasGroup _group;
         Canvas _canvas;
 
@@ -129,6 +132,12 @@ namespace FGUFW.MonoGameplay
                 
                 _panel.anchoredPosition = MoveCurve.Evaluate(progress)*canvasSize;
             }
+        }
+
+        public void SetSortOrder(int order)
+        {
+            _canvas.sortingOrder = order;
+            SortOrder = ((UIPanelSortOrder)order).ts();
         }
 
         [Flags]

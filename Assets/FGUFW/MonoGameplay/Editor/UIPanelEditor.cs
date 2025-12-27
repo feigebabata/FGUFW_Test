@@ -12,6 +12,7 @@ namespace FGUFW.MonoGameplay.Editor
         private SerializedProperty _moveCurve;
         private SerializedProperty _moveVector;
         private SerializedProperty _switingTime;
+        private SerializedProperty _panelSortOrder;
 
         void OnEnable()
         {
@@ -22,6 +23,7 @@ namespace FGUFW.MonoGameplay.Editor
             _moveCurve = serializedObject.FindProperty("MoveCurve");
             _moveVector = serializedObject.FindProperty("MoveVector");
             _switingTime = serializedObject.FindProperty("SwitingTime");
+            _panelSortOrder = serializedObject.FindProperty("SortOrder");
         }
 
         void OnDisable()
@@ -31,6 +33,18 @@ namespace FGUFW.MonoGameplay.Editor
 
         public override void OnInspectorGUI()
         {
+
+            UIPanelSortOrder orderEnum = (UIPanelSortOrder)0;
+            try
+            {
+                orderEnum = _target.SortOrder.ToEnum<UIPanelSortOrder>();
+            }
+            catch (System.Exception)
+            {
+            }
+
+            var order = EditorGUILayout.EnumPopup("SortOrder", orderEnum).ts();
+
             _target.SwitingEffect = (UIPanel.Effect)EditorGUILayout.EnumFlagsField("Switing",_target.SwitingEffect);
 
             base.OnInspectorGUI();
@@ -53,6 +67,13 @@ namespace FGUFW.MonoGameplay.Editor
                 EditorGUILayout.PropertyField(_moveCurve);
                 EditorGUILayout.PropertyField(_moveVector);
             }
+
+            if (order != _target.SortOrder)
+            {
+                _target.SortOrder = order;
+                _target.Comp<Canvas>().sortingOrder = order.ToEnum<UIPanelSortOrder>().ti();
+            }
+
 
             serializedObject.ApplyModifiedProperties();
 

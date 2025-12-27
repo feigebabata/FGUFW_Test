@@ -271,7 +271,9 @@ namespace |NAME_SPACE|
                 canvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
                 canvasScaler.referenceResolution = MonoGameplaySettingsProvider.SettingData.PanelSize;
 
-                panelGO.AddComponent<UIPanel>();
+                var uiPanel = panelGO.AddComponent<UIPanel>();
+                uiPanel.SortOrder = ((UIPanelSortOrder)0).ts();
+                canvas.sortingOrder = 0;
 
                 var mask = new GameObject("Mask").AddComponent<Image>();
                 mask.color = new Color32(0, 0, 0, 222);

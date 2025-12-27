@@ -29,6 +29,28 @@ namespace FGUFW
             return v3;
         }
 
+        
+        public static int RandomIndexByWeight(int length,Func<int, float> getWeight)
+        {
+            float maxValue = 0;
+            for (int i = 0; i < length; i++)
+            {
+                maxValue += getWeight(i);
+            }
+            float val = UnityEngine.Random.Range(0, maxValue);
+            float weight = 0;
+
+            for (int i = 0; i < length; i++)
+            {
+                weight += getWeight(i);
+                if (val < weight)
+                {
+                    return i;
+                }
+            }
+            return default;
+        }
+
         /// <summary>
         /// 根据权重随机
         /// </summary>

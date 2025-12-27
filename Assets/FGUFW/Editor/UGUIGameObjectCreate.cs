@@ -75,13 +75,13 @@ namespace FGUFW.Editor
 
 
         [MenuItem("GameObject/UI/Text_TMP", validate = true)]
-        static bool checkCreateText()
+        static bool checkCreateTMPText()
         {
             return Selection.activeGameObject != default;
         }
 
         [MenuItem("GameObject/UI/Text_TMP")]
-        static void createText()
+        static void createTMPText()
         {
             var parent = Selection.activeGameObject.transform;
 
@@ -90,6 +90,27 @@ namespace FGUFW.Editor
             go.transform.localPosition = default;
             var text = go.AddComponent<TextMeshProUGUI>();
             text.alignment = TextAlignmentOptions.Center;
+
+            Selection.activeGameObject = go;
+        }
+
+
+        [MenuItem("GameObject/UI/Text", validate = true)]
+        static bool checkCreateText()
+        {
+            return Selection.activeGameObject != default;
+        }
+
+        [MenuItem("GameObject/UI/Text")]
+        static void createText()
+        {
+            var parent = Selection.activeGameObject.transform;
+
+            var go = new GameObject("Text");
+            go.transform.SetParent(parent, false);
+            go.transform.localPosition = default;
+            var text = go.AddComponent<Text>();
+            text.alignment = TextAnchor.MiddleCenter;
 
             Selection.activeGameObject = go;
         }

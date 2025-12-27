@@ -96,7 +96,7 @@ namespace FGUFW.MonoGameplay
                 GameObject go = loader.Result;
                 DontDestroyOnLoad(go);
                 _uiPanel = go.GetComponent<UIPanel>();
-                _uiPanel.Comp<Canvas>().sortingOrder = uiPanelLoader.SortOrder;
+                _uiPanel.SetSortOrder(uiPanelLoader.SortOrder);
             }
         }
 
