@@ -48,5 +48,10 @@ namespace FGUFW
             return ((float)n,c);
         }
 
+        public static int ti(this float self)
+        {
+            return (int)self;
+        }
+
     }
 }

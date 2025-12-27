@@ -1,6 +1,6 @@
 using System;
+using LitJson;
 using UnityEngine;
-using static FGUsing;
 
 namespace FGUFW.LocalConfig
 {
@@ -49,13 +49,13 @@ namespace FGUFW.LocalConfig
             }
             else
             {
-                ConfigData = json2Object<C>(jsonText);
+                ConfigData = jsonText.ToObject<C>();
             }
         }
 
         public void Save()
         {
-            var jsonText = toJson(ConfigData);
+            var jsonText = ConfigData.ToJson();
             FileHelper.LocalWrite(fileName, jsonText);
         }
 
